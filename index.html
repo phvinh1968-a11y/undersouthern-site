@@ -38,25 +38,6 @@ body::before {
 /* ================= LINKS ================= */
 a { text-decoration:none; color:inherit; }
 
-/* ================= NAVBAR ================= */
-nav {
-  position:fixed; top:0; left:0; width:100%;
-  background:#fff;
-  padding:15px 20px;
-  display:flex; justify-content:center; /* căn giữa */
-  z-index:1000;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-nav ul { list-style:none; display:flex; gap:30px; margin:0; padding:0; justify-content:center; align-items:center; }
-nav ul li a { font-weight:500; transition:.3s; position:relative; color:#111; }
-nav ul li a::after {
-  content:"";
-  position:absolute; left:0; bottom:-5px; width:0; height:2px;
-  background:#111; transition:0.3s;
-}
-nav ul li a:hover::after { width:100%; }
-nav ul li a:hover, nav ul li a.active { color:#555; }
-
 /* ================= HERO ================= */
 header {
   height:80vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
@@ -65,7 +46,7 @@ header {
   z-index:1;
   overflow:hidden;
 }
-/* Chữ UNDERSOUTHERN giống About Us, in đậm, đơn giản */
+/* Chữ UNDERSOUTHERN in đậm, giống About Us */
 .hero-title {
   font-size:2rem; /* tương tự h2 */
   font-weight:700; /* in đậm */
@@ -99,19 +80,16 @@ p { line-height:1.6; font-size:1.1rem; color:#333; }
 
 /* ================= PLATFORMS ================= */
 .platforms { background: rgba(0,0,0,0.05); padding:50px 0; overflow:hidden; border-radius:10px; margin-bottom:50px;}
-.track { display:flex; width:max-content; gap:30px; font-weight:bold; font-size:1.2rem; animation:marquee 25s linear infinite; justify-content:center; }
-.track span {
-  display:inline-block;
-  transition: transform 0.3s, color 0.3s, text-shadow 0.3s;
+.track { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; align-items:center; }
+.track img {
+  height:50px;
+  transition: transform 0.3s, box-shadow 0.3s;
   cursor:pointer;
-  color:#111;
 }
-.track span:hover {
-  transform:scale(1.3);
-  color:#555;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+.track img:hover {
+  transform: scale(1.2);
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
 }
-@keyframes marquee {0%{transform:translateX(0);}100%{transform:translateX(-50%);} }
 
 /* ================= SOCIAL ICONS ================= */
 .social a { margin:0 12px; font-size:1.6rem; color:#111; transition:.3s; }
@@ -125,24 +103,13 @@ footer {
 
 /* ================= RESPONSIVE ================= */
 @media(max-width:768px){
-  nav ul { gap:20px; flex-wrap:wrap; justify-content:center; }
   .hero-title{font-size:1.8rem;}
   header p{font-size:1rem;}
-  .track { font-size:1rem; gap:15px;}
+  .track img{height:40px;}
 }
 </style>
 </head>
 <body>
-
-<!-- Navbar -->
-<nav>
-  <ul>
-    <li><a href="#about">About</a></li>
-    <li><a href="#artists">Artists</a></li>
-    <li><a href="#platforms">Platforms</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
 
 <!-- Hero -->
 <header>
@@ -168,20 +135,13 @@ footer {
 <section id="platforms" class="platforms" data-aos="fade-up" data-aos-duration="1000">
   <h2>Available On</h2>
   <div class="track">
-    <span>Spotify</span>
-    <span>Apple Music</span>
-    <span>YouTube Music</span>
-    <span>Deezer</span>
-    <span>Tidal</span>
-    <span>Amazon Music</span>
-    <span>SoundCloud</span>
-    <span>Spotify</span>
-    <span>Apple Music</span>
-    <span>YouTube Music</span>
-    <span>Deezer</span>
-    <span>Tidal</span>
-    <span>Amazon Music</span>
-    <span>SoundCloud</span>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Music">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/YouTube_logo_(2017).svg" alt="YouTube Music">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Deezer_logo.svg" alt="Deezer">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Tidal_logo.svg" alt="Tidal">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Amazon_Music_logo.svg" alt="Amazon Music">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/SoundCloud_logo.svg" alt="SoundCloud">
   </div>
 </section>
 
