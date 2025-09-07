@@ -6,7 +6,7 @@
   <title>UNDERSOUTHERN | Independent Record Label</title>
   <meta name="description" content="UNDERSOUTHERN - Independent Record Label & Global Music Distribution">
 
-  <!-- Fonts & Icons -->
+  <!-- Fonts, Icons, AOS -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -14,6 +14,7 @@
   <style>
     body { margin:0; font-family:'Montserrat',sans-serif; background:#fff; color:#111; scroll-behavior:smooth; }
     a { color:inherit; text-decoration:none; }
+
     /* Navbar */
     nav { position:fixed; top:0; left:0; width:100%; background:#fff; padding:15px 40px; display:flex; justify-content:space-between; align-items:center; z-index:1000; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
     nav .logo img { height:40px; }
@@ -22,13 +23,13 @@
     nav ul li a:hover, nav ul li a.active { color:#555; }
 
     /* Hero */
-    header { height:80vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; background:#f5f5f5; padding:20px; }
-    header img { height:120px; margin-bottom:20px; transition: transform .3s; }
-    header img:hover { transform: scale(1.05); }
+    header { height:80vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+      background:#f5f5f5; padding:20px; }
+    header img { height:120px; margin-bottom:20px; }
     header h1 { font-size:3rem; margin:0; letter-spacing:2px; }
     header p { max-width:600px; margin:15px auto; color:#333; font-size:1.2rem; }
     .btn { margin-top:25px; padding:12px 28px; border-radius:30px; background:#111; color:#fff; font-weight:bold; text-decoration:none; transition:.3s; }
-    .btn:hover { background:#333; transform:scale(1.05); }
+    .btn:hover { background:#333; }
 
     /* Section */
     section { padding:80px 20px; max-width:900px; margin:auto; text-align:center; }
@@ -38,19 +39,17 @@
     /* Platforms */
     .platforms { background:#f0f0f0; padding:50px 0; overflow:hidden; }
     .platforms h2 { margin-bottom:30px; color:#111; font-size:2rem; }
-    .track { display:flex; width:max-content; animation:marquee 25s linear infinite; cursor:grab; }
-    .track:active { cursor:grabbing; }
+    .track { display:flex; width:max-content; animation:marquee 25s linear infinite; }
     .track img { height:50px; margin:0 30px; filter:grayscale(100%); transition:.3s; vertical-align:middle; }
     .track img:hover { transform:scale(1.1); filter:grayscale(0%); }
     @keyframes marquee {0%{transform:translateX(0);}100%{transform:translateX(-50%);} }
 
     /* Social icons */
     .social a { margin:0 12px; font-size:1.6rem; color:#111; transition:.3s; }
-    .social a:hover { color:#555; transform:scale(1.2); }
+    .social a:hover { color:#555; }
 
     footer { background:#111; padding:25px; text-align:center; font-size:.9rem; color:#fff; margin-top:50px; }
 
-    /* Responsive */
     @media(max-width:768px){
       nav ul { gap:15px; }
       header h1{font-size:2.2rem;}
@@ -77,9 +76,9 @@
   <!-- Hero -->
   <header>
     <img src="https://your-domain.com/logo.png" alt="UNDERSOUTHERN Logo">
-    <h1 data-aos="fade-up" data-aos-duration="1000">UNDERSOUTHERN</h1>
-    <p data-aos="fade-up" data-aos-delay="200">Independent Record Label & Global Digital Distribution</p>
-    <a href="#about" class="btn" data-aos="zoom-in" data-aos-delay="400">Discover More</a>
+    <h1>UNDERSOUTHERN</h1>
+    <p>Independent Record Label & Global Digital Distribution</p>
+    <a href="#about" class="btn">Discover More</a>
   </header>
 
   <!-- About -->
@@ -98,7 +97,7 @@
   <!-- Platforms -->
   <section id="platforms" class="platforms" data-aos="fade-up" data-aos-duration="1000">
     <h2>Available On</h2>
-    <div class="track" id="platformTrack">
+    <div class="track">
       <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify">
       <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Music">
       <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/YouTube_logo_(2017).svg" alt="YouTube Music">
@@ -107,7 +106,7 @@
       <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Amazon_Music_logo.svg" alt="Amazon Music">
       <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/SoundCloud_logo.svg" alt="SoundCloud">
 
-      <!-- Repeat for loop -->
+      <!-- Repeat for smooth animation -->
       <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify">
       <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Music">
       <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/YouTube_logo_(2017).svg" alt="YouTube Music">
@@ -138,41 +137,6 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init({ once:true, duration:800 });
-
-    // Touch & drag scroll for platform logos
-    const track = document.getElementById('platformTrack');
-    let isDown = false;
-    let startX;
-    let scrollLeft;
-
-    track.addEventListener('mousedown', e => {
-      isDown = true;
-      track.classList.add('active');
-      startX = e.pageX - track.offsetLeft;
-      scrollLeft = track.scrollLeft;
-    });
-    track.addEventListener('mouseleave', () => isDown=false);
-    track.addEventListener('mouseup', () => isDown=false);
-    track.addEventListener('mousemove', e => {
-      if(!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - track.offsetLeft;
-      const walk = (x - startX) * 2; //scroll-fast
-      track.scrollLeft = scrollLeft - walk;
-    });
-
-    // Touch event for mobile
-    track.addEventListener('touchstart', e => {
-      startX = e.touches[0].pageX - track.offsetLeft;
-      scrollLeft = track.scrollLeft;
-    });
-    track.addEventListener('touchmove', e => {
-      const x = e.touches[0].pageX - track.offsetLeft;
-      const walk = (x - startX) * 2;
-      track.scrollLeft = scrollLeft - walk;
-    });
-  </script>
+  <script>AOS.init();</script>
 </body>
 </html>
