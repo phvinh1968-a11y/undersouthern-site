@@ -12,46 +12,47 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
   <style>
-    body { margin:0; font-family:'Montserrat',sans-serif; background:#0d0d0d; color:#fff; scroll-behavior:smooth; }
+    body { margin:0; font-family:'Montserrat',sans-serif; background:#fff; color:#111; scroll-behavior:smooth; }
     a { color:inherit; text-decoration:none; }
+    
     /* Navbar */
-    nav { position:fixed; top:0; left:0; width:100%; background:rgba(0,0,0,.85); padding:15px 40px; display:flex; justify-content:space-between; align-items:center; z-index:1000; }
-    nav .logo { font-weight:bold; color:#ffcc00; font-size:1.2rem; letter-spacing:1px; }
+    nav { position:fixed; top:0; left:0; width:100%; background:rgba(255,255,255,0.95); padding:15px 40px; display:flex; justify-content:space-between; align-items:center; z-index:1000; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+    nav .logo { font-weight:bold; color:#111; font-size:1.2rem; letter-spacing:1px; }
     nav ul { list-style:none; display:flex; gap:25px; margin:0; padding:0; }
-    nav ul li a { color:#fff; font-weight:500; transition:.3s; }
-    nav ul li a:hover, nav ul li a.active { color:#ffcc00; }
+    nav ul li a { color:#111; font-weight:500; transition:.3s; }
+    nav ul li a:hover, nav ul li a.active { color:#555; }
 
     /* Topbar */
-    .topbar { background:#ffcc00; color:#111; font-weight:bold; padding:6px 0; overflow:hidden; margin-top:55px; }
+    .topbar { background:#111; color:#fff; font-weight:bold; padding:6px 0; overflow:hidden; margin-top:55px; }
     .topbar span { display:inline-block; padding-left:100%; animation:marquee 15s linear infinite; }
     @keyframes marquee {0%{transform:translateX(0);}100%{transform:translateX(-100%);} }
 
     /* Hero */
     header { height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
-      background:url('https://your-domain.com/hero-bg.jpg') no-repeat center/cover; background-attachment:fixed; padding:20px; }
-    header h1 { font-size:3.5rem; color:#ffcc00; margin:0; letter-spacing:2px; }
-    header p { max-width:600px; margin:15px auto; color:#ddd; font-size:1.2rem; }
-    .btn { margin-top:25px; padding:12px 28px; border-radius:30px; background:#ffcc00; color:#111; font-weight:bold; text-decoration:none; transition:.3s; }
-    .btn:hover { background:#ffaa00; }
+      background:#f5f5f5 url('https://your-domain.com/hero-bg.jpg') no-repeat center/cover; background-size:cover; background-attachment:fixed; padding:20px; }
+    header h1 { font-size:3.5rem; color:#111; margin:0; letter-spacing:2px; }
+    header p { max-width:600px; margin:15px auto; color:#333; font-size:1.2rem; }
+    .btn { margin-top:25px; padding:12px 28px; border-radius:30px; background:#111; color:#fff; font-weight:bold; text-decoration:none; transition:.3s; }
+    .btn:hover { background:#333; }
 
     /* Section */
     section { padding:100px 20px; max-width:900px; margin:auto; text-align:center; }
-    h2 { color:#ffcc00; margin-bottom:20px; font-size:2rem; }
-    p { color:#ccc; line-height:1.6; font-size:1.1rem; }
+    h2 { color:#111; margin-bottom:20px; font-size:2rem; }
+    p { color:#333; line-height:1.6; font-size:1.1rem; }
 
     /* Platforms */
-    .platforms { background:#111; padding:50px 0; overflow:hidden; }
-    .platforms h2 { margin-bottom:30px; color:#ffcc00; font-size:2rem; }
+    .platforms { background:#f0f0f0; padding:50px 0; overflow:hidden; }
+    .platforms h2 { margin-bottom:30px; color:#111; font-size:2rem; }
     .track { display:flex; width:max-content; animation:marquee 25s linear infinite; }
-    .track img { height:60px; margin:0 50px; filter:brightness(1) contrast(1); vertical-align:middle; transition:.3s; }
-    .track img:hover { transform:scale(1.1); filter:brightness(1.2); }
+    .track img { height:60px; margin:0 50px; filter:grayscale(100%); transition:.3s; vertical-align:middle; }
+    .track img:hover { transform:scale(1.1); filter:grayscale(0%); }
     @keyframes marquee {0%{transform:translateX(0);}100%{transform:translateX(-50%);} }
 
     /* Social icons */
-    .social a { margin:0 12px; font-size:1.6rem; color:#ffcc00; transition:.3s; }
-    .social a:hover { color:#ffaa00; }
+    .social a { margin:0 12px; font-size:1.6rem; color:#111; transition:.3s; }
+    .social a:hover { color:#555; }
 
-    footer { background:#000; padding:25px; text-align:center; font-size:.9rem; color:#777; margin-top:50px; }
+    footer { background:#111; padding:25px; text-align:center; font-size:.9rem; color:#fff; margin-top:50px; }
 
     @media(max-width:768px){
       nav ul { gap:15px; }
@@ -101,7 +102,7 @@
       <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Amazon_Music_logo.svg" alt="Amazon Music">
       <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/SoundCloud_logo.svg" alt="SoundCloud">
 
-      <!-- Repeat for smooth looping -->
+      <!-- Repeat for smooth scrolling -->
       <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify">
       <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Music">
       <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/YouTube_logo_(2017).svg" alt="YouTube Music">
@@ -125,4 +126,4 @@
     <p>Email: <a href="mailto:contact@undersouthern.com">contact@undersouthern.asia</a></p>
     <div class="social">
       <a href="https://www.instagram.com/undersouthern/" target="_blank"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.facebook.com/undersouthern" target="_blank"><i class="fab fa-facebook"></i
+      <a href="https://www.facebook.com/undersouthern" target="_blank"><i class="fab fa-facebook"></
