@@ -13,6 +13,9 @@
   <!-- AOS Animations -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+  <!-- Font Awesome (Social Icons) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
@@ -20,6 +23,26 @@
       background: #0d0d0d;
       color: #f5f5f5;
       scroll-behavior: smooth;
+    }
+
+    /* 🔹 Top bar (running text) */
+    .topbar {
+      background: #ffcc00;
+      color: #111;
+      font-weight: bold;
+      padding: 6px 0;
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .topbar span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 15s linear infinite;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-100%); }
     }
 
     /* Hero Section */
@@ -36,116 +59,4 @@
     }
 
     header h1 {
-      font-size: 3rem;
-      color: #ffcc00;
-      margin-bottom: 15px;
-      letter-spacing: 2px;
-    }
-
-    header p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      color: #ddd;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 28px;
-      border-radius: 30px;
-      background: #ffcc00;
-      color: #111;
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-    .btn:hover { background: #ffaa00; }
-
-    section {
-      padding: 80px 20px;
-      max-width: 1000px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    section h2 {
-      font-size: 2rem;
-      color: #ffcc00;
-      margin-bottom: 20px;
-    }
-
-    section p {
-      font-size: 1.1rem;
-      color: #ccc;
-      line-height: 1.6;
-    }
-
-    footer {
-      background: #000;
-      padding: 20px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #777;
-    }
-
-    a { color: #ffcc00; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    @media (max-width: 768px) {
-      header h1 { font-size: 2rem; }
-      section h2 { font-size: 1.5rem; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Hero -->
-  <header>
-    <h1 data-aos="fade-up" data-aos-duration="1000">UNDERSOUTHERN</h1>
-    <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1200">
-      Independent Record Label & Global Digital Distribution
-    </p>
-    <a href="#about" class="btn" data-aos="zoom-in" data-aos-delay="400">Discover More</a>
-  </header>
-
-  <!-- About -->
-  <section id="about" data-aos="fade-up" data-aos-duration="1000">
-    <h2>About Us</h2>
-    <p>
-      UNDERSOUTHERN is an independent record label based in Vietnam.  
-      We empower artists by providing global digital distribution, copyright protection,  
-      and strategies to grow international audiences.  
-      Our mission is to help Vietnamese and international artists reach the world stage.
-    </p>
-  </section>
-
-  <!-- Artists -->
-  <section id="artists" data-aos="fade-right" data-aos-duration="1000">
-    <h2>Our Artists</h2>
-    <p>
-      We collaborate with emerging and talented artists whose authentic sounds connect with listeners worldwide.
-    </p>
-    <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank" class="btn">Listen on Spotify</a>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" data-aos="fade-left" data-aos-duration="1000">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:contact@undersouthern.com">contact@undersouthern.asia</a></p>
-    <p>Instagram: <a href="https://www.instagram.com/undersouthern/" target="_blank">@undersouthern</a></p>
-    <p>Facebook: <a href="https://www.facebook.com/undersouthern" target="_blank">UNDERSOUTHERN</a></p>
-    <p>SoundCloud: <a href="https://soundcloud.com/undersouthern" target="_blank">soundcloud.com/undersouthern</a></p>
-    <p>Spotify: <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">Spotify Profile</a></p>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    &copy; 2025 UNDERSOUTHERN. All rights reserved.
-  </footer>
-
-  <!-- AOS Script -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>AOS.init();</script>
-</body>
-</html>
-
+      font-size
