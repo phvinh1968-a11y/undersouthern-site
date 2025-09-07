@@ -7,7 +7,7 @@
 <meta name="description" content="UNDERSOUTHERN - Independent Record Label & Global Music Distribution">
 
 <!-- Fonts, Icons, AOS -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
@@ -22,13 +22,14 @@ body {
   position: relative;
   overflow-x:hidden;
 }
+
 /* subtle scratches overlay */
 body::before {
   content:"";
   position:fixed;
   top:0; left:0; width:100%; height:100%;
   pointer-events:none;
-  background-image: url('https://i.ibb.co/2tYvXqC/subtle-scratches.png'); /* nhẹ, semi-transparent texture */
+  background-image: url('https://i.ibb.co/2tYvXqC/subtle-scratches.png');
   background-repeat: repeat;
   opacity: 0.03;
   z-index:0;
@@ -41,12 +42,12 @@ a { text-decoration:none; color:inherit; }
 nav {
   position:fixed; top:0; left:0; width:100%;
   background:#fff;
-  padding:15px 40px;
-  display:flex; justify-content:center; gap:40px;
+  padding:15px 20px;
+  display:flex; justify-content:center; /* căn giữa */
   z-index:1000;
   box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
-nav ul { list-style:none; display:flex; gap:25px; margin:0; padding:0; }
+nav ul { list-style:none; display:flex; gap:30px; margin:0; padding:0; justify-content:center; align-items:center; }
 nav ul li a { font-weight:500; transition:.3s; position:relative; color:#111; }
 nav ul li a::after {
   content:"";
@@ -64,16 +65,16 @@ header {
   z-index:1;
   overflow:hidden;
 }
+/* Chữ UNDERSOUTHERN giống About Us, in đậm, đơn giản */
 .hero-title {
-  font-size:3rem;
-  margin:0;
-  letter-spacing:2px;
-  font-weight:900;
+  font-size:2rem; /* tương tự h2 */
+  font-weight:700; /* in đậm */
   color:#111;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  margin:0 0 15px 0;
+  letter-spacing:1px;
   opacity:0;
-  transform: translateY(-50px);
-  animation: flyIn 1s forwards;
+  transform: translateY(-20px);
+  animation: flyIn 0.8s forwards;
 }
 @keyframes flyIn {
   to { opacity:1; transform: translateY(0); }
@@ -98,7 +99,7 @@ p { line-height:1.6; font-size:1.1rem; color:#333; }
 
 /* ================= PLATFORMS ================= */
 .platforms { background: rgba(0,0,0,0.05); padding:50px 0; overflow:hidden; border-radius:10px; margin-bottom:50px;}
-.track { display:flex; width:max-content; gap:30px; font-weight:bold; font-size:1.2rem; animation:marquee 25s linear infinite; }
+.track { display:flex; width:max-content; gap:30px; font-weight:bold; font-size:1.2rem; animation:marquee 25s linear infinite; justify-content:center; }
 .track span {
   display:inline-block;
   transition: transform 0.3s, color 0.3s, text-shadow 0.3s;
@@ -124,8 +125,8 @@ footer {
 
 /* ================= RESPONSIVE ================= */
 @media(max-width:768px){
-  nav ul { gap:15px; }
-  .hero-title{font-size:2.2rem;}
+  nav ul { gap:20px; flex-wrap:wrap; justify-content:center; }
+  .hero-title{font-size:1.8rem;}
   header p{font-size:1rem;}
   .track { font-size:1rem; gap:15px;}
 }
