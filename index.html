@@ -8,21 +8,8 @@
 <meta name="keywords" content="UNDERSOUTHERN, Independent Record Label, Vietnam music label, music distribution, artist development, hiphop, R&B, Spotify, Apple Music, SoundCloud, YouTube Music, Deezer, Tidal, Amazon Music, Zing MP3, Napster, Qobuz, Gaana, Jio Saavn, Yandex Music, KKBOX, Line Music, Okru Music, Anghami, Pandora, Beatport, Mixcloud">
 <meta name="author" content="UNDERSOUTHERN">
 
-<!-- Open Graph / Facebook -->
-<meta property="og:title" content="UNDERSOUTHERN | Independent Record Label">
-<meta property="og:description" content="Professional independent record label based in Vietnam providing global music distribution and artist development.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.undersouthern.asia/">
-<meta property="og:image" content="https://i.ibb.co/yourlogo.png">
-
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="UNDERSOUTHERN | Independent Record Label">
-<meta name="twitter:description" content="Professional independent record label based in Vietnam providing global music distribution and artist development.">
-<meta name="twitter:image" content="https://i.ibb.co/yourlogo.png">
-
 <!-- Fonts, Icons, AOS -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
@@ -32,27 +19,12 @@ body {
   margin:0;
   font-family:'Montserrat',sans-serif;
   color:#111;
-  scroll-behavior:smooth;
   background:#fff;
-  position: relative;
-  overflow-x:hidden;
-  min-height:100vh;
-}
-
-/* subtle scratches overlay */
-body::before {
-  content:"";
-  position:fixed;
-  top:0; left:0; width:100%; height:100%;
-  pointer-events:none;
-  background-image: url('https://i.ibb.co/2tYvXqC/subtle-scratches.png');
-  background-repeat: repeat;
-  opacity: 0.03;
-  z-index:0;
+  scroll-behavior:smooth;
 }
 
 /* ================= LINKS ================= */
-a { text-decoration:none; color:inherit; }
+a { text-decoration:none; color:#111; }
 
 /* ================= HERO ================= */
 header {
@@ -63,74 +35,66 @@ header {
   align-items:center;
   text-align:center;
   padding:20px;
-  position:relative;
-  z-index:1;
   overflow:hidden;
 }
-/* Chữ đầu trang UNDERSOUTHERN */
 .hero-title {
-  font-size:5vw;      /* responsive kích thước theo màn hình */
-  max-font-size:80px;  /* giới hạn tối đa */
-  font-weight:900;     /* cực đậm */
+  font-size:2rem;
+  font-weight:700;
   color:#111;
   margin:0 0 15px 0;
-  letter-spacing:2px;  
-  opacity:0;
+  opacity:1; /* chữ đầu trang rõ ràng */
   transform: translateY(-20px);
   animation: flyIn 0.8s forwards;
 }
 @keyframes flyIn {
   to { opacity:1; transform: translateY(0); }
 }
-header p { 
-  max-width:600px; 
-  margin:15px auto; 
-  font-size:1rem; 
-  color:#333; 
-  opacity:0; 
-  transform: translateY(20px); 
-  animation: fadeUp 1s forwards 0.5s; 
+header p {
+  max-width:600px;
+  margin:15px auto;
+  font-size:1rem;
+  color:#111;
+  opacity:0;
+  transform: translateY(20px);
+  animation: fadeUp 1s forwards 0.5s;
 }
 @keyframes fadeUp {
   to { opacity:1; transform: translateY(0); }
 }
 .btn {
-  margin-top:25px; 
-  padding:12px 28px; 
+  margin-top:25px;
+  padding:12px 28px;
   border-radius:30px;
-  background: #111; 
-  color:#fff; 
-  font-weight:bold; 
-  text-decoration:none;
+  background:#111;
+  color:#fff;
+  font-weight:bold;
   transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  opacity:0; 
-  transform: translateY(20px); 
+  opacity:0;
+  transform: translateY(20px);
   animation: fadeUp 1s forwards 1s;
 }
-.btn:hover { background:#555; transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.3); }
+.btn:hover { background:#555; }
 
 /* ================= SECTIONS ================= */
-section { 
-  padding:60px 20px; 
-  max-width:900px; 
-  margin:auto; 
-  text-align:center; 
-  position:relative; 
-  z-index:1; 
-  border-bottom:1px solid #eee; 
+section {
+  padding:60px 20px;
+  max-width:900px;
+  margin:auto;
+  text-align:center;
+  border-bottom:1px solid #ddd;
+  opacity:0;
+  transform: translateY(20px);
+  transition: all 0.8s ease;
 }
+section[data-aos].aos-animate { opacity:1; transform: translateY(0); }
+
 section h2 {
   margin-bottom:15px;
-  font-size:1.5rem; 
-  font-weight:600;
+  font-size:1.8rem;
+  font-weight:700;
   color:#111;
 }
-section p {
-  line-height:1.6;
-  font-size:1rem;
-  color:#333;
-}
+section p { line-height:1.6; font-size:1rem; color:#111; }
 
 /* ================= PLATFORMS ================= */
 .track {
@@ -139,23 +103,16 @@ section p {
   justify-content:center;
   gap:15px;
   align-items:center;
-  font-weight:700; 
+  font-weight:700;
   font-size:1.1rem;
   color:#111;
-  background: none;
-  padding:0;
 }
 .track span {
-  display:inline-block;
-  text-transform: uppercase; 
+  text-transform: uppercase;
   cursor:pointer;
-  transition: transform 0.3s, color 0.3s, text-shadow 0.3s;
+  transition: transform 0.3s, color 0.3s;
 }
-.track span:hover {
-  transform: scale(1.2);
-  color:#555;
-  text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
-}
+.track span:hover { transform:scale(1.2); color:#555; }
 
 /* ================= SOCIAL ICONS ================= */
 .social a { margin:0 12px; font-size:1.6rem; color:#111; transition:.3s; }
@@ -163,23 +120,27 @@ section p {
 
 /* ================= FOOTER ================= */
 footer {
-  background:#111; padding:25px; text-align:center; font-size:.9rem; color:#fff;
-  margin-top:50px; box-shadow:0 -4px 10px rgba(0,0,0,0.1);
+  background:#111;
+  padding:25px;
+  text-align:center;
+  font-size:.9rem;
+  color:#fff;
+  margin-top:50px;
 }
 
 /* ================= RESPONSIVE ================= */
 @media(max-width:1024px){
-  .hero-title{font-size:8vw;}
+  .hero-title{font-size:1.8rem;}
   header p{font-size:0.95rem;}
   .track span{font-size:1rem;}
 }
 @media(max-width:768px){
-  .hero-title{font-size:10vw;}
+  .hero-title{font-size:1.6rem;}
   header p{font-size:0.9rem;}
   .track span{font-size:0.95rem;}
 }
 @media(max-width:480px){
-  .hero-title{font-size:12vw;}
+  .hero-title{font-size:1.4rem;}
   header p{font-size:0.85rem;}
   .track span{font-size:0.9rem;}
 }
@@ -189,9 +150,9 @@ footer {
 
 <!-- Hero -->
 <header>
-  <h1 class="hero-title">UNDERSOUTHERN</h1>
-  <p>Independent Record Label & Global Digital Distribution</p>
-  <a href="#about" class="btn">Discover More</a>
+  <h1 class="hero-title" data-aos="fade-up">UNDERSOUTHERN</h1>
+  <p data-aos="fade-up" data-aos-delay="200">Independent Record Label & Global Digital Distribution</p>
+  <a href="#about" class="btn" data-aos="fade-up" data-aos-delay="400">Discover More</a>
 </header>
 
 <!-- About -->
@@ -254,6 +215,11 @@ footer {
 
 <!-- Scripts -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>AOS.init();</script>
+<script>
+AOS.init({
+  duration: 1000,
+  once: true,
+});
+</script>
 </body>
 </html>
