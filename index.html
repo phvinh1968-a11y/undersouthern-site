@@ -3,41 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="UNDERSOUTHERN - Independent Record Label & Global Music Distribution">
-  <meta name="author" content="UNDERSOUTHERN">
   <title>UNDERSOUTHERN | Independent Record Label</title>
-
-  <!-- Fonts & AOS & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
   <style>
-    body {
-      margin: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: #0d0d0d;
-      color: #f5f5f5;
-      scroll-behavior: smooth;
-    }
+    body { margin:0; font-family:'Montserrat',sans-serif; background:#0d0d0d; color:#fff; text-align:center; }
+    header { height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;
+      background:url('https://your-domain.com/hero-bg.jpg') no-repeat center/cover; }
+    header h1 { font-size:3rem; color:#ffcc00; margin:0; }
+    header p { max-width:600px; margin:15px auto; color:#ddd; }
+    .btn { margin-top:20px; padding:12px 28px; border-radius:30px; background:#ffcc00; color:#111; font-weight:bold; text-decoration:none; }
+    .btn:hover { background:#ffaa00; }
+    section { padding:80px 20px; max-width:900px; margin:auto; }
+    h2 { color:#ffcc00; margin-bottom:20px; }
+    p { color:#ccc; line-height:1.6; }
+    /* Running platforms */
+    .platforms { background:#111; padding:30px 0; overflow:hidden; }
+    .track { display:inline-block; padding-left:100%; animation:marquee 25s linear infinite; }
+    .track img { height:40px; margin:0 30px; filter:brightness(0) invert(1); transition:0.3s; vertical-align:middle; }
+    .track img:hover { filter:none; }
+    @keyframes marquee { 0%{transform:translateX(0);} 100%{transform:translateX(-100%);} }
+    /* Social icons */
+    .social a { margin:0 10px; font-size:1.5rem; color:#ffcc00; }
+    .social a:hover { color:#ffaa00; }
+    footer { background:#000; padding:20px; font-size:.9rem; color:#777; }
+    @media(max-width:768px){ header h1{font-size:2rem;} .track img{height:28px; margin:0 15px;} }
+  </style>
+</head>
+<body>
 
-    /* 🔹 Top bar (running text) */
-    .topbar {
-      background: #ffcc00;
-      color: #111;
-      font-weight: bold;
-      padding: 6px 0;
-      text-align: center;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    .topbar span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: marquee 15s linear infinite;
-    }
-    @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-100%); } }
+  <!-- Hero -->
+  <header>
+    <h1>UNDERSOUTHERN</h1>
+    <p>Independent Record Label & Global Digital Distribution</p>
+    <a href="#about" class="btn">Discover More</a>
+  </header>
 
-    /* Hero Section */
-    header {
-      height:
+  <!-- About -->
+  <section id="about">
+    <h2>About Us</h2>
+    <p>UNDERSOUTHERN empowers artists through worldwide distribution, copyright support, and international growth strategies.</p>
+  </section>
+
+  <!-- Platforms (Running logos) -->
+  <div class="platforms">
+    <div class="track">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Music">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/YouTube_logo_(2017).svg" alt="YouTube Music">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Deezer_logo.svg" alt="Deezer">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Tidal_logo.svg" alt="Tidal">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Amazon_Music_logo.svg" alt="Amazon Music">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/SoundCloud_logo.svg" alt="SoundCloud">
+    </div>
+  </div>
+
+  <!-- Artists -->
+  <section id="artists">
+    <h2>Our Artists</h2>
+    <p>We collaborate with emerging talents creating authentic music that resonates worldwide.</p>
+    <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank" class="btn">Listen on Spotify</a>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:contact@undersouthern.com">contact@undersouthern.com</a></p>
+    <div class="social">
+      <a href="https://www.instagram.com/undersouthern/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.facebook.com/undersouthern" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="https://soundcloud.com/undersouthern" target="_blank"><i class="fab fa-soundcloud"></i></a>
+      <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank"><i class="fab fa-spotify"></i></a>
+      <a href="https://www.youtube.com/@undersouthern" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>&copy; 2025 UNDERSOUTHERN. All rights reserved.</footer>
+</body>
+</html>
