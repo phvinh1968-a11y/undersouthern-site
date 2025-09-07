@@ -4,10 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UNDERSOUTHERN | Independent Record Label</title>
-<meta name="description" content="UNDERSOUTHERN - Independent Record Label & Global Music Distribution">
+<meta name="description" content="UNDERSOUTHERN - Independent Record Label based in Vietnam. Global music distribution, artist development, marketing strategies.">
+<meta name="keywords" content="UNDERSOUTHERN, Independent Record Label, Vietnam music label, music distribution, artist development, hiphop, R&B, Spotify, Apple Music, SoundCloud, YouTube Music, Deezer, Tidal, Amazon Music, Zing MP3, Napster, Qobuz, Gaana, Jio Saavn, Yandex Music, KKBOX, Line Music, Okru Music, Anghami, Pandora, Beatport, Mixcloud">
+<meta name="author" content="UNDERSOUTHERN">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:title" content="UNDERSOUTHERN | Independent Record Label">
+<meta property="og:description" content="Professional independent record label based in Vietnam providing global music distribution and artist development.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.undersouthern.asia/">
+<meta property="og:image" content="https://i.ibb.co/yourlogo.png">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UNDERSOUTHERN | Independent Record Label">
+<meta name="twitter:description" content="Professional independent record label based in Vietnam providing global music distribution and artist development.">
+<meta name="twitter:image" content="https://i.ibb.co/yourlogo.png">
 
 <!-- Fonts, Icons, AOS -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
@@ -21,6 +36,7 @@ body {
   background:#fff;
   position: relative;
   overflow-x:hidden;
+  min-height:100vh;
 }
 
 /* subtle scratches overlay */
@@ -40,19 +56,25 @@ a { text-decoration:none; color:inherit; }
 
 /* ================= HERO ================= */
 header {
-  height:80vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
   padding:20px;
   position:relative;
   z-index:1;
   overflow:hidden;
 }
-/* Chữ UNDERSOUTHERN in đậm, giống About Us */
+/* Chữ đầu trang UNDERSOUTHERN */
 .hero-title {
-  font-size:2rem; /* tương tự h2 */
-  font-weight:700; /* in đậm */
+  font-size:5vw;      /* responsive kích thước theo màn hình */
+  max-font-size:80px;  /* giới hạn tối đa */
+  font-weight:900;     /* cực đậm */
   color:#111;
   margin:0 0 15px 0;
-  letter-spacing:1px;
+  letter-spacing:2px;  
   opacity:0;
   transform: translateY(-20px);
   animation: flyIn 0.8s forwards;
@@ -60,35 +82,79 @@ header {
 @keyframes flyIn {
   to { opacity:1; transform: translateY(0); }
 }
-header p { max-width:600px; margin:15px auto; font-size:1.2rem; color:#333; opacity:0; transform: translateY(20px); animation: fadeUp 1s forwards 0.5s; }
+header p { 
+  max-width:600px; 
+  margin:15px auto; 
+  font-size:1rem; 
+  color:#333; 
+  opacity:0; 
+  transform: translateY(20px); 
+  animation: fadeUp 1s forwards 0.5s; 
+}
 @keyframes fadeUp {
   to { opacity:1; transform: translateY(0); }
 }
 .btn {
-  margin-top:25px; padding:12px 28px; border-radius:30px;
-  background: #111; color:#fff; font-weight:bold; text-decoration:none;
+  margin-top:25px; 
+  padding:12px 28px; 
+  border-radius:30px;
+  background: #111; 
+  color:#fff; 
+  font-weight:bold; 
+  text-decoration:none;
   transition: all 0.3s ease;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  opacity:0; transform: translateY(20px); animation: fadeUp 1s forwards 1s;
+  opacity:0; 
+  transform: translateY(20px); 
+  animation: fadeUp 1s forwards 1s;
 }
 .btn:hover { background:#555; transform:translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.3); }
 
 /* ================= SECTIONS ================= */
-section { padding:80px 20px; max-width:900px; margin:auto; text-align:center; position:relative; z-index:1; border-bottom:1px solid #eee; }
-h2 { margin-bottom:20px; font-size:2rem; color:#111; }
-p { line-height:1.6; font-size:1.1rem; color:#333; }
+section { 
+  padding:60px 20px; 
+  max-width:900px; 
+  margin:auto; 
+  text-align:center; 
+  position:relative; 
+  z-index:1; 
+  border-bottom:1px solid #eee; 
+}
+section h2 {
+  margin-bottom:15px;
+  font-size:1.5rem; 
+  font-weight:600;
+  color:#111;
+}
+section p {
+  line-height:1.6;
+  font-size:1rem;
+  color:#333;
+}
 
 /* ================= PLATFORMS ================= */
-.platforms { background: rgba(0,0,0,0.05); padding:50px 0; overflow:hidden; border-radius:10px; margin-bottom:50px;}
-.track { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; align-items:center; }
-.track img {
-  height:50px;
-  transition: transform 0.3s, box-shadow 0.3s;
-  cursor:pointer;
+.track {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:15px;
+  align-items:center;
+  font-weight:700; 
+  font-size:1.1rem;
+  color:#111;
+  background: none;
+  padding:0;
 }
-.track img:hover {
+.track span {
+  display:inline-block;
+  text-transform: uppercase; 
+  cursor:pointer;
+  transition: transform 0.3s, color 0.3s, text-shadow 0.3s;
+}
+.track span:hover {
   transform: scale(1.2);
-  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+  color:#555;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
 }
 
 /* ================= SOCIAL ICONS ================= */
@@ -102,10 +168,20 @@ footer {
 }
 
 /* ================= RESPONSIVE ================= */
+@media(max-width:1024px){
+  .hero-title{font-size:8vw;}
+  header p{font-size:0.95rem;}
+  .track span{font-size:1rem;}
+}
 @media(max-width:768px){
-  .hero-title{font-size:1.8rem;}
-  header p{font-size:1rem;}
-  .track img{height:40px;}
+  .hero-title{font-size:10vw;}
+  header p{font-size:0.9rem;}
+  .track span{font-size:0.95rem;}
+}
+@media(max-width:480px){
+  .hero-title{font-size:12vw;}
+  header p{font-size:0.85rem;}
+  .track span{font-size:0.9rem;}
 }
 </style>
 </head>
@@ -132,16 +208,29 @@ footer {
 </section>
 
 <!-- Platforms -->
-<section id="platforms" class="platforms" data-aos="fade-up" data-aos-duration="1000">
+<section id="platforms" data-aos="fade-up" data-aos-duration="1000">
   <h2>Available On</h2>
   <div class="track">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Music">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/YouTube_logo_(2017).svg" alt="YouTube Music">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Deezer_logo.svg" alt="Deezer">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/7/73/Tidal_logo.svg" alt="Tidal">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Amazon_Music_logo.svg" alt="Amazon Music">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/SoundCloud_logo.svg" alt="SoundCloud">
+    <span>SPOTIFY</span>
+    <span>APPLE MUSIC</span>
+    <span>YOUTUBE MUSIC</span>
+    <span>DEEZER</span>
+    <span>TIDAL</span>
+    <span>AMAZON MUSIC</span>
+    <span>SOUNDCLOUD</span>
+    <span>ZING MP3</span>
+    <span>NAPSTER</span>
+    <span>QOBUZ</span>
+    <span>GAANA</span>
+    <span>JIO SAAVN</span>
+    <span>YANDEX MUSIC</span>
+    <span>KKBOX</span>
+    <span>LINE MUSIC</span>
+    <span>OKRU MUSIC</span>
+    <span>ANGHAMI</span>
+    <span>PANDORA</span>
+    <span>BEATPORT</span>
+    <span>MIXCLOUD</span>
   </div>
 </section>
 
