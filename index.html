@@ -24,6 +24,7 @@
       display: flex;
       justify-content: center;
       gap: 15px;
+      flex-wrap: wrap;
     }
     nav ul li a {
       text-decoration: none;
@@ -38,19 +39,19 @@
     /* Hero */
     header {
       text-align: center;
-      padding: 50px 15px 40px;
+      padding: 40px 15px 30px;
     }
     .logo {
       display: block;
       margin: 0 auto 15px auto;
-      width: 200px;
+      width: 220px;
       max-width: 90%;
       filter: grayscale(100%) brightness(0);
       animation: glow 3s ease-in-out infinite alternate;
     }
     @keyframes glow {
-      from { filter: drop-shadow(0 0 2px #999) grayscale(100%) brightness(0); }
-      to { filter: drop-shadow(0 0 15px #666) grayscale(100%) brightness(0); }
+      from { filter: grayscale(100%) brightness(0) drop-shadow(0 0 2px #555); }
+      to { filter: grayscale(100%) brightness(0) drop-shadow(0 0 8px #999); }
     }
     .hero-title {
       font-size: 2rem;
@@ -59,7 +60,7 @@
       color: #000;
     }
     .hero-sub {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: #333;
     }
 
@@ -73,14 +74,14 @@
     }
     .marquee-content {
       display: flex;
-      gap: 60px;
+      gap: 35px;
       animation: marquee 120s linear infinite;
     }
     .marquee-content span {
-      font-size: 1.4rem; /* chữ to hơn */
-      font-weight: bold;
-      letter-spacing: 0.5px;
-      color: #bbb; /* chữ xám nhạt */
+      font-size: 0.55rem; /* rất nhỏ hơn About Us */
+      font-weight: 500;
+      color: #aaa; /* xám nhạt để làm nền phụ */
+      letter-spacing: 0.4px;
     }
     @keyframes marquee {
       from { transform: translateX(0); }
@@ -99,11 +100,7 @@
       margin-bottom: 15px;
       color: #000;
     }
-    section p {
-      color: #222;
-      line-height: 1.5;
-      font-size: 0.9rem;
-    }
+    section p { color: #222; line-height: 1.5; font-size: 0.9rem; }
 
     /* Available On */
     .spotify-btn {
@@ -152,30 +149,24 @@
     /* Footer */
     footer {
       background: #111;
-      padding: 15px;
+      padding: 10px;
       text-align: center;
-      color: #fff;
-      font-size: 0.65rem; /* nhỏ hơn About Us */
+      color: #aaa;
+      font-size: 0.65rem; /* nhỏ tinh tế */
+      letter-spacing: 0.5px;
     }
-    .social a {
-      margin: 0 8px;
-      color: #000;
-      font-size: 1rem;
-      transition: color 0.3s;
-    }
-    .social a:hover { color: #e50914; }
+    footer p { margin: 0; }
 
     /* Responsive */
     @media (max-width: 768px) {
-      .hero-title { font-size: 1.5rem; }
-      .marquee-content span { font-size: 1.2rem; } /* tablet */
+      .hero-title { font-size: 1.6rem; }
+      .logo { width: 180px; }
       section h2 { font-size: 1.1rem; }
     }
     @media (max-width: 480px) {
+      .hero-title { font-size: 1.4rem; }
       .logo { width: 150px; }
-      .hero-title { font-size: 1.2rem; }
-      .hero-sub { font-size: 0.75rem; }
-      .marquee-content span { font-size: 1rem; } /* mobile */
+      .marquee-content span { font-size: 0.5rem; }
     }
   </style>
 </head>
@@ -185,8 +176,6 @@
     <ul>
       <li><a href="#about">About Us</a></li>
       <li><a href="#artists">Our Artists</a></li>
-      <li><a href="#releases">Releases</a></li>
-      <li><a href="#services">Services</a></li>
       <li><a href="#platforms">Available On</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -196,29 +185,23 @@
   <header>
     <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo" class="logo">
     <h1 class="hero-title">UNDERSOUTHERN</h1>
-    <p class="hero-sub">
-      Independent Record Label & Global Digital Distribution
-    </p>
+    <p class="hero-sub">Independent Record Label & Global Digital Distribution</p>
 
     <!-- Marquee -->
     <div class="marquee">
       <div class="marquee-content">
-        <span>SPOTIFY</span>
-        <span>APPLE MUSIC</span>
-        <span>YOUTUBE MUSIC</span>
-        <span>DEEZER</span>
-        <span>TIDAL</span>
-        <span>AMAZON MUSIC</span>
-        <span>SOUNDCLOUD</span>
-        <span>ZING MP3</span>
-        <span>NAPSTER</span>
-        <span>QOBUZ</span>
-        <span>FACEBOOK</span>
-        <span>INSTAGRAM</span>
-        <span>TIKTOK</span>
-        <span>TWITTER / X</span>
-        <span>BANDCAMP</span>
-        <span>AUDIOMACK</span>
+        <span>SPOTIFY</span><span>APPLE MUSIC</span><span>YOUTUBE MUSIC</span>
+        <span>DEEZER</span><span>TIDAL</span><span>AMAZON MUSIC</span>
+        <span>SOUNDCLOUD</span><span>ZING MP3</span><span>NAPSTER</span>
+        <span>FACEBOOK</span><span>INSTAGRAM</span><span>TIKTOK</span>
+        <span>TWITTER / X</span><span>BANDCAMP</span><span>AUDIOMACK</span>
+        <span>WYNK MUSIC</span><span>PANDORA</span><span>LINE MUSIC</span>
+        <span>ANGHAMI</span><span>KAKAOMUSIC</span><span>NETEASE CLOUD</span>
+        <span>YANDEX MUSIC</span><span>JOOX</span><span>MIXCLOUD</span>
+        <span>TRILLER</span><span>TWITCH</span><span>DISCORD</span>
+        <span>SHAZAM</span><span>MYSPACE</span><span>LAST.FM</span>
+        <span>BEATPORT</span><span>SIRIUSXM</span><span>IHEARTRADIO</span>
+        <span>GOOGLE PODCASTS</span><span>APPLE PODCASTS</span><span>DEEZER PODCASTS</span>
       </div>
     </div>
   </header>
@@ -239,68 +222,6 @@
     <p>
       Featuring diverse and talented artists across multiple genres,  
       UNDERSOUTHERN is proud to showcase unique voices from around the world.
-    </p>
-  </section>
-
-  <!-- Releases -->
-  <section id="releases">
-    <h2>Releases</h2>
-    <p>
-      Explore our catalog of singles, EPs, and albums.  
-      From underground gems to global hits, UNDERSOUTHERN delivers fresh sounds to every listener.
-    </p>
-  </section>
-
-  <!-- News -->
-  <section id="news">
-    <h2>News & Updates</h2>
-    <p>
-      Stay updated with the latest UNDERSOUTHERN news, artist spotlights,  
-      interviews, and upcoming showcases.
-    </p>
-  </section>
-
-  <!-- Services -->
-  <section id="services">
-    <h2>Services</h2>
-    <p>
-      We provide music distribution, marketing, PR campaigns, and brand development.  
-      Helping artists build their careers and connect with global audiences.
-    </p>
-  </section>
-
-  <!-- Demo Submission -->
-  <section id="demo">
-    <h2>Demo Submission</h2>
-    <p>
-      Are you an artist? Share your music with us.  
-      Submit your demo via <a href="mailto:demo@undersouthern.asia">demo@undersouthern.asia</a>.
-    </p>
-  </section>
-
-  <!-- Partners -->
-  <section id="partners">
-    <h2>Partners</h2>
-    <p>
-      UNDERSOUTHERN collaborates with top global platforms, distributors,  
-      and industry partners to ensure wide reach for every release.
-    </p>
-  </section>
-
-  <!-- Events -->
-  <section id="events">
-    <h2>Events & Live</h2>
-    <p>
-      From label showcases to international tours,  
-      UNDERSOUTHERN brings live experiences closer to fans worldwide.
-    </p>
-  </section>
-
-  <!-- Merchandise -->
-  <section id="merch">
-    <h2>Merchandise</h2>
-    <p>
-      Coming soon: UNDERSOUTHERN official merchandise including apparel, vinyl, and more.
     </p>
   </section>
 
@@ -335,7 +256,7 @@
 
   <!-- Footer -->
   <footer>
-    <p>© 2025 UNDERSOUTHERN. Independent Record Label & Global Distribution. All rights reserved.</p>
+    <p>© 2025 UNDERSOUTHERN — Independent Record Label & Global Digital Distribution</p>
   </footer>
 </body>
 </html>
