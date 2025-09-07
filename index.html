@@ -14,7 +14,7 @@
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
 <style>
-/* ================= BODY & BACKGROUND ================= */
+/* ================= BODY ================= */
 body {
   margin:0;
   font-family:'Montserrat',sans-serif;
@@ -22,9 +22,36 @@ body {
   background:#fff;
   scroll-behavior:smooth;
 }
-
-/* ================= LINKS ================= */
 a { text-decoration:none; color:#111; }
+
+/* ================= NAVIGATION ================= */
+nav {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  background:#fff;
+  border-bottom:1px solid #ddd;
+  padding:12px 0;
+  z-index:1000;
+}
+nav ul {
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  justify-content:center;
+  gap:25px;
+}
+nav ul li a {
+  font-weight:600;
+  font-size:0.95rem;
+  color:#111;
+  transition:.3s;
+}
+nav ul li a:hover {
+  color:#555;
+}
 
 /* ================= HERO ================= */
 header {
@@ -35,20 +62,17 @@ header {
   align-items:center;
   text-align:center;
   padding:20px;
-  overflow:hidden;
 }
 .hero-title {
-  font-size:2rem;
+  font-size:2.5rem;
   font-weight:700;
   color:#111;
   margin:0 0 15px 0;
-  opacity:1; /* chữ đầu trang rõ ràng */
+  opacity:0;
   transform: translateY(-20px);
-  animation: flyIn 0.8s forwards;
+  animation: flyIn 0.8s forwards 0.5s;
 }
-@keyframes flyIn {
-  to { opacity:1; transform: translateY(0); }
-}
+@keyframes flyIn { to { opacity:1; transform: translateY(0); } }
 header p {
   max-width:600px;
   margin:15px auto;
@@ -56,11 +80,9 @@ header p {
   color:#111;
   opacity:0;
   transform: translateY(20px);
-  animation: fadeUp 1s forwards 0.5s;
+  animation: fadeUp 1s forwards 1s;
 }
-@keyframes fadeUp {
-  to { opacity:1; transform: translateY(0); }
-}
+@keyframes fadeUp { to { opacity:1; transform: translateY(0); } }
 .btn {
   margin-top:25px;
   padding:12px 28px;
@@ -71,13 +93,13 @@ header p {
   transition: all 0.3s ease;
   opacity:0;
   transform: translateY(20px);
-  animation: fadeUp 1s forwards 1s;
+  animation: fadeUp 1s forwards 1.5s;
 }
 .btn:hover { background:#555; }
 
 /* ================= SECTIONS ================= */
 section {
-  padding:60px 20px;
+  padding:80px 20px;
   max-width:900px;
   margin:auto;
   text-align:center;
@@ -87,7 +109,6 @@ section {
   transition: all 0.8s ease;
 }
 section[data-aos].aos-animate { opacity:1; transform: translateY(0); }
-
 section h2 {
   margin-bottom:15px;
   font-size:1.8rem;
@@ -96,25 +117,43 @@ section h2 {
 }
 section p { line-height:1.6; font-size:1rem; color:#111; }
 
-/* ================= PLATFORMS ================= */
-.track {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:15px;
-  align-items:center;
-  font-weight:700;
-  font-size:1.1rem;
-  color:#111;
+/* ================= MARQUEE ================= */
+.marquee {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 15px 0;
 }
-.track span {
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+}
+.marquee-content span {
+  display: inline-block;
+  margin: 0 40px;
+  font-weight: 700;
+  font-size: 1.1rem;
   text-transform: uppercase;
-  cursor:pointer;
+  cursor: pointer;
   transition: transform 0.3s, color 0.3s;
 }
-.track span:hover { transform:scale(1.2); color:#555; }
+.marquee-content span:hover {
+  transform: scale(1.2);
+  color: #555;
+}
+@keyframes marquee {
+  from { transform: translateX(0%); }
+  to { transform: translateX(-50%); }
+}
+.marquee:hover .marquee-content {
+  animation-play-state: paused;
+}
 
-/* ================= SOCIAL ICONS ================= */
+/* ================= SOCIAL ================= */
 .social a { margin:0 12px; font-size:1.6rem; color:#111; transition:.3s; }
 .social a:hover { color:#555; transform:scale(1.2); }
 
@@ -129,24 +168,31 @@ footer {
 }
 
 /* ================= RESPONSIVE ================= */
-@media(max-width:1024px){
-  .hero-title{font-size:1.8rem;}
-  header p{font-size:0.95rem;}
-  .track span{font-size:1rem;}
-}
 @media(max-width:768px){
-  .hero-title{font-size:1.6rem;}
+  .hero-title{font-size:2rem;}
   header p{font-size:0.9rem;}
-  .track span{font-size:0.95rem;}
+  nav ul{gap:15px;}
+  nav ul li a{font-size:0.85rem;}
 }
 @media(max-width:480px){
-  .hero-title{font-size:1.4rem;}
+  .hero-title{font-size:1.6rem;}
   header p{font-size:0.85rem;}
-  .track span{font-size:0.9rem;}
+  nav ul{gap:10px;}
+  nav ul li a{font-size:0.8rem;}
 }
 </style>
 </head>
 <body>
+
+<!-- Navigation -->
+<nav>
+  <ul>
+    <li><a href="#about">About Us</a></li>
+    <li><a href="#artists">Our Artists</a></li>
+    <li><a href="#platforms">Available On</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
 <!-- Hero -->
 <header>
@@ -156,47 +202,38 @@ footer {
 </header>
 
 <!-- About -->
-<section id="about" data-aos="fade-up" data-aos-duration="1000">
+<section id="about" data-aos="fade-up">
   <h2>About Us</h2>
   <p>UNDERSOUTHERN is a professional independent record label based in Vietnam. We provide global music distribution, copyright support, artist development, and marketing strategies to help artists grow internationally.</p>
 </section>
 
 <!-- Artists -->
-<section id="artists" data-aos="fade-up" data-aos-duration="1000">
+<section id="artists" data-aos="fade-up">
   <h2>Our Artists</h2>
   <p>We collaborate with talented emerging and established artists delivering authentic music that resonates worldwide.</p>
   <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank" class="btn">Listen on Spotify</a>
 </section>
 
 <!-- Platforms -->
-<section id="platforms" data-aos="fade-up" data-aos-duration="1000">
+<section id="platforms" data-aos="fade-up">
   <h2>Available On</h2>
-  <div class="track">
-    <span>SPOTIFY</span>
-    <span>APPLE MUSIC</span>
-    <span>YOUTUBE MUSIC</span>
-    <span>DEEZER</span>
-    <span>TIDAL</span>
-    <span>AMAZON MUSIC</span>
-    <span>SOUNDCLOUD</span>
-    <span>ZING MP3</span>
-    <span>NAPSTER</span>
-    <span>QOBUZ</span>
-    <span>GAANA</span>
-    <span>JIO SAAVN</span>
-    <span>YANDEX MUSIC</span>
-    <span>KKBOX</span>
-    <span>LINE MUSIC</span>
-    <span>OKRU MUSIC</span>
-    <span>ANGHAMI</span>
-    <span>PANDORA</span>
-    <span>BEATPORT</span>
-    <span>MIXCLOUD</span>
+  <div class="marquee">
+    <div class="marquee-content">
+      <span>SPOTIFY</span><span>APPLE MUSIC</span><span>YOUTUBE MUSIC</span><span>DEEZER</span><span>TIDAL</span>
+      <span>AMAZON MUSIC</span><span>SOUNDCLOUD</span><span>ZING MP3</span><span>NAPSTER</span><span>QOBUZ</span>
+      <span>GAANA</span><span>JIO SAAVN</span><span>YANDEX MUSIC</span><span>KKBOX</span><span>LINE MUSIC</span>
+      <span>OKRU MUSIC</span><span>ANGHAMI</span><span>PANDORA</span><span>BEATPORT</span><span>MIXCLOUD</span>
+      <!-- lặp lại để chạy mượt -->
+      <span>SPOTIFY</span><span>APPLE MUSIC</span><span>YOUTUBE MUSIC</span><span>DEEZER</span><span>TIDAL</span>
+      <span>AMAZON MUSIC</span><span>SOUNDCLOUD</span><span>ZING MP3</span><span>NAPSTER</span><span>QOBUZ</span>
+      <span>GAANA</span><span>JIO SAAVN</span><span>YANDEX MUSIC</span><span>KKBOX</span><span>LINE MUSIC</span>
+      <span>OKRU MUSIC</span><span>ANGHAMI</span><span>PANDORA</span><span>BEATPORT</span><span>MIXCLOUD</span>
+    </div>
   </div>
 </section>
 
 <!-- Contact -->
-<section id="contact" data-aos="fade-up" data-aos-duration="1000">
+<section id="contact" data-aos="fade-up">
   <h2>Contact</h2>
   <p>Email: <a href="mailto:contact@undersouthern.asia">contact@undersouthern.asia</a></p>
   <div class="social">
@@ -215,11 +252,6 @@ footer {
 
 <!-- Scripts -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-AOS.init({
-  duration: 1000,
-  once: true,
-});
-</script>
+<script>AOS.init({ duration: 1000, once: true });</script>
 </body>
 </html>
