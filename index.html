@@ -1,248 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UNDERSOUTHERN | Independent Record Label</title>
-<meta name="description" content="UNDERSOUTHERN - Independent Record Label based in Vietnam. Global music distribution, artist development, marketing strategies.">
-<meta name="keywords" content="UNDERSOUTHERN, Independent Record Label, Vietnam music label, music distribution, artist development, hiphop, R&B, Spotify, Apple Music, SoundCloud, YouTube Music, Deezer, Tidal, Amazon Music, Zing MP3, Napster, Qobuz, Gaana, Jio Saavn, Yandex Music, KKBOX, Line Music, Okru Music, Anghami, Pandora, Beatport, Mixcloud">
-<meta name="author" content="UNDERSOUTHERN">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNDERSOUTHERN</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #111; color: #eee; }
 
-<!-- Fonts, Icons, AOS -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    /* Background with overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url('https://images.unsplash.com/photo-1619983081655-3c6a1b8f927d?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+      z-index: -2;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.75);
+      z-index: -1;
+    }
 
-<style>
-/* ================= BODY ================= */
-body {
-  margin:0;
-  font-family:'Montserrat',sans-serif;
-  color:#111;
-  background:#fff;
-  scroll-behavior:smooth;
-}
-a { text-decoration:none; color:#111; }
+    /* Navbar */
+    nav {
+      background: rgba(0,0,0,0.85);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover { color: #e50914; }
 
-/* ================= NAVIGATION ================= */
-nav {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  background:#fff;
-  border-bottom:1px solid #ddd;
-  padding:12px 0;
-  z-index:1000;
-}
-nav ul {
-  list-style:none;
-  margin:0;
-  padding:0;
-  display:flex;
-  justify-content:center;
-  gap:25px;
-}
-nav ul li a {
-  font-weight:600;
-  font-size:0.95rem;
-  color:#111;
-  transition:.3s;
-}
-nav ul li a:hover {
-  color:#555;
-}
+    /* Hero */
+    header {
+      text-align: center;
+      padding: 80px 20px 60px;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 20px auto;
+      width: 170px;
+      max-width: 100%;
+      animation: pulse 3s infinite;
+      filter: drop-shadow(0 0 10px rgba(229,9,20,0.7));
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .hero-title {
+      font-size: 3.5rem;
+      margin-bottom: 15px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0,0,0,0.7);
+    }
+    .hero-sub {
+      font-size: 1.2rem;
+      color: #ddd;
+    }
 
-/* ================= HERO ================= */
-header {
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:20px;
-}
-.hero-title {
-  font-size:2.5rem;
-  font-weight:700;
-  color:#111;
-  margin:0 0 15px 0;
-  opacity:0;
-  transform: translateY(-20px);
-  animation: flyIn 0.8s forwards 0.5s;
-}
-@keyframes flyIn { to { opacity:1; transform: translateY(0); } }
-header p {
-  max-width:600px;
-  margin:15px auto;
-  font-size:1rem;
-  color:#111;
-  opacity:0;
-  transform: translateY(20px);
-  animation: fadeUp 1s forwards 1s;
-}
-@keyframes fadeUp { to { opacity:1; transform: translateY(0); } }
+    /* Marquee */
+    .marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      margin-top: 35px;
+    }
+    .marquee-content {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 15s linear infinite;
+    }
+    .marquee-content span {
+      display: inline-block;
+      margin: 0 30px;
+      font-weight: bold;
+      color: #e50914;
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-100%); }
+    }
 
-/* ================= SECTIONS ================= */
-section {
-  padding:80px 20px;
-  max-width:900px;
-  margin:auto;
-  text-align:center;
-  border-bottom:1px solid #ddd;
-  opacity:0;
-  transform: translateY(20px);
-  transition: all 0.8s ease;
-}
-section[data-aos].aos-animate { opacity:1; transform: translateY(0); }
-section h2 {
-  margin-bottom:15px;
-  font-size:1.8rem;
-  font-weight:700;
-  color:#111;
-}
-section p { line-height:1.6; font-size:1rem; color:#111; }
+    /* Sections */
+    section {
+      padding: 80px 20px;
+      max-width: 1000px;
+      margin: auto;
+      text-align: center;
+    }
+    section h2 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      color: #e50914;
+    }
+    section p { color: #ccc; line-height: 1.7; }
 
-/* ================= MARQUEE ================= */
-.marquee {
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  background: #fff;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  padding: 15px 0;
-  margin-top: 20px;
-}
-.marquee-content {
-  display: inline-block;
-  white-space: nowrap;
-  animation: marquee 30s linear infinite;
-}
-.marquee-content span {
-  display: inline-block;
-  margin: 0 40px;
-  font-weight: 700;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: transform 0.3s, color 0.3s;
-}
-.marquee-content span:hover {
-  transform: scale(1.2);
-  color: #555;
-}
-@keyframes marquee {
-  from { transform: translateX(0%); }
-  to { transform: translateX(-50%); }
-}
-.marquee:hover .marquee-content {
-  animation-play-state: paused;
-}
+    /* Contact */
+    .contact-info {
+      background: rgba(0,0,0,0.85);
+      padding: 40px;
+      border-radius: 8px;
+      display: inline-block;
+      text-align: left;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    .contact-info h3 {
+      margin-bottom: 15px;
+      color: #e50914;
+    }
+    .contact-info p {
+      margin-bottom: 10px;
+    }
+    .contact-info a {
+      color: #e50914;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .contact-info a:hover { text-decoration: underline; }
 
-/* ================= SOCIAL ================= */
-.social a { margin:0 12px; font-size:1.6rem; color:#111; transition:.3s; }
-.social a:hover { color:#555; transform:scale(1.2); }
-
-/* ================= FOOTER ================= */
-footer {
-  background:#111;
-  padding:25px;
-  text-align:center;
-  font-size:.9rem;
-  color:#fff;
-  margin-top:50px;
-}
-
-/* ================= RESPONSIVE ================= */
-@media(max-width:768px){
-  .hero-title{font-size:2rem;}
-  header p{font-size:0.9rem;}
-  nav ul{gap:15px;}
-  nav ul li a{font-size:0.85rem;}
-}
-@media(max-width:480px){
-  .hero-title{font-size:1.6rem;}
-  header p{font-size:0.85rem;}
-  nav ul{gap:10px;}
-  nav ul li a{font-size:0.8rem;}
-}
-</style>
+    /* Footer */
+    footer {
+      background: rgba(0,0,0,0.85);
+      padding: 20px;
+      text-align: center;
+      color: #aaa;
+      font-size: 0.9rem;
+      backdrop-filter: blur(5px);
+    }
+    .social a {
+      margin: 0 10px;
+      color: #fff;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+    .social a:hover { color: #e50914; }
+  </style>
 </head>
 <body>
+  <!-- Navbar -->
+  <nav>
+    <ul>
+      <li><a href="#about">About Us</a></li>
+      <li><a href="#artists">Our Artists</a></li>
+      <li><a href="#platforms">Available On</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-<!-- Navigation -->
-<nav>
-  <ul>
-    <li><a href="#about">About Us</a></li>
-    <li><a href="#artists">Our Artists</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+  <!-- Hero -->
+  <header>
+    <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo" class="logo" data-aos="fade-down">
+    <h1 class="hero-title" data-aos="fade-up">UNDERSOUTHERN</h1>
+    <p class="hero-sub" data-aos="fade-up" data-aos-delay="200">
+      Independent Record Label & Global Digital Distribution
+    </p>
 
-<!-- Hero -->
-<header>
-  <h1 class="hero-title" data-aos="fade-up">UNDERSOUTHERN</h1>
-  <p data-aos="fade-up" data-aos-delay="200">Independent Record Label & Global Digital Distribution</p>
-
-  <!-- Marquee Platforms -->
-  <div class="marquee" data-aos="fade-up" data-aos-delay="300">
-    <div class="marquee-content">
-      <span>SPOTIFY</span><span>APPLE MUSIC</span><span>YOUTUBE MUSIC</span><span>DEEZER</span><span>TIDAL</span>
-      <span>AMAZON MUSIC</span><span>SOUNDCLOUD</span><span>ZING MP3</span><span>NAPSTER</span><span>QOBUZ</span>
-      <span>GAANA</span><span>JIO SAAVN</span><span>YANDEX MUSIC</span><span>KKBOX</span><span>LINE MUSIC</span>
-      <span>OKRU MUSIC</span><span>ANGHAMI</span><span>PANDORA</span><span>BEATPORT</span><span>MIXCLOUD</span>
-      <!-- lặp lại để chạy mượt -->
-      <span>SPOTIFY</span><span>APPLE MUSIC</span><span>YOUTUBE MUSIC</span><span>DEEZER</span><span>TIDAL</span>
-      <span>AMAZON MUSIC</span><span>SOUNDCLOUD</span><span>ZING MP3</span><span>NAPSTER</span><span>QOBUZ</span>
-      <span>GAANA</span><span>JIO SAAVN</span><span>YANDEX MUSIC</span><span>KKBOX</span><span>LINE MUSIC</span>
-      <span>OKRU MUSIC</span><span>ANGHAMI</span><span>PANDORA</span><span>BEATPORT</span><span>MIXCLOUD</span>
+    <!-- Marquee -->
+    <div class="marquee" data-aos="fade-up" data-aos-delay="300">
+      <div class="marquee-content">
+        <span>SPOTIFY</span><span>APPLE MUSIC</span><span>YOUTUBE MUSIC</span><span>DEEZER</span><span>TIDAL</span>
+        <span>AMAZON MUSIC</span><span>SOUNDCLOUD</span><span>ZING MP3</span><span>NAPSTER</span><span>QOBUZ</span>
+        <span>GAANA</span><span>JIO SAAVN</span><span>YANDEX MUSIC</span><span>KKBOX</span><span>LINE MUSIC</span>
+        <span>OKRU MUSIC</span><span>ANGHAMI</span><span>PANDORA</span><span>BEATPORT</span><span>MIXCLOUD</span>
+      </div>
     </div>
-  </div>
-</header>
+  </header>
 
-<!-- About -->
-<section id="about" data-aos="fade-up">
-  <h2>About Us</h2>
-  <p>UNDERSOUTHERN is a professional independent record label based in Vietnam. We provide global music distribution, copyright support, artist development, and marketing strategies to help artists grow internationally.</p>
-</section>
+  <!-- About Us -->
+  <section id="about" data-aos="fade-up">
+    <h2>About Us</h2>
+    <p>
+      UNDERSOUTHERN is an independent record label and global distributor.  
+      We empower artists by providing professional distribution, marketing, and brand development,  
+      ensuring music reaches audiences worldwide.
+    </p>
+  </section>
 
-<!-- Artists -->
-<section id="artists" data-aos="fade-up">
-  <h2>Our Artists</h2>
-  <p>We collaborate with talented emerging and established artists delivering authentic music that resonates worldwide.</p>
+  <!-- Our Artists -->
+  <section id="artists" data-aos="fade-up">
+    <h2>Our Artists</h2>
+    <p>
+      Featuring diverse and talented artists across multiple genres,  
+      UNDERSOUTHERN is proud to showcase unique voices from around the world.
+    </p>
+  </section>
 
-  <!-- Spotify Card -->
-  <div class="spotify-card">
-    <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">
-      <i class="fab fa-spotify"></i>
-      <span>Listen on Spotify</span>
-    </a>
-  </div>
-</section>
+  <!-- Available On -->
+  <section id="platforms" data-aos="fade-up">
+    <h2>Available On</h2>
+    <p>
+      Our music catalog is distributed across major digital platforms,  
+      including Spotify, Apple Music, YouTube Music, Tidal, and more.
+    </p>
+  </section>
 
+  <!-- Contact -->
+  <section id="contact" data-aos="fade-up">
+    <h2>Contact</h2>
+    <div class="contact-info">
+      <h3>Get in Touch</h3>
+      <p>Email: <a href="mailto:contact@undersouthern.asia">contact@undersouthern.asia</a></p>
+      <p>Follow us on social media:</p>
+      <div class="social">
+        <a href="https://www.instagram.com/undersouthern/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.facebook.com/undersouthern" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://soundcloud.com/undersouthern" target="_blank"><i class="fab fa-soundcloud"></i></a>
+        <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank"><i class="fab fa-spotify"></i></a>
+        <a href="https://www.youtube.com/@undersouthern" target="_blank"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+  </section>
 
-<!-- Contact -->
-<section id="contact" data-aos="fade-up">
-  <h2>Contact</h2>
-  <p><a href="mailto:contact@undersouthern.asia">contact@undersouthern.asia</a></p>
-  <div class="social">
-    <a href="https://www.instagram.com/undersouthern/" target="_blank"><i class="fab fa-instagram"></i></a>
-    <a href="https://www.facebook.com/undersouthern" target="_blank"><i class="fab fa-facebook"></i></a>
-    <a href="https://soundcloud.com/undersouthern" target="_blank"><i class="fab fa-soundcloud"></i></a>
-    <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank"><i class="fab fa-spotify"></i></a>
-    <a href="https://www.youtube.com/@undersouthern" target="_blank"><i class="fab fa-youtube"></i></a>
-  </div>
-</section>
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 UNDERSOUTHERN. All rights reserved.</p>
+  </footer>
 
-<!-- Footer -->
-<footer>
-  &copy; 2025 UNDERSOUTHERN. All rights reserved.
-</footer>
-
-<!-- Scripts -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>AOS.init({ duration: 1000, once: true });</script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
 </body>
 </html>
