@@ -67,11 +67,10 @@
     100% { transform: translateX(-50%); }
   }
 
-  /* Chữ chạy */
   .marquee span {
     display:inline-flex;
     align-items:center;
-    margin-right:40px; 
+    margin-right:40px;
     font-size:8vw;
     font-family:'Times New Roman', Times, serif;
     color:#fff;
@@ -86,10 +85,9 @@
     filter:brightness(0) invert(1);
   }
 
-  /* Footer */
   .footer {
     text-align:center;
-    font-size:0.7rem; /* tăng font-size để nhìn rõ hơn */
+    font-size:0.7rem;
     padding:10px;
     border-top:1px solid #fff;
     color:#ccc;
@@ -101,41 +99,38 @@
     position:fixed;
     top:0; left:0;
     width:100%; height:100%;
-    background:rgba(0,0,0,0.9);
+    background:rgba(0,0,0,0.95);
     justify-content:center;
-    align-items:center;
+    align-items:flex-start;
     z-index:10;
     overflow-y:auto;
-    padding:20px;
+    padding:50px 20px 20px 20px;
   }
   .modal-content {
     background:#111;
-    padding:30px;
+    padding:20px;
     border-radius:8px;
-    max-width:800px;
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    gap:15px;
+    width:100%;
+    max-width:900px;
     color:#fff;
     position:relative;
     white-space:pre-wrap;
+    overflow-wrap:break-word;
   }
   .modal-close {
     position:absolute; top:10px; right:15px;
     font-size:20px;
     cursor:pointer;
+    color:#fff;
   }
-  .modal-content a { color:#fff; text-decoration:none; font-size:1.1rem; }
-  .modal-content a:hover { color:#00ff00; }
+  .modal-content a { color:#0f0; text-decoration:none; }
+  .modal-content a:hover { text-decoration:underline; }
 
-  @media (max-width:1200px){
-    .marquee span { font-size:10vw; }
-  }
   @media (max-width:768px){
     .marquee span { font-size:16vw; }
     .marquee span img{height:1em;}
     .header,.footer{font-size:0.8rem;}
+    .modal {padding:30px 10px 10px 10px;}
   }
 </style>
 </head>
@@ -149,6 +144,7 @@
 </div>
 
 <div class="marquee-wrapper">
+  <!-- Giữ nguyên tất cả marquee -->
   <div class="marquee"><div class="marquee-content">
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
@@ -189,7 +185,7 @@
   © 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015
 </div>
 
-<!-- Modal cho Contact cũ -->
+<!-- Modal Contact -->
 <div class="modal" id="contactModal">
   <div class="modal-content">
     <span class="modal-close" id="closeModal">&times;</span>
@@ -202,17 +198,16 @@
   </div>
 </div>
 
-<!-- Modal cho Established -->
+<!-- Modal Established -->
 <div class="modal" id="establishedModal">
   <div class="modal-content">
     <span class="modal-close" id="closeEstablished">&times;</span>
     <h2>Copyright and Intellectual Property – UNDERSOUTHERN Label</h2>
-    <p>1. Introduction
-
+    <p>
+1. Introduction
 UNDERSOUTHERN is an independent music label that manages, distributes, and promotes artists and their music across digital platforms. All activities are conducted in partnership with artists, respecting their copyright ownership.
 
 2. Intellectual Property Rights
-
 Artists’ Ownership: Artists retain full copyright over their songs, beats, videos, and artwork. UNDERSOUTHERN respects and upholds these rights.
 
 Label Rights: UNDERSOUTHERN owns its brand, logo, and any label-produced promotional content. The label has the exclusive right to distribute music under agreed contracts.
@@ -220,13 +215,11 @@ Label Rights: UNDERSOUTHERN owns its brand, logo, and any label-produced promoti
 Content Control: UNDERSOUTHERN has the authority to manage, market, and distribute music for promotional and commercial purposes in accordance with the artist agreement.
 
 3. Content Usage
-
 Authorized Use: Any copying, sharing, or commercial use of music distributed by UNDERSOUTHERN must have prior written consent from both the label and the respective artist.
 
 Prohibited Actions: Unauthorized reproduction, distribution, or modification of content without consent is strictly prohibited and may result in legal action.
 
 4. Artist Collaboration
-
 Mutual Rights and Responsibilities: Artists and UNDERSOUTHERN collaborate under contracts that clearly define the rights, obligations, and revenue shares for both parties.
 
 Exclusive Distribution: Music released through UNDERSOUTHERN is exclusively distributed by the label unless explicitly agreed otherwise in writing.
@@ -234,20 +227,20 @@ Exclusive Distribution: Music released through UNDERSOUTHERN is exclusively dist
 Promotion and Support: UNDERSOUTHERN commits to promoting artists professionally and ensuring that all distribution activities respect the artist’s creative integrity and legal rights.
 
 5. Limitation of Liability
-
 UNDERSOUTHERN is not responsible for unauthorized use of music or content outside the scope of contracts or official platforms.
 
 All disputes related to copyright or contract terms will be addressed according to the applicable laws and the terms agreed upon in the artist agreement.
     </p>
-  </div>
+</div>
 </div>
 
-<!-- Modal cho Vietnam -->
+<!-- Modal Vietnam -->
 <div class="modal" id="vietnamModal">
   <div class="modal-content">
     <span class="modal-close" id="closeVietnam">&times;</span>
     <h2>EXCLUSIVE DISTRIBUTION AND ARTIST AGREEMENT</h2>
-    <p>Between UNDERSOUTHERN Music Label and the Artist
+    <p>
+Between UNDERSOUTHERN Music Label and the Artist
 
 Contract No.: […]/2025/UD
 
@@ -259,11 +252,9 @@ This Agreement is made between:
 Collectively referred to as the “Parties”.
 
 1. Purpose
-
 The purpose of this Agreement is to establish an exclusive collaboration between the Artist and UNDERSOUTHERN for the distribution, promotion, and commercialization of the Artist’s music across all digital platforms.
 
 2. Grant of Rights
-
 The Artist grants the Label the exclusive right to distribute, promote, and commercialize the music created and/or owned by the Artist under this Agreement.
 
 The Artist retains full copyright ownership of their works. The Label does not claim ownership of the musical works.
@@ -271,7 +262,6 @@ The Artist retains full copyright ownership of their works. The Label does not c
 The Label is authorized to use the Artist’s name, likeness, and branding for promotional purposes in connection with the distributed works.
 
 3. Revenue Share
-
 Net revenue generated from the music distributed under this Agreement will be shared as follows:
 
 Artist: 80%
@@ -282,7 +272,6 @@ Revenue calculation will include all income from streaming, downloads, sales, li
 The Label will provide quarterly accounting statements to the Artist detailing revenue, deductions, and payments.
 
 4. Label Responsibilities
-
 The Label commits to distributing the Artist’s music to agreed digital platforms and channels.
 
 The Label will professionally promote the Artist’s music to maximize exposure and revenue.
@@ -290,19 +279,16 @@ The Label will professionally promote the Artist’s music to maximize exposure 
 The Label shall act in good faith to protect the Artist’s intellectual property and rights under this Agreement.
 
 5. Artist Responsibilities
-
 The Artist guarantees that all music provided is original, does not infringe on third-party rights, and all necessary permissions for samples or collaborations are obtained.
 
 The Artist shall provide all content in required formats and cooperate in promotional activities.
 
 6. Liability and Indemnification
-
 The Artist is responsible for the originality and legality of the music content. The Artist indemnifies the Label against any legal claims, copyright disputes, or third-party claims arising from the Artist’s works.
 
 The Label is not liable for any claims, damages, or disputes arising from the Artist’s content, except in cases of the Label’s gross negligence or willful misconduct.
 
 7. Term and Termination
-
 This Agreement is effective from the date of signing and remains valid for [insert term] years.
 
 Either Party may terminate the Agreement with [insert notice period, e.g., 30 days] written notice.
@@ -310,13 +296,11 @@ Either Party may terminate the Agreement with [insert notice period, e.g., 30 da
 Termination does not affect revenue owed for works released prior to the termination date.
 
 8. Governing Law and Dispute Resolution
-
 This Agreement is governed by the laws of Vietnam.
 
 Any disputes arising under this Agreement will first be attempted to resolve amicably. If unresolved, disputes will be submitted to the competent courts in Vietnam.
 
 9. Miscellaneous
-
 Any modifications or amendments to this Agreement must be made in writing and signed by both Parties.
 
 Headings are for reference only and do not affect interpretation of the Agreement.
@@ -336,28 +320,24 @@ Date: ___________________
 </div>
 
 <script>
-  // Modal cho Contact gốc
   const contactLink=document.getElementById('contactLink');
   const contactModal=document.getElementById('contactModal');
   const closeModal=document.getElementById('closeModal');
   contactLink.addEventListener('click',()=>{contactModal.style.display='flex';});
   closeModal.addEventListener('click',()=>{contactModal.style.display='none';});
 
-  // Modal cho Established
   const establishedLink=document.getElementById('establishedLink');
   const establishedModal=document.getElementById('establishedModal');
   const closeEstablished=document.getElementById('closeEstablished');
   establishedLink.addEventListener('click',()=>{establishedModal.style.display='flex';});
   closeEstablished.addEventListener('click',()=>{establishedModal.style.display='none';});
 
-  // Modal cho Vietnam
   const vietnamLink=document.getElementById('vietnamLink');
   const vietnamModal=document.getElementById('vietnamModal');
   const closeVietnam=document.getElementById('closeVietnam');
   vietnamLink.addEventListener('click',()=>{vietnamModal.style.display='flex';});
   closeVietnam.addEventListener('click',()=>{vietnamModal.style.display='none';});
 
-  // Đóng modal khi click ra ngoài
   window.addEventListener('click',e=>{
     if(e.target===contactModal) contactModal.style.display='none';
     if(e.target===establishedModal) establishedModal.style.display='none';
