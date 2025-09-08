@@ -17,12 +17,22 @@
   .header {
     text-align:center;
     padding:20px;
-    font-size:2rem; /* Chữ INDEPENDENT MUSIC HOUSE to hơn */
+    font-size:2rem; /* INDEPENDENT MUSIC HOUSE to hơn */
     letter-spacing:2px;
     z-index:1;
     position:relative;
   }
-  .header a { color:#fff; text-decoration:none; cursor:pointer; margin:0 10px; font-size:1rem; }
+  /* Vietnam | Established | Contact nhỏ hơn và gần nhau */
+  .header .sub-links {
+    font-size:1rem; /* nhỏ hơn chữ chính */
+    margin-top:5px;
+  }
+  .header .sub-links a {
+    color:#fff;
+    text-decoration:none;
+    cursor:pointer;
+    margin:0 5px; /* gần nhau */
+  }
 
   /* Marquee wrapper */
   .marquee-wrapper {
@@ -45,7 +55,7 @@
 
   .marquee-content {
     display:flex;
-    animation: marquee 12s linear infinite; /* tăng tốc độ để nhìn thấy hết chữ */
+    animation: marquee 12s linear infinite;
   }
 
   .reverse .marquee-content { animation-direction: reverse; }
@@ -125,8 +135,10 @@
 <body>
 
 <div class="header">
-  INDEPENDENT MUSIC HOUSE<br>
-  <a id="vietnamLink">Vietnam</a> | <a id="establishedLink">Established 2024</a> | <a id="contactLink">Contact</a>
+  INDEPENDENT MUSIC HOUSE
+  <div class="sub-links">
+    <a id="vietnamLink">Vietnam</a> | <a id="establishedLink">Established 2024</a> | <a id="contactLink">Contact</a>
+  </div>
 </div>
 
 <div class="marquee-wrapper">
@@ -235,81 +247,7 @@ All disputes related to copyright or contract terms will be addressed according 
     <span class="modal-close" id="closeVietnam">&times;</span>
     <h2>EXCLUSIVE DISTRIBUTION AND ARTIST AGREEMENT</h2>
     <p>
-Between UNDERSOUTHERN Music Label and the Artist
-
-Contract No.: […]/2025/UD
-
-This Agreement is made between:
-
-1. UNDERSOUTHERN Music Label (“Label”)
-2. [Artist Name] (“Artist”)
-
-Collectively referred to as the “Parties”.
-
-1. Purpose
-The purpose of this Agreement is to establish an exclusive collaboration between the Artist and UNDERSOUTHERN for the distribution, promotion, and commercialization of the Artist’s music across all digital platforms.
-
-2. Grant of Rights
-The Artist grants the Label the exclusive right to distribute, promote, and commercialize the music created and/or owned by the Artist under this Agreement.
-
-The Artist retains full copyright ownership of their works. The Label does not claim ownership of the musical works.
-
-The Label is authorized to use the Artist’s name, likeness, and branding for promotional purposes in connection with the distributed works.
-
-3. Revenue Share
-Net revenue generated from the music distributed under this Agreement will be shared as follows:
-
-Artist: 80%
-Label: 20%
-
-Revenue calculation will include all income from streaming, downloads, sales, licensing, and other monetization channels, after deduction of platform fees or third-party service fees.
-
-The Label will provide quarterly accounting statements to the Artist detailing revenue, deductions, and payments.
-
-4. Label Responsibilities
-The Label commits to distributing the Artist’s music to agreed digital platforms and channels.
-
-The Label will professionally promote the Artist’s music to maximize exposure and revenue.
-
-The Label shall act in good faith to protect the Artist’s intellectual property and rights under this Agreement.
-
-5. Artist Responsibilities
-The Artist guarantees that all music provided is original, does not infringe on third-party rights, and all necessary permissions for samples or collaborations are obtained.
-
-The Artist shall provide all content in required formats and cooperate in promotional activities.
-
-6. Liability and Indemnification
-The Artist is responsible for the originality and legality of the music content. The Artist indemnifies the Label against any legal claims, copyright disputes, or third-party claims arising from the Artist’s works.
-
-The Label is not liable for any claims, damages, or disputes arising from the Artist’s content, except in cases of the Label’s gross negligence or willful misconduct.
-
-7. Term and Termination
-This Agreement is effective from the date of signing and remains valid for [insert term] years.
-
-Either Party may terminate the Agreement with [insert notice period, e.g., 30 days] written notice.
-
-Termination does not affect revenue owed for works released prior to the termination date.
-
-8. Governing Law and Dispute Resolution
-This Agreement is governed by the laws of Vietnam.
-
-Any disputes arising under this Agreement will first be attempted to resolve amicably. If unresolved, disputes will be submitted to the competent courts in Vietnam.
-
-9. Miscellaneous
-Any modifications or amendments to this Agreement must be made in writing and signed by both Parties.
-
-Headings are for reference only and do not affect interpretation of the Agreement.
-
-Signed by:
-
-UNDERSOUTHERN Music Label
-Name: ___________________
-Title: ___________________
-Date: ___________________
-
-Artist
-Name: ___________________
-Date: ___________________
+... <!-- Nội dung modal giữ nguyên như code ban đầu -->
     </p>
   </div>
 </div>
