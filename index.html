@@ -1,220 +1,351 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UNDERSOUTHERN</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UNDERSOUTHERN — Independent Record Label</title>
+
+  <!-- Font + icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      color: #fff;
-      line-height: 1.7;
-      overflow-x: hidden;
-      background: #000;
+    :root{
+      --bg:#000;
+      --white:#ffffff;
+      --muted:rgba(255,255,255,0.85);
+      --accent:#e50914;
+      --container:1200px;
+    }
+    /* Reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:var(--white);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      scroll-behavior:smooth;
     }
 
-    /* Background */
-    .parallax-bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: url('https://github.com/phvinh1968-a11y/my-images/raw/main/background.jpg') no-repeat center center;
-      background-size: cover;
-      background-attachment: fixed;
-      z-index: -2;
+    /* optional cinematic background image (keeps dark tone) */
+    .bg{
+      position:fixed; inset:0;
+      background-image:url('https://github.com/phvinh1968-a11y/my-images/raw/main/background.jpg');
+      background-size:cover;
+      background-position:center center;
+      filter:contrast(.95) saturate(.95) brightness(.55);
+      z-index:-3;
+      will-change:background-position;
     }
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.3);
-      z-index: -1;
+    .bg-overlay{
+      position:fixed; inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.6) 100%);
+      z-index:-2;
     }
 
-    /* Header */
-    header {
-      text-align: center;
-      padding: 80px 20px 50px;
+    /* page layout and sticky nav */
+    .wrap{ max-width:var(--container); margin:0 auto; padding:0 20px; width:100%; }
+    nav {
+      position:fixed; top:18px; left:0; right:0;
+      display:flex; justify-content:center; z-index:1010;
+      pointer-events:auto;
     }
-    .logo {
-      width: 220px;
-      max-width: 90%;
-      margin-bottom: 20px;
-      filter: brightness(0) invert(1); /* logo trắng */
+    .nav-inner{
+      background: rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.05);
+      padding:10px 18px;
+      border-radius:999px;
+      display:flex; gap:18px; align-items:center;
+      backdrop-filter: blur(6px);
     }
-    .hero-title {
-      font-size: 2.4rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 1s ease;
+    .nav-inner a{
+      color:var(--white);
+      text-decoration:none;
+      font-weight:600;
+      letter-spacing:0.8px;
+      font-size:0.9rem;
+      transition: color .18s ease, transform .18s ease;
     }
-    .hero-sub {
-      font-size: 1rem;
-      font-weight: 300;
-      color: #ddd;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 1.2s ease;
-    }
+    .nav-inner a:hover{ color:var(--accent); transform:translateY(-2px); }
 
-    /* Sections */
-    .info-sections {
-      padding: 60px 25px;
-      max-width: 900px;
-      margin: auto;
+    /* full-screen sections */
+    main{ scroll-snap-type:y mandatory; overflow-y:auto; height:100vh; }
+    section{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:48px 20px;
+      scroll-snap-align:start;
+      opacity:0;
+      transform:translateY(28px);
+      transition: all .85s cubic-bezier(.2,.9,.3,1);
     }
-    .info-sections section {
-      margin-bottom: 50px;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 1s ease;
-    }
-    .info-sections h2 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .info-sections p {
-      font-size: 0.9rem;
-      color: #ddd;
-    }
+    section.visible{ opacity:1; transform:translateY(0); }
 
-    /* Contact */
-    #contact p {
-      font-size: 0.9rem;
-      margin-bottom: 8px;
+    /* hero */
+    .hero .inner{ max-width:980px; margin:0 auto; }
+    .brand{
+      width:200px; margin:0 auto 18px; display:block;
+      filter:brightness(0) invert(1);
     }
-    #contact a {
-      color: #fff;
-      font-weight: 500;
-      text-decoration: none;
+    .title{
+      font-size:clamp(28px,6vw,48px);
+      margin:0 0 10px;
+      font-weight:800;
+      letter-spacing:2px;
+      text-transform:uppercase;
     }
-    #contact a:hover { color: #e50914; }
-    .social a {
-      margin-right: 12px;
-      font-size: 1.2rem;
-      color: #fff;
-      transition: color 0.3s;
+    .lead{
+      color:var(--muted);
+      font-size:clamp(14px,2.2vw,18px);
+      margin:0 auto;
+      max-width:720px;
+      font-weight:300;
     }
-    .social a:hover { color: #e50914; }
+    .cta-row{ margin-top:22px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap }
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 16px; border-radius:999px; border:1px solid rgba(255,255,255,0.06);
+      background:transparent; color:var(--white); text-decoration:none; font-weight:700;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .btn.primary{ background:var(--accent); border-color:transparent; box-shadow:0 10px 30px rgba(229,9,20,0.12) }
+    .btn:hover{ transform:translateY(-4px) }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 15px;
-      font-size: 0.75rem;
-      color: #888;
-      background: rgba(0,0,0,0.7);
-    }
+    /* section typography */
+    .section-inner{ max-width:900px; margin:0 auto }
+    .eyebrow{ color:var(--accent); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px }
+    h2.section-title{ font-size:clamp(20px,4vw,32px); margin:0 0 12px; font-weight:800; }
+    p.lead-2{ color:var(--muted); font-size:1rem; line-height:1.6; max-width:880px; margin:0 auto; font-weight:300 }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .hero-title { font-size: 2rem; }
-      .logo { width: 180px; }
+    /* small grids / lists */
+    .artists-grid{
+      display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:26px;
     }
-    @media (max-width: 480px) {
-      .hero-title { font-size: 1.6rem; }
-      .logo { width: 150px; }
+    .artist{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:14px; border-radius:10px; border:1px solid rgba(255,255,255,0.04);
+      text-align:left;
+      transition:transform .22s, box-shadow .22s;
+    }
+    .artist:hover{ transform:translateY(-6px); box-shadow:0 20px 40px rgba(0,0,0,0.6) }
+    .artist h4{ margin:0 0 6px; font-size:1rem }
+    .artist p{ margin:0; color:var(--muted); font-size:0.9rem }
+
+    .platforms{ display:flex; gap:14px; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:18px }
+    .platform img{ height:34px; width:auto; filter:grayscale(.3); opacity:.95; }
+
+    /* legal & contact layout */
+    .legal-grid{ display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:22px; color:var(--muted) }
+    .legal-grid h3{ color:var(--white); margin-bottom:8px; font-size:1rem }
+    .contact-area{ display:flex; gap:22px; justify-content:center; flex-wrap:wrap; margin-top:18px }
+    .contact-card{ text-align:left; min-width:220px }
+    .contact-card a{ color:var(--muted); text-decoration:none; font-weight:600 }
+    .contact-card a:hover{ color:var(--accent) }
+
+    /* footer */
+    footer{ padding:18px 20px; text-align:center; color:rgba(255,255,255,0.6); font-size:0.9rem }
+
+    /* responsive */
+    @media (max-width:1024px){ .artists-grid{ grid-template-columns:repeat(3,1fr) } .brand{ width:170px } }
+    @media (max-width:760px){
+      .artists-grid{ grid-template-columns:repeat(2,1fr) }
+      .nav-inner{ padding:8px 12px; gap:10px }
+      .title{ font-size:clamp(20px,8vw,34px) }
+    }
+    @media (max-width:420px){
+      .artists-grid{ grid-template-columns:1fr }
+      .brand{ width:140px }
+      .nav-inner a{ font-size:0.85rem }
     }
   </style>
 </head>
 <body>
-  <!-- Background -->
-  <div class="parallax-bg" id="parallax"></div>
-  <div class="overlay"></div>
 
-  <!-- Hero -->
-  <header>
-    <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo" class="logo">
-    <h1 class="hero-title">UNDERSOUTHERN</h1>
-    <p class="hero-sub">Independent Record Label & Global Digital Distribution</p>
-  </header>
+  <!-- cinematic background -->
+  <div class="bg" id="bg"></div>
+  <div class="bg-overlay" aria-hidden="true"></div>
 
-  <!-- Sections -->
-  <div class="info-sections">
-    <section id="about">
-      <h2>About Us</h2>
-      <p>UNDERSOUTHERN is an independent record label and global distributor. We empower artists by providing professional distribution, marketing, and brand development, ensuring music reaches audiences worldwide.</p>
-    </section>
+  <!-- sticky nav -->
+  <nav aria-label="Main">
+    <div class="nav-inner wrap">
+      <a href="#hero">Home</a>
+      <a href="#about">About</a>
+      <a href="#artists">Artists</a>
+      <a href="#platforms">Platforms</a>
+      <a href="#mission">Mission</a>
+      <a href="#legal">Legal</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
 
-    <section id="artists">
-      <h2>Our Artists</h2>
-      <p>Featuring diverse and talented artists across multiple genres, UNDERSOUTHERN is proud to showcase unique voices from around the world.</p>
-    </section>
+  <!-- main scroll area (snap) -->
+  <main id="main">
 
-    <section id="platforms">
-      <h2>Available On</h2>
-      <p>Our music catalog is distributed across major digital platforms, including Spotify, Apple Music, YouTube Music, Tidal, and more.</p>
-    </section>
+    <!-- HERO -->
+    <section id="hero" class="hero">
+      <div class="inner wrap">
+        <img class="brand" src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN logo">
+        <div class="title">UNDERSOUTHERN</div>
+        <p class="lead">Independent Record Label & Global Digital Distribution — we discover, nurture and amplify independent voices worldwide.</p>
 
-    <section id="mission">
-      <h2>Our Mission</h2>
-      <p>At UNDERSOUTHERN, our mission is to discover, nurture, and amplify unique musical values from independent artists. We support artists in building sustainable careers and connect their music with global audiences. With creativity, transparency, and long-term partnership, we act as a bridge between artists and the world.</p>
-    </section>
-
-    <section id="privacy">
-      <h2>Privacy Policy</h2>
-      <p>UNDERSOUTHERN is committed to protecting your personal data. Any information collected is used solely for communication and music distribution. Business Registration Number: <strong>55D8010015</strong>.</p>
-    </section>
-
-    <section id="terms">
-      <h2>Terms of Service</h2>
-      <p>By using UNDERSOUTHERN services, you agree not to infringe copyright, not to distribute illegal content, and to comply with applicable laws.</p>
-    </section>
-
-    <section id="disclaimer">
-      <h2>Disclaimer</h2>
-      <p><strong>Legal validity:</strong> This disclaimer is part of this internet publication. If parts of this text are not legal or correct, the content or validity of the other parts remain unaffected.</p>
-      <p><strong>References and links:</strong> The author is not responsible for any contents linked or referred to from this page, unless they have full knowledge of illegal content and are able to prevent visitors from viewing those pages. Damages arising from the use of such information are solely the responsibility of the provider of the page referenced.</p>
-      <p><strong>Copyright:</strong> The author intends not to use copyrighted material or, if not possible, to indicate the copyright of the respective object. Copyright for any material created by UNDERSOUTHERN is reserved. Duplication or use of images, sounds, or texts in other electronic or printed publications is not permitted without UNDERSOUTHERN’s agreement.</p>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Email: <a href="mailto:contact@undersouthern.asia">contact@undersouthern.asia</a></p>
-      <p>Follow us on social media:</p>
-      <div class="social">
-        <a href="https://www.instagram.com/undersouthern/" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.facebook.com/undersouthern" target="_blank"><i class="fab fa-facebook"></i></a>
-        <a href="https://soundcloud.com/undersouthern" target="_blank"><i class="fab fa-soundcloud"></i></a>
-        <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank"><i class="fab fa-spotify"></i></a>
-        <a href="https://www.youtube.com/@undersouthern" target="_blank"><i class="fab fa-youtube"></i></a>
+        <div class="cta-row">
+          <a class="btn primary" href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank" rel="noreferrer">
+            <i class="fab fa-spotify"></i> Listen on Spotify
+          </a>
+          <a class="btn" href="#contact">Contact / Submissions</a>
+        </div>
       </div>
     </section>
-  </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 UNDERSOUTHERN — Independent Record Label & Global Digital Distribution</p>
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-inner wrap fade">
+        <div class="eyebrow">About</div>
+        <h2 class="section-title">Independent label. Global reach.</h2>
+        <p class="lead-2">UNDERSOUTHERN is an independent record label and global distributor. We empower artists by providing professional distribution, marketing, and brand development — ensuring music reaches audiences worldwide.</p>
+      </div>
+    </section>
+
+    <!-- ARTISTS -->
+    <section id="artists">
+      <div class="section-inner wrap fade">
+        <div class="eyebrow">Artists</div>
+        <h2 class="section-title">Voices we represent</h2>
+        <p class="lead-2">We work with diverse and talented artists across multiple genres — showcasing unique voices and supporting long-term careers.</p>
+
+        <div class="artists-grid" aria-hidden="false">
+          <div class="artist"><h4>Artist One</h4><p>Alternative / Indie</p></div>
+          <div class="artist"><h4>Artist Two</h4><p>Electronic / Ambient</p></div>
+          <div class="artist"><h4>Artist Three</h4><p>Hip-Hop / R&B</p></div>
+          <div class="artist"><h4>Artist Four</h4><p>Pop / Experimental</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLATFORMS -->
+    <section id="platforms">
+      <div class="section-inner wrap fade">
+        <div class="eyebrow">Available On</div>
+        <h2 class="section-title">All major streaming platforms</h2>
+        <p class="lead-2">Our catalog is distributed across Spotify, Apple Music, YouTube Music, Tidal and more.</p>
+
+        <div class="platforms" aria-hidden="false">
+          <div class="platform" title="Spotify"><img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg" alt="Spotify"></div>
+          <div class="platform" title="Apple Music"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Apple_Music_logo.svg" alt="Apple Music"></div>
+          <div class="platform" title="YouTube Music"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/YouTube_Music_2018_logo.svg" alt="YouTube Music"></div>
+          <div class="platform" title="Tidal"><img src="https://upload.wikimedia.org/wikipedia/commons/1/16/Tidal_logo.svg" alt="Tidal"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION -->
+    <section id="mission">
+      <div class="section-inner wrap fade">
+        <div class="eyebrow">Mission</div>
+        <h2 class="section-title">What drives us</h2>
+        <p class="lead-2">At UNDERSOUTHERN, our mission is to discover, nurture and amplify unique musical values from independent artists. We support sustainable careers, connect artists to global audiences, and build long-term partnerships rooted in transparency and creativity.</p>
+      </div>
+    </section>
+
+    <!-- LEGAL -->
+    <section id="legal">
+      <div class="section-inner wrap fade">
+        <div class="eyebrow">Legal</div>
+        <h2 class="section-title">Privacy & Terms</h2>
+
+        <div class="legal-grid">
+          <div>
+            <h3>Privacy Policy</h3>
+            <p>UNDERSOUTHERN is committed to protecting your personal data. Any information collected is used solely for communication and music distribution. Business Registration Number: <strong>55D8010015</strong>.</p>
+          </div>
+
+          <div>
+            <h3>Terms of Service</h3>
+            <p>By using UNDERSOUTHERN services you agree not to infringe copyright, not to distribute illegal content and to comply with applicable laws. Artists are responsible for the rights to materials they submit.</p>
+          </div>
+
+          <div>
+            <h3>Disclaimer</h3>
+            <p><strong>Legal validity:</strong> This disclaimer is part of this internet publication. If parts of this text are not legal or correct, the content or validity of the other parts remain unaffected.</p>
+          </div>
+
+          <div>
+            <h3>References & Copyright</h3>
+            <p>The author is not responsible for external contents linked from this site, unless fully aware of illegal content. Copyright for material created by UNDERSOUTHERN is reserved; reproduction without permission is prohibited.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-inner wrap fade">
+        <div class="eyebrow">Contact</div>
+        <h2 class="section-title">Get in touch</h2>
+        <p class="lead-2">For distribution, press, sync or artist submissions, contact us. Include links and a short bio for submissions.</p>
+
+        <div class="contact-area">
+          <div class="contact-card">
+            <div class="contact-card-title">General</div>
+            <div class="contact-card-body"><a href="mailto:contact@undersouthern.asia">contact@undersouthern.asia</a></div>
+          </div>
+
+          <div class="contact-card">
+            <div class="contact-card-title">Follow</div>
+            <div class="contact-card-body">
+              <div class="social">
+                <a href="https://www.instagram.com/undersouthern/" target="_blank" rel="noreferrer"><i class="fab fa-instagram"></i> Instagram</a><br>
+                <a href="https://www.facebook.com/undersouthern" target="_blank" rel="noreferrer"><i class="fab fa-facebook"></i> Facebook</a><br>
+                <a href="https://soundcloud.com/undersouthern" target="_blank" rel="noreferrer"><i class="fab fa-soundcloud"></i> SoundCloud</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">© 2025 UNDERSOUTHERN — Independent Record Label & Global Digital Distribution</div>
   </footer>
 
-  <!-- Scripts -->
   <script>
-    // background parallax mượt
-    window.addEventListener('scroll', () => {
-      let offset = window.pageYOffset;
-      document.querySelector('.parallax-bg').style.backgroundPositionY = offset * 0.4 + "px";
-    });
+    /* smooth parallax: update background-position (keeps image visible, avoids gaps) */
+    const bg = document.getElementById('bg');
+    function doParallax(){
+      const y = window.scrollY || window.pageYOffset;
+      const factor = window.innerWidth < 600 ? 0.12 : 0.28;
+      bg.style.backgroundPosition = `center calc(50% + ${y * factor}px)`;
+    }
+    window.addEventListener('scroll', doParallax, { passive:true });
+    doParallax();
 
-    // fade-in & slide-up effect
-    const fadeEls = document.querySelectorAll('.info-sections section, .hero-title, .hero-sub');
-    const observer = new IntersectionObserver(entries => {
+    /* reveal sections on scroll */
+    const sections = document.querySelectorAll('section');
+    const io = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = 1;
-          entry.target.style.transform = 'translateY(0)';
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.18 });
+    sections.forEach(s => io.observe(s));
 
-    fadeEls.forEach(el => observer.observe(el));
+    /* simple keyboard a11y for nav */
+    document.querySelectorAll('nav a').forEach(a=>{
+      a.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' ') a.click();
+      });
+    });
   </script>
 </body>
 </html>
