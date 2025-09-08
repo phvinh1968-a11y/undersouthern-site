@@ -17,13 +17,12 @@
   .header {
     text-align:center;
     padding:20px;
-    font-size:2rem; /* Chỉ chữ INDEPENDENT MUSIC HOUSE to hơn */
+    font-size:2rem; /* Chữ INDEPENDENT MUSIC HOUSE to hơn */
     letter-spacing:2px;
     z-index:1;
     position:relative;
   }
-  /* Các link gần nhau hơn */
-  .header a { color:#fff; text-decoration:none; cursor:pointer; margin:0 5px; font-size:1rem; }
+  .header a { color:#fff; text-decoration:none; cursor:pointer; margin:0 10px; font-size:1rem; }
 
   /* Marquee wrapper */
   .marquee-wrapper {
@@ -46,7 +45,7 @@
 
   .marquee-content {
     display:flex;
-    animation: marquee 20s linear infinite; /* chạy mượt */
+    animation: marquee 12s linear infinite; /* tăng tốc độ để nhìn thấy hết chữ */
   }
 
   .reverse .marquee-content { animation-direction: reverse; }
@@ -127,7 +126,7 @@
 
 <div class="header">
   INDEPENDENT MUSIC HOUSE<br>
-  <a id="vietnamLink">Vietnam</a>|<a id="establishedLink">Established 2024</a>|<a id="contactLink">Contact</a>
+  <a id="vietnamLink">Vietnam</a> | <a id="establishedLink">Established 2024</a> | <a id="contactLink">Contact</a>
 </div>
 
 <div class="marquee-wrapper">
@@ -200,7 +199,7 @@
     <span class="modal-close" id="closeEstablished">&times;</span>
     <h2>Copyright and Intellectual Property – UNDERSOUTHERN Label</h2>
     <p>
-      1. Introduction
+1. Introduction
 UNDERSOUTHERN is an independent music label that manages, distributes, and promotes artists and their music across digital platforms. All activities are conducted in partnership with artists, respecting their copyright ownership.
 
 2. Intellectual Property Rights
