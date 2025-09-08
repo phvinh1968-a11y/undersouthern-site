@@ -5,195 +5,158 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>UNDERSOUTHERN</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body {
+  @font-face {
+    font-family: 'Hezareh';
+    src: url('Hezareh-Regular.woff2') format('woff2'),
+         url('Hezareh-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
     font-family: Arial, sans-serif;
-    overflow-x: hidden;
     color: #fff;
     background: #000;
-    height: 100%;
-    scroll-behavior: smooth;
-    position: relative;
+    overflow-x: hidden;
   }
 
-  /* Background gạch ngang */
+  /* Background stripes */
   .background-stripes {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 200%;
-    height: 100%;
-    background-image: repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,0.05) 0,
-      rgba(255,255,255,0.05) 1px,
-      transparent 1px,
-      transparent 10px
-    );
+    top:0; left:0;
+    width:200%; height:100%;
+    background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 10px);
     animation: stripesMove 60s linear infinite;
-    z-index: 0;
+    z-index:0;
   }
 
-  @keyframes stripesMove {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-10px); }
-  }
+  @keyframes stripesMove { 0%{transform:translateY(0);} 100%{transform:translateY(-10px);} }
 
   /* Header */
   .header {
-    text-align: center;
-    padding: 20px;
-    font-size: 1rem;
-    letter-spacing: 2px;
-    position: relative;
-    z-index: 1;
+    text-align:center;
+    padding:20px;
+    font-size:1rem;
+    letter-spacing:2px;
+    z-index:1;
+    position:relative;
   }
-  .header a {
-    color: #fff;
-    text-decoration: none;
-    cursor: pointer;
-  }
+  .header a { color:#fff; text-decoration:none; cursor:pointer; }
 
   /* Marquee wrapper */
   .marquee-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    height: calc(100vh - 120px);
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-    scroll-behavior: smooth;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    height:calc(100vh - 120px);
+    overflow:hidden;
+    position:relative;
+    z-index:1;
   }
 
   .marquee {
-    display: flex;
-    white-space: nowrap;
-    overflow: hidden;
-    line-height: 1;
-    position: relative;
-    border-top: 1px solid #fff;
-    border-bottom: 1px solid #fff;
-  }
-
-  .marquee span {
-    display: inline-flex;
-    align-items: center;
-    margin-right: 60px;
-    font-size: 12vw;
-    color: #fff;
-    font-family: 'Shonar Bangla', sans-serif;
-    font-weight: normal;
-    text-transform: capitalize;
-    white-space: nowrap;
-  }
-
-  /* Logo trước chữ chạy */
-  .marquee span img {
-    height: 1em; 
-    width: auto;
-    margin-right: 15px;
-    filter: brightness(0) invert(1);
+    overflow:hidden;
+    border-top:1px solid #fff;
+    border-bottom:1px solid #fff;
+    white-space:nowrap;
+    position:relative;
   }
 
   .marquee-content {
-    display: flex;
-    animation: marquee-left 90s linear infinite;
+    display:flex;
+    animation: marquee 60s linear infinite;
   }
 
-  .reverse .marquee-content {
-    animation: marquee-right 90s linear infinite;
-  }
+  .reverse .marquee-content { animation-direction: reverse; }
 
-  @keyframes marquee-left {
+  @keyframes marquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
 
-  @keyframes marquee-right {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
+  .marquee span {
+    display:inline-flex;
+    align-items:center;
+    margin-right:60px;
+    font-size:clamp(30px,12vw,180px);
+    font-family:'Hezareh',sans-serif;
+    color:#fff;
+    text-transform:capitalize;
+    white-space:nowrap;
+  }
+
+  .marquee span img {
+    height:1em;
+    width:auto;
+    margin-right:15px;
+    filter:brightness(0) invert(1);
   }
 
   /* Footer */
   .footer {
-    text-align: center;
-    font-size: 0.7rem;
-    padding: 10px 20px;
-    line-height: 1.4;
-    border-top: 1px solid #fff;
-    color: #ccc;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    z-index: 1;
+    text-align:center;
+    font-size:0.6rem;
+    padding:10px;
+    border-top:1px solid #fff;
+    color:#ccc;
   }
 
   /* Modal */
   .modal {
-    display: none;
-    position: fixed;
-    z-index: 10;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    justify-content: center;
-    align-items: center;
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.8);
+    justify-content:center;
+    align-items:center;
+    z-index:10;
   }
-
   .modal-content {
-    background: #111;
-    padding: 30px;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 300px;
-    color: #fff;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    background:#111;
+    padding:30px;
+    border-radius:8px;
+    max-width:300px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:15px;
+    color:#fff;
+    position:relative;
   }
-
-  .modal-content a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1rem;
-  }
-
-  .modal-content a:hover {
-    color: #00ff00;
-  }
-
   .modal-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 20px;
-    cursor: pointer;
+    position:absolute; top:10px; right:15px;
+    font-size:20px;
+    cursor:pointer;
   }
+  .modal-content a { color:#fff; text-decoration:none; font-size:1.1rem; }
+  .modal-content a:hover { color:#00ff00; }
 
-  @media (max-width: 768px) {
-    .marquee span { font-size: 20vw; }
-    .marquee span img { height: 1em; }
-    .header, .footer { font-size: 0.6rem; padding: 10px; }
+  @media (max-width:768px){
+    .marquee span { font-size:clamp(20px,18vw,120px); }
+    .marquee span img{height:1em;}
+    .header,.footer{font-size:0.8rem;}
   }
 </style>
 </head>
-<body onload="window.scrollTo(0,0)">
+<body>
 
-<!-- Background -->
 <div class="background-stripes"></div>
 
-<!-- Header -->
 <div class="header">
   INDEPENDENT MUSIC HOUSE<br>
   Vietnam | Established 2024 | <a id="contactLink">Contact</a>
 </div>
 
-<!-- Marquee 6 dòng -->
 <div class="marquee-wrapper">
+
+  <!-- 6 lines marquee, nội dung duplicate để chạy seamless -->
   <div class="marquee"><div class="marquee-content">
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
@@ -205,9 +168,17 @@
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
   </div></div>
 
   <div class="marquee"><div class="marquee-content">
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
@@ -219,6 +190,10 @@
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
   </div></div>
 
   <div class="marquee"><div class="marquee-content">
@@ -226,18 +201,25 @@
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
   </div></div>
 
-  <!-- Dòng chạy thứ 6 -->
   <div class="marquee reverse"><div class="marquee-content">
-    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Music</span>
-    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Studio</span>
-    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Artists</span>
-    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Records</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
   </div></div>
+
 </div>
 
-<!-- Footer -->
 <div class="footer">
   © 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015
 </div>
@@ -259,12 +241,9 @@
   const contactLink = document.getElementById('contactLink');
   const modal = document.getElementById('contactModal');
   const closeModal = document.getElementById('closeModal');
-
-  contactLink.addEventListener('click', () => { modal.style.display = 'flex'; });
-  closeModal.addEventListener('click', () => { modal.style.display = 'none'; });
-  window.addEventListener('click', (e) => { if(e.target === modal) modal.style.display = 'none'; });
-
-  window.onload = function() { window.scrollTo(0,0); }
+  contactLink.addEventListener('click',()=>{modal.style.display='flex';});
+  closeModal.addEventListener('click',()=>{modal.style.display='none';});
+  window.addEventListener('click',(e)=>{if(e.target===modal) modal.style.display='none';});
 </script>
 </body>
 </html>
