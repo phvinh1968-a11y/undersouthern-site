@@ -6,11 +6,13 @@
 <title>UNDERSOUTHERN</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
+  html, body {
     font-family: Arial, sans-serif;
     overflow-x: hidden;
     color: #fff;
     background: #000;
+    height: 100%;
+    scroll-behavior: smooth;
     position: relative;
   }
 
@@ -61,6 +63,7 @@
     overflow: hidden;
     position: relative;
     z-index: 1;
+    scroll-behavior: smooth;
   }
 
   .marquee {
@@ -115,16 +118,18 @@
   /* Footer */
   .footer {
     text-align: center;
-    font-size: 0.9rem;
-    padding: 20px;
+    font-size: 0.7rem;
+    padding: 10px 20px;
     line-height: 1.4;
     border-top: 1px solid #fff;
     color: #ccc;
-    position: relative;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     z-index: 1;
   }
 
-  /* Modal form */
+  /* Modal */
   .modal {
     display: none;
     position: fixed;
@@ -150,11 +155,6 @@
     gap: 15px;
   }
 
-  .modal-content h2 {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
   .modal-content a {
     color: #fff;
     text-decoration: none;
@@ -176,11 +176,11 @@
   @media (max-width: 768px) {
     .marquee span { font-size: 20vw; }
     .marquee span img { height: 1em; }
-    .header, .footer { font-size: 0.8rem; padding: 10px; }
+    .header, .footer { font-size: 0.6rem; padding: 10px; }
   }
 </style>
 </head>
-<body>
+<body onload="window.scrollTo(0,0)">
 
 <!-- Background -->
 <div class="background-stripes"></div>
@@ -191,7 +191,7 @@
   Vietnam | Established 2024 | <a id="contactLink">Contact</a>
 </div>
 
-<!-- Marquee 5 dòng -->
+<!-- Marquee 6 dòng -->
 <div class="marquee-wrapper">
   <div class="marquee"><div class="marquee-content">
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
@@ -227,6 +227,14 @@
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
     <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Recording</span>
   </div></div>
+
+  <!-- Dòng chạy thứ 6 -->
+  <div class="marquee reverse"><div class="marquee-content">
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Music</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Studio</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Artists</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Records</span>
+  </div></div>
 </div>
 
 <!-- Footer -->
@@ -238,7 +246,7 @@
 <div class="modal" id="contactModal">
   <div class="modal-content">
     <span class="modal-close" id="closeModal">&times;</span>
-        <a href="mailto:contact@undersouthern.asia">Email</a>
+    <a href="mailto:contact@undersouthern.asia">Email</a>
     <a href="https://www.facebook.com/undersouthern" target="_blank">Facebook</a>
     <a href="https://www.instagram.com/undersouthern" target="_blank">Instagram</a>
     <a href="https://www.youtube.com/undersouthern" target="_blank">YouTube</a>
@@ -255,6 +263,8 @@
   contactLink.addEventListener('click', () => { modal.style.display = 'flex'; });
   closeModal.addEventListener('click', () => { modal.style.display = 'none'; });
   window.addEventListener('click', (e) => { if(e.target === modal) modal.style.display = 'none'; });
+
+  window.onload = function() { window.scrollTo(0,0); }
 </script>
 </body>
 </html>
