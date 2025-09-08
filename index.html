@@ -17,13 +17,13 @@
   .header {
     text-align:center;
     padding:20px;
-    font-size:1rem;
+    font-size:2rem; /* Chỉ chữ INDEPENDENT MUSIC HOUSE to hơn */
     letter-spacing:2px;
     z-index:1;
     position:relative;
   }
-  /* Giữ các chữ gần nhau hơn */
-  .header a { color:#fff; text-decoration:none; cursor:pointer; margin: 0 5px; }
+  /* Các link gần nhau hơn */
+  .header a { color:#fff; text-decoration:none; cursor:pointer; margin:0 5px; font-size:1rem; }
 
   /* Marquee wrapper */
   .marquee-wrapper {
@@ -42,18 +42,11 @@
     border-bottom:1px solid #fff;
     white-space:nowrap;
     position:relative;
-
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-size: 100% 100%;
-    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-    mask-repeat: no-repeat;
-    mask-size: 100% 100%;
   }
 
   .marquee-content {
-    display:inline-flex;
-    animation: marquee 12s linear infinite;
+    display:flex;
+    animation: marquee 20s linear infinite; /* chạy mượt */
   }
 
   .reverse .marquee-content { animation-direction: reverse; }
@@ -83,7 +76,7 @@
 
   .footer {
     text-align:center;
-    font-size:0.9rem;
+    font-size:0.7rem;
     padding:10px;
     border-top:1px solid #fff;
     color:#ccc;
@@ -132,13 +125,11 @@
 </head>
 <body>
 
-<!-- Header -->
 <div class="header">
   INDEPENDENT MUSIC HOUSE<br>
   <a id="vietnamLink">Vietnam</a>|<a id="establishedLink">Established 2024</a>|<a id="contactLink">Contact</a>
 </div>
 
-<!-- Marquee -->
 <div class="marquee-wrapper">
   <div class="marquee">
     <div class="marquee-content">
@@ -186,12 +177,11 @@
   </div>
 </div>
 
-<!-- Footer -->
 <div class="footer">
   © 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015
 </div>
 
-<!-- Modals giữ nguyên 100% từ code gốc -->
+<!-- Modal Contact -->
 <div class="modal" id="contactModal">
   <div class="modal-content">
     <span class="modal-close" id="closeModal">&times;</span>
@@ -204,12 +194,13 @@
   </div>
 </div>
 
+<!-- Modal Established -->
 <div class="modal" id="establishedModal">
   <div class="modal-content">
     <span class="modal-close" id="closeEstablished">&times;</span>
     <h2>Copyright and Intellectual Property – UNDERSOUTHERN Label</h2>
     <p>
-1. Introduction
+      1. Introduction
 UNDERSOUTHERN is an independent music label that manages, distributes, and promotes artists and their music across digital platforms. All activities are conducted in partnership with artists, respecting their copyright ownership.
 
 2. Intellectual Property Rights
@@ -239,6 +230,7 @@ All disputes related to copyright or contract terms will be addressed according 
   </div>
 </div>
 
+<!-- Modal Vietnam -->
 <div class="modal" id="vietnamModal">
   <div class="modal-content">
     <span class="modal-close" id="closeVietnam">&times;</span>
