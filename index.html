@@ -45,12 +45,13 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   background:#111; padding:15px; border-radius:12px;
   display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center;
   max-width:500px; width:90%;
+  max-height:80vh;
+  overflow-y:auto;
   position:relative;
   font-family: 'Arial', sans-serif;
   font-weight: normal;
   font-style: normal;
   color:#fff;
-  overflow-x:hidden; 
   word-break: break-word;
 }
 
@@ -58,42 +59,76 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
 #antiFraudContent {
   display:none;
   text-align:left;
-  font-size:0.7rem;
-  line-height:1.3rem;
+  font-size:0.65rem;
+  line-height:1.2rem;
   white-space: pre-wrap;
   width:100%;
   overflow-x:hidden;
 }
 
 /* Grid menu (About Us / Established 2024) */
-#aboutModal .menu-grid, #contactModal .social-icons {
+#aboutModal .menu-grid {
   display:grid;
   grid-template-columns: repeat(3, 1fr);
   gap:2px;
   width:100%;
 }
-#aboutModal .menu-grid div, #aboutModal .menu-grid a div,
-#contactModal .social-icons a {
-  padding:5px 6px;
-  border-radius:6px;
+#aboutModal .menu-grid div,
+#aboutModal .menu-grid a div {
+  padding:2px 3px;
+  border-radius:3px;
   background: rgba(255,255,255,0.05);
   color:#fff;
-  font-size:0.65rem;
+  font-size:0.55rem;
   text-transform: lowercase;
   cursor:pointer;
   text-align:center;
   white-space:nowrap;
   text-decoration: none;
-  transition: transform 0.2s, background 0.2s;
   width:100%;
+  display:flex;              
+  justify-content:center;
+  align-items:center;
+  box-sizing:border-box;     
+  transition: transform 0.2s, background 0.2s;
 }
-#aboutModal .menu-grid div:hover, #aboutModal .menu-grid a div:hover,
-#contactModal .social-icons a:hover {
+#aboutModal .menu-grid div:hover,
+#aboutModal .menu-grid a div:hover {
   background: rgba(255,255,255,0.15);
   transform: scale(1.05);
 }
-#aboutModal .menu-grid a { text-decoration: none; color: inherit; }
-#aboutModal .menu-grid a div { display:inline-block; }
+#aboutModal .menu-grid a {
+  text-decoration:none;
+  color:inherit;
+  width:100%;
+  display:block;
+}
+
+/* Social Icons (Contact & Help Center) */
+.social-icons {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:2px;
+  width:100%;
+}
+.social-icons a {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: rgba(255,255,255,0.05);
+  padding:3px 4px;
+  border-radius:3px;
+  font-size:0.55rem;
+  color:#fff;
+  text-decoration:none;
+  cursor:pointer;
+  text-transform: lowercase;
+  transition: transform 0.2s, background 0.2s;
+}
+.social-icons a:hover {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.05);
+}
 
 /* Responsive */
 @media (max-width:480px) {
@@ -102,9 +137,9 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
     font-size:0.6rem;
   }
   #aboutModal .menu-grid div, #aboutModal .menu-grid a div,
-  #aboutModal .social-icons a, #contactModal .social-icons a {
-    font-size:0.55rem;
-    padding:4px 5px;
+  .social-icons a {
+    font-size:0.5rem;
+    padding:2px 3px;
   }
 }
 </style>
@@ -135,7 +170,7 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   </div>
 </div>
 
-<!-- About Us / Established Modal -->
+<!-- About Modal -->
 <div id="aboutModal" class="modal">
   <div class="modal-content">
     <div class="menu-grid">
@@ -146,14 +181,14 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
       <div id="helpCenterBtn">help center</div>
       <div>terms</div>
     </div>
+
+    <!-- Social Icons for Help Center -->
     <div class="social-icons" style="display:none;">
       <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
       <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
       <a href="mailto:contact@undersouthern.asia">email</a>
-      <a href="https://www.tiktok.com/@undersouthern" target="_blank" style="display:none;">tiktok</a>
-      <a href="https://www.youtube.com/@undersouthern" target="_blank" style="display:none;">youtube</a>
-      <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank" style="display:none;">spotify</a>
     </div>
+
     <div id="antiFraudContent">
 1 Mục đích và phạm vi
 Mục tiêu của UNDERSOUTHERN là bảo vệ nghệ sĩ, người sáng tạo nội dung và doanh nghiệp khỏi các hành vi gian lận, đặc biệt là stream giả, metadata sai sót gây hiểu lầm hoặc vi phạm bản quyền
@@ -239,15 +274,11 @@ document.addEventListener('DOMContentLoaded', () => {
     aboutModal.scrollTop = 0;
   });
 
-  // Click Help Center → chỉ hiển thị 3 mục Facebook, Instagram, Email
+  // Click Help Center → hiển thị 3 icon giống Contact
   helpCenterBtn.addEventListener('click', () => {
     menuGrid.style.display='none';
     antiFraudContent.style.display='none';
     socialIcons.style.display='grid';
-    Array.from(socialIcons.children).forEach((el, i) => {
-      if(i < 3) el.style.display = 'inline-block';
-      else el.style.display = 'none';
-    });
   });
 
   // Click ngoài modal → đóng
