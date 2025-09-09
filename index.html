@@ -36,36 +36,45 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   position:fixed; top:0; left:0; width:100%; height:100%;
   background: rgba(0,0,0,0.85); display:none;
   justify-content:center; align-items:center; z-index:3000;
-  overflow-y:auto; 
   padding:20px;
+  overflow-y:auto; 
 }
 
 /* Modal content */
 .modal .modal-content {
-  background:#111; padding:20px 20px; border-radius:12px;
-  display:flex; flex-direction:column; align-items:center; gap:15px; text-align:center;
-  max-width:400px; 
-  width:90%;
+  background:#111; padding:15px; border-radius:12px;
+  display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center;
+  max-width:500px; width:90%;
   position:relative;
   font-family: 'Arial', sans-serif;
   font-weight: normal;
   font-style: normal;
   color:#fff;
-  max-height: 90vh; 
-  overflow-y:auto; 
   overflow-x:hidden; 
   word-break: break-word;
 }
 
-/* Menu About Us - 3 trên 3 dưới */
-#aboutModal .menu-grid {
+/* Anti-Fraud Policy */
+#antiFraudContent {
+  display:none;
+  text-align:left;
+  font-size:0.7rem;
+  line-height:1.3rem;
+  white-space: pre-wrap;
+  width:100%;
+  overflow-x:hidden;
+}
+
+/* Grid menu (About Us / Established 2024) */
+#aboutModal .menu-grid, #contactModal .social-icons {
   display:grid;
   grid-template-columns: repeat(3, 1fr);
-  gap:8px;
+  gap:2px;
   width:100%;
 }
-#aboutModal .menu-grid div, #aboutModal .menu-grid a div {
-  padding:6px 8px;
+#aboutModal .menu-grid div, #aboutModal .menu-grid a div,
+#contactModal .social-icons a {
+  padding:5px 6px;
   border-radius:6px;
   background: rgba(255,255,255,0.05);
   color:#fff;
@@ -74,82 +83,19 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   cursor:pointer;
   text-align:center;
   white-space:nowrap;
+  text-decoration: none;
   transition: transform 0.2s, background 0.2s;
+  width:100%;
 }
-#aboutModal .menu-grid div:hover, #aboutModal .menu-grid a div:hover {
+#aboutModal .menu-grid div:hover, #aboutModal .menu-grid a div:hover,
+#contactModal .social-icons a:hover {
   background: rgba(255,255,255,0.15);
   transform: scale(1.05);
 }
-
-/* Bỏ gạch chân link */
 #aboutModal .menu-grid a { text-decoration: none; color: inherit; }
 #aboutModal .menu-grid a div { display:inline-block; }
 
-/* Social icons Help Center */
-#aboutModal .social-icons {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:8px;
-  justify-items:center;
-  width:100%;
-}
-#aboutModal .social-icons a {
-  display:flex; justify-content:center; align-items:center;
-  padding:5px 8px;
-  border-radius:6px;
-  text-decoration:none;
-  color:#fff;
-  font-size:0.65rem;
-  font-weight: normal;
-  font-style: normal;
-  text-transform: lowercase;
-  background: rgba(255,255,255,0.05);
-  transition: transform 0.2s ease, background 0.2s ease;
-  width:80%;
-}
-#aboutModal .social-icons a:hover {
-  transform: scale(1.1);
-  background: rgba(255,255,255,0.15);
-}
-
-/* Anti-Fraud Content */
-#antiFraudContent {
-  display:none;
-  text-align:left;
-  font-size:0.7rem;
-  line-height:1.3rem;
-  white-space: pre-wrap;
-  width:100%;
-}
-
-/* Contact social buttons */
-#contactModal .social-icons {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:8px;
-  justify-items:center;
-  width:100%;
-}
-#contactModal .social-icons a {
-  display:flex; justify-content:center; align-items:center;
-  padding:5px 8px;
-  border-radius:6px;
-  text-decoration:none;
-  color:#fff;
-  font-size:0.65rem;
-  font-weight: normal;
-  font-style: normal;
-  text-transform: lowercase;
-  background: rgba(255,255,255,0.05);
-  transition: transform 0.2s ease, background 0.2s ease;
-  width:80%;
-}
-#contactModal .social-icons a:hover {
-  transform: scale(1.1);
-  background: rgba(255,255,255,0.15);
-}
-
-/* Responsive nhỏ màn hình */
+/* Responsive */
 @media (max-width:480px) {
   #aboutModal .modal-content, #contactModal .modal-content {
     max-width:95%;
@@ -158,7 +104,7 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   #aboutModal .menu-grid div, #aboutModal .menu-grid a div,
   #aboutModal .social-icons a, #contactModal .social-icons a {
     font-size:0.55rem;
-    padding:4px 6px;
+    padding:4px 5px;
   }
 }
 </style>
@@ -175,7 +121,7 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   </nav>
 </header>
 
-<!-- Modal Contact -->
+<!-- Contact Modal -->
 <div id="contactModal" class="modal">
   <div class="modal-content">
     <div class="social-icons">
@@ -189,7 +135,7 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   </div>
 </div>
 
-<!-- Modal About Us -->
+<!-- About Us / Established Modal -->
 <div id="aboutModal" class="modal">
   <div class="modal-content">
     <div class="menu-grid">
@@ -200,40 +146,43 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
       <div id="helpCenterBtn">help center</div>
       <div>terms</div>
     </div>
-    <div class="social-icons" style="display:none; width:100%;">
+    <div class="social-icons" style="display:none;">
       <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
       <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
       <a href="mailto:contact@undersouthern.asia">email</a>
+      <a href="https://www.tiktok.com/@undersouthern" target="_blank" style="display:none;">tiktok</a>
+      <a href="https://www.youtube.com/@undersouthern" target="_blank" style="display:none;">youtube</a>
+      <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank" style="display:none;">spotify</a>
     </div>
     <div id="antiFraudContent">
-1. Mục đích và Phạm vi
-Mục tiêu của UNDERSOUTHERN là bảo vệ nghệ sĩ, người sáng tạo nội dung và doanh nghiệp khỏi các hành vi gian lận, đặc biệt là stream giả (click fraud), metadata sai sót gây hiểu lầm hoặc vi phạm bản quyền.
-Chính sách này áp dụng cho mọi đối tượng có hợp đồng pháp lý với UNDERSOUTHERN (được gọi là “End User”) — bao gồm các nghệ sĩ, đối tác phân phối, nhà cung cấp dịch vụ kỹ thuật số (DSP), v.v.
+1 Mục đích và phạm vi
+Mục tiêu của UNDERSOUTHERN là bảo vệ nghệ sĩ, người sáng tạo nội dung và doanh nghiệp khỏi các hành vi gian lận, đặc biệt là stream giả, metadata sai sót gây hiểu lầm hoặc vi phạm bản quyền
+Chính sách này áp dụng cho mọi đối tượng có hợp đồng pháp lý với UNDERSOUTHERN (gọi là End User) bao gồm nghệ sĩ, đối tác phân phối, nhà cung cấp dịch vụ kỹ thuật số
 
-2. Định nghĩa
-Fraud (Gian lận): bao gồm các hành vi như sử dụng nội dung không được phép, metadata gây nhầm lẫn (Musical Spam), stream từ bot (Click Fraud), hoặc các hành vi khác vi phạm Điều khoản Dịch vụ hoặc hợp đồng của UNDERSOUTHERN.
-End User (Người sử dụng cuối): cá nhân hoặc pháp nhân có mối quan hệ hợp đồng với nhãn UNDERSOUTHERN.
+2 Định nghĩa
+Fraud (Gian lận): bao gồm các hành vi như sử dụng nội dung không được phép, metadata gây nhầm lẫn (Musical Spam), stream từ bot hoặc các hành vi khác vi phạm Điều khoản Dịch vụ hoặc hợp đồng của UNDERSOUTHERN
+End User (Người sử dụng cuối): cá nhân hoặc pháp nhân có mối quan hệ hợp đồng với nhãn UNDERSOUTHERN
 
-3. Cam kết của UNDERSOUTHERN
-UNDERSOUTHERN cam kết rằng mọi hành vi gian lận đều không được chấp nhận. Chúng tôi sẽ chủ động giám sát, phát hiện và xử lý nghiêm khắc mọi trường hợp vi phạm, nhằm bảo vệ lợi ích của nghệ sĩ và thương hiệu.
+3 Cam kết của UNDERSOUTHERN
+UNDERSOUTHERN cam kết rằng mọi hành vi gian lận đều không được chấp nhận. Chúng tôi sẽ chủ động giám sát, phát hiện và xử lý nghiêm khắc mọi trường hợp vi phạm nhằm bảo vệ lợi ích của nghệ sĩ và thương hiệu
 
-4. Phát hiện và phòng ngừa
-Giám sát và phân tích dữ liệu: UNDERSOUTHERN theo dõi dữ liệu stream, doanh thu, hồ sơ nghệ sĩ và metadata để phát hiện các dấu hiệu bất thường.
-Quy trình kiểm soát chất lượng (QC): trước khi xuất bản, mọi metadata và nội dung nhạc đều phải qua kiểm tra để đảm bảo không gây hiểu lầm, không chứa nội dung trái phép, không bị upload trùng lặp.
+4 Phát hiện và phòng ngừa
+Giám sát và phân tích dữ liệu: UNDERSOUTHERN theo dõi dữ liệu stream, doanh thu, hồ sơ nghệ sĩ và metadata để phát hiện dấu hiệu bất thường
+Quy trình kiểm soát chất lượng QC: trước khi xuất bản, mọi metadata và nội dung nhạc đều phải qua kiểm tra để đảm bảo không gây nhầm lẫn, không chứa nội dung trái phép, không bị trùng lặp
 
-5. Cơ chế can thiệp khi phát hiện gian lận
-Khi có dấu hiệu nghi ngờ gian lận, UNDERSOUTHERN có quyền ngăn chặn thanh toán, yêu cầu rà soát lại ghi nhận hoặc đình chỉ dịch vụ.
-Trong trường hợp nghiêm trọng, UNDERSOUTHERN sẽ hợp tác với DSP hoặc cơ quan liên quan để điều tra thêm và có thể thực hiện các biện pháp pháp lý nếu cần.
+5 Cơ chế can thiệp khi phát hiện gian lận
+Khi có dấu hiệu nghi ngờ gian lận, UNDERSOUTHERN có quyền ngăn chặn thanh toán, yêu cầu rà soát hoặc đình chỉ dịch vụ
+Trong trường hợp nghiêm trọng, UNDERSOUTHERN sẽ hợp tác với DSP hoặc cơ quan liên quan để điều tra thêm và có thể thực hiện biện pháp pháp lý nếu cần
 
-6. Trách nhiệm của End User
-Các nghệ sĩ, đối tác hoặc bên liên quan có trách nhiệm cung cấp metadata chính xác, rõ ràng và tuân thủ quy định do UNDERSOUTHERN đặt ra.
-Cần phản hồi nhanh chóng và hợp tác khi có yêu cầu điều tra từ phía UNDERSOUTHERN.
+6 Trách nhiệm của End User
+Các nghệ sĩ, đối tác hoặc bên liên quan có trách nhiệm cung cấp metadata chính xác, rõ ràng và tuân thủ quy định do UNDERSOUTHERN đặt ra
+Cần phản hồi nhanh chóng và hợp tác khi có yêu cầu điều tra từ phía UNDERSOUTHERN
 
-7. Văn bản đi kèm
-Chính sách này nên được đọc kết hợp với Điều khoản Dịch vụ (Terms of Service) và Chính sách Bảo mật (Privacy Policy) của UNDERSOUTHERN.
+7 Văn bản đi kèm
+Chính sách này được đọc kết hợp với Điều khoản Dịch vụ và Chính sách Bảo mật của UNDERSOUTHERN
 
-8. Cập nhật chính sách
-UNDERSOUTHERN có thể sửa đổi nội dung chính sách này khi cần để phù hợp với thay đổi thị trường, quy định pháp luật hoặc công nghệ. Mọi cập nhật sẽ được thông báo và áp dụng ngay khi công bố.
+8 Cập nhật chính sách
+UNDERSOUTHERN có thể sửa đổi nội dung chính sách khi cần để phù hợp với thay đổi thị trường, quy định pháp luật hoặc công nghệ. Mọi cập nhật sẽ được thông báo và áp dụng ngay khi công bố
     </div>
   </div>
 </div>
@@ -254,13 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const video = document.getElementById('bgVideo');
   video.addEventListener('loadeddata', () => { video.classList.add('loaded'); });
 
-  // Contact modal
   const contactBtn = document.getElementById('contactBtn');
   const contactModal = document.getElementById('contactModal');
-  contactBtn.addEventListener('click', (e) => { e.stopPropagation(); contactModal.style.display = 'flex'; });
-  contactModal.addEventListener('click', (e) => { if(e.target === contactModal) contactModal.style.display = 'none'; });
 
-  // About modal
   const aboutBtn = document.getElementById('aboutBtn');
   const aboutModal = document.getElementById('aboutModal');
   const menuGrid = aboutModal.querySelector('.menu-grid');
@@ -269,25 +214,46 @@ document.addEventListener('DOMContentLoaded', () => {
   const antiFraudContent = document.getElementById('antiFraudContent');
   const helpCenterBtn = document.getElementById('helpCenterBtn');
 
-  aboutBtn.addEventListener('click', (e) => { 
+  // Click Contact → hiển thị ở giữa
+  contactBtn.addEventListener('click', (e) => { 
     e.stopPropagation(); 
-    aboutModal.style.display = 'flex'; 
-    menuGrid.style.display='grid'; 
-    socialIcons.style.display='none'; 
-    antiFraudContent.style.display='none'; 
+    contactModal.style.display = 'flex';
+    contactModal.style.alignItems = 'center';
   });
-  aboutModal.addEventListener('click', (e) => { if(e.target === aboutModal) aboutModal.style.display = 'none'; });
 
-  helpCenterBtn.addEventListener('click', () => {
-    menuGrid.style.display='none';
-    socialIcons.style.display='grid';
+  // Click Established 2024 → hiển thị ở giữa
+  aboutBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    aboutModal.style.display='flex';
+    aboutModal.style.alignItems = 'center';
+    menuGrid.style.display='grid';
+    socialIcons.style.display='none';
     antiFraudContent.style.display='none';
   });
 
+  // Click Anti-Fraud Policy → hiển thị nội dung
   antiFraudBtn.addEventListener('click', () => {
-    menuGrid.style.display='grid'; 
+    menuGrid.style.display='none';
     socialIcons.style.display='none';
     antiFraudContent.style.display='block';
+    aboutModal.scrollTop = 0;
+  });
+
+  // Click Help Center → chỉ hiển thị 3 mục Facebook, Instagram, Email
+  helpCenterBtn.addEventListener('click', () => {
+    menuGrid.style.display='none';
+    antiFraudContent.style.display='none';
+    socialIcons.style.display='grid';
+    Array.from(socialIcons.children).forEach((el, i) => {
+      if(i < 3) el.style.display = 'inline-block';
+      else el.style.display = 'none';
+    });
+  });
+
+  // Click ngoài modal → đóng
+  document.addEventListener('click', (e) => {
+    if(e.target===contactModal) contactModal.style.display='none';
+    if(e.target===aboutModal) aboutModal.style.display='none';
   });
 });
 </script>
