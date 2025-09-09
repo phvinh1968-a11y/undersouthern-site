@@ -23,7 +23,7 @@ header nav ul li:not(:last-child)::after { content:"|"; margin-left:8px; color:#
 
 /* Hero */
 .hero { position:relative; width:100%; height:100vh; display:flex; justify-content:center; align-items:center; overflow:hidden; }
-.hero video { position:absolute; top:50%; left:50%; width:auto; height:100%; min-width:100%; min-height:100%; transform:translate(-50%,-50%); object-fit:cover; z-index:-1; opacity:0; transition:opacity 1.5s ease-in-out; }
+.hero video { position:absolute; top:50%; left:50%; width:auto; height:100%; min-width:100%; min-height:100%; transform:translate(-50%,-50%); object-fit:cover; z-index:-1; opacity:0; transition:opacity 1.5s ease-in-out; will-change: opacity; }
 .hero video.loaded { opacity:1; }
 .hero .logo { position:relative; z-index:2; width:150px; max-width:30%; animation:pulse 2s infinite ease-in-out; transform-origin:center; }
 @keyframes pulse { 0%,100%{transform:scale(1);opacity:0.9;} 50%{transform:scale(1.1);opacity:1;} }
@@ -55,15 +55,16 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   word-break: break-word;
 }
 
-/* Anti-Fraud Policy */
-#antiFraudContent {
+/* Anti-Fraud & Privacy content */
+#antiFraudContent, #privacyContent {
   display:none;
-  text-align:left;
+  text-align:left; /* căn trái */
   font-size:0.65rem;
   line-height:1.2rem;
   white-space: pre-wrap;
   width:100%;
   overflow-x:hidden;
+  padding-left: 5px; /* cách viền 1 chút */
 }
 
 /* Grid menu (About Us / Established 2024) */
@@ -177,13 +178,13 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
       <div>about us</div>
       <a href="https://github.com/phvinh1968-a11y/my-images/raw/main/EXCLUSIVE_DISTRIBUTION_AGREEMEN.pdf" download><div>distribution agreement</div></a>
       <div id="antiFraudBtn">anti-fraud policy</div>
-      <div>privacy and cookies</div>
+      <div id="privacyBtn">privacy and cookies</div>
       <div id="helpCenterBtn">help center</div>
       <div>terms</div>
     </div>
 
     <!-- Social Icons for Help Center -->
-    <div class="social-icons" style="display:none;">
+    <div class="social-icons" id="helpSocialIcons" style="display:none;">
       <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
       <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
       <a href="mailto:contact@undersouthern.asia">email</a>
@@ -219,6 +220,56 @@ Chính sách này được đọc kết hợp với Điều khoản Dịch vụ 
 8 Cập nhật chính sách
 UNDERSOUTHERN có thể sửa đổi nội dung chính sách khi cần để phù hợp với thay đổi thị trường, quy định pháp luật hoặc công nghệ. Mọi cập nhật sẽ được thông báo và áp dụng ngay khi công bố
     </div>
+
+    <div id="privacyContent">
+1 Giới thiệu
+UNDERSOUTHERN là hãng thu âm độc lập Chúng tôi tôn trọng quyền riêng tư của bạn và cam kết bảo vệ dữ liệu cá nhân khi bạn truy cập website https://undersouthern.asia
+Chính sách này giải thích cách thông tin được thu thập sử dụng và bảo mật
+
+2 Thông tin chúng tôi thu thập
+2.1 Thông tin bạn cung cấp trực tiếp như họ tên email số điện thoại khi gửi bản demo đăng ký dịch vụ hoặc liên hệ
+2.2 Thông tin được thu thập tự động bao gồm địa chỉ IP loại thiết bị trình duyệt thời gian truy cập và cookie
+2.3 Thông tin từ nền tảng bên thứ ba khi bạn kết nối hoặc chia sẻ qua mạng xã hội dịch vụ phân phối nhạc hoặc đối tác
+
+3 Mục đích sử dụng thông tin
+3.1 Quản lý và cung cấp dịch vụ âm nhạc của hãng thu âm
+3.2 Hỗ trợ nghệ sĩ và khách hàng trong quá trình hợp tác
+3.3 Gửi thông báo về sản phẩm mới sự kiện hoặc chương trình quảng bá của UNDERSOUTHERN
+3.4 Phân tích dữ liệu để cải thiện trải nghiệm người dùng và phát triển hoạt động của hãng
+3.5 Tuân thủ nghĩa vụ pháp lý và yêu cầu từ cơ quan chức năng
+
+4 Cookie
+4.1 Cookie là các tệp nhỏ được lưu trong thiết bị giúp ghi nhớ thông tin và cải thiện trải nghiệm của bạn
+4.2 UNDERSOUTHERN sử dụng cookie để phân tích lưu lượng truy cập theo dõi hiệu suất và cá nhân hóa nội dung
+4.3 Bạn có thể tắt cookie trong phần cài đặt của trình duyệt nhưng một số tính năng của website có thể bị hạn chế
+
+5 Bảo mật dữ liệu
+5.1 UNDERSOUTHERN áp dụng các biện pháp kỹ thuật và tổ chức để bảo vệ dữ liệu cá nhân
+5.2 Mặc dù luôn nỗ lực tối đa nhưng không có hệ thống nào đảm bảo an toàn tuyệt đối UNDERSOUTHERN không chịu trách nhiệm về rủi ro vượt ngoài kiểm soát
+
+6 Chia sẻ thông tin
+6.1 UNDERSOUTHERN không bán hoặc cho thuê dữ liệu cá nhân
+6.2 Dữ liệu chỉ được chia sẻ với các đối tác đáng tin cậy nhằm hỗ trợ dịch vụ ví dụ nhà phân phối nhạc hoặc đơn vị kỹ thuật
+6.3 Thông tin có thể được cung cấp cho cơ quan chức năng nếu pháp luật yêu cầu
+
+7 Quyền của bạn
+7.1 Bạn có quyền truy cập chỉnh sửa hoặc yêu cầu xóa thông tin cá nhân
+7.2 Bạn có thể từ chối nhận email quảng bá bất kỳ lúc nào qua liên kết hủy đăng ký
+7.3 Bạn có quyền khiếu nại với cơ quan bảo vệ dữ liệu theo quy định pháp luật
+
+8 Liên kết ngoài
+Website https://undersouthern.asia
+ có thể chứa liên kết đến các trang web bên ngoài UNDERSOUTHERN không chịu trách nhiệm về nội dung hoặc chính sách bảo mật của các trang đó
+
+9 Thay đổi chính sách
+UNDERSOUTHERN có thể cập nhật chính sách này bất kỳ lúc nào Mọi thay đổi sẽ được đăng tải trên website và có hiệu lực ngay sau khi công bố
+
+10 Thông tin liên hệ
+Mọi thắc mắc hoặc yêu cầu liên quan đến chính sách vui lòng liên hệ
+Email contact@undersouthern.asia
+
+Website https://undersouthern.asia
+    </div>
   </div>
 </div>
 
@@ -248,11 +299,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const antiFraudBtn = document.getElementById('antiFraudBtn');
   const antiFraudContent = document.getElementById('antiFraudContent');
   const helpCenterBtn = document.getElementById('helpCenterBtn');
+  const helpSocialIcons = document.getElementById('helpSocialIcons');
+  const privacyBtn = document.getElementById('privacyBtn');
+  const privacyContent = document.getElementById('privacyContent');
 
   // Click Contact → hiển thị ở giữa
   contactBtn.addEventListener('click', (e) => { 
     e.stopPropagation(); 
     contactModal.style.display = 'flex';
+    contactModal.style.justifyContent = 'center';
     contactModal.style.alignItems = 'center';
   });
 
@@ -260,25 +315,42 @@ document.addEventListener('DOMContentLoaded', () => {
   aboutBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     aboutModal.style.display='flex';
+    aboutModal.style.justifyContent = 'center';
     aboutModal.style.alignItems = 'center';
     menuGrid.style.display='grid';
     socialIcons.style.display='none';
     antiFraudContent.style.display='none';
+    privacyContent.style.display='none';
+    helpSocialIcons.style.display='none';
   });
 
   // Click Anti-Fraud Policy → hiển thị nội dung
   antiFraudBtn.addEventListener('click', () => {
     menuGrid.style.display='none';
     socialIcons.style.display='none';
+    privacyContent.style.display='none';
+    helpSocialIcons.style.display='none';
     antiFraudContent.style.display='block';
     aboutModal.scrollTop = 0;
   });
 
-  // Click Help Center → hiển thị 3 icon giống Contact
+  // Click Privacy & Cookies → hiển thị nội dung
+  privacyBtn.addEventListener('click', () => {
+    menuGrid.style.display='none';
+    socialIcons.style.display='none';
+    antiFraudContent.style.display='none';
+    helpSocialIcons.style.display='none';
+    privacyContent.style.display='block';
+    aboutModal.scrollTop = 0;
+  });
+
+  // Click Help Center → hiển thị 3 icon
   helpCenterBtn.addEventListener('click', () => {
     menuGrid.style.display='none';
     antiFraudContent.style.display='none';
-    socialIcons.style.display='grid';
+    privacyContent.style.display='none';
+    socialIcons.style.display='none';
+    helpSocialIcons.style.display='grid';
   });
 
   // Click ngoài modal → đóng
@@ -291,4 +363,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
-
