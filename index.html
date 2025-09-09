@@ -5,130 +5,72 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UNDERSOUTHERN</title>
 
-<!-- Favicon / Biểu trưng trên tab trình duyệt -->
 <link rel="icon" type="image/png" href="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png">
-<link rel="apple-touch-icon" href="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png">
-
-<!-- Font Awesome CDN để dùng icon -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-pO9Y+4Yo+o2FQ1ZJ2tD2aTH3hkgfL30+H2hY76VxUq0dX5U+Yv/7Vz2lJZZ0XVjzFgFdbKf2H7b9HiVqLw3fpA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Arial', sans-serif; background:#111; color:#fff; overflow-x:hidden; }
 
-body {
-  font-family:'Arial', sans-serif;
-  background:#111;
-  color:#fff;
-  overflow-x:hidden;
-}
-
-/* Header fixed top - nền trong suốt */
+/* Header */
 header {
   position:fixed; top:0; left:0; width:100%; padding:20px 40px;
-  display:flex; justify-content:center; align-items:center;
-  background: transparent; /* loại bỏ nền đen */
-  backdrop-filter: none;    
-  z-index:1000;
+  display:flex; justify-content:center; align-items:center; background: transparent; z-index:1000;
 }
-header nav ul { 
-  list-style:none; 
-  display:flex; 
-  gap:10px; /* khoảng cách nhỏ hơn */
-}
-header nav ul li a {
-  color:#fff; 
-  text-decoration:none; 
-  font-weight:normal; 
-  font-size:0.8rem; /* nhỏ hơn */
-  cursor:pointer;
-}
-header nav ul li a:hover { 
-  color:#0f0; 
-}
+header nav ul { list-style:none; display:flex; gap:10px; }
+header nav ul li a { color:#fff; text-decoration:none; font-weight:normal; font-size:0.8rem; cursor:pointer; }
+header nav ul li a:hover { color:#0f0; }
+header nav ul li:not(:last-child)::after { content:"|"; margin-left:8px; color:#fff; }
 
-/* Thêm dấu | giữa các mục (trừ mục cuối) */
-header nav ul li:not(:last-child)::after {
-  content: "|";
-  margin-left:8px;
-  color:#fff;
-}
-
-/* Hero section */
-.hero {
-  position:relative;
-  width:100%;
-  height:100vh;
-  overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-/* Video background */
-.hero video {
-  position:absolute;
-  top:50%; left:50%;
-  width:auto;
-  height:100%;
-  min-width:100%;
-  min-height:100%;
-  transform:translate(-50%, -50%);
-  object-fit:cover;
-  z-index:-1;
-  opacity:0;
-  transition: opacity 1.5s ease-in-out;
-}
-.hero video.loaded {
-  opacity:1;
-}
-
-/* Logo ở giữa màn hình */
-.hero .logo {
-  position:relative;
-  z-index:2;
-  width:150px; 
-  max-width:30%; 
-  animation: pulse 2s infinite ease-in-out;
-  transform-origin: center;
-}
-
-/* Hiệu ứng nhịp đập logo */
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity:0.9; }
-  50% { transform: scale(1.1); opacity:1; }
-}
+/* Hero */
+.hero { position:relative; width:100%; height:100vh; display:flex; justify-content:center; align-items:center; overflow:hidden; }
+.hero video { position:absolute; top:50%; left:50%; width:auto; height:100%; min-width:100%; min-height:100%; transform:translate(-50%,-50%); object-fit:cover; z-index:-1; opacity:0; transition:opacity 1.5s ease-in-out; }
+.hero video.loaded { opacity:1; }
+.hero .logo { position:relative; z-index:2; width:150px; max-width:30%; animation:pulse 2s infinite ease-in-out; transform-origin:center; }
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:0.9;} 50%{transform:scale(1.1);opacity:1;} }
 
 /* Footer */
-footer {
-  text-align:center;
-  padding:15px;
-  background:#111;
-  color:#ccc;
-  font-size:0.75rem;
-  position:relative;
-  z-index:2;
+footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size:0.75rem; position:relative; z-index:2; }
+
+/* Modal overlay */
+#contactModal {
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.85); display:none;
+  justify-content:center; align-items:center; z-index:3000;
 }
 
-/* Contact popup container */
-#contactPopup {
-  position:fixed;
-  top:60px; right:20px;
-  display:none; 
-  flex-direction:row; 
-  gap:15px;
-  z-index:2000;
+/* Modal content */
+#contactModal .modal-content {
+  background:#111; padding:20px 30px; border-radius:12px;
+  display:flex; flex-direction:column; align-items:center; gap:15px; text-align:center;
+  max-width:320px; width:90%; position:relative;
+  font-family:'Arial', sans-serif; /* giống font chữ Vietnam */
 }
 
-/* Icon style */
-#contactPopup a {
-  color:#fff;
-  font-size:1.8rem;
+/* Social text buttons - nhỏ, 3 trên 3 dưới, chữ bình thường */
+#contactModal .social-icons {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:8px;
+  justify-items:center;
+  width:100%;
+}
+#contactModal .social-icons a {
+  display:flex; justify-content:center; align-items:center;
+  padding:5px 10px;
+  border-radius:6px;
   text-decoration:none;
-  transition: color 0.3s, transform 0.2s;
+  color:#fff;
+  font-size:0.7rem; /* chữ nhỏ */
+  font-weight: normal; /* không in đậm */
+  font-style: normal; /* bình thường */
+  text-transform: lowercase; /* viết thường */
+  background: rgba(255,255,255,0.05);
+  transition: transform 0.2s ease, background 0.2s ease;
+  width:80%;
 }
-#contactPopup a:hover {
-  color:#0f0;
-  transform: scale(1.2);
+#contactModal .social-icons a:hover {
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.15);
 }
 </style>
 </head>
@@ -144,21 +86,25 @@ footer {
   </nav>
 </header>
 
-<!-- Contact popup -->
-<div id="contactPopup">
-  <a href="https://www.facebook.com/undersouthern" target="_blank"><i class="fab fa-facebook-f"></i></a>
-  <a href="https://www.instagram.com/undersouthern" target="_blank"><i class="fab fa-instagram"></i></a>
-  <a href="https://www.tiktok.com/@undersouthern" target="_blank"><i class="fab fa-tiktok"></i></a>
-  <a href="https://open.spotify.com/user/undersouthern" target="_blank"><i class="fab fa-spotify"></i></a>
-  <a href="mailto:contact@undersouthern.asia"><i class="fas fa-envelope"></i></a>
+<!-- Modal -->
+<div id="contactModal">
+  <div class="modal-content">
+    <div class="social-icons">
+      <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
+      <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
+      <a href="https://www.tiktok.com/@undersouthern" target="_blank">tiktok</a>
+      <a href="https://www.youtube.com/@undersouthern" target="_blank">youtube</a>
+      <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">spotify</a>
+      <a href="mailto:contact@undersouthern.asia">email</a>
+    </div>
+  </div>
 </div>
 
 <section class="hero">
   <video id="bgVideo" muted autoplay loop playsinline preload="auto" poster="https://via.placeholder.com/1920x1080/111111/111111.png">
     <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/video_background.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
   </video>
-  
-  <!-- Logo ở giữa màn hình -->
   <img class="logo" src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo">
 </section>
 
@@ -169,26 +115,20 @@ footer {
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const video = document.getElementById('bgVideo');
-  video.muted = true;
+  video.addEventListener('loadeddata', () => { video.classList.add('loaded'); });
 
-  video.addEventListener('canplaythrough', () => {
-    video.classList.add('loaded');
-    video.play().catch(err => console.log('Autoplay lỗi:', err));
-  });
-
-  // Contact popup toggle
   const contactBtn = document.getElementById('contactBtn');
-  const contactPopup = document.getElementById('contactPopup');
+  const contactModal = document.getElementById('contactModal');
 
-  contactBtn.addEventListener('click', () => {
-    contactPopup.classList.toggle('active');
+  // Khi click Contact mở modal
+  contactBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    contactModal.style.display = 'flex';
   });
 
-  // Ẩn popup khi click ra ngoài
-  document.addEventListener('click', (e) => {
-    if(!contactPopup.contains(e.target) && e.target !== contactBtn){
-      contactPopup.classList.remove('active');
-    }
+  // Khi click ra ngoài modal thì ẩn modal
+  contactModal.addEventListener('click', (e) => {
+    if(e.target === contactModal) contactModal.style.display = 'none';
   });
 });
 </script>
