@@ -43,26 +43,34 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
 /* Modal content */
 .modal .modal-content {
   background:#111; padding:20px 30px; border-radius:12px;
-  display:flex; flex-direction:column; align-items:flex-start; gap:15px; text-align:left;
-  max-width:420px; width:100%; position:relative;
+  display:flex; flex-direction:column; align-items:center; gap:15px; text-align:center;
+  max-width:none; /* cho phép mở rộng */
+  width:auto;
+  position:relative;
   font-family: 'Arial', sans-serif;
   font-weight: normal;
   font-style: normal;
   color:#fff;
 }
 
-/* About Us menu list horizontal */
+/* About Us menu horizontal, no scroll */
 #aboutModal .menu-list {
-  display:flex; justify-content:flex-start; gap:15px; flex-wrap:wrap;
+  display:flex;
+  justify-content:center;
+  flex-wrap: nowrap; /* không xuống dòng */
+  gap:12px;
 }
 #aboutModal .menu-list div {
-  padding:5px 8px;
-  background: rgba(255,255,255,0.05);
+  flex: 0 0 auto;
+  padding:8px 12px;
   border-radius:6px;
-  cursor:pointer;
-  font-size:0.75rem;
+  background: rgba(255,255,255,0.05);
   color:#fff;
-  transition: background 0.2s, transform 0.2s;
+  font-size:0.7rem;
+  text-transform: lowercase;
+  cursor:pointer;
+  transition: transform 0.2s, background 0.2s;
+  white-space: nowrap;
 }
 #aboutModal .menu-list div:hover {
   background: rgba(255,255,255,0.15);
@@ -123,7 +131,7 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   </div>
 </div>
 
-<!-- Modal About Us as horizontal menu -->
+<!-- Modal About Us horizontal row, auto expand -->
 <div id="aboutModal" class="modal">
   <div class="modal-content">
     <div class="menu-list">
@@ -160,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
   contactBtn.addEventListener('click', (e) => { e.stopPropagation(); contactModal.style.display = 'flex'; });
   contactModal.addEventListener('click', (e) => { if(e.target === contactModal) contactModal.style.display = 'none'; });
 
-  // About modal as horizontal menu
+  // About modal
   const aboutBtn = document.getElementById('aboutBtn');
   const aboutModal = document.getElementById('aboutModal');
   aboutBtn.addEventListener('click', (e) => { e.stopPropagation(); aboutModal.style.display = 'flex'; });
