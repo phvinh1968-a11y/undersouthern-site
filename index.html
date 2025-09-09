@@ -53,24 +53,39 @@ header nav ul li a:hover { color:#0f0; transform:scale(1.05); }
 /* Text just below header, above logo */
 .hero .top-text {
   position:absolute;
-  top:60px; /* khoảng cách từ trên màn hình */
+  top:60px; 
   left:50%;
   transform:translateX(-50%);
-  font-size:0,5rem;
+  font-size:0.5rem;
   color:#fff;
   letter-spacing:1px;
   z-index:2;
   text-align:center;
 }
 
-/* Logo center */
+/* Logo center with Fade In + Pulse */
 .hero .logo-center img {
-  max-width:25vw;
+  max-width:15vw; /* desktop logo size */
   height:auto;
+  opacity:0;
+  transform:scale(0.8);
+  animation:fadeInPulse 2s ease forwards 0.5s, pulseLogo 2s infinite 2.5s;
   z-index:1;
   transition: transform 0.3s;
 }
 .hero .logo-center img:hover { transform:scale(1.05); }
+
+@keyframes fadeInPulse {
+  to {
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+@keyframes pulseLogo {
+  0%,100% { transform:scale(1); }
+  50% { transform:scale(1.05); }
+}
 
 /* Footer */
 footer {
@@ -83,7 +98,7 @@ footer {
 
 /* Responsive */
 @media(max-width:768px){
-  .hero .logo-center img{max-width:50vw;}
+  .hero .logo-center img{ max-width:30vw; } /* mobile logo size */
   header nav ul { gap:20px; }
   .hero .top-text { font-size:0.9rem; }
 }
