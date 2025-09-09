@@ -39,11 +39,8 @@ header nav ul li a:hover { color:#0f0; transform:scale(1.1); }
   width:100%;
   position:relative;
   display:flex;
-  flex-direction:column;
   justify-content:center;
   align-items:center;
-  text-align:center;
-  gap:20px;
   overflow:hidden;
 }
 .hero video {
@@ -58,15 +55,8 @@ header nav ul li a:hover { color:#0f0; transform:scale(1.1); }
   object-fit:cover;
   z-index:-1;
 }
-.hero .title {
-  font-size:clamp(1rem,3vw,1.5rem);
-  text-transform:uppercase;
-  letter-spacing:2px;
-  color:#0f0;
-  z-index:1;
-}
 .hero .logo-center img {
-  max-width:50vw;
+  max-width:30vw;
   height:auto;
   z-index:1;
 }
@@ -82,41 +72,20 @@ header nav ul li a:hover { color:#0f0; transform:scale(1.1); }
   white-space:nowrap;
   padding:15px 0;
   animation: marquee 20s linear infinite;
+  font-family: 'AngsanaUPC', sans-serif;
 }
 .marquee span {
   display:flex;
   align-items:center;
   gap:10px;
   font-size:clamp(1rem,2.5vw,1.5rem);
-  text-transform:uppercase;
+  text-transform: capitalize; /* Viết hoa chữ đầu */
 }
 .marquee span img {
   height:1em;
   filter:brightness(0) invert(1);
 }
 @keyframes marquee { 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
-
-/* Services */
-.services {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:space-around;
-  gap:2rem;
-  padding:50px 2rem;
-}
-.service-box {
-  flex:1 1 30%;
-  background:#222;
-  padding:30px;
-  border-radius:10px;
-  text-align:center;
-  opacity:0;
-  transform:translateY(50px);
-  transition: all 0.8s ease-out;
-}
-.service-box.visible { opacity:1; transform:translateY(0);}
-.service-box h3 { color:#0f0; font-size:24px; margin-bottom:10px; }
-.service-box p { color:#ccc; font-size:16px; }
 
 /* Footer */
 footer {
@@ -125,12 +94,6 @@ footer {
   background:#111;
   color:#ccc;
 }
-footer .social-links { margin-top:10px; }
-footer .social-links a {
-  color:#fff; margin:0 5px;
-  text-decoration:none;
-}
-footer .social-links a:hover { color:#0f0; }
 
 /* Fade-in khi scroll */
 .fade-in { opacity:0; transform:translateY(50px); transition:all 0.8s ease-out; }
@@ -138,10 +101,7 @@ footer .social-links a:hover { color:#0f0; }
 
 /* Responsive */
 @media(max-width:768px){
-  .hero .title{font-size:clamp(1rem,3vw,1.2rem);}
-  .hero .logo-center img{max-width:70vw;}
-  .services{flex-direction:column; gap:2rem;}
-  .service-box{width:100%;}
+  .hero .logo-center img{max-width:50vw;}
   .marquee span{font-size:clamp(0.9rem,2.5vw,1.2rem);}
 }
 </style>
@@ -162,7 +122,6 @@ footer .social-links a:hover { color:#0f0; }
   <video autoplay muted loop playsinline>
     <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/video_background.mp4" type="video/mp4">
   </video>
-  <div class="title">INDEPENDENT MUSIC HOUSE</div>
   <div class="logo-center">
     <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo">
   </div>
@@ -177,28 +136,8 @@ footer .social-links a:hover { color:#0f0; }
   </div>
 </div>
 
-<section class="services">
-  <div class="service-box fade-in">
-    <h3>Label & Distribution</h3>
-    <p>We manage, promote, and distribute music for our artists globally, keeping creative ownership with them.</p>
-  </div>
-  <div class="service-box fade-in">
-    <h3>Factory & Record</h3>
-    <p>Full production support for recordings, mastering, and content creation, all under the UNDERSOUTHERN brand.</p>
-  </div>
-  <div class="service-box fade-in">
-    <h3>Artist Support</h3>
-    <p>We provide marketing, promotional, and strategic guidance to empower artists’ careers.</p>
-  </div>
-</section>
-
 <footer>
   <p>© 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015</p>
-  <div class="social-links">
-    <a href="https://facebook.com/undersouthern" target="_blank">Facebook</a>
-    <a href="https://instagram.com/undersouthern" target="_blank">Instagram</a>
-    <a href="https://twitter.com/undersouthern" target="_blank">Twitter</a>
-  </div>
 </footer>
 
 <script>
