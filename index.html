@@ -32,21 +32,44 @@ header nav ul li:not(:last-child)::after { content:"|"; margin-left:8px; color:#
 footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size:0.75rem; position:relative; z-index:2; }
 
 /* Modal overlay */
-#contactModal {
+.modal {
   position:fixed; top:0; left:0; width:100%; height:100%;
   background: rgba(0,0,0,0.85); display:none;
   justify-content:center; align-items:center; z-index:3000;
+  overflow-y:auto;
+  padding:40px 20px;
 }
 
 /* Modal content */
-#contactModal .modal-content {
+.modal .modal-content {
   background:#111; padding:20px 30px; border-radius:12px;
-  display:flex; flex-direction:column; align-items:center; gap:15px; text-align:center;
-  max-width:320px; width:90%; position:relative;
-  font-family:'Arial', sans-serif; /* giống font chữ Vietnam */
+  display:flex; flex-direction:column; align-items:flex-start; gap:15px; text-align:left;
+  max-width:420px; width:100%; position:relative;
+  font-family: 'Arial', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  color:#fff;
 }
 
-/* Social text buttons - nhỏ, 3 trên 3 dưới, chữ bình thường */
+/* About Us menu list horizontal */
+#aboutModal .menu-list {
+  display:flex; justify-content:flex-start; gap:15px; flex-wrap:wrap;
+}
+#aboutModal .menu-list div {
+  padding:5px 8px;
+  background: rgba(255,255,255,0.05);
+  border-radius:6px;
+  cursor:pointer;
+  font-size:0.75rem;
+  color:#fff;
+  transition: background 0.2s, transform 0.2s;
+}
+#aboutModal .menu-list div:hover {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.05);
+}
+
+/* Contact social buttons */
 #contactModal .social-icons {
   display:grid;
   grid-template-columns: repeat(3, 1fr);
@@ -60,10 +83,10 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   border-radius:6px;
   text-decoration:none;
   color:#fff;
-  font-size:0.7rem; /* chữ nhỏ */
-  font-weight: normal; /* không in đậm */
-  font-style: normal; /* bình thường */
-  text-transform: lowercase; /* viết thường */
+  font-size:0.7rem; 
+  font-weight: normal; 
+  font-style: normal; 
+  text-transform: lowercase; 
   background: rgba(255,255,255,0.05);
   transition: transform 0.2s ease, background 0.2s ease;
   width:80%;
@@ -80,14 +103,14 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   <nav>
     <ul>
       <li><a>Vietnam</a></li>
-      <li><a>Established 2024</a></li>
+      <li><a id="aboutBtn">Established 2024</a></li>
       <li><a id="contactBtn">Contact</a></li>
     </ul>
   </nav>
 </header>
 
-<!-- Modal -->
-<div id="contactModal">
+<!-- Modal Contact -->
+<div id="contactModal" class="modal">
   <div class="modal-content">
     <div class="social-icons">
       <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
@@ -96,6 +119,20 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
       <a href="https://www.youtube.com/@undersouthern" target="_blank">youtube</a>
       <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">spotify</a>
       <a href="mailto:contact@undersouthern.asia">email</a>
+    </div>
+  </div>
+</div>
+
+<!-- Modal About Us as horizontal menu -->
+<div id="aboutModal" class="modal">
+  <div class="modal-content">
+    <div class="menu-list">
+      <div>about us</div>
+      <div>distribution agreement</div>
+      <div>anti-fraud policy</div>
+      <div>privacy and cookies</div>
+      <div>help center</div>
+      <div>terms</div>
     </div>
   </div>
 </div>
@@ -117,19 +154,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const video = document.getElementById('bgVideo');
   video.addEventListener('loadeddata', () => { video.classList.add('loaded'); });
 
+  // Contact modal
   const contactBtn = document.getElementById('contactBtn');
   const contactModal = document.getElementById('contactModal');
+  contactBtn.addEventListener('click', (e) => { e.stopPropagation(); contactModal.style.display = 'flex'; });
+  contactModal.addEventListener('click', (e) => { if(e.target === contactModal) contactModal.style.display = 'none'; });
 
-  // Khi click Contact mở modal
-  contactBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    contactModal.style.display = 'flex';
-  });
-
-  // Khi click ra ngoài modal thì ẩn modal
-  contactModal.addEventListener('click', (e) => {
-    if(e.target === contactModal) contactModal.style.display = 'none';
-  });
+  // About modal as horizontal menu
+  const aboutBtn = document.getElementById('aboutBtn');
+  const aboutModal = document.getElementById('aboutModal');
+  aboutBtn.addEventListener('click', (e) => { e.stopPropagation(); aboutModal.style.display = 'flex'; });
+  aboutModal.addEventListener('click', (e) => { if(e.target === aboutModal) aboutModal.style.display = 'none'; });
 });
 </script>
 
