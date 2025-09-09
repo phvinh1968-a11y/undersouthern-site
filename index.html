@@ -5,172 +5,188 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UNDERSOUTHERN</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #111111;
-  color: #FFFFFF;
-  overflow-x: hidden;
+  font-family:'Arial', sans-serif;
+  background:#111;
+  color:#fff;
+  overflow-x:hidden;
 }
 
 /* Header */
 header {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  padding: 20px 40px;
-  background-color: #111111;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 1000;
-  transition: background-color 0.3s;
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  padding:20px 40px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:transparent;
+  z-index:1000;
 }
-header.sticky { background-color: #000000; }
-header .logo img { height: 40px; transition: transform 0.3s; }
-header .logo img:hover { transform: scale(1.05); }
-
-header nav ul { list-style: none; display: flex; gap: 20px; }
+header nav ul { list-style:none; display:flex; gap:20px; }
 header nav ul li a {
-  color: #FFFFFF; text-decoration: none; font-weight: bold;
+  color:#fff; text-decoration:none; font-weight:bold;
   transition: color 0.3s, transform 0.3s;
 }
-header nav ul li a:hover { color: #00FF00; transform: scale(1.1); }
+header nav ul li a:hover { color:#0f0; transform:scale(1.1); }
 
-/* Hero Section */
+/* Hero full screen with video background */
 .hero {
-  height: 100vh;
-  background-image: url('your-image.jpg');
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: #FFFFFF;
+  height:100vh;
+  width:100%;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  gap:20px;
+  overflow:hidden;
 }
-.hero h1 { font-size: 48px; text-transform: uppercase; letter-spacing: 5px; }
+.hero video {
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:auto;
+  height:100%;
+  min-width:100%;
+  min-height:100%;
+  transform:translate(-50%, -50%);
+  object-fit:cover;
+  z-index:-1;
+}
+.hero .title {
+  font-size:clamp(1rem,3vw,1.5rem);
+  text-transform:uppercase;
+  letter-spacing:2px;
+  color:#0f0;
+  z-index:1;
+}
+.hero .logo-center img {
+  max-width:50vw;
+  height:auto;
+  z-index:1;
+}
 
-/* Marquee */
+/* Marquee 1 dòng */
+.marquee-wrapper {
+  margin-top:50px;
+  overflow:hidden;
+}
 .marquee {
-  width: 100%;
-  overflow: hidden;
-  background-color: #111111;
-  color: #FFFFFF;
-  padding: 10px 0;
-  opacity: 0;
-  transform: translateX(50px);
-  transition: opacity 1s ease-out, transform 1s ease-out;
+  width:100%;
+  display:flex;
+  white-space:nowrap;
+  padding:15px 0;
+  animation: marquee 20s linear infinite;
 }
-.marquee.visible { opacity: 1; transform: translateX(0); }
+.marquee span {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:clamp(1rem,2.5vw,1.5rem);
+  text-transform:uppercase;
+}
+.marquee span img {
+  height:1em;
+  filter:brightness(0) invert(1);
+}
+@keyframes marquee { 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
 
-.marquee-content {
-  display: flex;
-  animation: marquee 15s linear infinite;
-}
-.marquee-content span {
-  margin-right: 50px;
-  font-size: 18px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-@keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-
-/* Services Section */
+/* Services */
 .services {
-  display: flex;
-  justify-content: space-around;
-  padding: 50px 2rem;
-  background-color: #222222;
-  gap: 2rem;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-around;
+  gap:2rem;
+  padding:50px 2rem;
 }
 .service-box {
-  width: 30%;
-  background-color: #333333;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
-  opacity: 0;
-  transform: translateY(30px);
-}
-.service-box.visible {
-  opacity: 1;
-  transform: translateY(0);
+  flex:1 1 30%;
+  background:#222;
+  padding:30px;
+  border-radius:10px;
+  text-align:center;
+  opacity:0;
+  transform:translateY(50px);
   transition: all 0.8s ease-out;
 }
-.service-box:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 0 15px #00FF00;
-}
-.service-box h3 { font-size: 24px; margin-bottom: 10px; color: #00FF00; }
-.service-box p { font-size: 16px; color:#ccc; }
+.service-box.visible { opacity:1; transform:translateY(0);}
+.service-box h3 { color:#0f0; font-size:24px; margin-bottom:10px; }
+.service-box p { color:#ccc; font-size:16px; }
 
 /* Footer */
 footer {
-  background-color: #111111;
-  color: #FFFFFF;
-  text-align: center;
-  padding: 20px;
-  position: relative;
+  text-align:center;
+  padding:20px;
+  background:#111;
+  color:#ccc;
 }
-footer .social-links {
-  position: absolute;
-  top: 20px; right: 20px;
-}
+footer .social-links { margin-top:10px; }
 footer .social-links a {
-  color: #FFFFFF; margin-left: 10px;
-  text-decoration: none; font-size: 18px;
+  color:#fff; margin:0 5px;
+  text-decoration:none;
 }
-footer .social-links a:hover { color: #00FF00; }
+footer .social-links a:hover { color:#0f0; }
+
+/* Fade-in khi scroll */
+.fade-in { opacity:0; transform:translateY(50px); transition:all 0.8s ease-out; }
+.fade-in.visible { opacity:1; transform:translateY(0); }
 
 /* Responsive */
 @media(max-width:768px){
-  .hero h1{font-size:clamp(2rem,6vw,4rem);}
-  .services{flex-direction: column; gap: 2rem;}
+  .hero .title{font-size:clamp(1rem,3vw,1.2rem);}
+  .hero .logo-center img{max-width:70vw;}
+  .services{flex-direction:column; gap:2rem;}
   .service-box{width:100%;}
+  .marquee span{font-size:clamp(0.9rem,2.5vw,1.2rem);}
 }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">
-    <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png" alt="UNDERSOUTHERN Logo">
-  </div>
   <nav>
     <ul>
-      <li><a id="vietnamLink">Vietnam</a></li>
-      <li><a id="establishedLink">Established</a></li>
-      <li><a id="contactLink">Contact</a></li>
+      <li><a>Vietnam</a></li>
+      <li><a>Established 2024</a></li>
+      <li><a>Contact</a></li>
     </ul>
   </nav>
 </header>
 
-<section class="hero">
-  <h1>UNDERSOUTHERN</h1>
+<section class="hero fade-in">
+  <video autoplay muted loop playsinline>
+    <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/video_background.mp4" type="video/mp4">
+  </video>
+  <div class="title">INDEPENDENT MUSIC HOUSE</div>
+  <div class="logo-center">
+    <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo">
+  </div>
 </section>
 
-<div class="marquee">
-  <div class="marquee-content">
-    <span>Undersouthern Label</span>
-    <span>Undersouthern Distribution</span>
-    <span>Undersouthern Factory</span>
-    <span>Undersouthern Record</span>
+<div class="marquee-wrapper">
+  <div class="marquee fade-in">
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
+    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Record</span>
   </div>
 </div>
 
 <section class="services">
-  <div class="service-box">
+  <div class="service-box fade-in">
     <h3>Label & Distribution</h3>
     <p>We manage, promote, and distribute music for our artists globally, keeping creative ownership with them.</p>
   </div>
-  <div class="service-box">
+  <div class="service-box fade-in">
     <h3>Factory & Record</h3>
     <p>Full production support for recordings, mastering, and content creation, all under the UNDERSOUTHERN brand.</p>
   </div>
-  <div class="service-box">
+  <div class="service-box fade-in">
     <h3>Artist Support</h3>
     <p>We provide marketing, promotional, and strategic guidance to empower artists’ careers.</p>
   </div>
@@ -186,22 +202,11 @@ footer .social-links a:hover { color: #00FF00; }
 </footer>
 
 <script>
-// Sticky header
-window.addEventListener('scroll', () => {
-  var header = document.querySelector("header");
-  if(window.scrollY > 0) header.classList.add("sticky");
-  else header.classList.remove("sticky");
-
-  // Fade in marquee
-  var marquee = document.querySelector('.marquee');
-  if(marquee.getBoundingClientRect().top < window.innerHeight - 50){
-    marquee.classList.add('visible');
-  }
-
-  // Fade in services
-  document.querySelectorAll('.service-box').forEach(box => {
-    if(box.getBoundingClientRect().top < window.innerHeight - 50){
-      box.classList.add('visible');
+// Fade-in khi scroll
+window.addEventListener('scroll',()=>{
+  document.querySelectorAll('.fade-in').forEach(el=>{
+    if(el.getBoundingClientRect().top < window.innerHeight - 50){
+      el.classList.add('visible');
     }
   });
 });
