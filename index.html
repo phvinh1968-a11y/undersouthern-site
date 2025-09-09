@@ -9,6 +9,9 @@
 <link rel="icon" type="image/png" href="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png">
 <link rel="apple-touch-icon" href="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png">
 
+<!-- Font Awesome CDN để dùng icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-pO9Y+4Yo+o2FQ1ZJ2tD2aTH3hkgfL30+H2hY76VxUq0dX5U+Yv/7Vz2lJZZ0XVjzFgFdbKf2H7b9HiVqLw3fpA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -19,19 +22,36 @@ body {
   overflow-x:hidden;
 }
 
-/* Header fixed top */
+/* Header fixed top - nền trong suốt */
 header {
   position:fixed; top:0; left:0; width:100%; padding:20px 40px;
   display:flex; justify-content:center; align-items:center;
-  background:rgba(0,0,0,0.4);
-  backdrop-filter:blur(3px);
+  background: transparent; /* loại bỏ nền đen */
+  backdrop-filter: none;    
   z-index:1000;
 }
-header nav ul { list-style:none; display:flex; gap:15px; }
-header nav ul li a {
-  color:#fff; text-decoration:none; font-weight:normal; font-size:1rem;
+header nav ul { 
+  list-style:none; 
+  display:flex; 
+  gap:10px; /* khoảng cách nhỏ hơn */
 }
-header nav ul li a:hover { color:#0f0; }
+header nav ul li a {
+  color:#fff; 
+  text-decoration:none; 
+  font-weight:normal; 
+  font-size:0.8rem; /* nhỏ hơn */
+  cursor:pointer;
+}
+header nav ul li a:hover { 
+  color:#0f0; 
+}
+
+/* Thêm dấu | giữa các mục (trừ mục cuối) */
+header nav ul li:not(:last-child)::after {
+  content: "|";
+  margin-left:8px;
+  color:#fff;
+}
 
 /* Hero section */
 .hero {
@@ -69,6 +89,7 @@ header nav ul li a:hover { color:#0f0; }
   width:150px; 
   max-width:30%; 
   animation: pulse 2s infinite ease-in-out;
+  transform-origin: center;
 }
 
 /* Hiệu ứng nhịp đập logo */
@@ -83,9 +104,31 @@ footer {
   padding:15px;
   background:#111;
   color:#ccc;
-  font-size:0.5rem;
+  font-size:0.75rem;
   position:relative;
   z-index:2;
+}
+
+/* Contact popup container */
+#contactPopup {
+  position:fixed;
+  top:60px; right:20px;
+  display:none; 
+  flex-direction:row; 
+  gap:15px;
+  z-index:2000;
+}
+
+/* Icon style */
+#contactPopup a {
+  color:#fff;
+  font-size:1.8rem;
+  text-decoration:none;
+  transition: color 0.3s, transform 0.2s;
+}
+#contactPopup a:hover {
+  color:#0f0;
+  transform: scale(1.2);
 }
 </style>
 </head>
@@ -96,10 +139,19 @@ footer {
     <ul>
       <li><a>Vietnam</a></li>
       <li><a>Established 2024</a></li>
-      <li><a>Contact</a></li>
+      <li><a id="contactBtn">Contact</a></li>
     </ul>
   </nav>
 </header>
+
+<!-- Contact popup -->
+<div id="contactPopup">
+  <a href="https://www.facebook.com/undersouthern" target="_blank"><i class="fab fa-facebook-f"></i></a>
+  <a href="https://www.instagram.com/undersouthern" target="_blank"><i class="fab fa-instagram"></i></a>
+  <a href="https://www.tiktok.com/@undersouthern" target="_blank"><i class="fab fa-tiktok"></i></a>
+  <a href="https://open.spotify.com/user/undersouthern" target="_blank"><i class="fab fa-spotify"></i></a>
+  <a href="mailto:contact@undersouthern.asia"><i class="fas fa-envelope"></i></a>
+</div>
 
 <section class="hero">
   <video id="bgVideo" muted autoplay loop playsinline preload="auto" poster="https://via.placeholder.com/1920x1080/111111/111111.png">
@@ -122,6 +174,21 @@ document.addEventListener('DOMContentLoaded', () => {
   video.addEventListener('canplaythrough', () => {
     video.classList.add('loaded');
     video.play().catch(err => console.log('Autoplay lỗi:', err));
+  });
+
+  // Contact popup toggle
+  const contactBtn = document.getElementById('contactBtn');
+  const contactPopup = document.getElementById('contactPopup');
+
+  contactBtn.addEventListener('click', () => {
+    contactPopup.classList.toggle('active');
+  });
+
+  // Ẩn popup khi click ra ngoài
+  document.addEventListener('click', (e) => {
+    if(!contactPopup.contains(e.target) && e.target !== contactBtn){
+      contactPopup.classList.remove('active');
+    }
   });
 });
 </script>
