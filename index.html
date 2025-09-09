@@ -14,26 +14,20 @@ body {
   overflow-x:hidden;
 }
 
-/* Header */
+/* Header fixed top */
 header {
-  position:fixed;
-  top:0; left:0;
-  width:100%;
-  padding:20px 40px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:transparent;
-  z-index:1000;
+  position:fixed; top:0; left:0; width:100%; padding:20px 40px;
+  display:flex; justify-content:center; align-items:center;
+  background:transparent; z-index:1000;
 }
-header nav ul { list-style:none; display:flex; gap:20px; }
+header nav ul { list-style:none; display:flex; gap:40px; }
 header nav ul li a {
-  color:#fff; text-decoration:none; font-weight:bold;
+  color:#fff; text-decoration:none; font-weight:normal; font-size:1rem;
   transition: color 0.3s, transform 0.3s;
 }
-header nav ul li a:hover { color:#0f0; transform:scale(1.1); }
+header nav ul li a:hover { color:#0f0; transform:scale(1.05); }
 
-/* Hero full screen with video background */
+/* Hero section */
 .hero {
   height:100vh;
   width:100%;
@@ -41,68 +35,57 @@ header nav ul li a:hover { color:#0f0; transform:scale(1.1); }
   display:flex;
   justify-content:center;
   align-items:center;
+  flex-direction:column;
   overflow:hidden;
 }
+
+/* Video background */
 .hero video {
   position:absolute;
-  top:50%;
-  left:50%;
-  width:auto;
-  height:100%;
-  min-width:100%;
-  min-height:100%;
+  top:50%; left:50%;
+  width:auto; height:100%;
+  min-width:100%; min-height:100%;
   transform:translate(-50%, -50%);
   object-fit:cover;
   z-index:-1;
 }
-.hero .logo-center img {
-  max-width:30vw;
-  height:auto;
-  z-index:1;
+
+/* Text just below header, above logo */
+.hero .top-text {
+  position:absolute;
+  top:60px; /* khoảng cách từ trên màn hình */
+  left:50%;
+  transform:translateX(-50%);
+  font-size:1rem;
+  color:#fff;
+  letter-spacing:1px;
+  z-index:2;
+  text-align:center;
 }
 
-/* Marquee 1 dòng */
-.marquee-wrapper {
-  margin-top:50px;
-  overflow:hidden;
+/* Logo center */
+.hero .logo-center img {
+  max-width:25vw;
+  height:auto;
+  z-index:1;
+  transition: transform 0.3s;
 }
-.marquee {
-  width:100%;
-  display:flex;
-  white-space:nowrap;
-  padding:15px 0;
-  animation: marquee 20s linear infinite;
-  font-family: 'AngsanaUPC', sans-serif;
-}
-.marquee span {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:clamp(1rem,2.5vw,1.5rem);
-  text-transform: capitalize; /* Viết hoa chữ đầu */
-}
-.marquee span img {
-  height:1em;
-  filter:brightness(0) invert(1);
-}
-@keyframes marquee { 0%{transform:translateX(100%);} 100%{transform:translateX(-100%);} }
+.hero .logo-center img:hover { transform:scale(1.05); }
 
 /* Footer */
 footer {
   text-align:center;
-  padding:20px;
+  padding:15px;
   background:#111;
   color:#ccc;
+  font-size:0.5rem;
 }
-
-/* Fade-in khi scroll */
-.fade-in { opacity:0; transform:translateY(50px); transition:all 0.8s ease-out; }
-.fade-in.visible { opacity:1; transform:translateY(0); }
 
 /* Responsive */
 @media(max-width:768px){
   .hero .logo-center img{max-width:50vw;}
-  .marquee span{font-size:clamp(0.9rem,2.5vw,1.2rem);}
+  header nav ul { gap:20px; }
+  .hero .top-text { font-size:0.9rem; }
 }
 </style>
 </head>
@@ -118,8 +101,8 @@ footer {
   </nav>
 </header>
 
-<section class="hero fade-in">
-  <video autoplay muted loop playsinline>
+<section class="hero">
+  <video id="bgVideo" muted autoplay loop playsinline preload="auto" poster="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">
     <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/video_background.mp4" type="video/mp4">
   </video>
   <div class="logo-center">
@@ -127,27 +110,21 @@ footer {
   </div>
 </section>
 
-<div class="marquee-wrapper">
-  <div class="marquee fade-in">
-    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
-    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
-    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
-    <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Record</span>
-  </div>
-</div>
-
 <footer>
   <p>© 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015</p>
 </footer>
 
 <script>
-// Fade-in khi scroll
-window.addEventListener('scroll',()=>{
-  document.querySelectorAll('.fade-in').forEach(el=>{
-    if(el.getBoundingClientRect().top < window.innerHeight - 50){
-      el.classList.add('visible');
-    }
-  });
+// Autoplay video ngay khi load
+document.addEventListener('DOMContentLoaded', () => {
+  const video = document.getElementById('bgVideo');
+  video.muted = true;
+  const playPromise = video.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(error => {
+      console.log("Autoplay bị chặn:", error);
+    });
+  }
 });
 </script>
 
