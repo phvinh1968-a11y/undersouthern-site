@@ -1,399 +1,211 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UNDERSOUTHERN</title>
-
-<!-- Favicon & Logo hiển thị -->
-<link rel="icon" type="image/png" href="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png">
-<link rel="apple-touch-icon" href="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png">
-
-<!-- Open Graph để chia sẻ mạng xã hội -->
-<meta property="og:title" content="UNDERSOUTHERN">
-<meta property="og:description" content="Independent Music House – UNDERSOUTHERN">
-<meta property="og:image" content="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://undersouthern.asia">
-
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family: Arial, sans-serif;
-    color: #fff;
-    background: #000;
-    overflow-x: hidden;
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* Header */
-  .header {
-    text-align:center;
-    padding:clamp(10px,2vw,20px);
-    font-size:clamp(1.5rem,4vw,2rem);
-    font-weight:bold;
-    letter-spacing:2px;
-    z-index:1;
-    position:relative;
-  }
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #111111;
+  color: #FFFFFF;
+  overflow-x: hidden;
+}
 
-  /* Vietnam | Established | Contact */
-  .header .sub-links {
-    font-size:clamp(0.7rem,1.5vw,0.9rem);
-    margin-top:5px;
-  }
-  .header .sub-links a {
-    color:#fff;
-    text-decoration:none;
-    cursor:pointer;
-    margin:0 5px;
-    white-space:nowrap;
-  }
+/* Header */
+header {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  padding: 20px 40px;
+  background-color: #111111;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  transition: background-color 0.3s;
+}
+header.sticky { background-color: #000000; }
+header .logo img { height: 40px; transition: transform 0.3s; }
+header .logo img:hover { transform: scale(1.05); }
 
-  /* Marquee wrapper */
-  .marquee-wrapper {
-    display:flex;
-    flex-direction:column;
-    gap:clamp(10px,2vw,20px);
-    height:calc(100vh - 120px);
-    overflow:hidden;
-    position:relative;
-    z-index:1;
-  }
+header nav ul { list-style: none; display: flex; gap: 20px; }
+header nav ul li a {
+  color: #FFFFFF; text-decoration: none; font-weight: bold;
+  transition: color 0.3s, transform 0.3s;
+}
+header nav ul li a:hover { color: #00FF00; transform: scale(1.1); }
 
-  .marquee {
-    overflow:hidden;
-    border-top:1px solid #fff;
-    border-bottom:1px solid #fff;
-    white-space:nowrap;
-    position:relative;
-  }
+/* Hero Section */
+.hero {
+  height: 100vh;
+  background-image: url('your-image.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #FFFFFF;
+}
+.hero h1 { font-size: 48px; text-transform: uppercase; letter-spacing: 5px; }
 
-  .marquee-content {
-    display:flex;
-    flex-wrap:nowrap;
-    animation: marquee 12s linear infinite;
-  }
+/* Marquee */
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  background-color: #111111;
+  color: #FFFFFF;
+  padding: 10px 0;
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+.marquee.visible { opacity: 1; transform: translateX(0); }
 
-  .reverse .marquee-content { animation-direction: reverse; }
+.marquee-content {
+  display: flex;
+  animation: marquee 15s linear infinite;
+}
+.marquee-content span {
+  margin-right: 50px;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+@keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
+/* Services Section */
+.services {
+  display: flex;
+  justify-content: space-around;
+  padding: 50px 2rem;
+  background-color: #222222;
+  gap: 2rem;
+}
+.service-box {
+  width: 30%;
+  background-color: #333333;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.service-box.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.8s ease-out;
+}
+.service-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 15px #00FF00;
+}
+.service-box h3 { font-size: 24px; margin-bottom: 10px; color: #00FF00; }
+.service-box p { font-size: 16px; color:#ccc; }
 
-  .marquee span {
-    display:inline-flex;
-    align-items:center;
-    margin-right:clamp(20px,4vw,40px);
-    font-size:clamp(2rem,6vw,8vw);
-    font-family:'Times New Roman', Times, serif;
-    color:#fff;
-    text-transform:capitalize;
-    white-space:nowrap;
-  }
+/* Footer */
+footer {
+  background-color: #111111;
+  color: #FFFFFF;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+footer .social-links {
+  position: absolute;
+  top: 20px; right: 20px;
+}
+footer .social-links a {
+  color: #FFFFFF; margin-left: 10px;
+  text-decoration: none; font-size: 18px;
+}
+footer .social-links a:hover { color: #00FF00; }
 
-  .marquee span img {
-    height:1em;
-    width:auto;
-    margin-right:0.5em;
-    filter:brightness(0) invert(1); /* logo trắng */
-  }
-
-  .footer {
-    text-align:center;
-    font-size:clamp(0.6rem,1.2vw,0.8rem);
-    padding:clamp(5px,1vw,10px);
-    border-top:1px solid #fff;
-    color:#ccc;
-  }
-
-  /* Modal */
-  .modal {
-    display:none;
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.95);
-    justify-content:center;
-    align-items:flex-start;
-    z-index:10;
-    overflow-y:auto;
-    padding:clamp(20px,5vw,50px);
-  }
-  .modal-content {
-    background:#111;
-    padding:clamp(10px,2vw,20px);
-    border-radius:8px;
-    width:90%;
-    max-width:900px;
-    color:#fff;
-    position:relative;
-    white-space:pre-wrap;
-    overflow-wrap:break-word;
-    z-index:1;
-  }
-  .modal-close {
-    position:absolute; top:10px; right:15px;
-    font-size:clamp(16px,3vw,20px);
-    cursor:pointer;
-    color:#fff;
-    z-index:2;
-  }
-  .modal-content a { color:#0f0; text-decoration:none; }
-  .modal-content a:hover { text-decoration:underline; }
-
-  /* Logo mờ chạy nền trong modal */
-  .modal-bg-logo {
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    z-index:0;
-    pointer-events:none;
-  }
-
-  .modal-bg-logo img {
-    position:absolute;
-    width:clamp(100px,15vw,150px);
-    opacity:0.05;
-    animation: logoMove 20s linear infinite;
-  }
-
-  @keyframes logoMove {
-    0% { transform: translateX(-200px) translateY(0) rotate(0deg); }
-    50% { transform: translateX(100vw) translateY(50px) rotate(180deg); }
-    100% { transform: translateX(-200px) translateY(0) rotate(360deg); }
-  }
-
-  /* Responsive */
-  @media (max-width:768px){
-    .marquee span { font-size:clamp(12vw,14vw,16vw); margin-right:3vw; }
-    .header,.footer{ font-size:clamp(0.7rem,2vw,0.9rem); }
-    .modal { padding:20px; }
-  }
-
-  @media (max-width:480px){
-    .marquee span { font-size:clamp(14vw,16vw,18vw); margin-right:2vw; }
-  }
+/* Responsive */
+@media(max-width:768px){
+  .hero h1{font-size:clamp(2rem,6vw,4rem);}
+  .services{flex-direction: column; gap: 2rem;}
+  .service-box{width:100%;}
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  INDEPENDENT MUSIC HOUSE
-  <div class="sub-links">
-    <a id="vietnamLink">Vietnam</a> | <a id="establishedLink">Established 2024</a> | <a id="contactLink">Contact</a>
+<header>
+  <div class="logo">
+    <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png" alt="UNDERSOUTHERN Logo">
+  </div>
+  <nav>
+    <ul>
+      <li><a id="vietnamLink">Vietnam</a></li>
+      <li><a id="establishedLink">Established</a></li>
+      <li><a id="contactLink">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>UNDERSOUTHERN</h1>
+</section>
+
+<div class="marquee">
+  <div class="marquee-content">
+    <span>Undersouthern Label</span>
+    <span>Undersouthern Distribution</span>
+    <span>Undersouthern Factory</span>
+    <span>Undersouthern Record</span>
   </div>
 </div>
 
-<div class="marquee-wrapper">
-  <div class="marquee">
-    <div class="marquee-content">
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Record</span>
-    </div>
+<section class="services">
+  <div class="service-box">
+    <h3>Label & Distribution</h3>
+    <p>We manage, promote, and distribute music for our artists globally, keeping creative ownership with them.</p>
   </div>
-
-  <div class="marquee reverse">
-    <div class="marquee-content">
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Record</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
-    </div>
+  <div class="service-box">
+    <h3>Factory & Record</h3>
+    <p>Full production support for recordings, mastering, and content creation, all under the UNDERSOUTHERN brand.</p>
   </div>
-
-  <div class="marquee">
-    <div class="marquee-content">
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Record</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
-    </div>
+  <div class="service-box">
+    <h3>Artist Support</h3>
+    <p>We provide marketing, promotional, and strategic guidance to empower artists’ careers.</p>
   </div>
+</section>
 
-  <div class="marquee reverse">
-    <div class="marquee-content">
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Record</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
-    </div>
+<footer>
+  <p>© 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015</p>
+  <div class="social-links">
+    <a href="https://facebook.com/undersouthern" target="_blank">Facebook</a>
+    <a href="https://instagram.com/undersouthern" target="_blank">Instagram</a>
+    <a href="https://twitter.com/undersouthern" target="_blank">Twitter</a>
   </div>
-
-  <div class="marquee">
-    <div class="marquee-content">
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Label</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Distribution</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Factory</span>
-      <span><img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png">Undersouthern Record</span>
-    </div>
-  </div>
-</div>
-
-<div class="footer">
-  © 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015
-</div>
-
-<!-- Modal Contact -->
-<div class="modal" id="contactModal">
-  <div class="modal-content">
-    <span class="modal-close" id="closeModal">&times;</span>
-    <a href="mailto:contact@undersouthern.asia">Email</a>
-    <a href="https://www.facebook.com/undersouthern" target="_blank">Facebook</a>
-    <a href="https://www.instagram.com/undersouthern" target="_blank">Instagram</a>
-    <a href="https://www.youtube.com/undersouthern" target="_blank">YouTube</a>
-    <a href="https://www.tiktok.com/@undersouthern" target="_blank">TikTok</a>
-    <a href="https://open.spotify.com/user/undersouthern" target="_blank">Spotify</a>
-  </div>
-</div>
-
-<!-- Modal Established -->
-<div class="modal" id="establishedModal">
-  <div class="modal-content">
-    <span class="modal-close" id="closeEstablished">&times;</span>
-    <div class="modal-bg-logo">
-      <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN">
-    </div>
-    <h2>Copyright and Intellectual Property</h2>
-    <p>
-1. Introduction
-UNDERSOUTHERN is an independent music label that manages, distributes, and promotes artists and their music across digital platforms. All activities are conducted in partnership with artists, respecting their copyright ownership.
-
-2. Intellectual Property Rights
-Artists’ Ownership: Artists retain full copyright over their songs, beats, videos, and artwork. UNDERSOUTHERN respects and upholds these rights.
-
-Label Rights: UNDERSOUTHERN owns its brand, logo, and any label-produced promotional content. The label has the exclusive right to distribute music under agreed contracts.
-
-Content Control: UNDERSOUTHERN has the authority to manage, market, and distribute music for promotional and commercial purposes in accordance with the artist agreement.
-
-3. Content Usage
-Authorized Use: Any copying, sharing, or commercial use of music distributed by UNDERSOUTHERN must have prior written consent from both the label and the respective artist.
-
-Prohibited Actions: Unauthorized reproduction, distribution, or modification of content without consent is strictly prohibited and may result in legal action.
-
-4. Artist Collaboration
-Mutual Rights and Responsibilities: Artists and UNDERSOUTHERN collaborate under contracts that clearly define the rights, obligations, and revenue shares for both parties.
-
-Exclusive Distribution: Music released through UNDERSOUTHERN is exclusively distributed by the label unless explicitly agreed otherwise in writing.
-
-Promotion and Support: UNDERSOUTHERN commits to promoting artists professionally and ensuring that all distribution activities respect the artist’s creative integrity and legal rights.
-
-5. Limitation of Liability
-UNDERSOUTHERN is not responsible for unauthorized use of music or content outside the scope of contracts or official platforms.
-
-All disputes related to copyright or contract terms will be addressed according to the applicable laws and the terms agreed upon in the artist agreement.
-    </p>
-  </div>
-</div>
-
-<!-- Modal Vietnam -->
-<div class="modal" id="vietnamModal">
-  <div class="modal-content">
-    <span class="modal-close" id="closeVietnam">&times;</span>
-    <div class="modal-bg-logo">
-      <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN">
-    </div>
-    <h2>DISTRIBUTION AGREEMENT</h2>
-    <p>
-1. UNDERSOUTHERN Music Label (“Label”)
-2. [Artist Name] (“Artist”)
-
-Collectively referred to as the “Parties”.
-
-1. Purpose
-The purpose of this Agreement is to establish an exclusive collaboration between the Artist and UNDERSOUTHERN for the distribution, promotion, and commercialization of the Artist’s music across all digital platforms.
-
-2. Grant of Rights
-The Artist grants the Label the exclusive right to distribute, promote, and commercialize the music created and/or owned by the Artist under this Agreement.
-
-The Artist retains full copyright ownership of their works. The Label does not claim ownership of the musical works.
-
-The Label is authorized to use the Artist’s name, likeness, and branding for promotional purposes in connection with the distributed works.
-
-3. Revenue Share
-Net revenue generated from the music distributed under this Agreement will be shared as follows:
-
-Artist: 80%
-Label: 20%
-Content ID YouTube – Mandatory, cannot be waived   Artist: 50   UNDERSOUTHERN: 50
-
-Revenue calculation will include all income from streaming, downloads, sales, licensing, and other monetization channels, after deduction of platform fees or third-party service fees.
-
-The Label will provide quarterly accounting statements to the Artist detailing revenue, deductions, and payments.
-
-4. Label Responsibilities
-The Label commits to distributing the Artist’s music to agreed digital platforms and channels.
-
-The Label will professionally promote the Artist’s music to maximize exposure and revenue.
-
-The Label shall act in good faith to protect the Artist’s intellectual property and rights under this Agreement.
-
-5. Artist Responsibilities
-The Artist guarantees that all music provided is original, does not infringe on third-party rights, and all necessary permissions for samples or collaborations are obtained.
-
-The Artist shall provide all content in required formats and cooperate in promotional activities.
-
-6. Liability and Indemnification
-The Artist is responsible for the originality and legality of the music content. The Artist indemnifies the Label against any legal claims, copyright disputes, or third-party claims arising from the Artist’s works.
-
-The Label is not liable for any claims, damages, or disputes arising from the Artist’s content, except in cases of the Label’s gross negligence or willful misconduct.
-
-7. Term and Termination
-This Agreement is effective from the date of signing and remains valid for [insert term] years.
-
-Either Party may terminate the Agreement with [insert notice period, e.g., 30 days] written notice.
-
-Termination does not affect revenue owed for works released prior to the termination date.
-
-8. Governing Law and Dispute Resolution
-This Agreement is governed by the laws of Vietnam.
-
-Any disputes arising under this Agreement will first be attempted to resolve amicably. If unresolved, disputes will be submitted to the competent courts in Vietnam.
-
-9. Miscellaneous
-Any modifications or amendments to this Agreement must be made in writing and signed by both Parties.
-
-Headings are for reference only and do not affect interpretation of the Agreement.
-    </p>
-  </div>
-</div>
+</footer>
 
 <script>
-  // Modal functionality
-  const contactLink=document.getElementById('contactLink');
-  const contactModal=document.getElementById('contactModal');
-  const closeModal=document.getElementById('closeModal');
-  contactLink.addEventListener('click',()=>{contactModal.style.display='flex';});
-  closeModal.addEventListener('click',()=>{contactModal.style.display='none';});
+// Sticky header
+window.addEventListener('scroll', () => {
+  var header = document.querySelector("header");
+  if(window.scrollY > 0) header.classList.add("sticky");
+  else header.classList.remove("sticky");
 
-  const establishedLink=document.getElementById('establishedLink');
-  const establishedModal=document.getElementById('establishedModal');
-  const closeEstablished=document.getElementById('closeEstablished');
-  establishedLink.addEventListener('click',()=>{establishedModal.style.display='flex';});
-  closeEstablished.addEventListener('click',()=>{establishedModal.style.display='none';});
+  // Fade in marquee
+  var marquee = document.querySelector('.marquee');
+  if(marquee.getBoundingClientRect().top < window.innerHeight - 50){
+    marquee.classList.add('visible');
+  }
 
-  const vietnamLink=document.getElementById('vietnamLink');
-  const vietnamModal=document.getElementById('vietnamModal');
-  const closeVietnam=document.getElementById('closeVietnam');
-  vietnamLink.addEventListener('click',()=>{vietnamModal.style.display='flex';});
-  closeVietnam.addEventListener('click',()=>{vietnamModal.style.display='none';});
-
-  window.addEventListener('click',(e)=>{
-    if(e.target===contactModal) contactModal.style.display='none';
-    if(e.target===establishedModal) establishedModal.style.display='none';
-    if(e.target===vietnamModal) vietnamModal.style.display='none';
+  // Fade in services
+  document.querySelectorAll('.service-box').forEach(box => {
+    if(box.getBoundingClientRect().top < window.innerHeight - 50){
+      box.classList.add('visible');
+    }
   });
-
-  // Nhân đôi nội dung marquee để chạy mượt
-  document.querySelectorAll('.marquee').forEach(marquee => {
-    const content = marquee.querySelector('.marquee-content');
-    content.innerHTML += content.innerHTML;
-  });
+});
 </script>
+
 </body>
 </html>
