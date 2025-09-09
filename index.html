@@ -36,45 +36,90 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   position:fixed; top:0; left:0; width:100%; height:100%;
   background: rgba(0,0,0,0.85); display:none;
   justify-content:center; align-items:center; z-index:3000;
-  overflow-y:auto;
-  padding:40px 20px;
+  overflow-y:auto; 
+  padding:20px;
 }
 
 /* Modal content */
 .modal .modal-content {
-  background:#111; padding:20px 30px; border-radius:12px;
+  background:#111; padding:20px 20px; border-radius:12px;
   display:flex; flex-direction:column; align-items:center; gap:15px; text-align:center;
-  max-width:none; /* cho phép mở rộng */
-  width:auto;
+  max-width:400px; 
+  width:90%;
   position:relative;
   font-family: 'Arial', sans-serif;
   font-weight: normal;
   font-style: normal;
   color:#fff;
+  max-height: 90vh; 
+  overflow-y:auto; 
+  overflow-x:hidden; 
+  word-break: break-word;
 }
 
-/* About Us menu horizontal, no scroll */
-#aboutModal .menu-list {
-  display:flex;
-  justify-content:center;
-  flex-wrap: nowrap; /* không xuống dòng */
-  gap:12px;
+/* Menu About Us - 3 trên 3 dưới */
+#aboutModal .menu-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:8px;
+  width:100%;
 }
-#aboutModal .menu-list div {
-  flex: 0 0 auto;
-  padding:8px 12px;
+#aboutModal .menu-grid div, #aboutModal .menu-grid a div {
+  padding:6px 8px;
   border-radius:6px;
   background: rgba(255,255,255,0.05);
   color:#fff;
-  font-size:0.7rem;
+  font-size:0.65rem;
   text-transform: lowercase;
   cursor:pointer;
+  text-align:center;
+  white-space:nowrap;
   transition: transform 0.2s, background 0.2s;
-  white-space: nowrap;
 }
-#aboutModal .menu-list div:hover {
+#aboutModal .menu-grid div:hover, #aboutModal .menu-grid a div:hover {
   background: rgba(255,255,255,0.15);
   transform: scale(1.05);
+}
+
+/* Bỏ gạch chân link */
+#aboutModal .menu-grid a { text-decoration: none; color: inherit; }
+#aboutModal .menu-grid a div { display:inline-block; }
+
+/* Social icons Help Center */
+#aboutModal .social-icons {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:8px;
+  justify-items:center;
+  width:100%;
+}
+#aboutModal .social-icons a {
+  display:flex; justify-content:center; align-items:center;
+  padding:5px 8px;
+  border-radius:6px;
+  text-decoration:none;
+  color:#fff;
+  font-size:0.65rem;
+  font-weight: normal;
+  font-style: normal;
+  text-transform: lowercase;
+  background: rgba(255,255,255,0.05);
+  transition: transform 0.2s ease, background 0.2s ease;
+  width:80%;
+}
+#aboutModal .social-icons a:hover {
+  transform: scale(1.1);
+  background: rgba(255,255,255,0.15);
+}
+
+/* Anti-Fraud Content */
+#antiFraudContent {
+  display:none;
+  text-align:left;
+  font-size:0.7rem;
+  line-height:1.3rem;
+  white-space: pre-wrap;
+  width:100%;
 }
 
 /* Contact social buttons */
@@ -87,14 +132,14 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
 }
 #contactModal .social-icons a {
   display:flex; justify-content:center; align-items:center;
-  padding:5px 10px;
+  padding:5px 8px;
   border-radius:6px;
   text-decoration:none;
   color:#fff;
-  font-size:0.7rem; 
-  font-weight: normal; 
-  font-style: normal; 
-  text-transform: lowercase; 
+  font-size:0.65rem;
+  font-weight: normal;
+  font-style: normal;
+  text-transform: lowercase;
   background: rgba(255,255,255,0.05);
   transition: transform 0.2s ease, background 0.2s ease;
   width:80%;
@@ -102,6 +147,19 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
 #contactModal .social-icons a:hover {
   transform: scale(1.1);
   background: rgba(255,255,255,0.15);
+}
+
+/* Responsive nhỏ màn hình */
+@media (max-width:480px) {
+  #aboutModal .modal-content, #contactModal .modal-content {
+    max-width:95%;
+    font-size:0.6rem;
+  }
+  #aboutModal .menu-grid div, #aboutModal .menu-grid a div,
+  #aboutModal .social-icons a, #contactModal .social-icons a {
+    font-size:0.55rem;
+    padding:4px 6px;
+  }
 }
 </style>
 </head>
@@ -131,16 +189,51 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   </div>
 </div>
 
-<!-- Modal About Us horizontal row, auto expand -->
+<!-- Modal About Us -->
 <div id="aboutModal" class="modal">
   <div class="modal-content">
-    <div class="menu-list">
+    <div class="menu-grid">
       <div>about us</div>
-      <div>distribution agreement</div>
-      <div>anti-fraud policy</div>
+      <a href="https://github.com/phvinh1968-a11y/my-images/raw/main/EXCLUSIVE_DISTRIBUTION_AGREEMEN.pdf" download><div>distribution agreement</div></a>
+      <div id="antiFraudBtn">anti-fraud policy</div>
       <div>privacy and cookies</div>
-      <div>help center</div>
+      <div id="helpCenterBtn">help center</div>
       <div>terms</div>
+    </div>
+    <div class="social-icons" style="display:none; width:100%;">
+      <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
+      <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
+      <a href="mailto:contact@undersouthern.asia">email</a>
+    </div>
+    <div id="antiFraudContent">
+1. Mục đích và Phạm vi
+Mục tiêu của UNDERSOUTHERN là bảo vệ nghệ sĩ, người sáng tạo nội dung và doanh nghiệp khỏi các hành vi gian lận, đặc biệt là stream giả (click fraud), metadata sai sót gây hiểu lầm hoặc vi phạm bản quyền.
+Chính sách này áp dụng cho mọi đối tượng có hợp đồng pháp lý với UNDERSOUTHERN (được gọi là “End User”) — bao gồm các nghệ sĩ, đối tác phân phối, nhà cung cấp dịch vụ kỹ thuật số (DSP), v.v.
+
+2. Định nghĩa
+Fraud (Gian lận): bao gồm các hành vi như sử dụng nội dung không được phép, metadata gây nhầm lẫn (Musical Spam), stream từ bot (Click Fraud), hoặc các hành vi khác vi phạm Điều khoản Dịch vụ hoặc hợp đồng của UNDERSOUTHERN.
+End User (Người sử dụng cuối): cá nhân hoặc pháp nhân có mối quan hệ hợp đồng với nhãn UNDERSOUTHERN.
+
+3. Cam kết của UNDERSOUTHERN
+UNDERSOUTHERN cam kết rằng mọi hành vi gian lận đều không được chấp nhận. Chúng tôi sẽ chủ động giám sát, phát hiện và xử lý nghiêm khắc mọi trường hợp vi phạm, nhằm bảo vệ lợi ích của nghệ sĩ và thương hiệu.
+
+4. Phát hiện và phòng ngừa
+Giám sát và phân tích dữ liệu: UNDERSOUTHERN theo dõi dữ liệu stream, doanh thu, hồ sơ nghệ sĩ và metadata để phát hiện các dấu hiệu bất thường.
+Quy trình kiểm soát chất lượng (QC): trước khi xuất bản, mọi metadata và nội dung nhạc đều phải qua kiểm tra để đảm bảo không gây hiểu lầm, không chứa nội dung trái phép, không bị upload trùng lặp.
+
+5. Cơ chế can thiệp khi phát hiện gian lận
+Khi có dấu hiệu nghi ngờ gian lận, UNDERSOUTHERN có quyền ngăn chặn thanh toán, yêu cầu rà soát lại ghi nhận hoặc đình chỉ dịch vụ.
+Trong trường hợp nghiêm trọng, UNDERSOUTHERN sẽ hợp tác với DSP hoặc cơ quan liên quan để điều tra thêm và có thể thực hiện các biện pháp pháp lý nếu cần.
+
+6. Trách nhiệm của End User
+Các nghệ sĩ, đối tác hoặc bên liên quan có trách nhiệm cung cấp metadata chính xác, rõ ràng và tuân thủ quy định do UNDERSOUTHERN đặt ra.
+Cần phản hồi nhanh chóng và hợp tác khi có yêu cầu điều tra từ phía UNDERSOUTHERN.
+
+7. Văn bản đi kèm
+Chính sách này nên được đọc kết hợp với Điều khoản Dịch vụ (Terms of Service) và Chính sách Bảo mật (Privacy Policy) của UNDERSOUTHERN.
+
+8. Cập nhật chính sách
+UNDERSOUTHERN có thể sửa đổi nội dung chính sách này khi cần để phù hợp với thay đổi thị trường, quy định pháp luật hoặc công nghệ. Mọi cập nhật sẽ được thông báo và áp dụng ngay khi công bố.
     </div>
   </div>
 </div>
@@ -148,7 +241,6 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
 <section class="hero">
   <video id="bgVideo" muted autoplay loop playsinline preload="auto" poster="https://via.placeholder.com/1920x1080/111111/111111.png">
     <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/video_background.mp4" type="video/mp4">
-    Your browser does not support HTML5 video.
   </video>
   <img class="logo" src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo">
 </section>
@@ -171,8 +263,32 @@ document.addEventListener('DOMContentLoaded', () => {
   // About modal
   const aboutBtn = document.getElementById('aboutBtn');
   const aboutModal = document.getElementById('aboutModal');
-  aboutBtn.addEventListener('click', (e) => { e.stopPropagation(); aboutModal.style.display = 'flex'; });
+  const menuGrid = aboutModal.querySelector('.menu-grid');
+  const socialIcons = aboutModal.querySelector('.social-icons');
+  const antiFraudBtn = document.getElementById('antiFraudBtn');
+  const antiFraudContent = document.getElementById('antiFraudContent');
+  const helpCenterBtn = document.getElementById('helpCenterBtn');
+
+  aboutBtn.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    aboutModal.style.display = 'flex'; 
+    menuGrid.style.display='grid'; 
+    socialIcons.style.display='none'; 
+    antiFraudContent.style.display='none'; 
+  });
   aboutModal.addEventListener('click', (e) => { if(e.target === aboutModal) aboutModal.style.display = 'none'; });
+
+  helpCenterBtn.addEventListener('click', () => {
+    menuGrid.style.display='none';
+    socialIcons.style.display='grid';
+    antiFraudContent.style.display='none';
+  });
+
+  antiFraudBtn.addEventListener('click', () => {
+    menuGrid.style.display='grid'; 
+    socialIcons.style.display='none';
+    antiFraudContent.style.display='block';
+  });
 });
 </script>
 
