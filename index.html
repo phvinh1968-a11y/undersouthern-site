@@ -105,7 +105,7 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
   display:block;
 }
 
-/* Social Icons (Contact & Help Center) */
+/* Social Icons (Contact & Help Center / Terms) */
 .social-icons {
   display:grid;
   grid-template-columns: repeat(3, 1fr);
@@ -180,10 +180,10 @@ footer { text-align:center; padding:15px; background:#111; color:#ccc; font-size
       <div id="antiFraudBtn">anti-fraud policy</div>
       <div id="privacyBtn">privacy and cookies</div>
       <div id="helpCenterBtn">help center</div>
-      <div>terms</div>
+      <div id="termsBtn">terms</div>
     </div>
 
-    <!-- Social Icons for Help Center -->
+    <!-- Social Icons for Help Center / Terms -->
     <div class="social-icons" id="helpSocialIcons" style="display:none;">
       <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
       <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
@@ -219,6 +219,9 @@ Chính sách này được đọc kết hợp với Điều khoản Dịch vụ 
 
 8 Cập nhật chính sách
 UNDERSOUTHERN có thể sửa đổi nội dung chính sách khi cần để phù hợp với thay đổi thị trường, quy định pháp luật hoặc công nghệ. Mọi cập nhật sẽ được thông báo và áp dụng ngay khi công bố
+
+Mọi thắc mắc hoặc yêu cầu liên quan đến chính sách vui lòng liên hệ
+Email: contact@undersouthern.asia
     </div>
 
     <div id="privacyContent">
@@ -259,16 +262,15 @@ Chính sách này giải thích cách thông tin được thu thập sử dụng
 
 8 Liên kết ngoài
 Website https://undersouthern.asia
- có thể chứa liên kết đến các trang web bên ngoài UNDERSOUTHERN không chịu trách nhiệm về nội dung hoặc chính sách bảo mật của các trang đó
+có thể chứa liên kết đến các trang web bên ngoài UNDERSOUTHERN không chịu trách nhiệm về nội dung hoặc chính sách bảo mật của các trang đó
 
 9 Thay đổi chính sách
 UNDERSOUTHERN có thể cập nhật chính sách này bất kỳ lúc nào Mọi thay đổi sẽ được đăng tải trên website và có hiệu lực ngay sau khi công bố
 
 10 Thông tin liên hệ
 Mọi thắc mắc hoặc yêu cầu liên quan đến chính sách vui lòng liên hệ
-Email contact@undersouthern.asia
-
-Website https://undersouthern.asia
+Email: contact@undersouthern.asia
+Website: https://undersouthern.asia
     </div>
   </div>
 </div>
@@ -302,6 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const helpSocialIcons = document.getElementById('helpSocialIcons');
   const privacyBtn = document.getElementById('privacyBtn');
   const privacyContent = document.getElementById('privacyContent');
+  const termsBtn = document.getElementById('termsBtn');
 
   // Click Contact → hiển thị ở giữa
   contactBtn.addEventListener('click', (e) => { 
@@ -346,6 +349,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Click Help Center → hiển thị 3 icon
   helpCenterBtn.addEventListener('click', () => {
+    menuGrid.style.display='none';
+    antiFraudContent.style.display='none';
+    privacyContent.style.display='none';
+    socialIcons.style.display='none';
+    helpSocialIcons.style.display='grid';
+  });
+
+  // Click Terms → hiển thị giống Help Center
+  termsBtn.addEventListener('click', () => {
     menuGrid.style.display='none';
     antiFraudContent.style.display='none';
     privacyContent.style.display='none';
