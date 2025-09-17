@@ -1,277 +1,157 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UNDERSOUTHERN</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNDERSOUTHERN Label</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+    }
 
-<link rel="icon" type="image/png" href="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png">
+    /* Header */
+    header {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      padding: 20px 40px;
+      z-index: 10;
+    }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Arial',sans-serif;background:#111;color:#fff;overflow-x:hidden;}
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
+    }
 
-/* Header */
-header{
-  position:fixed;top:0;left:0;width:100%;padding:15px 40px;
-  display:flex;justify-content:center;align-items:center;
-  background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);
-  z-index:1000;transition:background 0.3s;
-}
-header nav ul{list-style:none;display:flex;gap:15px;}
-header nav ul li a{
-  color:#fff;text-decoration:none;font-weight:500;font-size:0.9rem;cursor:pointer;
-  letter-spacing:0.5px;transition:color 0.3s;
-}
-header nav ul li a:hover{color:#0f0;}
-header nav ul li:not(:last-child)::after{content:"|";margin-left:12px;color:#fff;opacity:0.6;}
+    nav ul li {
+      color: #fff;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
 
-/* Hero */
-.hero{
-  position:relative;width:100%;height:100vh;
-  display:flex;flex-direction:column;justify-content:center;align-items:center;
-  overflow:hidden;text-align:center;
-}
-.hero video{
-  position:absolute;top:50%;left:50%;width:auto;height:100%;
-  min-width:100%;min-height:100%;transform:translate(-50%,-50%);
-  object-fit:cover;z-index:-1;opacity:0;transition:opacity 1.5s ease-in-out;
-}
-.hero video.loaded{opacity:1;}
-.hero .logo{
-  width:180px;max-width:35%;animation:fadeInScale 2s ease forwards;
-}
-@keyframes fadeInScale{
-  0%{opacity:0;transform:scale(0.8);}
-  100%{opacity:1;transform:scale(1);}
-}
-.hero .slogan{
-  margin-top:15px;font-size:1rem;font-weight:300;opacity:0.85;
-}
+    .established, .location {
+      opacity: 0.8;
+      cursor: default; /* không bấm được */
+    }
 
-/* Footer */
-footer{
-  padding:15px 30px;background:#111;color:#bbb;
-  font-size:0.7rem;border-top:1px solid rgba(255,255,255,0.1);
-}
-.footer-container{
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:10px;
-}
-.footer-right{
-  display:flex;gap:12px;flex-wrap:wrap;
-}
-.footer-right a{
-  color:#bbb;text-decoration:none;font-size:0.7rem;
-  transition:color 0.3s;
-}
-.footer-right a:hover{color:#0f0;}
+    /* Video background */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-/* Modal */
-.modal{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,0.85);display:none;
-  justify-content:center;align-items:center;z-index:3000;
-  padding:20px;overflow-y:auto;animation:fadeIn 0.3s;
-}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    .hero video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-.modal .modal-content{
-  background:#111;padding:20px;border-radius:12px;
-  display:flex;flex-direction:column;align-items:center;gap:12px;
-  text-align:center;max-width:500px;width:90%;max-height:80vh;overflow-y:auto;
-  position:relative;color:#fff;font-size:0.8rem;
-}
-.back-btn{
-  position:absolute;top:8px;left:10px;background:none;border:none;
-  color:#0f0;font-size:0.7rem;cursor:pointer;
-  text-transform:uppercase;letter-spacing:1px;
-}
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      padding: 20px;
+    }
 
-/* Grid Menu */
-#aboutModal .menu-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;
-}
-#aboutModal .menu-grid div,
-#aboutModal .menu-grid a div{
-  padding:6px 8px;border-radius:6px;background:rgba(255,255,255,0.05);
-  font-size:0.65rem;text-transform:lowercase;cursor:pointer;text-align:center;
-  transition:transform 0.2s,background 0.2s;
-}
-#aboutModal .menu-grid div:hover,
-#aboutModal .menu-grid a div:hover{background:rgba(255,255,255,0.15);transform:scale(1.05);}
-#aboutModal .menu-grid a{text-decoration:none;color:inherit;width:100%;}
+    .hero-overlay img {
+      width: 160px;
+      margin-bottom: 20px;
+    }
 
-/* Social Icons */
-.social-icons{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;
-}
-.social-icons a{
-  display:flex;justify-content:center;align-items:center;
-  background:rgba(255,255,255,0.05);padding:6px;border-radius:6px;
-  font-size:0.65rem;color:#fff;text-decoration:none;text-transform:lowercase;
-  transition:transform 0.2s,background 0.2s;
-}
-.social-icons a:hover{background:rgba(255,255,255,0.15);transform:scale(1.05);}
+    .hero-overlay h1 {
+      font-size: 2rem;
+      margin: 0;
+      max-width: 800px;
+      line-height: 1.4;
+    }
 
-/* Content */
-#antiFraudContent,#privacyContent,#aboutUsContent{
-  display:none;text-align:left;font-size:0.75rem;line-height:1.4rem;
-  white-space:pre-wrap;width:100%;
-}
+    /* Footer */
+    footer {
+      padding: 15px 30px;
+      background: #111;
+      color: #bbb;
+      font-size: 0.7rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
 
-/* Responsive */
-@media(max-width:480px){
-  .hero .logo{width:130px;}
-  .hero .slogan{font-size:0.8rem;}
-  .footer-container{flex-direction:column;align-items:flex-start;}
-}
-</style>
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-right a {
+      color: #bbb;
+      text-decoration: none;
+      font-size: 0.7rem;
+      transition: color 0.3s;
+    }
+
+    .footer-right a:hover {
+      color: #0f0;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <nav>
-    <ul>
-      <li><a>Vietnam</a></li>
-      <li><a id="aboutBtn">Established 2024</a></li>
-      <li><a id="contactBtn">Contact</a></li>
-    </ul>
-  </nav>
-</header>
+  <!-- Header -->
+  <header>
+    <nav>
+      <ul>
+        <li><span class="location">Vietnam</span></li>
+        <li><span class="established">Established 2024</span></li>
+      </ul>
+    </nav>
+  </header>
 
-<section class="hero">
-  <video id="bgVideo" muted autoplay loop playsinline preload="auto" poster="https://via.placeholder.com/1920x1080/111111/111111.png">
-    <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/video_background.mp4" type="video/mp4">
-  </video>
-  <img class="logo" src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo">
-  <div class="slogan">Independent Label · Empowering Artists · Global Reach</div>
-</section>
-
-<footer>
-  <div class="footer-container">
-    <div class="footer-left">
-      © 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015
+  <!-- Hero Section -->
+  <section class="hero">
+    <video autoplay muted loop playsinline>
+      <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/UNDERSOUTHERN.mp4" type="video/mp4">
+      Trình duyệt của bạn không hỗ trợ video.
+    </video>
+    <div class="hero-overlay">
+      <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/UNDERSOUTHERN.png" alt="UNDERSOUTHERN Logo">
+      <h1>Independent Record Label · Founded in Vietnam · Empowering Artists · Reaching Global Audiences</h1>
     </div>
-    <div class="footer-right">
-      <a href="#" id="aboutUsBtnFooter">about us</a>
-      <a href="https://github.com/phvinh1968-a11y/my-images/raw/main/EXCLUSIVE_DISTRIBUTION_AGREEMEN.pdf" download>distribution agreement</a>
-      <a href="#" id="antiFraudBtnFooter">anti-fraud policy</a>
-      <a href="#" id="privacyBtnFooter">privacy and cookies</a>
-      <a href="#" id="helpCenterBtnFooter">help center</a>
-      <a href="#" id="termsBtnFooter">terms</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-left">
+        © 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015
+      </div>
+      <div class="footer-right">
+        <a href="#" id="aboutUsBtnFooter">about us</a>
+        <a href="https://github.com/phvinh1968-a11y/my-images/raw/main/EXCLUSIVE_DISTRIBUTION_AGREEMEN.pdf" download>distribution agreement</a>
+        <a href="#" id="antiFraudBtnFooter">anti-fraud policy</a>
+        <a href="#" id="privacyBtnFooter">privacy and cookies</a>
+        <a href="#" id="contactBtnFooter">contact</a>
+      </div>
     </div>
-  </div>
-</footer>
-
-<!-- Contact Modal -->
-<div id="contactModal" class="modal">
-  <div class="modal-content">
-    <div class="social-icons">
-      <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
-      <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
-      <a href="https://www.tiktok.com/@undersouthern" target="_blank">tiktok</a>
-      <a href="https://www.youtube.com/@undersouthern" target="_blank">youtube</a>
-      <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">spotify</a>
-      <a href="mailto:contact@undersouthern.asia">email</a>
-    </div>
-  </div>
-</div>
-
-<!-- About Modal -->
-<div id="aboutModal" class="modal">
-  <div class="modal-content">
-    <button class="back-btn" id="backBtn" style="display:none;">← Back</button>
-    <div class="menu-grid" id="menuGrid">
-      <div id="aboutUsBtn">about us</div>
-      <a href="https://github.com/phvinh1968-a11y/my-images/raw/main/EXCLUSIVE_DISTRIBUTION_AGREEMEN.pdf" download><div>distribution agreement</div></a>
-      <div id="antiFraudBtn">anti-fraud policy</div>
-      <div id="privacyBtn">privacy and cookies</div>
-      <div id="helpCenterBtn">help center</div>
-      <div id="termsBtn">terms</div>
-    </div>
-
-    <div class="social-icons" id="helpSocialIcons" style="display:none;">
-      <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
-      <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
-      <a href="mailto:contact@undersouthern.asia">email</a>
-    </div>
-
-    <div id="aboutUsContent">
-UNDERSOUTHERN là hãng thu âm độc lập được thành lập với mục tiêu phát triển nghệ sĩ trẻ và đưa âm nhạc Việt Nam đến gần hơn với khán giả trong nước và quốc tế. 
-Chúng tôi tập trung vào các thể loại hiện đại, đặc biệt là Rap HipHop và các dòng nhạc đương đại.
-
-UNDERSOUTHERN không chỉ hỗ trợ nghệ sĩ trong việc sản xuất âm nhạc mà còn đồng hành trong khâu phát hành, quảng bá và xây dựng thương hiệu cá nhân. 
-Với định hướng sáng tạo và chuyên nghiệp, UNDERSOUTHERN mong muốn trở thành điểm đến đáng tin cậy cho những ai đam mê và muốn theo đuổi con đường âm nhạc lâu dài.
-    </div>
-
-    <div id="antiFraudContent">
-At UNDERSOUTHERN, we are committed to protecting artists, creators, and partners from fraudulent activities such as artificial streaming, misleading metadata, or copyright violations.
-
-This policy applies to all End Users (artists, distribution partners, and service providers) with a contractual relationship with UNDERSOUTHERN.
-
-Fraudulent practices include but are not limited to: unauthorized use of content, musical spam, inaccurate metadata, and bot-generated streams.
-    </div>
-
-    <div id="privacyContent">
-At undersouthern.asia, we respect your privacy. We collect limited personal data (such as name, email, and music submissions) and basic technical information (IP address, browser type) to improve services.
-    </div>
-  </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded',()=>{
-  const video=document.getElementById('bgVideo');
-  video.addEventListener('loadeddata',()=>video.classList.add('loaded'));
-
-  const contactBtn=document.getElementById('contactBtn');
-  const contactModal=document.getElementById('contactModal');
-
-  const aboutBtn=document.getElementById('aboutBtn');
-  const aboutModal=document.getElementById('aboutModal');
-  const menuGrid=document.getElementById('menuGrid');
-  const helpSocialIcons=document.getElementById('helpSocialIcons');
-  const antiFraudContent=document.getElementById('antiFraudContent');
-  const privacyContent=document.getElementById('privacyContent');
-  const aboutUsContent=document.getElementById('aboutUsContent');
-  const backBtn=document.getElementById('backBtn');
-
-  const resetAbout=()=>{
-    menuGrid.style.display='grid';
-    helpSocialIcons.style.display='none';
-    antiFraudContent.style.display='none';
-    privacyContent.style.display='none';
-    aboutUsContent.style.display='none';
-    backBtn.style.display='none';
-  };
-
-  // Open Contact
-  contactBtn.addEventListener('click',(e)=>{e.stopPropagation();contactModal.style.display='flex';});
-  // Open About (Established 2024)
-  aboutBtn.addEventListener('click',(e)=>{e.stopPropagation();aboutModal.style.display='flex';resetAbout();});
-
-  // Footer Buttons
-  document.getElementById('aboutUsBtnFooter').addEventListener('click',(e)=>{e.preventDefault();aboutModal.style.display='flex';resetAbout();aboutUsContent.style.display='block';backBtn.style.display='block';});
-  document.getElementById('antiFraudBtnFooter').addEventListener('click',(e)=>{e.preventDefault();aboutModal.style.display='flex';resetAbout();antiFraudContent.style.display='block';backBtn.style.display='block';});
-  document.getElementById('privacyBtnFooter').addEventListener('click',(e)=>{e.preventDefault();aboutModal.style.display='flex';resetAbout();privacyContent.style.display='block';backBtn.style.display='block';});
-  document.getElementById('helpCenterBtnFooter').addEventListener('click',(e)=>{e.preventDefault();aboutModal.style.display='flex';resetAbout();helpSocialIcons.style.display='grid';backBtn.style.display='block';});
-  document.getElementById('termsBtnFooter').addEventListener('click',(e)=>{e.preventDefault();aboutModal.style.display='flex';resetAbout();helpSocialIcons.style.display='grid';backBtn.style.display='block';});
-
-  // Inside Modal Menu
-  document.getElementById('aboutUsBtn').addEventListener('click',()=>{menuGrid.style.display='none';aboutUsContent.style.display='block';backBtn.style.display='block';aboutModal.scrollTop=0;});
-  document.getElementById('antiFraudBtn').addEventListener('click',()=>{menuGrid.style.display='none';antiFraudContent.style.display='block';backBtn.style.display='block';aboutModal.scrollTop=0;});
-  document.getElementById('privacyBtn').addEventListener('click',()=>{menuGrid.style.display='none';privacyContent.style.display='block';backBtn.style.display='block';aboutModal.scrollTop=0;});
-  document.getElementById('helpCenterBtn').addEventListener('click',()=>{menuGrid.style.display='none';helpSocialIcons.style.display='grid';backBtn.style.display='block';});
-  document.getElementById('termsBtn').addEventListener('click',()=>{menuGrid.style.display='none';helpSocialIcons.style.display='grid';backBtn.style.display='block';});
-
-  backBtn.addEventListener('click',resetAbout);
-
-  document.addEventListener('click',(e)=>{
-    if(e.target===contactModal)contactModal.style.display='none';
-    if(e.target===aboutModal)aboutModal.style.display='none';
-  });
-});
-</script>
+  </footer>
 
 </body>
 </html>
