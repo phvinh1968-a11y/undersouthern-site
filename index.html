@@ -1,157 +1,251 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UNDERSOUTHERN Label</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #000;
-      color: #fff;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNDERSOUTHERN</title>
 
-    /* Header */
-    header {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      padding: 20px 40px;
-      z-index: 10;
-    }
+<link rel="icon" type="image/png" href="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png">
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Arial', sans-serif; background:#111; color:#fff; overflow-x:hidden; }
 
-    nav ul li {
-      color: #fff;
-      font-weight: 500;
-      font-size: 0.9rem;
-      letter-spacing: 0.5px;
-    }
+/* Header */
+header {
+  position:fixed; top:0; left:0; width:100%; padding:20px 40px;
+  display:flex; justify-content:center; align-items:center; background: transparent; z-index:1000;
+}
+header nav ul { list-style:none; display:flex; gap:10px; }
+header nav ul li { color:#fff; font-size:0.8rem; }
+header nav ul li span { opacity:0.8; cursor:default; }
 
-    .established, .location {
-      opacity: 0.8;
-      cursor: default; /* không bấm được */
-    }
+/* Hero */
+.hero { position:relative; width:100%; height:100vh; display:flex; justify-content:center; align-items:center; overflow:hidden; }
+.hero video { position:absolute; top:50%; left:50%; width:auto; height:100%; min-width:100%; min-height:100%; transform:translate(-50%,-50%); object-fit:cover; z-index:-1; opacity:0; transition:opacity 1.5s ease-in-out; will-change: opacity; }
+.hero video.loaded { opacity:1; }
+.hero .logo { position:relative; z-index:2; width:150px; max-width:30%; animation:pulse 2s infinite ease-in-out; transform-origin:center; }
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:0.9;} 50%{transform:scale(1.1);opacity:1;} }
 
-    /* Video background */
-    .hero {
-      position: relative;
-      height: 100vh;
-      overflow: hidden;
-    }
+/* Footer */
+footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; border-top:1px solid rgba(255,255,255,0.1); }
+.footer-container { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+.footer-right { display:flex; flex-wrap:wrap; gap:12px; }
+.footer-right a { color:#ccc; text-decoration:none; font-size:0.65rem; transition:color 0.3s; }
+.footer-right a:hover { color:#0f0; }
 
-    .hero video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+/* Modal overlay */
+.modal {
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background: rgba(0,0,0,0.85); display:none;
+  justify-content:center; align-items:center; z-index:3000;
+  padding:20px;
+  overflow-y:auto; 
+}
 
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: #fff;
-      padding: 20px;
-    }
+/* Modal content */
+.modal .modal-content {
+  background:#111; padding:15px; border-radius:12px;
+  display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center;
+  max-width:500px; width:90%;
+  max-height:80vh;
+  overflow-y:auto;
+  position:relative;
+  font-family: 'Arial', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  color:#fff;
+  word-break: break-word;
+}
 
-    .hero-overlay img {
-      width: 160px;
-      margin-bottom: 20px;
-    }
+/* Text content (Anti-Fraud, Privacy, About Us) */
+#antiFraudContent, #privacyContent, #aboutUsContent {
+  display:none;
+  text-align:left;
+  font-size:0.65rem;
+  line-height:1.2rem;
+  white-space: pre-wrap;
+  width:100%;
+  overflow-x:hidden;
+  padding-left: 5px;
+}
 
-    .hero-overlay h1 {
-      font-size: 2rem;
-      margin: 0;
-      max-width: 800px;
-      line-height: 1.4;
-    }
+/* Social Icons */
+.social-icons {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:2px;
+  width:100%;
+}
+.social-icons a {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: rgba(255,255,255,0.05);
+  padding:3px 4px;
+  border-radius:3px;
+  font-size:0.55rem;
+  color:#fff;
+  text-decoration:none;
+  cursor:pointer;
+  text-transform: lowercase;
+  transition: transform 0.2s, background 0.2s;
+}
+.social-icons a:hover {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.05);
+}
 
-    /* Footer */
-    footer {
-      padding: 15px 30px;
-      background: #111;
-      color: #bbb;
-      font-size: 0.7rem;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .footer-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .footer-right {
-      display: flex;
-      gap: 12px;
-    }
-
-    .footer-right a {
-      color: #bbb;
-      text-decoration: none;
-      font-size: 0.7rem;
-      transition: color 0.3s;
-    }
-
-    .footer-right a:hover {
-      color: #0f0;
-    }
-  </style>
+/* Responsive */
+@media (max-width:480px) {
+  .modal .modal-content { max-width:95%; font-size:0.6rem; }
+  .footer-right { gap:6px; }
+  .footer-right a { font-size:0.55rem; }
+}
+</style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <nav>
-      <ul>
-        <li><span class="location">Vietnam</span></li>
-        <li><span class="established">Established 2024</span></li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <nav>
+    <ul>
+      <li><span>Vietnam</span></li>
+      <li><span>Established 2024</span></li>
+    </ul>
+  </nav>
+</header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <video autoplay muted loop playsinline>
-      <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/UNDERSOUTHERN.mp4" type="video/mp4">
-      Trình duyệt của bạn không hỗ trợ video.
-    </video>
-    <div class="hero-overlay">
-      <img src="https://github.com/phvinh1968-a11y/my-images/raw/main/UNDERSOUTHERN.png" alt="UNDERSOUTHERN Logo">
-      <h1>Independent Record Label · Founded in Vietnam · Empowering Artists · Reaching Global Audiences</h1>
-    </div>
-  </section>
+<section class="hero">
+  <video id="bgVideo" muted autoplay loop playsinline preload="auto" poster="https://via.placeholder.com/1920x1080/111111/111111.png">
+    <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/video_background.mp4" type="video/mp4">
+  </video>
+  <img class="logo" src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo">
+</section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-container">
-      <div class="footer-left">
-        © 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015
-      </div>
-      <div class="footer-right">
-        <a href="#" id="aboutUsBtnFooter">about us</a>
-        <a href="https://github.com/phvinh1968-a11y/my-images/raw/main/EXCLUSIVE_DISTRIBUTION_AGREEMEN.pdf" download>distribution agreement</a>
-        <a href="#" id="antiFraudBtnFooter">anti-fraud policy</a>
-        <a href="#" id="privacyBtnFooter">privacy and cookies</a>
-        <a href="#" id="contactBtnFooter">contact</a>
-      </div>
+<footer>
+  <div class="footer-container">
+    <div class="footer-left">
+      © 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015
     </div>
-  </footer>
+    <div class="footer-right">
+      <a href="#" id="aboutUsBtn">about us</a>
+      <a href="https://github.com/phvinh1968-a11y/my-images/raw/main/EXCLUSIVE_DISTRIBUTION_AGREEMEN.pdf" download>distribution agreement</a>
+      <a href="#" id="antiFraudBtn">anti-fraud policy</a>
+      <a href="#" id="privacyBtn">privacy and cookies</a>
+      <a href="#" id="helpCenterBtn">help center</a>
+      <a href="#" id="termsBtn">terms</a>
+      <a href="#" id="contactBtn">contact</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Contact Modal -->
+<div id="contactModal" class="modal">
+  <div class="modal-content">
+    <div class="social-icons">
+      <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
+      <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
+      <a href="https://www.tiktok.com/@undersouthern" target="_blank">tiktok</a>
+      <a href="https://www.youtube.com/@undersouthern" target="_blank">youtube</a>
+      <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">spotify</a>
+      <a href="mailto:contact@undersouthern.asia">email</a>
+    </div>
+  </div>
+</div>
+
+<!-- About Modal -->
+<div id="aboutModal" class="modal">
+  <div class="modal-content">
+    <div id="aboutUsContent">
+UNDERSOUTHERN là hãng thu âm độc lập được thành lập với mục tiêu phát triển nghệ sĩ trẻ và đưa âm nhạc Việt Nam đến gần hơn với khán giả trong nước và quốc tế. Chúng tôi tập trung vào các thể loại hiện đại, đặc biệt là Rap HipHop và các dòng nhạc đương đại.
+
+UNDERSOUTHERN không chỉ hỗ trợ nghệ sĩ trong việc sản xuất âm nhạc mà còn đồng hành trong khâu phát hành, quảng bá và xây dựng thương hiệu cá nhân. Với định hướng sáng tạo và chuyên nghiệp, UNDERSOUTHERN mong muốn trở thành điểm đến đáng tin cậy cho những ai đam mê và muốn theo đuổi con đường âm nhạc lâu dài.
+    </div>
+
+    <div id="antiFraudContent">
+At UNDERSOUTHERN, we are committed to protecting artists, creators, and partners from fraudulent activities such as artificial streaming, misleading metadata, or copyright violations.
+
+This policy applies to all End Users (artists, distribution partners, and service providers) with a contractual relationship with UNDERSOUTHERN.
+
+Fraudulent practices include but are not limited to: unauthorized use of content, musical spam, inaccurate metadata, and bot-generated streams.
+
+Prevention & Monitoring: We actively review streaming data, revenue, and metadata to detect irregularities. All submissions undergo quality checks before release.
+
+Intervention: If fraud is suspected, UNDERSOUTHERN may withhold payments, suspend services, or collaborate with DSPs and authorities for further investigation.
+
+End User Responsibility: Artists and partners must provide accurate metadata and cooperate fully in any investigation.
+
+This policy should be read together with UNDERSOUTHERN’s Terms of Service and Privacy Policy. Updates may be made as required by market, legal, or technological changes.
+    </div>
+
+    <div id="privacyContent">
+At undersouthern.asia, we respect your privacy. We collect limited personal data (such as name, email, and music submissions) and basic technical information (IP address, browser type) to improve services, process artist requests, and ensure website functionality.
+
+We use cookies to enhance browsing and analyze website usage. These may include essential cookies, analytics tools, and third-party integrations (e.g., Spotify or YouTube). You can disable cookies in your browser settings, but some features may not work properly.
+
+We do not sell personal data. Information may only be shared with trusted distribution partners (with consent) or when legally required.
+
+By using this website, you agree to our use of data and cookies as described above.
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const video = document.getElementById('bgVideo');
+  video.addEventListener('loadeddata', () => { video.classList.add('loaded'); });
+
+  const contactBtn = document.getElementById('contactBtn');
+  const contactModal = document.getElementById('contactModal');
+
+  const aboutUsBtn = document.getElementById('aboutUsBtn');
+  const aboutModal = document.getElementById('aboutModal');
+  const aboutUsContent = document.getElementById('aboutUsContent');
+  const antiFraudBtn = document.getElementById('antiFraudBtn');
+  const antiFraudContent = document.getElementById('antiFraudContent');
+  const privacyBtn = document.getElementById('privacyBtn');
+  const privacyContent = document.getElementById('privacyContent');
+
+  // Contact click
+  contactBtn.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    contactModal.style.display = 'flex';
+  });
+
+  // About Us click
+  aboutUsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    aboutModal.style.display='flex';
+    aboutUsContent.style.display='block';
+    antiFraudContent.style.display='none';
+    privacyContent.style.display='none';
+  });
+
+  // Anti-Fraud click
+  antiFraudBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    aboutModal.style.display='flex';
+    aboutUsContent.style.display='none';
+    antiFraudContent.style.display='block';
+    privacyContent.style.display='none';
+  });
+
+  // Privacy click
+  privacyBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    aboutModal.style.display='flex';
+    aboutUsContent.style.display='none';
+    antiFraudContent.style.display='none';
+    privacyContent.style.display='block';
+  });
+
+  // Click outside modal → close
+  document.addEventListener('click', (e) => {
+    if(e.target===contactModal) contactModal.style.display='none';
+    if(e.target===aboutModal) aboutModal.style.display='none';
+  });
+});
+</script>
 
 </body>
 </html>
