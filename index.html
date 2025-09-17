@@ -30,9 +30,60 @@ header nav ul li span { opacity:0.8; cursor:default; }
 /* Footer */
 footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; border-top:1px solid rgba(255,255,255,0.1); }
 .footer-container { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
-.footer-right { display:flex; flex-wrap:wrap; gap:12px; }
-.footer-right a { color:#ccc; text-decoration:none; font-size:0.65rem; transition:color 0.3s; }
-.footer-right a:hover { color:#0f0; }
+
+/* Dropdown Legal & Info */
+.footer-right .dropdown { position: relative; display: inline-block; }
+.footer-right .dropdown a { color:#fff; text-decoration:none; cursor:pointer; }
+.footer-right .dropdown .arrow { margin-left:5px; transition: transform 0.3s; display:inline-block; }
+.footer-right .dropdown.open .arrow { transform: rotate(180deg); }
+
+.footer-right .dropdown-content {
+  display: none;
+  position: absolute;
+  background: #111;
+  min-width: 180px;
+  padding: 5px 0;
+  border-radius: 6px;
+  bottom: 25px;  /* xổ lên */
+  right: 0;
+  z-index: 500;
+  flex-direction: column;
+}
+.footer-right .dropdown-content a {
+  display: block;
+  padding: 8px 15px;
+  color: #ccc;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+.footer-right .dropdown-content a:hover { background: #222; color: #0f0; }
+.footer-right .dropdown.show .dropdown-content { display: flex; flex-direction: column; }
+
+/* Social Icons */
+.social-icons {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:2px;
+  width:100%;
+}
+.social-icons a {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: rgba(255,255,255,0.05);
+  padding:3px 4px;
+  border-radius:3px;
+  font-size:0.55rem;
+  color:#fff;
+  text-decoration:none;
+  cursor:pointer;
+  text-transform: lowercase;
+  transition: transform 0.2s, background 0.2s;
+}
+.social-icons a:hover {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.05);
+}
 
 /* Modal overlay */
 .modal {
@@ -70,37 +121,10 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
   padding-left: 5px;
 }
 
-/* Social Icons */
-.social-icons {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:2px;
-  width:100%;
-}
-.social-icons a {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background: rgba(255,255,255,0.05);
-  padding:3px 4px;
-  border-radius:3px;
-  font-size:0.55rem;
-  color:#fff;
-  text-decoration:none;
-  cursor:pointer;
-  text-transform: lowercase;
-  transition: transform 0.2s, background 0.2s;
-}
-.social-icons a:hover {
-  background: rgba(255,255,255,0.15);
-  transform: scale(1.05);
-}
-
 /* Responsive */
 @media (max-width:480px) {
   .modal .modal-content { max-width:95%; font-size:0.6rem; }
-  .footer-right { gap:6px; }
-  .footer-right a { font-size:0.55rem; }
+  .footer-right a { font-size:0.7rem; }
 }
 </style>
 </head>
@@ -128,13 +152,16 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
       © 2025 UNDERSOUTHERN, Registered in Vietnam | BRN 55D8010015
     </div>
     <div class="footer-right">
-      <a href="#" id="aboutUsBtn">about us</a>
-      <a href="https://github.com/phvinh1968-a11y/my-images/raw/main/EXCLUSIVE_DISTRIBUTION_AGREEMEN.pdf" download>distribution agreement</a>
-      <a href="#" id="antiFraudBtn">anti-fraud policy</a>
-      <a href="#" id="privacyBtn">privacy and cookies</a>
-      <a href="#" id="helpCenterBtn">help center</a>
-      <a href="#" id="termsBtn">terms</a>
-      <a href="#" id="contactBtn">contact</a>
+      <div class="dropdown" id="legalDropdown">
+        <a id="legalInfoBtn">Legal & Info <span class="arrow">▾</span></a>
+        <div class="dropdown-content">
+          <a href="#" id="aboutUsBtn">about us</a>
+          <a href="https://github.com/phvinh1968-a11y/my-images/raw/main/EXCLUSIVE_DISTRIBUTION_AGREEMEN.pdf" download>distribution agreement</a>
+          <a href="#" id="antiFraudBtn">anti-fraud policy</a>
+          <a href="#" id="privacyBtn">privacy and cookies</a>
+          <a href="#" id="contactBtn">contact</a>
+        </div>
+      </div>
     </div>
   </div>
 </footer>
@@ -195,6 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const video = document.getElementById('bgVideo');
   video.addEventListener('loadeddata', () => { video.classList.add('loaded'); });
 
+  const legalInfoBtn = document.getElementById('legalInfoBtn');
+  const dropdown = document.getElementById('legalDropdown');
+
   const contactBtn = document.getElementById('contactBtn');
   const contactModal = document.getElementById('contactModal');
 
@@ -206,10 +236,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const privacyBtn = document.getElementById('privacyBtn');
   const privacyContent = document.getElementById('privacyContent');
 
+  // Toggle Legal dropdown
+  legalInfoBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropdown.classList.toggle('show');
+    dropdown.classList.toggle('open'); // xoay mũi tên
+  });
+
   // Contact click
   contactBtn.addEventListener('click', (e) => { 
     e.stopPropagation(); 
     contactModal.style.display = 'flex';
+    dropdown.classList.remove('show', 'open');
   });
 
   // About Us click
@@ -219,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
     aboutUsContent.style.display='block';
     antiFraudContent.style.display='none';
     privacyContent.style.display='none';
+    dropdown.classList.remove('show', 'open');
   });
 
   // Anti-Fraud click
@@ -228,6 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     aboutUsContent.style.display='none';
     antiFraudContent.style.display='block';
     privacyContent.style.display='none';
+    dropdown.classList.remove('show', 'open');
   });
 
   // Privacy click
@@ -237,12 +278,14 @@ document.addEventListener('DOMContentLoaded', () => {
     aboutUsContent.style.display='none';
     antiFraudContent.style.display='none';
     privacyContent.style.display='block';
+    dropdown.classList.remove('show', 'open');
   });
 
   // Click outside modal → close
   document.addEventListener('click', (e) => {
     if(e.target===contactModal) contactModal.style.display='none';
     if(e.target===aboutModal) aboutModal.style.display='none';
+    if(!dropdown.contains(e.target) && e.target!==legalInfoBtn) dropdown.classList.remove('show','open');
   });
 });
 </script>
