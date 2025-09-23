@@ -27,6 +27,21 @@ header nav ul li span { opacity:0.8; cursor:default; }
 .hero .logo { position:relative; z-index:2; width:150px; max-width:30%; animation:pulse 2s infinite ease-in-out; transform-origin:center; }
 @keyframes pulse { 0%,100%{transform:scale(1);opacity:0.9;} 50%{transform:scale(1.1);opacity:1;} }
 
+/* Playlist */
+.playlist {
+  background:#000;
+  padding:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+.playlist iframe {
+  border-radius:12px;
+  max-width:800px;
+  width:100%;
+  height:400px;
+}
+
 /* Footer */
 footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; border-top:1px solid rgba(255,255,255,0.1); }
 .footer-container { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
@@ -143,6 +158,14 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
   <img class="logo" src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo">
 </section>
 
+<!-- Spotify Playlist -->
+<section class="playlist">
+  <iframe src="https://open.spotify.com/embed/playlist/3LONU63iZ0Np42Uiyztvnm?utm_source=generator&theme=0" 
+          frameBorder="0" allowfullscreen="" 
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          loading="lazy"></iframe>
+</section>
+
 <footer>
   <div class="footer-container">
     <div class="footer-left">
@@ -176,47 +199,30 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
 
       <!-- Nội dung từng mục -->
       <div id="aboutUs" class="legal-page" style="display:none;">
-        <h4>About Us</h4>
-        <p><strong>UNDERSOUTHERN LLC</strong> is an independent record label established in Vietnam in 2024. Our mission is to discover, develop, and empower artists while bringing Vietnamese music to both local and global audiences.</p>
-        <p>We specialize in contemporary genres, particularly Hip-Hop, Rap, and emerging music styles. UNDERSOUTHERN not only supports artists in music production but also provides distribution, promotion, and brand-building strategies.</p>
-        <p>Our vision is to be a transparent and artist-first label where creativity thrives and fair opportunities are given to every talent.</p>
+        <p>UNDERSOUTHERN is an independent record label founded with the goal of developing young artists and bringing Vietnamese music closer to domestic and international audiences. We focus on modern genres, especially Rap HipHop and contemporary music.</p>
+        <p>UNDERSOUTHERN not only supports artists in music production but also accompanies them in releasing, promoting and building their personal brand.</p>
+        <p>© 2025 UNDERSOUTHERN · Independent Music Label</p>
       </div>
 
       <div id="antiFraud" class="legal-page" style="display:none;">
-        <h4>Anti-Fraud Policy</h4>
-        <p>UNDERSOUTHERN strictly prohibits fraudulent activities including, but not limited to:</p>
-        <ul>
-          <li>Artificial streaming or manipulation of play counts</li>
-          <li>Misleading metadata or false copyright claims</li>
-          <li>Uploading unauthorized or pirated content</li>
-        </ul>
-        <p>If fraudulent behavior is detected, we reserve the right to:</p>
-        <ul>
-          <li>Withhold or cancel royalty payments</li>
-          <li>Suspend or terminate artist agreements</li>
-          <li>Report cases to DSPs (Spotify, Apple Music, etc.) and legal authorities</li>
-        </ul>
-        <p>Our goal is to protect genuine creators and ensure fair compensation for their work.</p>
+        <p>At UNDERSOUTHERN, we are committed to protecting artists, creators, and partners from fraudulent activities such as artificial streaming, misleading metadata, or copyright violations.</p>
+        <p>This policy applies to all End Users (artists, distribution partners, and service providers) with a contractual relationship with UNDERSOUTHERN.</p>
+        <p>Fraudulent practices include but are not limited to: unauthorized use of content, musical spam, inaccurate metadata, and bot-generated streams.</p>
+        <p>Prevention & Monitoring: We actively review streaming data, revenue, and metadata to detect irregularities. All submissions undergo quality checks before release.</p>
+        <p>Intervention: If fraud is suspected, UNDERSOUTHERN may withhold payments, suspend services, or collaborate with DSPs and authorities for further investigation.</p>
+        <p>End User Responsibility: Artists and partners must provide accurate metadata and cooperate fully in any investigation.</p>
+        <p>© 2025 UNDERSOUTHERN · Independent Music Label</p>
       </div>
 
       <div id="privacy" class="legal-page" style="display:none;">
-        <h4>Privacy and Cookies</h4>
-        <p>At <strong>undersouthern.asia</strong>, your privacy is important to us. We collect limited data to provide and improve our services.</p>
-        <h5>Data We Collect:</h5>
-        <ul>
-          <li>Basic account and contact information</li>
-          <li>Technical data such as IP address and browser type</li>
-          <li>Usage data for service analytics</li>
-        </ul>
-        <h5>Cookies:</h5>
-        <p>We use cookies to improve your browsing experience and analyze service performance. You may disable cookies in your browser settings, but some features may not function properly.</p>
-        <h5>Data Protection:</h5>
-        <p>All personal information is stored securely and never sold to third parties. We comply with applicable international data protection regulations.</p>
+        <p>At undersouthern.asia, we respect your privacy. We collect limited personal data (such as name, email, and music submissions) and basic technical information (IP address, browser type) to improve services, process artist requests, and ensure website functionality.</p>
+        <p>We use cookies to enhance browsing and analyze website usage. These may include essential cookies, analytics tools, and third-party integrations (e.g., Spotify or YouTube). You can disable cookies in your browser settings, but some features may not work properly.</p>
+        <p>We do not sell personal data. Information may only be shared with trusted distribution partners (with consent) or when legally required.</p>
+        <p>By using this website, you agree to our use of data and cookies as described above.</p>
+        <p>© 2025 UNDERSOUTHERN · Independent Music Label</p>
       </div>
 
       <div id="contact" class="legal-page" style="display:none;">
-        <h4>Contact</h4>
-        <p>For collaborations, inquiries, or support, please reach us via:</p>
         <div class="social-icons">
           <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
           <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
@@ -225,8 +231,6 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
           <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">spotify</a>
           <a href="mailto:contact@undersouthern.asia">email</a>
         </div>
-        <p style="margin-top:10px;font-size:0.85rem;color:#ccc;">
-        </p>
       </div>
     </div>
   </div>
