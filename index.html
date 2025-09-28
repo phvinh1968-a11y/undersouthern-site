@@ -135,16 +135,8 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
 }
 .social-icons a:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
 
-/* Dashboard login */
-#dashboard input, #dashboard button,
-#register input, #register button {
-  margin:5px 0; padding:8px; width:100%; border:none; border-radius:6px;
-}
-#dashboard button, #register button { background:#0f0; color:#000; cursor:pointer; font-weight:bold; }
-#dashboard button:hover, #register button:hover { background:#fff; }
-#dashboard table { border-collapse: collapse; width:100%; margin-top:15px; font-size:0.85rem; }
-#dashboard th, #dashboard td { border:1px solid #444; padding:6px; text-align:left; }
-#dashboard th { background:#222; }
+.legal-page h4 { margin-bottom:10px; color:#0f0; font-size:1rem; }
+.legal-page h5 { margin:8px 0 4px; font-size:0.9rem; color:#ccc; }
 
 @media (max-width:480px) {
   .modal .modal-content { max-width:95%; font-size:0.8rem; }
@@ -205,52 +197,70 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
           <a href="#" data-target="antiFraud">anti-fraud policy</a>
           <a href="#" data-target="privacy">privacy and cookies</a>
           <a href="#" data-target="contact">contact</a>
-          <a href="#" data-target="dashboard">dashboard royalties</a>
         </div>
       </div>
 
       <!-- Nội dung từng mục -->
-      <div id="aboutUs" class="legal-page" style="display:none;">...</div>
-      <div id="antiFraud" class="legal-page" style="display:none;">...</div>
-      <div id="privacy" class="legal-page" style="display:none;">...</div>
-      <div id="contact" class="legal-page" style="display:none;">...</div>
+      <div id="aboutUs" class="legal-page" style="display:none;">
+        <h4>About Us</h4>
+        <p><strong>UNDERSOUTHERN</strong> is an independent record label founded with the mission of developing young artists and bringing Vietnamese music closer to both domestic and international audiences.</p>
+        <p>We focus on modern genres, especially <strong>Rap / Hip-Hop</strong> and contemporary music.</p>
+        <p>Our label not only supports artists in music production, but also accompanies them in <em>release, promotion, and personal brand building</em>.</p>
+        <p><small>© 2025 UNDERSOUTHERN · Independent Music Label</small></p>
+      </div>
 
-      <!-- Dashboard Login -->
-      <div id="dashboard" class="legal-page" style="display:none;">
-        <h4>login</h4>
-        <input id="username" placeholder="Username">
-        <input id="password" type="password" placeholder="Password">
-        <button onclick="login()">Login</button>
-        <p id="msg" style="color:red"></p>
+      <div id="antiFraud" class="legal-page" style="display:none;">
+        <h4>Anti-Fraud Policy</h4>
+        <p>At <strong>UNDERSOUTHERN</strong>, we are committed to protecting artists, creators, and partners from fraudulent activities.</p>
+        
+        <h5>What counts as fraud?</h5>
+        <ul>
+          <li>Artificial streaming (bot-generated plays)</li>
+          <li>Misleading or inaccurate metadata</li>
+          <li>Unauthorized use of content</li>
+          <li>Musical spam or repeated uploads</li>
+        </ul>
 
-        <p style="margin-top:10px; font-size:0.85rem; color:#ccc;">
-          Chưa có tài khoản? 
-          <a href="#" id="goRegister" style="color:#0f0; text-decoration:underline; cursor:pointer;">
-            Đăng ký
-          </a>
-        </p>
+        <h5>Our Actions</h5>
+        <p>✔ Prevention & Monitoring: We actively review streaming data, revenue, and metadata to detect irregularities.  
+        ✔ Intervention: Payments may be withheld, services suspended, or collaboration with DSPs and authorities may occur when fraud is suspected.  
+        ✔ Responsibility: All artists and partners must provide accurate metadata and cooperate fully in any investigation.</p>
+        
+        <p><small>© 2025 UNDERSOUTHERN · Independent Music Label</small></p>
+      </div>
 
-        <div id="dashboardData" style="display:none">
-          <h4 id="artistName"></h4>
-          <table>
-            <thead>
-              <tr><th>Track</th><th>Store</th><th>Period</th><th>Amount</th></tr>
-            </thead>
-            <tbody id="royalties"></tbody>
-          </table>
+      <div id="privacy" class="legal-page" style="display:none;">
+        <h4>Privacy & Cookies</h4>
+        <p>Your privacy is important to us. At <strong>undersouthern.asia</strong>, we collect limited data to provide better services:</p>
+        
+        <h5>Information We Collect</h5>
+        <ul>
+          <li>Basic personal data (name, email, music submissions)</li>
+          <li>Technical info (IP address, browser type)</li>
+        </ul>
+
+        <h5>Cookies</h5>
+        <p>We use cookies to improve your browsing experience and analyze usage.  
+        Types include: essential cookies, analytics tools, and third-party integrations (Spotify, YouTube, etc.).  
+        You can disable cookies in your browser settings, but some features may not work properly.</p>
+
+        <h5>Data Use</h5>
+        <p>We <strong>never sell</strong> your personal data. Information may only be shared with trusted partners (with consent) or when legally required.</p>
+        
+        <p><small>By using this website, you agree to our Privacy & Cookies Policy.</small></p>
+        <p><small>© 2025 UNDERSOUTHERN · Independent Music Label</small></p>
+      </div>
+
+      <div id="contact" class="legal-page" style="display:none;">
+        <div class="social-icons">
+          <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
+          <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
+          <a href="https://www.tiktok.com/@undersouthern" target="_blank">tiktok</a>
+          <a href="https://www.youtube.com/@undersouthern" target="_blank">youtube</a>
+          <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">spotify</a>
+          <a href="mailto:contact@undersouthern.asia">email</a>
         </div>
       </div>
-
-      <!-- Register Tab -->
-      <div id="register" class="legal-page" style="display:none;">
-        <input id="regEmail" type="email" placeholder="Email">
-        <input id="regArtist" placeholder="Artist Name">
-        <input id="regUser" placeholder="Username">
-        <input id="regPass" type="password" placeholder="Password">
-        <button onclick="register()">Register</button>
-        <p id="regMsg" style="color:red"></p>
-      </div>
-
     </div>
   </div>
 </div>
@@ -300,84 +310,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Chuyển sang tab Register khi click "Đăng ký"
-  const goRegister = document.getElementById("goRegister");
-  if (goRegister) {
-    goRegister.addEventListener("click", e => {
-      e.preventDefault();
-      document.getElementById("dashboard").style.display = "none";
-      document.getElementById("register").style.display = "block";
-      modalTitle.textContent = "register";
-      backBtn.style.visibility = "visible";
-    });
-  }
-
   window.addEventListener('click', e => {
     if(e.target === legalModal) legalModal.style.display='none';
   });
 });
-
-// ========== Dashboard Login Script ==========
-const API_URL = "https://script.google.com/macros/s/AKfycbxFvQrFIqgTC3fDOBhr4YDlKyHiK5FSJgQjzDt6pE42p44KLbSX3n-DPZtqU2S8jpWC_g/exec"; // Thay bằng link Web App của bạn
-
-async function login() {
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-
-  const res = await fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action:"login", username, password }),
-    headers: { "Content-Type": "application/json" }
-  });
-  const data = await res.json();
-
-  if (data.success) {
-    document.getElementById('msg').innerText = "";
-    document.getElementById('dashboardData').style.display = "block";
-    document.getElementById('artistName').innerText = "Xin chào, " + data.artist;
-    const tbody = document.getElementById('royalties');
-    tbody.innerHTML = "";
-    data.royalties.forEach(r => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${r.track}</td><td>${r.store}</td><td>${r.period}</td><td>${r.amount}</td>`;
-      tbody.appendChild(tr);
-    });
-  } else {
-    document.getElementById('msg').innerText = data.message;
-  }
-}
-
-// Thêm chức năng Register
-async function register() {
-  const email = document.getElementById('regEmail').value;
-  const artist = document.getElementById('regArtist').value;
-  const username = document.getElementById('regUser').value;
-  const password = document.getElementById('regPass').value;
-
-  const res = await fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action:"register", email, artist, username, password }),
-    headers: { "Content-Type": "application/json" }
-  });
-  const data = await res.json();
-
-  // Hiển thị thông báo từ server
-  document.getElementById('regMsg').innerText = data.message;
-
-  // Nếu đăng ký thành công → đổi màu xanh và quay lại Login sau 2s
-  if (data.success) {
-    document.getElementById('regMsg').style.color = "lime";
-    setTimeout(() => {
-      document.getElementById("register").style.display = "none";
-      document.getElementById("dashboard").style.display = "block";
-      document.getElementById('msg').style.color = "lime";
-      document.getElementById('msg').innerText = "Đăng ký thành công! Vui lòng đăng nhập.";
-    }, 2000);
-  }
-}
 </script>
 
 </body>
 </html>
-
-
