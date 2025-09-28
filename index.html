@@ -135,6 +135,16 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
 }
 .social-icons a:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
 
+/* Dashboard login */
+#dashboard input, #dashboard button {
+  margin:5px 0; padding:8px; width:100%; border:none; border-radius:6px;
+}
+#dashboard button { background:#0f0; color:#000; cursor:pointer; font-weight:bold; }
+#dashboard button:hover { background:#fff; }
+#dashboard table { border-collapse: collapse; width:100%; margin-top:15px; font-size:0.85rem; }
+#dashboard th, #dashboard td { border:1px solid #444; padding:6px; text-align:left; }
+#dashboard th { background:#222; }
+
 @media (max-width:480px) {
   .modal .modal-content { max-width:95%; font-size:0.8rem; }
 }
@@ -194,44 +204,35 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
           <a href="#" data-target="antiFraud">anti-fraud policy</a>
           <a href="#" data-target="privacy">privacy and cookies</a>
           <a href="#" data-target="contact">contact</a>
+          <a href="#" data-target="dashboard">dashboard login</a>
         </div>
       </div>
 
       <!-- Nội dung từng mục -->
-      <div id="aboutUs" class="legal-page" style="display:none;">
-        <p>UNDERSOUTHERN is an independent record label founded with the goal of developing young artists and bringing Vietnamese music closer to domestic and international audiences. We focus on modern genres, especially Rap HipHop and contemporary music.</p>
-        <p>UNDERSOUTHERN not only supports artists in music production but also accompanies them in releasing, promoting and building their personal brand.</p>
-        <p>© 2025 UNDERSOUTHERN · Independent Music Label</p>
-      </div>
+      <div id="aboutUs" class="legal-page" style="display:none;">...</div>
+      <div id="antiFraud" class="legal-page" style="display:none;">...</div>
+      <div id="privacy" class="legal-page" style="display:none;">...</div>
+      <div id="contact" class="legal-page" style="display:none;">...</div>
 
-      <div id="antiFraud" class="legal-page" style="display:none;">
-        <p>At UNDERSOUTHERN, we are committed to protecting artists, creators, and partners from fraudulent activities such as artificial streaming, misleading metadata, or copyright violations.</p>
-        <p>This policy applies to all End Users (artists, distribution partners, and service providers) with a contractual relationship with UNDERSOUTHERN.</p>
-        <p>Fraudulent practices include but are not limited to: unauthorized use of content, musical spam, inaccurate metadata, and bot-generated streams.</p>
-        <p>Prevention & Monitoring: We actively review streaming data, revenue, and metadata to detect irregularities. All submissions undergo quality checks before release.</p>
-        <p>Intervention: If fraud is suspected, UNDERSOUTHERN may withhold payments, suspend services, or collaborate with DSPs and authorities for further investigation.</p>
-        <p>End User Responsibility: Artists and partners must provide accurate metadata and cooperate fully in any investigation.</p>
-        <p>© 2025 UNDERSOUTHERN · Independent Music Label</p>
-      </div>
+      <!-- Dashboard Login -->
+      <div id="dashboard" class="legal-page" style="display:none;">
+        <h4>Artist Dashboard Login</h4>
+        <input id="username" placeholder="Username">
+        <input id="password" type="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="msg" style="color:red"></p>
 
-      <div id="privacy" class="legal-page" style="display:none;">
-        <p>At undersouthern.asia, we respect your privacy. We collect limited personal data (such as name, email, and music submissions) and basic technical information (IP address, browser type) to improve services, process artist requests, and ensure website functionality.</p>
-        <p>We use cookies to enhance browsing and analyze website usage. These may include essential cookies, analytics tools, and third-party integrations (e.g., Spotify or YouTube). You can disable cookies in your browser settings, but some features may not work properly.</p>
-        <p>We do not sell personal data. Information may only be shared with trusted distribution partners (with consent) or when legally required.</p>
-        <p>By using this website, you agree to our use of data and cookies as described above.</p>
-        <p>© 2025 UNDERSOUTHERN · Independent Music Label</p>
-      </div>
-
-      <div id="contact" class="legal-page" style="display:none;">
-        <div class="social-icons">
-          <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
-          <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
-          <a href="https://www.tiktok.com/@undersouthern" target="_blank">tiktok</a>
-          <a href="https://www.youtube.com/@undersouthern" target="_blank">youtube</a>
-          <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">spotify</a>
-          <a href="mailto:contact@undersouthern.asia">email</a>
+        <div id="dashboardData" style="display:none">
+          <h4 id="artistName"></h4>
+          <table>
+            <thead>
+              <tr><th>Track</th><th>Store</th><th>Period</th><th>Amount</th></tr>
+            </thead>
+            <tbody id="royalties"></tbody>
+          </table>
         </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -285,6 +286,36 @@ document.addEventListener('DOMContentLoaded', () => {
     if(e.target === legalModal) legalModal.style.display='none';
   });
 });
+
+// ========== Dashboard Login Script ==========
+const API_URL = "PASTE_YOUR_WEBAPP_URL_HERE"; // Thay bằng link Web App của bạn
+
+async function login() {
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  const res = await fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({ username, password }),
+    headers: { "Content-Type": "application/json" }
+  });
+  const data = await res.json();
+
+  if (data.success) {
+    document.getElementById('msg').innerText = "";
+    document.getElementById('dashboardData').style.display = "block";
+    document.getElementById('artistName').innerText = "Xin chào, " + data.artist;
+    const tbody = document.getElementById('royalties');
+    tbody.innerHTML = "";
+    data.royalties.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${r.track}</td><td>${r.store}</td><td>${r.period}</td><td>${r.amount}</td>`;
+      tbody.appendChild(tr);
+    });
+  } else {
+    document.getElementById('msg').innerText = data.message;
+  }
+}
 </script>
 
 </body>
