@@ -360,11 +360,22 @@ async function register() {
     headers: { "Content-Type": "application/json" }
   });
   const data = await res.json();
+
+  // Hiển thị thông báo từ server
   document.getElementById('regMsg').innerText = data.message;
+
+  // Nếu đăng ký thành công → đổi màu xanh và quay lại Login sau 2s
+  if (data.success) {
+    document.getElementById('regMsg').style.color = "lime";
+    setTimeout(() => {
+      document.getElementById("register").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      document.getElementById('msg').style.color = "lime";
+      document.getElementById('msg').innerText = "Đăng ký thành công! Vui lòng đăng nhập.";
+    }, 2000);
+  }
 }
 </script>
 
 </body>
 </html>
-
-
