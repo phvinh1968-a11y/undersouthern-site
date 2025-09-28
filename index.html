@@ -136,11 +136,12 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
 .social-icons a:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
 
 /* Dashboard login */
-#dashboard input, #dashboard button {
+#dashboard input, #dashboard button,
+#register input, #register button {
   margin:5px 0; padding:8px; width:100%; border:none; border-radius:6px;
 }
-#dashboard button { background:#0f0; color:#000; cursor:pointer; font-weight:bold; }
-#dashboard button:hover { background:#fff; }
+#dashboard button, #register button { background:#0f0; color:#000; cursor:pointer; font-weight:bold; }
+#dashboard button:hover, #register button:hover { background:#fff; }
 #dashboard table { border-collapse: collapse; width:100%; margin-top:15px; font-size:0.85rem; }
 #dashboard th, #dashboard td { border:1px solid #444; padding:6px; text-align:left; }
 #dashboard th { background:#222; }
@@ -204,7 +205,7 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
           <a href="#" data-target="antiFraud">anti-fraud policy</a>
           <a href="#" data-target="privacy">privacy and cookies</a>
           <a href="#" data-target="contact">contact</a>
-          <a href="#" data-target="dashboard">dashboard login</a>
+          <a href="#" data-target="dashboard">dashboard royalties</a>
         </div>
       </div>
 
@@ -216,11 +217,18 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
 
       <!-- Dashboard Login -->
       <div id="dashboard" class="legal-page" style="display:none;">
-        <h4>Dashboard Login</h4>
+        <h4>login</h4>
         <input id="username" placeholder="Username">
         <input id="password" type="password" placeholder="Password">
         <button onclick="login()">Login</button>
         <p id="msg" style="color:red"></p>
+
+        <p style="margin-top:10px; font-size:0.85rem; color:#ccc;">
+          Chưa có tài khoản? 
+          <a href="#" id="goRegister" style="color:#0f0; text-decoration:underline; cursor:pointer;">
+            Đăng ký
+          </a>
+        </p>
 
         <div id="dashboardData" style="display:none">
           <h4 id="artistName"></h4>
@@ -231,6 +239,16 @@ footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; bord
             <tbody id="royalties"></tbody>
           </table>
         </div>
+      </div>
+
+      <!-- Register Tab -->
+      <div id="register" class="legal-page" style="display:none;">
+        <input id="regEmail" type="email" placeholder="Email">
+        <input id="regArtist" placeholder="Artist Name">
+        <input id="regUser" placeholder="Username">
+        <input id="regPass" type="password" placeholder="Password">
+        <button onclick="register()">Register</button>
+        <p id="regMsg" style="color:red"></p>
       </div>
 
     </div>
@@ -282,6 +300,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Chuyển sang tab Register khi click "Đăng ký"
+  const goRegister = document.getElementById("goRegister");
+  if (goRegister) {
+    goRegister.addEventListener("click", e => {
+      e.preventDefault();
+      document.getElementById("dashboard").style.display = "none";
+      document.getElementById("register").style.display = "block";
+      modalTitle.textContent = "register";
+      backBtn.style.visibility = "visible";
+    });
+  }
+
   window.addEventListener('click', e => {
     if(e.target === legalModal) legalModal.style.display='none';
   });
@@ -296,7 +326,7 @@ async function login() {
 
   const res = await fetch(API_URL, {
     method: "POST",
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ action:"login", username, password }),
     headers: { "Content-Type": "application/json" }
   });
   const data = await res.json();
@@ -316,8 +346,23 @@ async function login() {
     document.getElementById('msg').innerText = data.message;
   }
 }
+
+// Thêm chức năng Register
+async function register() {
+  const email = document.getElementById('regEmail').value;
+  const artist = document.getElementById('regArtist').value;
+  const username = document.getElementById('regUser').value;
+  const password = document.getElementById('regPass').value;
+
+  const res = await fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({ action:"register", email, artist, username, password }),
+    headers: { "Content-Type": "application/json" }
+  });
+  const data = await res.json();
+  document.getElementById('regMsg').innerText = data.message;
+}
 </script>
 
 </body>
 </html>
-
