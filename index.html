@@ -9,13 +9,6 @@
   <meta name="author" content="UNDERSOUTHERN Records" />
   <link rel="canonical" href="https://undersouthern.asia" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="UNDERSOUTHERN · Independent Record Label" />
-  <meta property="og:description" content="Independent record label based in Vietnam. Submit your music and collaborate with UNDERSOUTHERN." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://undersouthern.com" />
-  <meta property="og:image" content="https://undersouthern.com/thumbnail.jpg" />
-
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
@@ -157,7 +150,6 @@
       transition: 0.3s;
       cursor: pointer;
     }
-
     .back-btn:hover {
       background: #111;
       color: #fff;
@@ -311,95 +303,38 @@
 
     <section id="faq" class="page">
       <h2>FAQ</h2>
-      <div class="faq"><!doctype html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FAQ</title>
-  <style>
-    :root {
-      --text: #111;
-      --border: #eaeaea;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-    body {
-      margin: 0;
-      background: #fff;
-      color: var(--text);
-    }
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    details {
-      border-top: 1px solid var(--border);
-      padding: 10px 0;
-    }
-    details:last-child {
-      border-bottom: 1px solid var(--border);
-    }
-    summary {
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 15px;
-      list-style: none;
-    }
-    summary::-webkit-details-marker {
-      display: none;
-    }
-    .panel {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #555;
-      line-height: 1.6;
-      padding-left: 20px;
-    }
-    .panel ul {
-      margin: 6px 0 0 0;
-      padding-left: 20px;
-    }
-    .panel li {
-      margin-bottom: 4px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-
-    <details>
-      <summary>Âm nhạc của tôi sẽ có mặt trên những nền tảng nào?</summary>
-      <div class="panel">
-        Âm nhạc của bạn sẽ được phân phối trên các nền tảng sau:
-        <ul>
-          <li>Zing MP3</li>
-          <li>Spotify</li>
-          <li>Apple Music &amp; iTunes (gồm Shazam)</li>
-          <li>Instagram &amp; Facebook (gồm Oculus, Boomerang, Lasso, IGTV, SparkAR, MicDrop, WhatsApp)</li>
-          <li>TikTok &amp; TikTok Music</li>
-          <li>YouTube Music &amp; Content ID</li>
-          <li>Pandora</li>
-          <li>Deezer</li>
-          <li>TIDAL</li>
-          <li>Amazon (gồm Amazon.com, Amazon Prime Music, Amazon Music Unlimited, Amazon Music, Amazon AMP)</li>
-          <li>JioSaavn</li>
-          <li>Anghami</li>
-          <li>Beatport</li>
-          <li>Gracenote</li>
-          <li>7Digital (gồm 7d Download Store, Electric Jukebox / Roxi, Grandpad, NEC, Snap Inc, Soundtrack Your Brand, Stationhead, Pinterest, HomeWAV, Reward The World)</li>
-          <li>SnapChat</li>
-          <li>Tencent (gồm Joox, QQ Music, Kuwo, Kugou)</li>
-          <li>Bugs! (gồm Cyworld, Music Bro)</li>
-          <li>Audiomack</li>
-          <li>NetEase Cloud Music</li>
-          <li>LINE Music</li>
-          <li>Qobuz</li>
-        </ul>
-      </div>
-    </details>
-
-    <details>
+      <div class="faq">
+        <details>
+          <summary>Âm nhạc của tôi sẽ có mặt trên những nền tảng nào?</summary>
+          <div class="panel">
+            Âm nhạc của bạn sẽ được phân phối trên các nền tảng sau:
+            <ul>
+              <li>Zing MP3</li>
+              <li>Spotify</li>
+              <li>Apple Music &amp; iTunes (gồm Shazam)</li>
+              <li>Instagram &amp; Facebook</li>
+              <li>TikTok &amp; TikTok Music</li>
+              <li>YouTube Music &amp; Content ID</li>
+              <li>Pandora</li>
+              <li>Deezer</li>
+              <li>TIDAL</li>
+              <li>Amazon Music</li>
+              <li>JioSaavn</li>
+              <li>Anghami</li>
+              <li>Beatport</li>
+              <li>Gracenote</li>
+              <li>7Digital</li>
+              <li>SnapChat</li>
+              <li>Tencent Music</li>
+              <li>Bugs!</li>
+              <li>Audiomack</li>
+              <li>NetEase Cloud Music</li>
+              <li>LINE Music</li>
+              <li>Qobuz</li>
+            </ul>
+          </div>
+        </details>
+        <details>
       <summary>Âm nhạc của tôi sẽ có mặt ở những quốc gia nào?</summary>
       <div class="panel">Theo mặc định, chúng tôi phân phối nhạc của bạn trên toàn thế giới.</div>
     </details>
@@ -558,12 +493,7 @@
         </a>.
       </div>
     </details>
-
-  </div>
-</body>
-</html>
       </div>
-
       <a class="back-btn" onclick="goHome()">← Back</a>
     </section>
   </main>
@@ -611,6 +541,8 @@
       document.getElementById('home').style.display = 'flex';
       window.scrollTo(0, 0);
     }
+
+    window.onload = goHome;
   </script>
 
 </body>
