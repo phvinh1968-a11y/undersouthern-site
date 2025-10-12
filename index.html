@@ -41,12 +41,11 @@
       font-family: 'Inter', Arial, sans-serif;
       background: #fff;
       color: #111;
-      height: 100vh;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     /* Background Video */
@@ -94,6 +93,11 @@
       padding: 0 20px;
       width: 100%;
       max-width: 600px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     h1 {
@@ -129,29 +133,103 @@
     }
 
     footer {
-      position: fixed;
-      bottom: 15px;
-      left: 20px;
-      font-size: clamp(0.7rem, 2.5vw, 0.8rem);
-      color: #666;
-      z-index: 2;
+      position: relative;
+      width: 100%;
+      background: #0d0f11;
+      color: #ccc;
+      padding: 80px 40px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    /* Animation */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(10px);
-      animation: fadeInUp 1.2s ease forwards;
+    .footer-top {
+      width: 100%;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
     }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+
+    .footer-column h3 {
+      font-size: 0.9rem;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 15px;
     }
+
+    .footer-column a {
+      display: block;
+      color: #bbb;
+      text-decoration: none;
+      font-size: 0.85rem;
+      margin: 6px 0;
+      transition: color 0.3s ease;
+    }
+
+    .footer-column a:hover { color: #fff; }
+
+    .newsletter input {
+      background: transparent;
+      border: 1px solid #666;
+      padding: 8px 12px;
+      border-radius: 4px;
+      width: 100%;
+      color: #eee;
+      font-size: 0.85rem;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .newsletter button {
+      background: #fff;
+      border: none;
+      color: #111;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+    .newsletter button:hover { background: #ccc; }
+
+    .language-select {
+      background: #1a1c1e;
+      border: 1px solid #666;
+      color: #eee;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .footer-bottom {
+      font-size: 0.75rem;
+      color: #777;
+      text-align: center;
+      border-top: 1px solid #222;
+      padding-top: 20px;
+      width: 100%;
+    }
+
+    .footer-bottom a {
+      color: #888;
+      text-decoration: none;
+      margin: 0 6px;
+    }
+
+    .footer-bottom a:hover { color: #fff; }
 
     @media (max-width: 480px) {
       header { font-size: 0.7rem; gap: 10px; }
-      footer { left: 10px; bottom: 10px; }
     }
+
+    /* ✅ Hide newsletter section only */
+    .newsletter { display: none !important; }
+
   </style>
 </head>
 <body>
@@ -176,7 +254,42 @@
     </a>
   </main>
 
-  <footer>© 2025 UNDERSOUTHERN · All Rights Reserved</footer>
+  <!-- NEW FOOTER SECTION (LIKE MAKE WAVES STYLE) -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-column">
+        <h3>About us</h3>
+        <a href="#">Pricing</a>
+        <a href="#">Contact</a>
+        <a href="#">Press</a>
+        <a href="#">Careers</a>
+      </div>
+
+      <div class="footer-column">
+        <h3>Follow us</h3>
+        <a href="https://www.instagram.com/undersouthernrecords" target="_blank">Instagram</a>
+        <a href="https://www.tiktok.com/@undersouthern" target="_blank">TikTok</a>
+        <a href="https://www.youtube.com/@undersouthern" target="_blank">YouTube</a>
+        <a href="https://www.facebook.com/undersouthern" target="_blank">Facebook</a>
+      </div>
+
+      <div class="footer-column newsletter">
+        <h3>Subscribe to our newsletter</h3>
+        <input type="email" placeholder="your@email.com" />
+        <button>→</button>
+        <select class="language-select">
+          <option>English</option>
+          <option>Vietnamese</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 UNDERSOUTHERN · 
+      <a href="#">Terms and Conditions</a> 
+      <a href="#">Privacy</a>
+    </div>
+  </footer>
 
 </body>
 </html>
