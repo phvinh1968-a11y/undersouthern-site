@@ -108,6 +108,7 @@
       opacity: 0;
       animation: fadeIn 1s ease forwards;
       animation-delay: 0.6s;
+      cursor: pointer;
     }
 
     @keyframes fadeIn {
@@ -141,6 +142,25 @@
       font-size: 1.5rem;
       margin-bottom: 20px;
       color: #111;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 25px;
+      border: 1px solid #111;
+      border-radius: 25px;
+      text-decoration: none;
+      color: #111;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: #111;
+      color: #fff;
     }
 
     /* ===== FOOTER ===== */
@@ -208,13 +228,8 @@
 
     .footer-bottom a:hover { color: #fff; }
 
-    /* Responsive */
     @media (max-width: 768px) {
-      .footer-top {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 25px;
-      }
+      .footer-top { flex-direction: column; align-items: flex-start; gap: 25px; }
       .footer-bottom { text-align: left; font-size: 0.6rem; }
     }
   </style>
@@ -237,29 +252,35 @@
       </a>
     </section>
 
-    <!-- Pricing -->
+    <!-- Các trang phụ -->
     <section id="pricing" class="page">
       <h2>Pricing</h2>
-      <p>We offer flexible distribution and artist support packages. Each release is evaluated individually to ensure the best strategy for your music. Contact us for a tailored plan that fits your creative goals and budget.</p>
+      <p>We offer flexible distribution and artist support options. For detailed information, please contact us at <strong>contact@undersouthern.asia</strong>.</p>
+      <a class="back-btn" onclick="goHome()">← Back</a>
     </section>
 
-    <!-- Contact -->
     <section id="contact" class="page">
       <h2>Contact</h2>
-      <p>For general inquiries, collaborations, or media requests, please reach out via email:</p>
-      <p><strong>Email:</strong> contact@undersouthern.asia</p>
+      <p>For general inquiries or collaborations, please contact us at <strong>contact@undersouthern.asia</strong>.</p>
+      <a class="back-btn" onclick="goHome()">← Back</a>
     </section>
 
-    <!-- Press -->
     <section id="press" class="page">
       <h2>Press</h2>
-      <p>Press materials, artist bios, and official visuals are available upon request. For interviews or press coverage, please email our media team at <strong>contact@undersouthern.asia</strong>.</p>
+      <p>For interviews, media assets, and official visuals, please email <strong>contact@undersouthern.asia</strong>.</p>
+      <a class="back-btn" onclick="goHome()">← Back</a>
     </section>
 
-    <!-- Careers -->
     <section id="careers" class="page">
       <h2>Careers</h2>
-      <p>Join our team at UNDERSOUTHERN. We’re always open to creative minds in A&R, marketing, visual design, and music production. Send your portfolio or resume to <strong>contact@undersouthern.asia</strong>.</p>
+      <p>We’re always open to creative minds in A&R, marketing, and production. Send your portfolio to <strong>contact@undersouthern.asia</strong>.</p>
+      <a class="back-btn" onclick="goHome()">← Back</a>
+    </section>
+
+    <section id="faq" class="page">
+      <h2>FAQ</h2>
+      <p>For any questions related to artist distribution or partnership, please reach us at <strong>contact@undersouthern.asia</strong>.</p>
+      <a class="back-btn" onclick="goHome()">← Back</a>
     </section>
   </main>
 
@@ -275,6 +296,7 @@
         <a onclick="showPage('contact')">Contact</a>
         <a onclick="showPage('press')">Press</a>
         <a onclick="showPage('careers')">Careers</a>
+        <a onclick="showPage('faq')">FAQ</a>
       </div>
 
       <div class="footer-column">
@@ -297,6 +319,12 @@
     function showPage(id) {
       document.querySelectorAll('.content, .page').forEach(el => el.style.display = 'none');
       document.getElementById(id).style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    function goHome() {
+      document.querySelectorAll('.page').forEach(el => el.style.display = 'none');
+      document.getElementById('home').style.display = 'flex';
       window.scrollTo(0, 0);
     }
   </script>
