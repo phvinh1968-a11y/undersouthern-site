@@ -1,320 +1,182 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UNDERSOUTHERN</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNDERSOUTHERN · Independent Record Label</title>
+  <meta name="description" content="UNDERSOUTHERN is an independent record label based in Vietnam, dedicated to developing artists and distributing music worldwide. Submit your demo and join us." />
+  <meta name="keywords" content="UNDERSOUTHERN, record label, independent label, music distribution, indie label, Vietnam music, digital distribution" />
+  <meta name="author" content="UNDERSOUTHERN Records" />
+  <link rel="canonical" href="https://undersouthern.com" />
 
-<link rel="icon" type="image/png" href="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_black.png">
+  <!-- Open Graph -->
+  <meta property="og:title" content="UNDERSOUTHERN · Independent Record Label" />
+  <meta property="og:description" content="Independent record label based in Vietnam. Submit your music and collaborate with UNDERSOUTHERN." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://undersouthern.com" />
+  <meta property="og:image" content="https://undersouthern.com/thumbnail.jpg" />
 
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Arial', sans-serif; background:#111; color:#fff; overflow-x:hidden; }
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "UNDERSOUTHERN",
+    "alternateName": "UNDERSOUTHERN Records",
+    "foundingLocation": "Vietnam",
+    "foundingDate": "2024",
+    "url": "https://undersouthern.com",
+    "description": "An independent record label and music distributor based in Vietnam.",
+    "sameAs": [
+      "https://www.instagram.com/undersouthernrecords",
+      "https://www.youtube.com/@undersouthernrecords",
+      "https://open.spotify.com/artist/undersouthern"
+    ]
+  }
+  </script>
 
-/* Header */
-header {
-  position:fixed; top:0; left:0; width:100%; padding:20px 40px;
-  display:flex; justify-content:center; align-items:center; background: transparent; z-index:1000;
-}
-header nav ul { list-style:none; display:flex; gap:10px; }
-header nav ul li { color:#fff; font-size:0.8rem; }
-header nav ul li span { opacity:0.8; cursor:default; }
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: #fff;
+      color: #111;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
 
-/* Hero */
-.hero { position:relative; width:100%; height:100vh; display:flex; justify-content:center; align-items:center; overflow:hidden; }
-.hero video { position:absolute; top:50%; left:50%; width:auto; height:100%; min-width:100%; min-height:100%; transform:translate(-50%,-50%); object-fit:cover; z-index:-1; opacity:0; transition:opacity 1.5s ease-in-out; will-change: opacity; }
-.hero video.loaded { opacity:1; }
-.hero .logo { position:relative; z-index:2; width:150px; max-width:30%; animation:pulse 2s infinite ease-in-out; transform-origin:center; }
-@keyframes pulse { 0%,100%{transform:scale(1);opacity:0.9;} 50%{transform:scale(1.1);opacity:1;} }
+    /* Background Video */
+    .bg-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.12;
+      z-index: -1;
+    }
 
-/* Playlist */
-.playlist {
-  background:#000;
-  padding:20px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-.playlist iframe {
-  border-radius:12px;
-  max-width:800px;
-  width:100%;
-  height:400px;
-}
+    /* White overlay for visibility */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255,255,255,0.6);
+      z-index: 0;
+    }
 
-/* Footer */
-footer { padding:15px 30px; background:#111; color:#ccc; font-size:0.65rem; border-top:1px solid rgba(255,255,255,0.1); }
-.footer-container { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+    /* Header */
+    header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 15px 10px;
+      font-size: 0.8rem;
+      color: #111;
+      background: rgba(255,255,255,0.4);
+      backdrop-filter: blur(5px);
+      text-transform: uppercase;
+      font-weight: 500;
+      z-index: 10;
+    }
 
-#legalInfoBtn {
-  font-size: 1rem;
-  font-weight: bold;
-  color:#fff;
-  text-decoration:none;
-  cursor:pointer;
-}
+    /* Main content */
+    .content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 0 20px;
+      width: 100%;
+      max-width: 600px;
+    }
 
-/* Modal overlay */
-.modal {
-  position:fixed; top:0; left:0; width:100%; height:100%;
-  background: rgba(0,0,0,0.9); display:none;
-  justify-content:center; align-items:center; z-index:3000;
-  padding:20px;
-  overflow-y:auto; 
-}
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
 
-/* Modal content */
-.modal .modal-content {
-  background:#111; border-radius:12px;
-  display:flex; flex-direction:column;
-  max-width:600px; width:95%;
-  max-height:85vh;
-  overflow:hidden;
-  font-family: 'Arial', sans-serif;
-  color:#fff;
-  word-break: break-word;
-}
+    p {
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      color: #333;
+      margin-bottom: 30px;
+      letter-spacing: 0.5px;
+    }
 
-/* Modal header (back + title + close) */
-.modal-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px 15px;
-  border-bottom:1px solid rgba(255,255,255,0.1);
-}
-.modal-header h3 {
-  flex:1;
-  text-align:center;
-  font-size:1rem;
-  margin:0;
-}
-.close-btn, .back-btn {
-  background:none; border:none; color:#fff;
-  font-size:1.1rem; cursor:pointer;
-}
-.back-btn { visibility:hidden; }
+    /* Submit button */
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      border: 1px solid #111;
+      color: #111;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: clamp(0.8rem, 3vw, 0.9rem);
+      border-radius: 30px;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background: #111;
+      color: #fff;
+    }
 
-/* Modal body */
-.modal-body {
-  padding:15px;
-  overflow-y:auto;
-  flex:1;
-}
+    footer {
+      position: fixed;
+      bottom: 15px;
+      left: 20px;
+      font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+      color: #666;
+      z-index: 2;
+    }
 
-/* Links in Legal modal */
-.legal-links a {
-  display:block;
-  padding:12px 0;
-  font-size:0.9rem;
-  color:#0f0;
-  text-decoration:none;
-  border-bottom:1px solid rgba(255,255,255,0.1);
-}
-.legal-links a:hover { color:#fff; }
+    /* Animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInUp 1.2s ease forwards;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-.social-icons {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:5px;
-  width:100%;
-}
-.social-icons a {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background: rgba(255,255,255,0.05);
-  padding:6px 8px;
-  border-radius:4px;
-  font-size:0.7rem;
-  color:#fff;
-  text-decoration:none;
-  cursor:pointer;
-  text-transform: lowercase;
-  transition: transform 0.2s, background 0.2s;
-}
-.social-icons a:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); }
-
-.legal-page h4 { margin-bottom:10px; color:#0f0; font-size:1rem; }
-.legal-page h5 { margin:8px 0 4px; font-size:0.9rem; color:#ccc; }
-
-@media (max-width:480px) {
-  .modal .modal-content { max-width:95%; font-size:0.8rem; }
-}
-</style>
+    @media (max-width: 480px) {
+      header { font-size: 0.7rem; gap: 10px; }
+      footer { left: 10px; bottom: 10px; }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <nav>
-    <ul>
-      <li><span>Vietnam</span></li>
-      <li><span>Established 2024</span></li>
-    </ul>
-  </nav>
-</header>
+  <header>
+    <span>Vietnam</span>
+    <span>Established 2024</span>
+  </header>
 
-<section class="hero">
-  <video id="bgVideo" muted autoplay loop playsinline preload="auto" poster="https://via.placeholder.com/1920x1080/111111/111111.png">
-    <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/video_background.mp4" type="video/mp4">
+  <video class="bg-video" autoplay muted loop playsinline preload="auto">
+    <source src="https://github.com/phvinh1968-a11y/my-images/raw/main/KlickPin%20CF%20Motion%20Background%20_%20Video%20background%20for%20video%20editing%20_%20Background%20nel%202025.mp4" type="video/mp4" />
   </video>
-  <img class="logo" src="https://github.com/phvinh1968-a11y/my-images/raw/main/logo_processed.png" alt="UNDERSOUTHERN Logo">
-</section>
 
-<!-- Spotify Playlist -->
-<section class="playlist">
-  <iframe src="https://open.spotify.com/embed/playlist/3LONU63iZ0Np42Uiyztvnm?utm_source=generator&theme=0" 
-          frameBorder="0" allowfullscreen="" 
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-          loading="lazy"></iframe>
-</section>
+  <div class="overlay"></div>
 
-<footer>
-  <div class="footer-container">
-    <div class="footer-left">
-      © 2025 UNDERSOUTHERN · Independent Music Label
-    </div>
-    <div class="footer-right">
-      <a id="legalInfoBtn">Legal & Info ▾</a>
-    </div>
-  </div>
-</footer>
+  <main class="content">
+    <h1 class="fade-in">UNDERSOUTHERN</h1>
+    <p class="fade-in" style="animation-delay: 0.3s;">Independent Record Label</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSda_y_qjj18aNyw3x5t9hNQj4Q2sCVdpXpqIRYbnC1PFz8dxQ/viewform?usp=header"
+       target="_blank" class="btn fade-in" style="animation-delay: 0.6s;">
+       Submit Your Music
+    </a>
+  </main>
 
-<!-- Legal Modal -->
-<div id="legalModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <button class="back-btn" id="backBtn">←</button>
-      <h3 id="modalTitle">Legal & Info</h3>
-      <button class="close-btn" id="closeLegal">&times;</button>
-    </div>
-    <div class="modal-body">
-      <!-- Menu chính -->
-      <div id="legalMenu">
-        <div class="legal-links">
-          <a href="#" data-target="aboutUs">about us</a>
-          <a href="https://github.com/phvinh1968-a11y/my-images/raw/main/EXCLUSIVE_DISTRIBUTION_AGREEMEN.pdf" download>distribution agreement</a>
-          <a href="#" data-target="antiFraud">anti-fraud policy</a>
-          <a href="#" data-target="privacy">privacy and cookies</a>
-          <a href="#" data-target="contact">contact</a>
-        </div>
-      </div>
-
-      <!-- Nội dung từng mục -->
-      <div id="aboutUs" class="legal-page" style="display:none;">
-        <h4>About Us</h4>
-        <p><strong>UNDERSOUTHERN</strong> is an independent record label founded with the mission of developing young artists and bringing Vietnamese music closer to both domestic and international audiences.</p>
-        <p>We focus on modern genres, especially <strong>Rap / Hip-Hop</strong> and contemporary music.</p>
-        <p>Our label not only supports artists in music production, but also accompanies them in <em>release, promotion, and personal brand building</em>.</p>
-        <p><small>© 2025 UNDERSOUTHERN · Independent Music Label</small></p>
-      </div>
-
-      <div id="antiFraud" class="legal-page" style="display:none;">
-        <h4>Anti-Fraud Policy</h4>
-        <p>At <strong>UNDERSOUTHERN</strong>, we are committed to protecting artists, creators, and partners from fraudulent activities.</p>
-        
-        <h5>What counts as fraud?</h5>
-        <ul>
-          <li>Artificial streaming (bot-generated plays)</li>
-          <li>Misleading or inaccurate metadata</li>
-          <li>Unauthorized use of content</li>
-          <li>Musical spam or repeated uploads</li>
-        </ul>
-
-        <h5>Our Actions</h5>
-        <p>✔ Prevention & Monitoring: We actively review streaming data, revenue, and metadata to detect irregularities.  
-        ✔ Intervention: Payments may be withheld, services suspended, or collaboration with DSPs and authorities may occur when fraud is suspected.  
-        ✔ Responsibility: All artists and partners must provide accurate metadata and cooperate fully in any investigation.</p>
-        
-        <p><small>© 2025 UNDERSOUTHERN · Independent Music Label</small></p>
-      </div>
-
-      <div id="privacy" class="legal-page" style="display:none;">
-        <h4>Privacy & Cookies</h4>
-        <p>Your privacy is important to us. At <strong>undersouthern.asia</strong>, we collect limited data to provide better services:</p>
-        
-        <h5>Information We Collect</h5>
-        <ul>
-          <li>Basic personal data (name, email, music submissions)</li>
-          <li>Technical info (IP address, browser type)</li>
-        </ul>
-
-        <h5>Cookies</h5>
-        <p>We use cookies to improve your browsing experience and analyze usage.  
-        Types include: essential cookies, analytics tools, and third-party integrations (Spotify, YouTube, etc.).  
-        You can disable cookies in your browser settings, but some features may not work properly.</p>
-
-        <h5>Data Use</h5>
-        <p>We <strong>never sell</strong> your personal data. Information may only be shared with trusted partners (with consent) or when legally required.</p>
-        
-        <p><small>By using this website, you agree to our Privacy & Cookies Policy.</small></p>
-        <p><small>© 2025 UNDERSOUTHERN · Independent Music Label</small></p>
-      </div>
-
-      <div id="contact" class="legal-page" style="display:none;">
-        <div class="social-icons">
-          <a href="https://www.facebook.com/undersouthern" target="_blank">facebook</a>
-          <a href="https://www.instagram.com/undersouthern" target="_blank">instagram</a>
-          <a href="https://www.tiktok.com/@undersouthern" target="_blank">tiktok</a>
-          <a href="https://www.youtube.com/@undersouthern" target="_blank">youtube</a>
-          <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">spotify</a>
-          <a href="mailto:contact@undersouthern.asia">email</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const video = document.getElementById('bgVideo');
-  video.addEventListener('loadeddata', () => video.classList.add('loaded'));
-
-  const legalModal = document.getElementById('legalModal');
-  const legalBtn = document.getElementById('legalInfoBtn');
-  const closeLegal = document.getElementById('closeLegal');
-  const backBtn = document.getElementById('backBtn');
-  const modalTitle = document.getElementById('modalTitle');
-  const legalMenu = document.getElementById('legalMenu');
-  const pages = document.querySelectorAll('.legal-page');
-
-  function showMenu() {
-    legalMenu.style.display='block';
-    pages.forEach(p => p.style.display='none');
-    backBtn.style.visibility='hidden';
-    modalTitle.textContent='Legal & Info';
-  }
-
-  function showPage(id, title) {
-    legalMenu.style.display='none';
-    pages.forEach(p => p.style.display='none');
-    document.getElementById(id).style.display='block';
-    backBtn.style.visibility='visible';
-    modalTitle.textContent=title;
-  }
-
-  legalBtn.addEventListener('click', () => {
-    legalModal.style.display='flex';
-    showMenu();
-  });
-
-  closeLegal.addEventListener('click', () => legalModal.style.display='none');
-  backBtn.addEventListener('click', showMenu);
-
-  document.querySelectorAll('.legal-links a[data-target]').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const target = link.dataset.target;
-      const title = link.textContent.trim();
-      showPage(target, title);
-    });
-  });
-
-  window.addEventListener('click', e => {
-    if(e.target === legalModal) legalModal.style.display='none';
-  });
-});
-</script>
+  <footer>© 2025 UNDERSOUTHERN · All Rights Reserved</footer>
 
 </body>
 </html>
