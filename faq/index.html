@@ -1,68 +1,390 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FAQ — UNDERSOUTHERN Records</title>
+  <meta name="description" content="Frequently Asked Questions — UNDERSOUTHERN is an independent record label based in Vietnam, supporting artists and distributing music worldwide." />
+  <link rel="canonical" href="https://undersouthern.asia/faq" />
+
   <style>
-    body { font-family: Inter, sans-serif; margin: 0; padding: 0; }
-    header, footer { text-align: center; padding: 20px; }
-    h1 { text-align: center; margin-top: 40px; }
-    .faq {
-      max-width: 700px;
-      margin: 40px auto;
-      border-top: 1px solid #ddd;
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: #fff;
+      color: #111;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .faq-item {
-      border-bottom: 1px solid #ddd;
-      padding: 15px 0;
+
+    header {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px 10px;
+      font-size: 0.8rem;
+      color: #111;
+      background: transparent;
+      text-transform: uppercase;
+      font-weight: 500;
+      z-index: 10;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 900px;
+      padding: 60px 20px;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+    }
+
+    .faq details {
+      border-top: 1px solid #eaeaea;
+      padding: 10px 0;
+    }
+    .faq details:last-child {
+      border-bottom: 1px solid #eaeaea;
+    }
+    .faq summary {
       cursor: pointer;
+      font-weight: 500;
+      font-size: 15px;
+      list-style: none;
     }
-    .faq-item h3 {
-      margin: 0;
-      font-size: 18px;
-    }
-    .faq-item p {
+    .faq summary::-webkit-details-marker {
       display: none;
-      margin: 10px 0 0;
+    }
+    .faq .panel {
+      margin-top: 8px;
+      font-size: 14px;
       color: #555;
+      line-height: 1.6;
+      padding-left: 20px;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 10px 25px;
+      border: 1px solid #111;
+      border-radius: 25px;
+      text-decoration: none;
+      color: #111;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      transition: 0.3s;
+    }
+    .back-btn:hover {
+      background: #111;
+      color: #fff;
+    }
+
+    footer {
+      width: 100%;
+      background: #0d0f11;
+      color: #ccc;
+      padding: 80px 40px 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-top {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo img {
+      width: 120px;
+      height: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+    }
+
+    .footer-column h3 {
+      font-size: 0.9rem;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .footer-column a {
+      display: block;
+      color: #bbb;
+      text-decoration: none;
+      font-size: 0.85rem;
+      margin: 6px 0;
+      transition: color 0.3s ease;
+    }
+
+    .footer-column a:hover { color: #fff; }
+
+    .footer-bottom {
+      font-size: 0.65rem;
+      color: #777;
+      text-align: center;
+      border-top: 1px solid #222;
+      padding-top: 20px;
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .footer-top { flex-direction: column; align-items: flex-start; gap: 25px; }
+      .footer-bottom { text-align: left; font-size: 0.6rem; }
     }
   </style>
 </head>
 <body>
+
   <header>
-    <a href="/">← Trang chủ</a>
+    <span>Vietnam</span>
+    <span>Established 2024</span>
   </header>
 
-  <h1>Frequently Asked Questions</h1>
+  <main>
+    <h1>FAQ</h1>
+    <div class="faq">
+      <div class="faq">
+        <details>
+          <summary>Âm nhạc của tôi sẽ có mặt trên những nền tảng nào?</summary>
+          <div class="panel">
+            Âm nhạc của bạn sẽ được phân phối trên các nền tảng sau:
+            <ul>
+              <li>Zing MP3</li>
+              <li>Spotify</li>
+              <li>Apple Music &amp; iTunes (gồm Shazam)</li>
+              <li>Instagram &amp; Facebook</li>
+              <li>TikTok &amp; TikTok Music</li>
+              <li>YouTube Music &amp; Content ID</li>
+              <li>Pandora</li>
+              <li>Deezer</li>
+              <li>TIDAL</li>
+              <li>Amazon Music</li>
+              <li>JioSaavn</li>
+              <li>Anghami</li>
+              <li>Beatport</li>
+              <li>Gracenote</li>
+              <li>7Digital</li>
+              <li>SnapChat</li>
+              <li>Tencent Music</li>
+              <li>Bugs!</li>
+              <li>Audiomack</li>
+              <li>NetEase Cloud Music</li>
+              <li>LINE Music</li>
+              <li>Qobuz</li>
+            </ul>
+          </div>
+        </details>
+        <details>
+      <summary>Âm nhạc của tôi sẽ có mặt ở những quốc gia nào?</summary>
+      <div class="panel">Theo mặc định, chúng tôi phân phối nhạc của bạn trên toàn thế giới.</div>
+    </details>
 
-  <div class="faq">
-    <div class="faq-item">
-      <h3>1. Tôi có thể gửi demo như thế nào?</h3>
-      <p>Bạn có thể gửi demo qua trang “Submit Demo” của UNDERSOUTHERN.</p>
+    <details>
+      <summary>Phải mất bao lâu thì nhạc của tôi mới có sẵn?</summary>
+      <div class="panel">
+        Thông thường, nhạc của bạn sẽ được tải lên mạng trong vòng <strong>3 ngày làm việc</strong>,  
+        nhưng điều này còn tùy thuộc vào từng dịch vụ:
+        <ul>
+          <li><strong>iTunes / Apple Music:</strong> 5 ngày (một số album phải trải qua quá trình xác thực thủ công có thể mất thêm 1–2 tuần)</li>
+          <li><strong>Spotify:</strong> 2–3 ngày</li>
+          <li><strong>Amazon:</strong> 2–3 ngày</li>
+          <li><strong>YouTube Music:</strong> 2–3 ngày</li>
+          <li><strong>Deezer:</strong> 2–3 ngày</li>
+          <li><strong>TIDAL:</strong> 2–3 ngày</li>
+          <li><strong>Facebook / Instagram:</strong> 2–3 ngày</li>
+          <li><strong>TikTok:</strong> 2–3 ngày</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Tôi có thể chuyển sang UNDERSOUTHERN từ nhà phân phối khác không?</summary>
+      <div class="panel">Tất nhiên là có thể, vui lòng liên hệ <strong>contact@undersouthern.asia</strong> nếu bạn cần hỗ trợ hoặc giải đáp thêm bất kỳ thắc mắc nào.</div>
+    </details>
+
+    <details>
+      <summary>Lounge “Sub30” là gì?</summary>
+      <div class="panel">Dữ liệu Spotify bao gồm "lượt phát dưới 30 giây" - tức là các lượt phát dưới 30 giây (và do đó không được tính phí). Đây vẫn là một thống kê thú vị. Do đó, bạn sẽ thấy tổng số lượt phát và tổng số "lượt phát dưới 30 giây" cho mỗi bài hát.</div>
+    </details>
+
+    <details>
+      <summary>UNDERSOUTHERN xử lý bìa đĩa và giấy phép như thế nào?</summary>
+      <div class="panel">
+        Chúng tôi chỉ hỗ trợ phát hành độc quyền nếu bạn sở hữu đầy đủ các quyền hợp pháp đối với bản ghi (master) và/hoặc thiết kế bìa đĩa. 
+        Việc đảm bảo quyền sở hữu và xin phép sử dụng các nội dung liên quan là trách nhiệm của bạn.
+        <br><br>
+        Đối với bản thu cover, quá trình xin giấy phép phát hành độc quyền (mechanical license) có thể mất đến 14 ngày làm việc. 
+        Các bản cover sẽ chỉ được phân phối sau khi giấy phép được Harry Fox Agency phê duyệt.
+        <br><br>
+        Để biết thêm chi tiết, vui lòng liên hệ <strong>contact@undersouthern.asia</strong>.
+      </div>
+    </details>
+
+    <details>
+      <summary>UNDERSOUTHERN có hỗ trợ pitching không?</summary>
+      <div class="panel">
+        Có. UNDERSOUTHERN hỗ trợ nghệ sĩ gửi pitching đến các playlist biên tập của Spotify, Apple Music và các nền tảng khác nếu bản phát hành đáp ứng đủ tiêu chí.
+        Vui lòng gửi email đến <strong>contact@undersouthern.asia</strong> để được xem xét và hướng dẫn chi tiết.
+      </div>
+    </details>
+
+    <details>
+      <summary>Tại sao bài đăng của tôi bị từ chối trên các nền tảng UGC (TikTok, Instagram, YouTube)?</summary>
+      <div class="panel">
+        Chỉ những nội dung mà bạn sở hữu <strong>100% quyền</strong> mới có thể được kiếm tiền trên các nền tảng này.  
+      </div>
+    </details>
+
+    <details>
+      <summary>Tại sao bài đăng của tôi lại biến mất khỏi Facebook và Instagram?</summary>
+      <div class="panel">
+        Các nền tảng này chỉ chấp nhận một phiên bản của một bản nhạc tại một thời điểm. 
+        Nếu bạn lên lịch phát hành bản nhạc mới có chứa bản nhạc đã phát hành trước đó, bản nhạc đó sẽ tạm thời bị xóa cho đến khi dự án mới được phát hành chính thức. 
+        Vui lòng liên hệ với chúng tôi và chúng tôi sẽ giải quyết vấn đề này trong vòng 24 giờ.
+      </div>
+    </details>
+
+    <details>
+      <summary>Tôi có thể chọn ngày phát hành cụ thể không?</summary>
+      <div class="panel">
+        Có. Ngày nộp phải cách ngày nộp ít nhất 7 ngày sau khi nộp bản phát hành để có thời gian xử lý. 
+        Chúng tôi khuyên bạn nên nộp bản phát hành trước ít nhất 4 tuần để tối đa hóa hiệu quả quảng bá. 
+        Sự kiện sẽ diễn ra vào lúc nửa đêm tại quốc gia của bạn vào ngày bạn chọn (ví dụ: đêm 19–20 tháng 1 lúc 00:00). 
+        <br><br>
+        <strong>Tôi có thể xuất bản sớm nhất có thể không?</strong> Có. 
+        Nếu bạn chọn tùy chọn "xuất bản sớm nhất có thể", bản phát hành của bạn sẽ được phát hành ngay sau khi được chấp thuận, 
+        có thể trong vòng vài giờ hoặc vài ngày tùy thuộc vào nền tảng.
+      </div>
+    </details>
+
+    <details>
+      <summary>Làm thế nào để chọn đúng định dạng (đĩa đơn, EP, album)?</summary>
+      <div class="panel">
+        <ul>
+          <li><strong>Đĩa đơn:</strong> 1 đến 3 bài hát</li>
+          <li><strong>EP:</strong> 4 đến 6 phần (dưới 30 phút) hoặc 1–3 phần bao gồm một phần tối thiểu 10 phút</li>
+          <li><strong>Album:</strong> 7 bài hát trở lên</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Làm thế nào để tôi có được hồ sơ Spotify dành cho Nghệ sĩ?</summary>
+      <div class="panel">
+        Đây là hướng dẫn của chúng tôi tại liên kết:  
+        <a href="https://docs.google.com/document/d/1z5dwgFHXK9vyMrth_Ipd5e2SxMFFEc-agbf58XRO0KY/edit?usp=sharing" target="_blank">
+          Xem hướng dẫn Spotify for Artists
+        </a>.
+      </div>
+    </details>
+
+    <details>
+      <summary>Bài hát của tôi trên YouTube không được kiếm tiền. Tôi phải làm sao?</summary>
+      <div class="panel">
+        Đôi khi, YouTube Content ID có thể bỏ sót video. 
+        Vui lòng gửi email đến <strong>contact@undersouthern.asia</strong> để chúng tôi có thể gửi khiếu nại thủ công.
+      </div>
+    </details>
+
+    <details>
+      <summary>Tôi có thể có trang đếm ngược trên Spotify không?</summary>
+      <div class="panel">
+        Có, nếu bạn đáp ứng các tiêu chí của Spotify dành cho Nghệ sĩ.  
+        Tìm hiểu thêm tại  
+        <a href="https://support.spotify.com/us/artists/article/getting-started-with-countdown-pages-on-spotify/" target="_blank">
+          hướng dẫn của Spotify
+        </a>.
+      </div>
+    </details>
+
+    <details>
+      <summary>Tôi có thể tham gia Chế độ khám phá của Spotify không?</summary>
+      <div class="panel">
+        Bạn có thể yêu cầu hỗ trợ này qua email <strong>contact@undersouthern.asia</strong>.  
+        Thông tin chi tiết có trong  
+        <a href="https://support.spotify.com/us/artists/article/getting-access-to-discovery-mode/?ref=related" target="_blank">
+          hướng dẫn này
+        </a>.
+      </div>
+    </details>
+
+    <details>
+      <summary>Tại sao ngày phát hành của tôi lại hiển thị sớm hơn dự kiến trên Spotify dành cho Nghệ sĩ?</summary>
+      <div class="panel">
+        Spotify for Artists có thể hiển thị bản phát hành của bạn sẽ được phát hành sớm hơn một ngày so với dự kiến. 
+        Điều này là bình thường và do múi giờ quốc tế.
+        <br><br>
+        Ví dụ: nếu bản phát hành của bạn được lên lịch vào lúc <strong>00:00 sáng Thứ Sáu (UTC)</strong>, 
+        thì nó sẽ xuất hiện lúc <strong>9:00 sáng Thứ Sáu tại Nhật Bản</strong>, 
+        nhưng lúc <strong>7:00 tối Thứ Năm tại Los Angeles</strong>.
+        <br><br>
+        Vì Spotify for Artists hiển thị ngày phát hành sớm nhất dựa trên múi giờ, nên Thứ Năm có thể được coi là ngày phát hành. 
+        Tuy nhiên, bài hát vẫn sẽ được phát hành trực tiếp trên toàn thế giới vào lúc 
+        <strong>00:00 Thứ Sáu (UTC)</strong>.
+      </div>
+    </details>
+
+    <details>
+      <summary>Làm thế nào để thêm lời bài hát vào bài hát của tôi trên Apple Music?</summary>
+      <div class="panel">
+        Bạn có thể tìm thêm thông tin về cách thực hiện việc này tại liên kết sau:  
+        <a href="https://support.apple.com/en-us/HT204136" target="_blank">
+          Hướng dẫn thêm lời bài hát trên Apple Music
+        </a>.
+      </div>
     </div>
-    <div class="faq-item">
-      <h3>2. Bao lâu thì nhạc của tôi được phát hành?</h3>
-      <p>Thông thường trong vòng 3–7 ngày làm việc sau khi được duyệt.</p>
-    </div>
-    <div class="faq-item">
-      <h3>3. Tôi có thể cập nhật bài nhạc sau khi phát hành không?</h3>
-      <p>Có thể, nhưng bạn cần liên hệ đội hỗ trợ để chỉnh sửa metadata.</p>
-    </div>
-  </div>
+
+    <a href="https://undersouthern.asia" class="back-btn">← Back</a>
+  </main>
 
   <footer>
-    <p>© 2025 UNDERSOUTHERN Records</p>
+    <div class="footer-top">
+      <div class="footer-logo">
+        <img src="https://github.com/phvinh1968-a11y/my-images/blob/main/logo_processed.png?raw=true" alt="UNDERSOUTHERN Logo">
+      </div>
+
+      <div class="footer-column">
+        <h3>About us</h3>
+        <a href="https://undersouthern.asia/pricing">Pricing</a>
+        <a href="https://undersouthern.asia/contact">Contact</a>
+        <a href="https://undersouthern.asia/press">Press</a>
+        <a href="https://undersouthern.asia/careers">Careers</a>
+        <a href="https://undersouthern.asia/faq">FAQ</a>
+      </div>
+
+      <div class="footer-column">
+        <h3>Follow us</h3>
+        <a href="https://www.instagram.com/undersouthernrecords" target="_blank">Instagram</a>
+        <a href="https://www.tiktok.com/@undersouthern" target="_blank">TikTok</a>
+        <a href="https://www.youtube.com/@undersouthern" target="_blank">YouTube</a>
+        <a href="https://www.facebook.com/undersouthern" target="_blank">Facebook</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 UNDERSOUTHERN · 
+      <a href="#">Terms and Conditions</a> 
+      <a href="#">Privacy</a>
+    </div>
   </footer>
 
-  <script>
-    document.querySelectorAll('.faq-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const p = item.querySelector('p');
-        p.style.display = p.style.display === 'block' ? 'none' : 'block';
-      });
-    });
-  </script>
 </body>
 </html>
-
