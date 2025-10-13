@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — UNDERSOUTHERN Records</title>
+  <style>
+    body { font-family: Inter, sans-serif; margin: 0; padding: 0; }
+    header, footer { text-align: center; padding: 20px; }
+    h1 { text-align: center; margin-top: 40px; }
+    .faq {
+      max-width: 700px;
+      margin: 40px auto;
+      border-top: 1px solid #ddd;
+    }
+    .faq-item {
+      border-bottom: 1px solid #ddd;
+      padding: 15px 0;
+      cursor: pointer;
+    }
+    .faq-item h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .faq-item p {
+      display: none;
+      margin: 10px 0 0;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/">← Trang chủ</a>
+  </header>
+
+  <h1>Frequently Asked Questions</h1>
+
+  <div class="faq">
+    <div class="faq-item">
+      <h3>1. Tôi có thể gửi demo như thế nào?</h3>
+      <p>Bạn có thể gửi demo qua trang “Submit Demo” của UNDERSOUTHERN.</p>
+    </div>
+    <div class="faq-item">
+      <h3>2. Bao lâu thì nhạc của tôi được phát hành?</h3>
+      <p>Thông thường trong vòng 3–7 ngày làm việc sau khi được duyệt.</p>
+    </div>
+    <div class="faq-item">
+      <h3>3. Tôi có thể cập nhật bài nhạc sau khi phát hành không?</h3>
+      <p>Có thể, nhưng bạn cần liên hệ đội hỗ trợ để chỉnh sửa metadata.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2025 UNDERSOUTHERN Records</p>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const p = item.querySelector('p');
+        p.style.display = p.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+  </script>
+</body>
+</html>
 
