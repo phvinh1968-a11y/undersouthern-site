@@ -7,10 +7,11 @@
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <title>BGM Dashboard</title>
 <script>
-  // Init EmailJS với API Key bạn cung cấp
+  // Khởi tạo EmailJS với Public Key
   emailjs.init("76t6wZsNebhI-PqFv");
 
-  function generatePassword(length = 10) {
+  // Hàm tạo mật khẩu ngẫu nhiên
+  function generatePassword(length = 12) {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*?";
     let pass = "";
     for (let i = 0; i < length; i++) {
@@ -26,23 +27,23 @@
     document.getElementById(pageId).style.display = "block";
   }
 
+  // Tạo tài khoản + gửi email tự động
   function createAccount(event) {
     event.preventDefault();
     const email = document.getElementById("createEmail").value;
-    
-    // Thử dùng mật khẩu cố định để test
-    const password = "Vinh19061998//"; // Hoặc dùng generatePassword() để random
+    const password = generatePassword();
 
-    // Lưu tạm trong LocalStorage
+    // Lưu tạm email + password
     localStorage.setItem("accountEmail", email);
     localStorage.setItem("accountPassword", password);
 
-    // Gửi email
-    emailjs.send("service_jau0xqb", "YOUR_TEMPLATE_ID", {
+    // Gửi email đến khách hàng
+    emailjs.send("service_jau0xqb", "template_bgmshorts", {
       user_email: email,
       user_password: password
     })
-    .then(() => {
+    .then((response) => {
+      console.log("EmailJS Response:", response);
       alert(`Tài khoản tạo thành công! Mật khẩu đã gửi đến ${email}`);
       showPage("loginPage");
     })
