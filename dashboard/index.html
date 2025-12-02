@@ -7,8 +7,9 @@
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <title>BGM Dashboard</title>
   <script>
+    // Khởi tạo EmailJS với API Key bạn cung cấp
     (function() {
-      emailjs.init("YOUR_PUBLIC_KEY"); // Thay bằng Public Key EmailJS của bạn
+      emailjs.init("76t6wZsNebhI-PqFv");
     })();
 
     function generatePassword(length = 10) {
@@ -37,7 +38,7 @@
       localStorage.setItem("accountPassword", password);
 
       // Gửi email
-      emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+      emailjs.send("service_jau0xqb", "YOUR_TEMPLATE_ID", {  // Thay YOUR_TEMPLATE_ID bằng template của bạn
         user_email: email,
         user_password: password
       })
