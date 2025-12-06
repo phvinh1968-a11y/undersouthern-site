@@ -7,50 +7,41 @@
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <title>BGM Dashboard</title>
 <script>
-  // Khởi tạo EmailJS với Public Key
   emailjs.init("76t6wZsNebhI-PqFv");
 
-  // Hàm tạo mật khẩu ngẫu nhiên
   function generatePassword(length = 12) {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*?";
     let pass = "";
-    for (let i = 0; i < length; i++) {
-      pass += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
+    for (let i = 0; i < length; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
     return pass;
   }
 
   function showPage(pageId) {
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("createPage").style.display = "none";
-    document.getElementById("dashboardPage").style.display = "none";
+    ["loginPage", "createPage", "dashboardPage"].forEach(id => document.getElementById(id).style.display = "none");
     document.getElementById(pageId).style.display = "block";
   }
 
-  // Tạo tài khoản + gửi email tự động
   function createAccount(event) {
     event.preventDefault();
     const email = document.getElementById("createEmail").value;
     const password = generatePassword();
 
-    // Lưu tạm email + password
-    localStorage.setItem("accountEmail", email);
-    localStorage.setItem("accountPassword", password);
-
-    // Gửi email đến khách hàng
-    emailjs.send("service_jau0xqb", "template_bgmshorts", {
-      user_email: email,
-      user_password: password
-    })
-    .then((response) => {
-      console.log("EmailJS Response:", response);
-      alert(`Tài khoản tạo thành công! Mật khẩu đã gửi đến ${email}`);
+    const existing = JSON.parse(localStorage.getItem("accounts") || "[]");
+    if (existing.find(acc => acc.email === email)) {
+      alert("Email đã tồn tại! Vui lòng đăng nhập.");
       showPage("loginPage");
-    })
-    .catch((err) => {
-      console.error("EmailJS Error:", err);
-      alert("Gửi email thất bại! Xem console để biết lý do.");
-    });
+      return;
+    }
+
+    existing.push({ email, password });
+    localStorage.setItem("accounts", JSON.stringify(existing));
+
+    emailjs.send("service_jau0xqb", "template_bgmshorts", { user_email: email, user_password: password })
+      .then(() => {
+        alert(`Tài khoản tạo thành công! Mật khẩu đã gửi đến ${email}`);
+        showPage("loginPage");
+      })
+      .catch(() => alert("Gửi email thất bại!"));
   }
 
   function login(event) {
@@ -58,21 +49,18 @@
     const email = document.getElementById("loginEmail").value;
     const password = document.getElementById("loginPassword").value;
 
-    const storedEmail = localStorage.getItem("accountEmail");
-    const storedPassword = localStorage.getItem("accountPassword");
+    const accounts = JSON.parse(localStorage.getItem("accounts") || "[]");
+    const found = accounts.find(acc => acc.email === email && acc.password === password);
 
-    if(email === storedEmail && password === storedPassword) {
+    if (found) {
       localStorage.setItem("loggedIn", "true");
       localStorage.setItem("loggedEmail", email);
       showDashboard();
-    } else {
-      alert("Email hoặc mật khẩu không đúng!");
-    }
+    } else alert("Email hoặc mật khẩu không đúng!");
   }
 
   function showDashboard() {
-    const email = localStorage.getItem("loggedEmail");
-    document.getElementById("dashboardEmail").innerText = email;
+    document.getElementById("dashboardEmail").innerText = localStorage.getItem("loggedEmail");
     showPage("dashboardPage");
   }
 
@@ -82,65 +70,44 @@
     showPage("loginPage");
   }
 
-  window.onload = () => {
-    if(localStorage.getItem("loggedIn") === "true") {
-      showDashboard();
-    } else {
-      showPage("loginPage");
-    }
-  }
+  window.onload = () => localStorage.getItem("loggedIn") === "true" ? showDashboard() : showPage("loginPage");
 </script>
 </head>
 <body class="bg-[#0F0F0F] flex items-center justify-center h-screen px-4">
 
-<!-- LOGIN PAGE -->
 <div id="loginPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl shadow-xl border border-gray-800 hidden">
   <h1 class="text-center text-3xl font-semibold text-white mb-6">BGM Dashboard</h1>
   <form class="space-y-5" onsubmit="login(event)">
     <div>
       <label class="text-gray-300 text-sm">Email</label>
-      <input id="loginEmail" type="email" required
-        class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-        placeholder="you@example.com" />
+      <input id="loginEmail" type="email" required class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white" placeholder="you@example.com" />
     </div>
     <div>
       <label class="text-gray-300 text-sm">Password</label>
-      <input id="loginPassword" type="password" required
-        class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-        placeholder="••••••••" />
+      <input id="loginPassword" type="password" required class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white" placeholder="••••••••" />
     </div>
-    <button type="submit" class="w-full p-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition">Sign In</button>
+    <button type="submit" class="w-full p-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold">Sign In</button>
   </form>
-  <p class="text-gray-400 text-center mt-4 text-sm">
-    Don't have an account? 
+  <p class="text-gray-400 text-center mt-4 text-sm">Don't have an account?
     <button onclick="showPage('createPage')" class="text-blue-400 hover:underline">Create Account</button>
   </p>
 </div>
 
-<!-- CREATE ACCOUNT PAGE -->
 <div id="createPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl shadow-xl border border-gray-800 hidden">
   <h1 class="text-center text-3xl font-semibold text-white mb-6">Create New Account</h1>
   <form class="space-y-5" onsubmit="createAccount(event)">
     <div>
       <label class="text-gray-300 text-sm">Email</label>
-      <input id="createEmail" type="email" required
-        class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white focus:ring-2 focus:ring-blue-500 outline-none"
-        placeholder="Enter your email" />
+      <input id="createEmail" type="email" required class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white" placeholder="Enter your email" />
     </div>
-    <button type="submit" class="w-full p-3 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold transition">Create Account</button>
+    <button type="submit" class="w-full p-3 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold">Create Account</button>
   </form>
-  <p class="text-gray-400 text-center mt-4 text-sm">
-    Already have an account? 
+  <p class="text-gray-400 text-center mt-4 text-sm">Already have an account?
     <button onclick="showPage('loginPage')" class="text-blue-400 hover:underline">Login</button>
   </p>
 </div>
 
-<!-- DASHBOARD PAGE -->
 <div id="dashboardPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl shadow-xl border border-gray-800 text-center hidden">
   <h1 class="text-3xl font-semibold text-white mb-6">Welcome, <span id="dashboardEmail"></span></h1>
   <p class="text-gray-300 mb-6">This is your BGM Dashboard</p>
-  <button onclick="logout()" class="w-full p-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition">Logout</button>
-</div>
-
-</body>
-</html>
+  <button onclic
