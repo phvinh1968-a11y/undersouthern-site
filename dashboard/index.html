@@ -5,109 +5,179 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <title>BGM Dashboard</title>
+
 <script>
-  emailjs.init("76t6wZsNebhI-PqFv");
+emailjs.init("76t6wZsNebhI-PqFv");
 
-  function generatePassword(lengt = 12) {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*?";
-    let pass = "";
-    for (let i = 0; i < length; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-    return pass;
+// Tạo mật khẩu
+function generatePassword(length = 12) {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*?";
+  return Array.from({length},()=>chars[Math.floor(Math.random()*chars.length)]).join("");
+}
+
+// Ẩn/hiện page
+function showPage(id){
+  ["loginPage","createPage","mainDash"].forEach(p=>document.getElementById(p).style.display="none");
+  document.getElementById(id).style.display="block";
+}
+
+// Tạo tài khoản
+function createAccount(event){
+  event.preventDefault();
+  const name=document.getElementById("createName").value.trim();
+  const email=document.getElementById("createEmail").value;
+  const pass=generatePassword();
+
+  if(!name) return alert("Vui lòng nhập họ tên");
+
+  const accounts=JSON.parse(localStorage.getItem("accounts")||"[]");
+  if(accounts.some(a=>a.email===email)){
+    alert("Email đã tồn tại!");
+    return showPage("loginPage");
   }
 
-  function showPage(pageId) {
-    ["loginPage", "createPage", "dashboardPage"].forEach(id => document.getElementById(id).style.display = "none");
-    document.getElementById(pageId).style.display = "block";
-  }
-
-  function createAccount(event) {
-    event.preventDefault();
-    const email = document.getElementById("createEmail").value;
-    const password = generatePassword();
-
-    const existing = JSON.parse(localStorage.getItem("accounts") || "[]");
-    if (existing.find(acc => acc.email === email)) {
-      alert("Email đã tồn tại! Vui lòng đăng nhập.");
-      showPage("loginPage");
-      return;
-    }
-
-    existing.push({ email, password });
-    localStorage.setItem("accounts", JSON.stringify(existing));
-
-    emailjs.send("service_jau0xqb", "template_bgmshorts", { user_email: email, user_password: password })
-      .then(() => {
-        alert(`Tài khoản tạo thành công! Mật khẩu đã gửi đến ${email}`);
-        showPage("loginPage");
-      })
-      .catch(() => alert("Gửi email thất bại!"));
-  }
-
-  function login(event) {
-    event.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-
-    const accounts = JSON.parse(localStorage.getItem("accounts") || "[]");
-    const found = accounts.find(acc => acc.email === email && acc.password === password);
-
-    if (found) {
-      localStorage.setItem("loggedIn", "true");
-      localStorage.setItem("loggedEmail", email);
-      showDashboard();
-    } else alert("Email hoặc mật khẩu không đúng!");
-  }
-
-  function showDashboard() {
-    document.getElementById("dashboardEmail").innerText = localStorage.getItem("loggedEmail");
-    showPage("dashboardPage");
-  }
-
-  function logout() {
-    localStorage.removeItem("loggedIn");
-    localStorage.removeItem("loggedEmail");
+  emailjs.send("service_jau0xqb","template_bgmshorts",{
+    user_name:name,
+    user_email:email,
+    user_password:pass
+  })
+  .then(()=>{
+    accounts.push({name,email,password:pass});
+    localStorage.setItem("accounts",JSON.stringify(accounts));
+    alert("Tạo tài khoản thành công! Mật khẩu đã gửi qua email.");
     showPage("loginPage");
-  }
+  }).catch(()=>alert("Gửi email thất bại!"));
+}
 
-  window.onload = () => localStorage.getItem("loggedIn") === "true" ? showDashboard() : showPage("loginPage");
+// Đăng nhập
+function login(event){
+  event.preventDefault();
+  const email=document.getElementById("loginEmail").value;
+  const pass=document.getElementById("loginPassword").value;
+
+  const accounts=JSON.parse(localStorage.getItem("accounts")||"[]");
+  const acc=accounts.find(a=>a.email===email&&a.password===pass);
+
+  if(!acc) return alert("Sai email hoặc mật khẩu!");
+
+  localStorage.setItem("logged",JSON.stringify(acc));
+  loadDashboard();
+}
+
+// Load Dashboard Analytics
+function loadDashboard(){
+  const user=JSON.parse(localStorage.getItem("logged"));
+  if(!user) return showPage("loginPage");
+
+  document.getElementById("username").innerText=user.name;
+  showPage("mainDash");
+
+  const data={
+    streams:1027798,
+    downloads:0,
+    creations:0,
+    revenue:8.92,
+    chartDates:["Nov 28","Nov 29","Nov 30","Dec 1","Dec 2","Dec 3"],
+    chartNumbers:[400000,350000,20000,250000,100000,0]
+  };
+
+  // KPI
+  document.getElementById("streams").innerText=data.streams.toLocaleString();
+  document.getElementById("downloads").innerText=data.downloads;
+  document.getElementById("creations").innerText=data.creations;
+  document.getElementById("revenue").innerText=`€${data.revenue}`;
+
+  // Charts
+  new Chart(document.getElementById('donutChart'),{
+    type:'doughnut',
+    data:{labels:['Top Streams'],datasets:[{data:[data.streams],backgroundColor:['#3B82F6'],borderWidth:0}]},
+    options:{cutout:'70%'}
+  });
+
+  new Chart(document.getElementById('lineChart'),{
+    type:'line',
+    data:{labels:data.chartDates,datasets:[{data:data.chartNumbers,borderColor:'#3B82F6',tension:.4}]}
+  });
+
+  document.getElementById("trackList").innerHTML=`
+    <tr class="border-b">
+      <td class="p-3">Rockabye</td>
+      <td class="p-3">${data.streams.toLocaleString()}</td>
+      <td class="p-3">${data.downloads}</td>
+      <td class="p-3">${data.creations}</td>
+      <td class="p-3">€${data.revenue}</td>
+      <td class="p-3">100%</td>
+    </tr>`;
+}
+
+// Logout
+function logout(){
+  localStorage.removeItem("logged");
+  showPage("loginPage");
+}
+
+window.onload=()=>localStorage.getItem("logged")?loadDashboard():showPage("loginPage");
 </script>
 </head>
-<body class="bg-[#0F0F0F] flex items-center justify-center h-screen px-4">
 
-<div id="loginPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl shadow-xl border border-gray-800 hidden">
-  <h1 class="text-center text-3xl font-semibold text-white mb-6">BGM Dashboard</h1>
-  <form class="space-y-5" onsubmit="login(event)">
-    <div>
-      <label class="text-gray-300 text-sm">Email</label>
-      <input id="loginEmail" type="email" required class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white" placeholder="you@example.com" />
-    </div>
-    <div>
-      <label class="text-gray-300 text-sm">Password</label>
-      <input id="loginPassword" type="password" required class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white" placeholder="••••••••" />
-    </div>
-    <button type="submit" class="w-full p-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold">Sign In</button>
-  </form>
-  <p class="text-gray-400 text-center mt-4 text-sm">Don't have an account?
-    <button onclick="showPage('createPage')" class="text-blue-400 hover:underline">Create Account</button>
-  </p>
+<body class="bg-[#0F0F0F] h-screen flex justify-center items-center">
+
+<!-- LOGIN -->
+<div id="loginPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl hidden text-white">
+<h1 class="text-3xl mb-5 text-center">BGM Login</h1>
+<form onsubmit="login(event)" class="space-y-4">
+<input id="loginEmail" type="email" required placeholder="Email" class="w-full p-3 rounded bg-[#2A2A2A]">
+<input id="loginPassword" type="password" required placeholder="Password" class="w-full p-3 rounded bg-[#2A2A2A]">
+<button class="w-full bg-blue-600 p-3 rounded">Login</button>
+</form>
+<p class="text-center mt-3">No account? <span onclick="showPage('createPage')" class="text-blue-400 cursor-pointer">Create</span></p>
 </div>
 
-<div id="createPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl shadow-xl border border-gray-800 hidden">
-  <h1 class="text-center text-3xl font-semibold text-white mb-6">Create New Account</h1>
-  <form class="space-y-5" onsubmit="createAccount(event)">
-    <div>
-      <label class="text-gray-300 text-sm">Email</label>
-      <input id="createEmail" type="email" required class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white" placeholder="Enter your email" />
-    </div>
-    <button type="submit" class="w-full p-3 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold">Create Account</button>
-  </form>
-  <p class="text-gray-400 text-center mt-4 text-sm">Already have an account?
-    <button onclick="showPage('loginPage')" class="text-blue-400 hover:underline">Login</button>
-  </p>
+<!-- CREATE ACCOUNT -->
+<div id="createPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl hidden text-white">
+<h1 class="text-3xl mb-5 text-center">Create Account</h1>
+<form onsubmit="createAccount(event)" class="space-y-4">
+<input id="createName" required placeholder="Họ và Tên" class="w-full p-3 rounded bg-[#2A2A2A]">
+<input id="createEmail" type="email" required placeholder="Email" class="w-full p-3 rounded bg-[#2A2A2A]">
+<button class="w-full bg-green-600 p-3 rounded">Create</button>
+</form>
+<p class="text-center mt-3">Have account? <span onclick="showPage('loginPage')" class="text-blue-400 cursor-pointer">Login</span></p>
 </div>
 
-<div id="dashboardPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl shadow-xl border border-gray-800 text-center hidden">
-  <h1 class="text-3xl font-semibold text-white mb-6">Welcome, <span id="dashboardEmail"></span></h1>
-  <p class="text-gray-300 mb-6">This is your BGM Dashboard</p>
-  <button onclic
+<!-- MAIN DASHBOARD ANALYTICS -->
+<div id="mainDash" class="hidden p-6 w-full min-h-screen bg-[#F5F7FB] overflow-y-auto">
+
+<h1 class="text-2xl font-bold mb-4">Welcome, <span id="username"></span> 👋</h1>
+<button onclick="logout()" class="mb-6 px-4 py-2 bg-red-600 text-white rounded">Logout</button>
+
+<div class="flex justify-between mb-6">
+<button class="bg-blue-600 text-white px-4 py-2 rounded">Add Filter</button>
+<input type="date" class="px-3 py-2 border rounded bg-white"/>
+</div>
+
+<div class="grid grid-cols-4 gap-4 mb-6">
+<div class="bg-white p-5 rounded shadow"><p class="text-gray-600">Streams</p><h1 id="streams" class="text-3xl font-bold">0</h1></div>
+<div class="bg-white p-5 rounded shadow"><p class="text-gray-600">Downloads</p><h1 id="downloads" class="text-3xl font-bold">0</h1></div>
+<div class="bg-white p-5 rounded shadow"><p class="text-gray-600">Creations</p><h1 id="creations" class="text-3xl font-bold">0</h1></div>
+<div class="bg-white p-5 rounded shadow"><p class="text-gray-600">Revenue</p><h1 id="revenue" class="text-3xl font-bold text-green-600">€0.00</h1></div>
+</div>
+
+<div class="grid grid-cols-2 gap-6">
+<div class="bg-white p-6 rounded shadow"><canvas id="donutChart"></canvas></div>
+<div class="bg-white p-6 rounded shadow"><canvas id="lineChart"></canvas></div>
+</div>
+
+<div class="bg-white mt-6 rounded shadow p-4">
+<table class="w-full text-left">
+<thead><tr class="text-gray-500 border-b">
+<th class="p-2">Title</th><th class="p-2">Streams</th><th class="p-2">Downloads</th><th class="p-2">Creations</th><th class="p-2">Revenue</th><th class="p-2">%</th>
+</tr></thead>
+<tbody id="trackList"></tbody>
+</table>
+</div>
+</div>
+
+</body>
+</html>
