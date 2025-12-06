@@ -4,110 +4,105 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<title>BGM Dashboard</title>
-<script>
-  emailjs.init("76t6wZsNebhI-PqFv");
+<title>Dashboard Login</title>
 
-  function generatePassword(length = 12) {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*?";
-    let pass = "";
-    for (let i = 0; i < length; i++) pass += chars.charAt(Math.floor(Math.random() * chars.length));
-    return pass;
-  }
-
-  function showPage(pageId) {
-    ["loginPage", "createPage", "dashboardPage"].forEach(id => document.getElementById(id).style.display = "none");
-    document.getElementById(pageId).style.display = "block";
-  }
-
-  function createAccount(event) {
-    event.preventDefault();
-    const email = document.getElementById("createEmail").value;
-    const password = generatePassword();
-
-    const existing = JSON.parse(localStorage.getItem("accounts") || "[]");
-    if (existing.find(acc => acc.email === email)) {
-      alert("Email đã tồn tại! Vui lòng đăng nhập.");
-      showPage("loginPage");
-      return;
-    }
-
-    existing.push({ email, password });
-    localStorage.setItem("accounts", JSON.stringify(existing));
-
-    emailjs.send("service_jau0xqb", "template_bgmshorts", { user_email: email, user_password: password })
-      .then(() => {
-        alert(`Tài khoản tạo thành công! Mật khẩu đã gửi đến ${email}`);
-        showPage("loginPage");
-      })
-      .catch(() => alert("Gửi email thất bại!"));
-  }
-
-  function login(event) {
-    event.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-
-    const accounts = JSON.parse(localStorage.getItem("accounts") || "[]");
-    const found = accounts.find(acc => acc.email === email && acc.password === password);
-
-    if (found) {
-      localStorage.setItem("loggedIn", "true");
-      localStorage.setItem("loggedEmail", email);
-      showDashboard();
-    } else alert("Email hoặc mật khẩu không đúng!");
-  }
-
-  function showDashboard() {
-    document.getElementById("dashboardEmail").innerText = localStorage.getItem("loggedEmail");
-    showPage("dashboardPage");
-  }
-
-  function logout() {
-    localStorage.removeItem("loggedIn");
-    localStorage.removeItem("loggedEmail");
-    showPage("loginPage");
-  }
-
-  window.onload = () => localStorage.getItem("loggedIn") === "true" ? showDashboard() : showPage("loginPage");
-</script>
+<style>
+  body { background: #fff; color: #000; }
+  .card { border: 1px solid #000; }
+  input { background: #fff; border: 1px solid #000; color: #000; }
+  button { border: 1px solid #000; background: #000; color: #fff; }
+  button:hover { opacity: 0.7; }
+</style>
 </head>
-<body class="bg-[#0F0F0F] flex items-center justify-center h-screen px-4">
 
-<div id="loginPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl shadow-xl border border-gray-800 hidden">
-  <h1 class="text-center text-3xl font-semibold text-white mb-6">BGM Dashboard</h1>
-  <form class="space-y-5" onsubmit="login(event)">
-    <div>
-      <label class="text-gray-300 text-sm">Email</label>
-      <input id="loginEmail" type="email" required class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white" placeholder="you@example.com" />
+<body>
+
+<!-- LOGIN + SIGNUP CONTAINER -->
+<div id="authContainer" class="flex justify-center items-center h-screen">
+  <div class="card p-8 rounded-xl w-96 text-center">
+    <h2 id="authTitle" class="text-2xl font-bold mb-6">Login</h2>
+
+    <div id="nameField" class="hidden mb-4">
+      <input id="fullName" type="text" placeholder="Họ & Tên" class="w-full p-2 rounded">
     </div>
-    <div>
-      <label class="text-gray-300 text-sm">Password</label>
-      <input id="loginPassword" type="password" required class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white" placeholder="••••••••" />
-    </div>
-    <button type="submit" class="w-full p-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold">Sign In</button>
-  </form>
-  <p class="text-gray-400 text-center mt-4 text-sm">Don't have an account?
-    <button onclick="showPage('createPage')" class="text-blue-400 hover:underline">Create Account</button>
-  </p>
+
+    <input id="email" type="email" placeholder="Email" class="w-full p-2 rounded mb-4">
+    <input id="password" type="password" placeholder="Mật khẩu" class="w-full p-2 rounded mb-6">
+
+    <button id="authBtn" onclick="login()" class="w-full py-2 rounded mb-3">Đăng Nhập</button>
+
+    <p class="text-sm cursor-pointer underline" onclick="toggleAuth()">Tạo tài khoản</p>
+  </div>
 </div>
 
-<div id="createPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl shadow-xl border border-gray-800 hidden">
-  <h1 class="text-center text-3xl font-semibold text-white mb-6">Create New Account</h1>
-  <form class="space-y-5" onsubmit="createAccount(event)">
-    <div>
-      <label class="text-gray-300 text-sm">Email</label>
-      <input id="createEmail" type="email" required class="w-full mt-1 p-3 rounded-lg bg-[#2A2A2A] border border-gray-700 text-white" placeholder="Enter your email" />
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden p-6">
+  <h1 class="text-2xl font-bold mb-4">Dashboard Analytics</h1>
+
+  <div class="grid grid-cols-4 gap-3 mb-6">
+    <div class="p-4 card rounded-xl text-center">
+      <p class="font-semibold">YouTube Views</p>
+      <h2 class="text-xl font-bold">1,234,500</h2>
     </div>
-    <button type="submit" class="w-full p-3 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold">Create Account</button>
-  </form>
-  <p class="text-gray-400 text-center mt-4 text-sm">Already have an account?
-    <button onclick="showPage('loginPage')" class="text-blue-400 hover:underline">Login</button>
-  </p>
+    <div class="p-4 card rounded-xl text-center">
+      <p class="font-semibold">Spotify</p>
+      <h2 class="text-xl font-bold">98 / 100</h2>
+    </div>
+    <div class="p-4 card rounded-xl text-center">
+      <p class="font-semibold">Apple Music</p>
+      <h2 class="text-xl font-bold">#22 VN</h2>
+    </div>
+    <div class="p-4 card rounded-xl text-center">
+      <p class="font-semibold">TikTok Views</p>
+      <h2 class="text-xl font-bold">4,887,000</h2>
+    </div>
+  </div>
+
+  <div class="p-6 card rounded-xl text-center">
+    <p class="text-lg font-semibold mb-2">Welcome, <span id="userName"></span> 🎧</p>
+    <button onclick="logout()" class="py-2 px-4 rounded">Đăng xuất</button>
+  </div>
 </div>
 
-<div id="dashboardPage" class="w-full max-w-md bg-[#1A1A1A] p-8 rounded-2xl shadow-xl border border-gray-800 text-center hidden">
-  <h1 class="text-3xl font-semibold text-white mb-6">Welcome, <span id="dashboardEmail"></span></h1>
-  <p class="text-gray-300 mb-6">This is your BGM Dashboard</p>
-  <button onclic
+<script>
+let isSignup = false;
+
+function toggleAuth() {
+  isSignup = !isSignup;
+  document.getElementById("authTitle").innerText = isSignup ? "Tạo Tài Khoản" : "Login";
+  document.getElementById("authBtn").innerText = isSignup ? "Đăng Ký" : "Đăng Nhập";
+  document.getElementById("nameField").classList.toggle("hidden");
+  document.querySelector("p").innerText = isSignup ? "Đã có tài khoản? Login" : "Tạo tài khoản";
+}
+
+function login() {
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+
+  if (isSignup) {
+    const name = document.getElementById("fullName").value;
+    if (!name || !email || !pass) return alert("Nhập đầy đủ thông tin!");
+
+    localStorage.setItem("user", JSON.stringify({ name, email, pass }));
+    alert("Tạo tài khoản thành công!");
+    toggleAuth();
+  } else {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user || user.email !== email || user.pass !== pass)
+      return alert("Sai thông tin đăng nhập!");
+
+    document.getElementById("authContainer").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+    document.getElementById("userName").innerText = user.name;
+  }
+}
+
+function logout() {
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById("authContainer").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
