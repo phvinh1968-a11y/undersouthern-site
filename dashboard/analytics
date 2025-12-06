@@ -1,1 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title>Analytics Dashboard</title>
+</head>
+<body class="bg-[#F5F7FB] p-6 font-sans">
+
+<!-- Header Filter + Date -->
+<div class="flex justify-between items-center mb-6">
+  <button class="bg-blue-600 text-white px-4 py-2 rounded-lg">Add Filter</button>
+  <input type="date" class="px-3 py-2 border rounded-lg bg-white" />
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-4 gap-4 mb-6">
+  <div class="bg-white p-5 rounded-xl shadow">
+    <p class="text-gray-500">Streams</p>
+    <h1 id="streams" class="text-3xl font-bold">0</h1>
+  </div>
+  <div class="bg-white p-5 rounded-xl shadow">
+    <p class="text-gray-500">Downloads</p>
+    <h1 id="downloads" class="text-3xl font-bold">0</h1>
+  </div>
+  <div class="bg-white p-5 rounded-xl shadow">
+    <p class="text-gray-500">Creations</p>
+    <h1 id="creations" class="text-3xl font-bold">0</h1>
+  </div>
+  <div class="bg-white p-5 rounded-xl shadow">
+    <p class="text-gray-500">Revenue</p>
+    <h1 id="revenue" class="text-3xl font-bold text-green-600">€0.00</h1>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="flex gap-4 mb-6">
+  <button class="px-4 py-2 bg-blue-600 text-white rounded-lg">Top Releases</button>
+  <button class="px-4 py-2 bg-white shadow rounded-lg">Top Songs</button>
+  <button class="px-4 py-2 bg-white shadow rounded-lg">Top Stores</button>
+  <button class="px-4 py-2 bg-white shadow rounded-lg">Top Labels</button>
+  <button class="px-4 py-2 bg-white shadow rounded-lg">Top Countries</button>
+</div>
+
+<!-- Charts Section -->
+<div class="grid grid-cols-2 gap-6">
+  <div class="bg-white p-6 rounded-xl shadow">
+    <canvas id="donutChart"></canvas>
+  </div>
+  <div class="bg-white p-6 rounded-xl shadow">
+    <canvas id="lineChart"></canvas>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="bg-white mt-6 rounded-xl shadow p-4">
+<table class="w-full text-left">
+  <thead>
+    <tr class="text-gray-500 border-b">
+      <th class="p-2">Title</th>
+      <th class="p-2">Streams</th>
+      <th class="p-2">Downloads</th>
+      <th class="p-2">Creations</th>
+      <th class="p-2">Revenue</th>
+      <th class="p-2">%</th>
+    </tr>
+  </thead>
+  <tbody id="trackList"></tbody>
+</table>
+</div>
+
+<script>
+// Mock analytics data (replace by API later)
+const data = {
+  streams: 1027798,
+  downloads: 0,
+  creations: 0,
+  revenue: 8.92,
+  chartDates: ["Nov 28","Nov 29","Nov 30","Dec 1","Dec 2","Dec 3"],
+  chartNumbers: [400000, 350000, 20000, 250000, 100000, 0]
+};
+
+// Set KPIs
+document.getElementById("streams").innerText = data.streams.toLocaleString();
+document.getElementById("downloads").innerText = data.downloads;
+document.getElementById("creations").innerText = data.creations;
+document.getElementById("revenue").innerText = `€${data.revenue}`;
+
+// Donut Chart
+new Chart(document.getElementById('donutChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Top 5 Streams'],
+    datasets: [{
+      data: [data.streams],
+      backgroundColor: ['#3B82F6'],
+      borderWidth: 0
+    }]
+  },
+  options: {cutout: '70%'}
+});
+
+// Line Chart
+new Chart(document.getElementById('lineChart'), {
+  type: 'line',
+  data: {
+    labels: data.chartDates,
+    datasets: [{
+      data: data.chartNumbers,
+      borderColor: '#3B82F6',
+      fill: false,
+      tension: 0.4
+    }]
+  }
+});
+
+// Table
+const trackList = document.getElementById("trackList");
+trackList.innerHTML = `
+<tr class="border-b">
+  <td class="p-3">Rockabye</td>
+  <td class="p-3">${data.streams.toLocaleString()}</td>
+  <td class="p-3">${data.downloads}</td>
+  <td class="p-3">${data.creations}</td>
+  <td class="p-3">€${data.revenue}</td>
+  <td class="p-3">100%</td>
+</tr>`;
+</script>
+
+</body>
+</html>
 
