@@ -3,111 +3,257 @@
 <head>
   <base target="_top">
   <style>
-    body { font-family: Arial; background:#111; color:#fff; padding:20px }
-    input, select, textarea {
-      width:100%; padding:8px; margin-bottom:10px;
-      background:#222; color:#fff; border:1px solid #444;
+    body {
+      font-family: Arial;
+      background: #111;
+      color: #fff;
+      padding: 20px;
     }
+
+h2 {
+  margin-bottom: 24px;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 100px;
+    }
+
+    label {
+      display: block;
+      width: 100%;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
     button {
-      padding:10px 20px;
-      background:#1db954; border:none; color:#000;
-      font-weight:bold; cursor:pointer;
+      width: 100%;
+      padding: 12px;
+      background: #1db954;
+      border: none;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
     }
+
+    /* ===== UPLOAD UI ===== */
+    .upload-section {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .file-wrapper {
+      width: 100%;
+    }
+
+    .file-label {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: #222;
+      border: 1px dashed #555;
+      text-align: center;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    .file-hint {
+      font-size: 11px;
+      color: #aaa;
+      line-height: 1.4;
+    }
+
+    .error {
+      color: #ff4d4d;
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+    }
+
+     .marketing-section > label {
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 15px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: normal;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+
+.checkbox input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.marketing-section > label {
+  font-weight: normal;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.marketing-section .checkbox:last-child {
+  margin-bottom: 20px;
+}
   </style>
 </head>
+
 <body>
 
-<h2>Label Portal Release</h2>
+<h2>UNDERSOUTHERN Portal Release</h2>
 
-<input placeholder="Release Title" id="Release Title">
-<input placeholder="Release Version" id="Release Version">
-<input placeholder="Artists" id="Artists">
-<input placeholder="Featuring Artist" id="Featuring Artist">
-<input placeholder="Composer" id="Composer">
-<input placeholder="Producer" id="Producer">
-<input placeholder="Recording" id="Recording">
-<input placeholder="Mastering" id="Mastering">
+<input placeholder="Email">
+<input placeholder="Release Title">
+<input placeholder="Version">
+<input placeholder="Artist">
+<input placeholder="Featuring">
 
-<select id="Album Format">
+<input placeholder="Composer (Legal Full Name)">
+<input placeholder="Lyricist (Legal Full Name)">
+<input placeholder="Producer">
+
+
+<select>
   <option>Single</option>
   <option>EP</option>
   <option>Album</option>
 </select>
 
-<select id="Main Genre">
-  <option>Alternative</option>
-  <option>Blues</option>
-  <option>Classical</option>
-  <option>Country</option>
-  <option>Dance</option>
-  <option>Folk</option>
-  <option>Hip-Hop / Rap</option>
-  <option>Indie</option>
-  <option>Jazz</option>
-  <option>Latin</option>
-  <option>Metal</option>
+<input type="date" placeholder="Digital Release Date">
+
+<select>
+  <option selected>Hip-Hop / Rap</option>
   <option>Pop</option>
-  <option>R&B / Soul</option>
-  <option>Reggae</option>
   <option>Rock</option>
-  <option>Soundtrack</option>
-  <option>World</option>
+  <option>R&B / Soul</option>
 </select>
 
-<select id="Sub Genre">
-  <option>Alternative</option>
-  <option>Blues</option>
-  <option>Classical</option>
-  <option>Country</option>
-  <option>Dance</option>
-  <option>Folk</option>
-  <option>Hip-Hop / Rap</option>
-  <option>Indie</option>
-  <option>Jazz</option>
-  <option>Latin</option>
-  <option>Metal</option>
-  <option>Pop</option>
-  <option>R&B / Soul</option>
-  <option>Reggae</option>
-  <option>Rock</option>
-  <option>Soundtrack</option>
-  <option>World</option>
-</select>
-
-<select id="Metadata Language">
+<select>
   <option>Vietnamese (VI)</option>
   <option>English (EN)</option>
 </select>
 
-<textarea placeholder="Lyrics" id="Lyrics"></textarea>
-<textarea placeholder="Release Description" id="Release Description"></textarea>
+<textarea placeholder="Lyrics"></textarea>
+<textarea placeholder="Release description"></textarea>
+<div class="marketing-section">
+  <label>Marketing</label>
 
-<hr>
+  <label class="checkbox">
+    <input type="checkbox" value="Playlist Pitching Spotify">
+    Playlist Pitching Spotify
+  </label>
 
-<label>🎧 Upload Audio</label>
-<input type="file" id="audio">
+  <label class="checkbox">
+    <input type="checkbox" value="Digital Advertising & Social Media">
+    Digital Advertising & Social Media
+  </label>
 
-<label>🖼 Upload Artwork</label>
-<input type="file" id="artwork">
+  <label class="checkbox">
+    <input type="checkbox" value="Video Teaser / Visualizer">
+    Video Teaser / Visualizer
+  </label>
+</div>
 
-<button onclick="submit()">SUBMIT RELEASE</button>
+
+<!-- ===== UPLOAD AUDIO ===== -->
+<div class="upload-section">
+  <label>Upload Audio</label>
+  <div class="file-wrapper">
+    <label class="file-label">
+      <span class="file-hint">
+        WAV / FLAC 16bit or 24bit, 44.1kHz
+      </span>
+      <input type="file" id="audio" hidden>
+    </label>
+    <div class="error" id="audioError">
+      The file was rejected because it did not meet the requirements
+    </div>
+  </div>
+</div>
+
+<!-- ===== UPLOAD ARTWORK ===== -->
+<div class="upload-section">
+  <label>Upload Artwork</label>
+  <div class="file-wrapper">
+    <label class="file-label">
+      <span class="file-hint">
+        3000 x 3000 px JPG / PNG
+      </span>
+      <input type="file" id="artwork" hidden>
+    </label>
+    <div class="error" id="artworkError">
+      The file was rejected because it did not meet the requirements
+    </div>
+  </div>
+</div>
+
+<button onclick="submitRelease()">SUBMIT RELEASE</button>
 
 <script>
-function submit() {
-  const fields = [
-    "Release Title","Release Version","Artists","Featuring Artist",
-    "Composer","Producer","Recording","Mastering","Album Format",
-    "Main Genre","Alternate SubGenre","Digital Release Date",
-    "Metadata Language","Explicit Content","Lyrics","Release Description"
-  ];
+  const audioInput = document.getElementById('audio');
+  const artworkInput = document.getElementById('artwork');
 
-  const data = {};
-  fields.forEach(f => data[f] = document.getElementById(f).value);
+  audioInput.addEventListener('change', () => {
+    const file = audioInput.files[0];
+    const error = document.getElementById('audioError');
+    error.style.display = 'none';
 
-  google.script.run.withSuccessHandler(() => {
-    alert("Submitted successfully!");
-  }).submitRelease(data);
-}
+    if (!file) return;
+
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (!['wav', 'flac'].includes(ext)) {
+      audioInput.value = '';
+      error.style.display = 'block';
+    }
+  });
+
+  artworkInput.addEventListener('change', () => {
+    const file = artworkInput.files[0];
+    const error = document.getElementById('artworkError');
+    error.style.display = 'none';
+
+    if (!file) return;
+
+    const ext = file.name.split('.').pop().toLowerCase();
+    if (!['jpg', 'jpeg', 'png'].includes(ext)) {
+      artworkInput.value = '';
+      error.style.display = 'block';
+      return;
+    }
+
+    const img = new Image();
+    img.onload = function () {
+      if (img.width < 1600 || img.height < 1600 || img.width !== img.height) {
+        artworkInput.value = '';
+        error.style.display = 'block';
+      }
+    };
+    img.src = URL.createObjectURL(file);
+  });
+
+  function submitRelease() {
+    alert('Release submitted (demo)');
+  }
 </script>
 
 </body>
