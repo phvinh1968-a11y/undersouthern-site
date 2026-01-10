@@ -220,46 +220,7 @@ h2 {
   </div>
 </div>
 
-function submitRelease() {
-  const marketingCheckboxes = document.querySelectorAll('.marketing-section input[type="checkbox"]');
-  const marketing = Array.from(marketingCheckboxes)
-                        .filter(cb => cb.checked)
-                        .map(cb => cb.value);
-
-  const data = {
-    releaseTitle: document.querySelector('input[placeholder="Release Title"]').value,
-    version: document.querySelector('input[placeholder="Version"]').value,
-    artist: document.querySelector('input[placeholder="Artist"]').value,
-    featuring: document.querySelector('input[placeholder="Featuring"]').value,
-    composer: document.querySelector('input[placeholder="Composer (Legal Full Name)"]').value,
-    lyricist: document.querySelector('input[placeholder="Lyricist (Legal Full Name)"]').value,
-    producer: document.querySelector('input[placeholder="Producer"]').value,
-    releaseType: document.querySelector('select:nth-of-type(1)').value,
-    releaseDate: document.querySelector('input[type="date"]').value,
-    genre: document.querySelector('select:nth-of-type(2)').value,
-    language: document.querySelector('select:nth-of-type(3)').value,
-    lyrics: document.querySelector('textarea:nth-of-type(1)').value,
-    description: document.querySelector('textarea:nth-of-type(2)').value,
-    marketing: marketing
-  };
-
-  fetch('YOUR_WEB_APP_URL_HERE', {  // <== đổi thành URL Web App của bạn
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(res => res.json())
-  .then(res => {
-    if(res.status === "success"){
-      alert("Release submitted successfully!");
-    } else {
-      alert("Error: " + res.message);
-    }
-  })
-  .catch(err => alert("Error: " + err));
-}
+<button onclick="submitRelease()">SUBMIT RELEASE</button>
 
 <script>
   const audioInput = document.getElementById('audio');
