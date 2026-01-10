@@ -289,32 +289,9 @@ function submitRelease() {
   const formData = new FormData();
   formData.append("form", JSON.stringify(data));
 
-  if(audioFile) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const base64Audio = e.target.result.split(",")[1];
-      formData.append("audio", base64Audio);
-      formData.append("audioName", audioFile.name);
-      formData.append("audioType", audioFile.type);
-      sendFormData(formData);
-    };
-    reader.readAsDataURL(audioFile);
-  } else if(artworkFile) {
-    const reader2 = new FileReader();
-    reader2.onload = function(e) {
-      const base64Artwork = e.target.result.split(",")[1];
-      formData.append("artwork", base64Artwork);
-      formData.append("artworkName", artworkFile.name);
-      formData.append("artworkType", artworkFile.type);
-      sendFormData(formData);
-    };
-    reader2.readAsDataURL(artworkFile);
-  } else {
-    sendFormData(formData);
-  }
-
-  function sendFormData(formData) {
-    fetch("https://script.google.com/macros/s/AKfycbzlp1MBpFI0Bi8gfPaTiXuGwmViO__390Orq5H3qYS_Vcyrdex3ULBxfyrcmF0k6b2j6A/exec", {
+  // Đọc cả 2 file cùng lúc
+  function sendForm() {
+    fetch("WEB_APP_URL_CỦA_BẠN", {
       method: "POST",
       body: formData
     })
@@ -324,6 +301,36 @@ function submitRelease() {
       else alert("Lỗi: "+res.message);
     })
     .catch(err => alert("Lỗi: "+err));
+  }
+
+  let filesToRead = 0;
+  if(audioFile) filesToRead++;
+  if(artworkFile) filesToRead++;
+
+  if(filesToRead===0) sendForm();
+
+  if(audioFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      formData.append("audio", e.target.result.split(",")[1]);
+      formData.append("audioName", audioFile.name);
+      formData.append("audioType", audioFile.type);
+      filesToRead--;
+      if(filesToRead===0) sendForm();
+    };
+    reader.readAsDataURL(audioFile);
+  }
+
+  if(artworkFile) {
+    const reader2 = new FileReader();
+    reader2.onload = function(e) {
+      formData.append("artwork", e.target.result.split(",")[1]);
+      formData.append("artworkName", artworkFile.name);
+      formData.append("artworkType", artworkFile.type);
+      filesToRead--;
+      if(filesToRead===0) sendForm();
+    };
+    reader2.readAsDataURL(artworkFile);
   }
 </script>
 
