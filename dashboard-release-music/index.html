@@ -263,11 +263,9 @@ h2 {
   });
 
 function submitRelease() {
-  // Lấy tất cả checkbox Marketing
   const marketing = Array.from(document.querySelectorAll('.marketing-section input[type="checkbox"]:checked'))
                          .map(cb => cb.value);
 
-  // Lấy dữ liệu form theo id
   const data = {
     releaseTitle: document.getElementById('releaseTitle').value,
     version: document.getElementById('version').value,
@@ -285,22 +283,48 @@ function submitRelease() {
     marketing: marketing
   };
 
-  // Gửi dữ liệu lên Google Sheet Web App
-  fetch('https://script.google.com/macros/s/AKfycbzlp1MBpFI0Bi8gfPaTiXuGwmViO__390Orq5H3qYS_Vcyrdex3ULBxfyrcmF0k6b2j6A/exec', {
-    method: 'POST',
-    body: JSON.stringify(data),
-    headers: {'Content-Type': 'application/json'}
-  })
-  .then(res => res.json())
-  .then(res => {
-    if(res.status === "success") {
-      alert("Release submitted thành công!");
-    } else {
-      alert("Lỗi: " + res.message);
-    }
-  })
-  .catch(err => alert("Lỗi: " + err));
-}
+  const audioFile = document.getElementById('audio').files[0];
+  const artworkFile = document.getElementById('artwork').files[0];
+
+  const formData = new FormData();
+  formData.append("form", JSON.stringify(data));
+
+  if(audioFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64Audio = e.target.result.split(",")[1];
+      formData.append("audio", base64Audio);
+      formData.append("audioName", audioFile.name);
+      formData.append("audioType", audioFile.type);
+      sendFormData(formData);
+    };
+    reader.readAsDataURL(audioFile);
+  } else if(artworkFile) {
+    const reader2 = new FileReader();
+    reader2.onload = function(e) {
+      const base64Artwork = e.target.result.split(",")[1];
+      formData.append("artwork", base64Artwork);
+      formData.append("artworkName", artworkFile.name);
+      formData.append("artworkType", artworkFile.type);
+      sendFormData(formData);
+    };
+    reader2.readAsDataURL(artworkFile);
+  } else {
+    sendFormData(formData);
+  }
+
+  function sendFormData(formData) {
+    fetch("https://script.google.com/macros/s/…/exec", {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.json())
+    .then(res => {
+      if(res.status==="success") alert("Release submitted thành công!");
+      else alert("Lỗi: "+res.message);
+    })
+    .catch(err => alert("Lỗi: "+err));
+  }
 </script>
 
 </body>
