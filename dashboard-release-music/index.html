@@ -3,121 +3,20 @@
 <head>
   <base target="_top">
   <style>
-    body {
-      font-family: Arial;
-      background: #111;
-      color: #fff;
-      padding: 20px;
-    }
-
-h2 {
-  margin-bottom: 24px;
-  text-align: center;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-
-    input,
-    select,
-    textarea {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      background: #222;
-      color: #fff;
-      border: 1px solid #444;
-      box-sizing: border-box;
-    }
-
-    textarea {
-      min-height: 100px;
-    }
-
-    label {
-      display: block;
-      width: 100%;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: #1db954;
-      border: none;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    /* ===== UPLOAD UI ===== */
-    .upload-section {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-
-    .file-wrapper {
-      width: 100%;
-    }
-
-    .file-label {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      background: #222;
-      border: 1px dashed #555;
-      text-align: center;
-      cursor: pointer;
-      box-sizing: border-box;
-    }
-
-    .file-hint {
-      font-size: 11px;
-      color: #aaa;
-      line-height: 1.4;
-    }
-
-    .error {
-      color: #ff4d4d;
-      font-size: 12px;
-      margin-top: 6px;
-      display: none;
-    }
-
-     .marketing-section > label {
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 15px;
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: normal;
-  cursor: pointer;
-  margin-bottom: 6px;
-}
-
-.checkbox input[type="checkbox"] {
-  width: auto;
-  margin: 0;
-}
-
-.marketing-section > label {
-  font-weight: normal;
-  font-size: 13px;
-  margin-bottom: 8px;
-}
-
-.marketing-section .checkbox:last-child {
-  margin-bottom: 20px;
-}
+    body { font-family: Arial; background: #111; color: #fff; padding: 20px; }
+    h2 { text-align:center; margin-bottom:24px; font-weight:600; }
+    input, select, textarea { width:100%; padding:8px; margin-bottom:10px; background:#222; color:#fff; border:1px solid #444; box-sizing:border-box; }
+    textarea { min-height:100px; }
+    label { display:block; margin-bottom:6px; font-weight:bold; }
+    button { width:100%; padding:12px; background:#1db954; border:none; color:#000; font-weight:bold; cursor:pointer; margin-top:10px; }
+    .upload-section { margin-bottom:16px; }
+    .file-label { display:block; width:100%; padding:12px; background:#222; border:1px dashed #555; text-align:center; cursor:pointer; }
+    .file-hint { font-size:11px; color:#aaa; line-height:1.4; }
+    .error { color:#ff4d4d; font-size:12px; margin-top:6px; display:none; }
+    .checkbox { display:flex; align-items:center; gap:8px; font-weight:normal; cursor:pointer; margin-bottom:6px; }
+    .checkbox input[type="checkbox"] { width:auto; margin:0; }
   </style>
 </head>
-
 <body>
 
 <h2>MUSIC RELEASE PORTAL</h2>
@@ -126,12 +25,9 @@ h2 {
 <input id="version" placeholder="Version">
 <input id="artist" placeholder="Artist">
 <input id="featuring" placeholder="Featuring">
-
-
 <input id="composer" placeholder="Composer (Legal Full Name)">
 <input id="lyricist" placeholder="Lyricist (Legal Full Name)">
 <input id="producer" placeholder="Producer">
-
 
 <select id="releaseType">
   <option>Single</option>
@@ -169,102 +65,63 @@ h2 {
 
 <textarea id="lyrics" placeholder="Lyrics"></textarea>
 <textarea id="description" placeholder="Release description"></textarea>
+
 <div class="marketing-section">
   <label>Marketing</label>
-  <label class="checkbox">
-    <input type="checkbox" value="Playlist Pitching Spotify">
-    Playlist Pitching Spotify
-  </label>
-  <label class="checkbox">
-    <input type="checkbox" value="Digital Advertising & Social Media">
-    Digital Advertising & Social Media
-  </label>
-  <label class="checkbox">
-    <input type="checkbox" value="Video Teaser / Visualizer">
-    Video Teaser / Visualizer
-  </label>
+  <label class="checkbox"><input type="checkbox" value="Playlist Pitching Spotify">Playlist Pitching Spotify</label>
+  <label class="checkbox"><input type="checkbox" value="Digital Advertising & Social Media">Digital Advertising & Social Media</label>
+  <label class="checkbox"><input type="checkbox" value="Video Teaser / Visualizer">Video Teaser / Visualizer</label>
 </div>
 
-
-<!-- ===== UPLOAD AUDIO ===== -->
 <div class="upload-section">
   <label>Upload Audio</label>
   <div class="file-wrapper">
-    <label class="file-label">
-      <span class="file-hint">
-        WAV / FLAC 16bit or 24bit, 44.1kHz
-      </span>
+    <label class="file-label"><span class="file-hint">WAV / FLAC 16bit or 24bit, 44.1kHz</span>
       <input type="file" id="audio" hidden>
     </label>
-    <div class="error" id="audioError">
-      The file was rejected because it did not meet the requirements
-    </div>
+    <div class="error" id="audioError">The file was rejected because it did not meet the requirements</div>
   </div>
 </div>
 
-<!-- ===== UPLOAD ARTWORK ===== -->
 <div class="upload-section">
   <label>Upload Artwork</label>
   <div class="file-wrapper">
-    <label class="file-label">
-      <span class="file-hint">
-        3000 x 3000 px JPG / PNG
-      </span>
+    <label class="file-label"><span class="file-hint">3000 x 3000 px JPG / PNG</span>
       <input type="file" id="artwork" hidden>
     </label>
-    <div class="error" id="artworkError">
-      The file was rejected because it did not meet the requirements
-    </div>
+    <div class="error" id="artworkError">The file was rejected because it did not meet the requirements</div>
   </div>
 </div>
 
 <button type="button" onclick="submitRelease()">SUBMIT RELEASE</button>
 
 <script>
-  const audioInput = document.getElementById('audio');
-  const artworkInput = document.getElementById('artwork');
+const audioInput = document.getElementById('audio');
+const artworkInput = document.getElementById('artwork');
 
-  audioInput.addEventListener('change', () => {
-    const file = audioInput.files[0];
-    const error = document.getElementById('audioError');
-    error.style.display = 'none';
+audioInput.addEventListener('change', () => {
+  const file = audioInput.files[0];
+  const error = document.getElementById('audioError');
+  error.style.display = 'none';
+  if (!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  if(!['wav','flac'].includes(ext)){ audioInput.value=''; error.style.display='block'; }
+});
 
-    if (!file) return;
-
-    const ext = file.name.split('.').pop().toLowerCase();
-    if (!['wav', 'flac'].includes(ext)) {
-      audioInput.value = '';
-      error.style.display = 'block';
-    }
-  });
-
-  artworkInput.addEventListener('change', () => {
-    const file = artworkInput.files[0];
-    const error = document.getElementById('artworkError');
-    error.style.display = 'none';
-
-    if (!file) return;
-
-    const ext = file.name.split('.').pop().toLowerCase();
-    if (!['jpg', 'jpeg', 'png'].includes(ext)) {
-      artworkInput.value = '';
-      error.style.display = 'block';
-      return;
-    }
-
-    const img = new Image();
-    img.onload = function () {
-      if (img.width < 1600 || img.height < 1600 || img.width !== img.height) {
-        artworkInput.value = '';
-        error.style.display = 'block';
-      }
-    };
-    img.src = URL.createObjectURL(file);
-  });
+artworkInput.addEventListener('change', () => {
+  const file = artworkInput.files[0];
+  const error = document.getElementById('artworkError');
+  error.style.display = 'none';
+  if(!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  if(!['jpg','jpeg','png'].includes(ext)){ artworkInput.value=''; error.style.display='block'; return; }
+  const img = new Image();
+  img.onload=function(){ if(img.width<1600 || img.height<1600 || img.width!==img.height){ artworkInput.value=''; error.style.display='block'; } };
+  img.src = URL.createObjectURL(file);
+});
 
 function submitRelease() {
-  const marketing = Array.from(document.querySelectorAll('.marketing-section input[type="checkbox"]:checked'))
-                         .map(cb => cb.value);
+  const marketing = Array.from(document.querySelectorAll('.marketing-section input[type="checkbox"]:checked')).map(cb=>cb.value);
 
   const data = {
     releaseTitle: document.getElementById('releaseTitle').value,
@@ -283,25 +140,11 @@ function submitRelease() {
     marketing: marketing
   };
 
-  const audioFile = document.getElementById('audio').files[0];
-  const artworkFile = document.getElementById('artwork').files[0];
+  const audioFile = audioInput.files[0];
+  const artworkFile = artworkInput.files[0];
 
   const formData = new FormData();
   formData.append("form", JSON.stringify(data));
-
-  // Đọc cả 2 file cùng lúc
-  function sendForm() {
-    fetch("WEB_APP_URL_CỦA_BẠN", {
-      method: "POST",
-      body: formData
-    })
-    .then(res => res.json())
-    .then(res => {
-      if(res.status==="success") alert("Release submitted thành công!");
-      else alert("Lỗi: "+res.message);
-    })
-    .catch(err => alert("Lỗi: "+err));
-  }
 
   let filesToRead = 0;
   if(audioFile) filesToRead++;
@@ -309,9 +152,9 @@ function submitRelease() {
 
   if(filesToRead===0) sendForm();
 
-  if(audioFile) {
+  if(audioFile){
     const reader = new FileReader();
-    reader.onload = function(e) {
+    reader.onload=function(e){
       formData.append("audio", e.target.result.split(",")[1]);
       formData.append("audioName", audioFile.name);
       formData.append("audioType", audioFile.type);
@@ -321,9 +164,9 @@ function submitRelease() {
     reader.readAsDataURL(audioFile);
   }
 
-  if(artworkFile) {
+  if(artworkFile){
     const reader2 = new FileReader();
-    reader2.onload = function(e) {
+    reader2.onload=function(e){
       formData.append("artwork", e.target.result.split(",")[1]);
       formData.append("artworkName", artworkFile.name);
       formData.append("artworkType", artworkFile.type);
@@ -332,6 +175,14 @@ function submitRelease() {
     };
     reader2.readAsDataURL(artworkFile);
   }
+
+  function sendForm(){
+    fetch("https://script.google.com/macros/s/AKfycbzlp1MBpFI0Bi8gfPaTiXuGwmViO__390Orq5H3qYS_Vcyrdex3ULBxfyrcmF0k6b2j6A/exec", {method:"POST", body:formData})
+      .then(res=>res.json())
+      .then(res=>{ if(res.status==="success") alert("Release submitted thành công!"); else alert("Lỗi: "+res.message); })
+      .catch(err=>alert("Lỗi: "+err));
+  }
+}
 </script>
 
 </body>
