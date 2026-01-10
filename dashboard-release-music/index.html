@@ -122,25 +122,26 @@ h2 {
 
 <h2>MUSIC RELEASE PORTAL</h2>
 
-<input placeholder="Release Title">
-<input placeholder="Version">
-<input placeholder="Artist">
-<input placeholder="Featuring">
-
-<input placeholder="Composer (Legal Full Name)">
-<input placeholder="Lyricist (Legal Full Name)">
-<input placeholder="Producer">
+<input id="releaseTitle" placeholder="Release Title">
+<input id="version" placeholder="Version">
+<input id="artist" placeholder="Artist">
+<input id="featuring" placeholder="Featuring">
 
 
-<select>
+<input id="composer" placeholder="Composer (Legal Full Name)">
+<input id="lyricist" placeholder="Lyricist (Legal Full Name)">
+<input id="producer" placeholder="Producer">
+
+
+<select id="releaseType">
   <option>Single</option>
   <option>EP</option>
   <option>Album</option>
 </select>
 
-<input type="date" placeholder="Digital Release Date">
+<input type="date" id="releaseDate">
 
-<select>
+<select id="genre">
   <option>Alternative</option>
   <option>Blues</option>
   <option>Classical</option>
@@ -161,26 +162,23 @@ h2 {
   <option>Instruments</option>
 </select>
 
-<select>
+<select id="language">
   <option>Vietnamese (VI)</option>
   <option>English (EN)</option>
 </select>
 
-<textarea placeholder="Lyrics"></textarea>
-<textarea placeholder="Release description"></textarea>
+<textarea id="lyrics" placeholder="Lyrics"></textarea>
+<textarea id="description" placeholder="Release description"></textarea>
 <div class="marketing-section">
   <label>Marketing</label>
-
   <label class="checkbox">
     <input type="checkbox" value="Playlist Pitching Spotify">
     Playlist Pitching Spotify
   </label>
-
   <label class="checkbox">
     <input type="checkbox" value="Digital Advertising & Social Media">
     Digital Advertising & Social Media
   </label>
-
   <label class="checkbox">
     <input type="checkbox" value="Video Teaser / Visualizer">
     Video Teaser / Visualizer
@@ -220,7 +218,7 @@ h2 {
   </div>
 </div>
 
-<button onclick="submitRelease()">SUBMIT RELEASE</button>
+<button type="button" onclick="submitRelease()">SUBMIT RELEASE</button>
 
 <script>
   const audioInput = document.getElementById('audio');
@@ -264,9 +262,45 @@ h2 {
     img.src = URL.createObjectURL(file);
   });
 
-  function submitRelease() {
-    alert('Release submitted (demo)');
-  }
+function submitRelease() {
+  // Lấy tất cả checkbox Marketing
+  const marketing = Array.from(document.querySelectorAll('.marketing-section input[type="checkbox"]:checked'))
+                         .map(cb => cb.value);
+
+  // Lấy dữ liệu form theo id
+  const data = {
+    releaseTitle: document.getElementById('releaseTitle').value,
+    version: document.getElementById('version').value,
+    artist: document.getElementById('artist').value,
+    featuring: document.getElementById('featuring').value,
+    composer: document.getElementById('composer').value,
+    lyricist: document.getElementById('lyricist').value,
+    producer: document.getElementById('producer').value,
+    releaseType: document.getElementById('releaseType').value,
+    releaseDate: document.getElementById('releaseDate').value,
+    genre: document.getElementById('genre').value,
+    language: document.getElementById('language').value,
+    lyrics: document.getElementById('lyrics').value,
+    description: document.getElementById('description').value,
+    marketing: marketing
+  };
+
+  // Gửi dữ liệu lên Google Sheet Web App
+  fetch('https://script.google.com/macros/s/AKfycbzlp1MBpFI0Bi8gfPaTiXuGwmViO__390Orq5H3qYS_Vcyrdex3ULBxfyrcmF0k6b2j6A/exec', {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {'Content-Type': 'application/json'}
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.status === "success") {
+      alert("Release submitted thành công!");
+    } else {
+      alert("Lỗi: " + res.message);
+    }
+  })
+  .catch(err => alert("Lỗi: " + err));
+}
 </script>
 
 </body>
