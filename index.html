@@ -1,454 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UNDERSOUTHERN Records</title>
-  <meta name="description" content="UNDERSOUTHERN is an independent record label based in Vietnam, dedicated to developing artists and distributing music worldwide. Submit your demo and join us." />
-  <meta name="keywords" content="UNDERSOUTHERN, undersouthernrecords, UNDERSOUTHERN Records, record label, independent label, music distribution, indie label, Vietnam music, digital distribution" />
-  <meta name="author" content="UNDERSOUTHERN Records" />
-  <link rel="canonical" href="https://undersouthern.asia" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: 'Inter', Arial, sans-serif;
-      background: url("https://github.com/phvinh1968-a11y/my-images/blob/da03868a7e7c96ba0a5a8d143207abafb7d08421/background.jpg?raw=true") no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow-x: hidden;
-     }
+<title>UNDERSOUTHERN Records</title>
+<meta name="description" content="UNDERSOUTHERN is an independent record label based in Vietnam." />
 
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
 
-    header {
-      position: relative;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px 10px;
-      font-size: 0.8rem;
-      color: #fff;
-      background: transparent;
-      text-transform: uppercase;
-      font-weight: 500;
-      z-index: 10;
-    }
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:#fff;
+  color:#111;
+  min-height:100vh;
+  overflow:hidden;
+}
 
-    main {
-      flex: 1;
-      width: 100%;
-    }
+/* ===== PRELOADER (BLACK BG) ===== */
+#loader{
+  position:fixed;
+  inset:0;
+  background:#0d0f11; /* ✅ nền đen */
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  animation:fadeOut .8s ease forwards;
+  animation-delay:1.6s;
+}
 
-    .content {
-      position: relative;
-      text-align: center;
-      padding: 0 20px;
-      width: 100%;
-      max-width: 700px;
-      height: 100vh;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
+#loader img{
+  width:120px;
+  height:auto;
+  filter:brightness(0) invert(1); /* ✅ ép logo trắng */
+  animation:logoPulse 1.2s ease-in-out infinite;
+}
 
-    h1 {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-      opacity: 0;
-      transform: scale(0.95);
-      animation: fadeZoomIn 1.2s ease forwards;
-    }
+/* ===== HEADER ===== */
+header{
+  width:100%;
+  padding:18px 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  text-transform:uppercase;
+  font-size:12px;
+  letter-spacing:1px;
+}
 
-    @keyframes fadeZoomIn {
-      0% { opacity: 0; transform: scale(0.95); }
-      100% { opacity: 1; transform: scale(1); }
-    }
+nav a{
+  margin-left:18px;
+  text-decoration:none;
+  color:#111;
+  cursor:pointer;
+}
+nav a:hover{opacity:.6}
 
-    p {
-      font-size: clamp(0.9rem, 3vw, 1.1rem);
-      color: #fff;
-      margin-bottom: 30px;
-      letter-spacing: 0.5px;
-      opacity: 0;
-      transform: translateY(10px);
-      animation: slideUp 1.2s ease forwards;
-      animation-delay: 0.3s;
-    }
+/* ===== HOME ===== */
+.content{
+  min-height:calc(100vh - 160px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:40px 20px;
+  opacity:0;
+  animation:fadeUp 1s ease forwards;
+  animation-delay:1.8s;
+}
 
-    @keyframes slideUp {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+h1{
+  font-size:clamp(2rem,5vw,2.6rem);
+  letter-spacing:2px;
+  margin-bottom:8px;
+}
 
-    .btn {
-      display: inline-block;
-      padding: 12px 30px;
-      border: 1px solid #fff;
-      color: #fff;
-      text-decoration: none;
-      text-transform: uppercase;
-      font-size: clamp(0.8rem, 3vw, 0.9rem);
-      border-radius: 30px;
-      transition: all 0.3s ease;
-      opacity: 0;
-      animation: fadeIn 1s ease forwards;
-      animation-delay: 0.6s;
-      cursor: pointer;
-    }
+p{margin-bottom:30px}
 
-    @keyframes fadeIn {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
-    }
+.btn{
+  padding:12px 32px;
+  border:1px solid #111;
+  border-radius:30px;
+  text-decoration:none;
+  color:#111;
+  text-transform:uppercase;
+  font-size:13px;
+}
+.btn:hover{
+  background:#111;
+  color:#fff;
+}
 
-    .btn:hover {
-      background: #111;
-      color: #fff;
-    }
+/* ===== PAGES ===== */
+.page{
+  display:none;
+  max-width:900px;
+  margin:0 auto;
+  padding:100px 20px;
+  line-height:1.7;
+  animation:fadeUp .6s ease forwards;
+}
 
-    /* PAGE CONTENTS */
-    .page {
-      display: none;
-      padding: 80px 20px;
-      max-width: 900px;
-      margin: 0 auto;
-      text-align: left;
-      line-height: 1.6;
-      color: #fff;
-      animation: fadeInPage 0.5s ease forwards;
-    }
-    @keyframes fadeInPage {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+.page h2{
+  margin-bottom:20px;
+  text-transform:uppercase;
+}
 
-    .page h2 {
-      text-transform: uppercase;
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-      color: #fff;
-    }
+.back-btn{
+  margin-top:40px;
+  display:inline-block;
+  padding:10px 26px;
+  border:1px solid #111;
+  border-radius:30px;
+  text-decoration:none;
+  color:#111;
+  font-size:12px;
+  cursor:pointer;
+}
+.back-btn:hover{
+  background:#111;
+  color:#fff;
+}
 
-    .back-btn {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 10px 25px;
-      border: 1px solid #111;
-      border-radius: 25px;
-      text-decoration: none;
-      color: #fff;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-    .back-btn:hover {
-      background: #111;
-      color: #fff;
-    }
+/* ===== FOOTER ===== */
+footer{
+  background:#ffffff;
+  color:#666;
+  padding:50px 30px 25px;
+  text-align:center;
+  font-size:11px;
+}
 
-    /* ===== FOOTER ===== */
-    footer {
-      width: 100%;
-      background: #0d0f11;
-      color: #fff;
-      padding: 80px 40px 30px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .footer-top {
-      width: 100%;
-      max-width: 1200px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 40px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-
-    .footer-logo img {
-      width: 120px;
-      height: auto;
-      filter: brightness(0) invert(1);
-      opacity: 0.9;
-    }
-
-    .footer-column h3 {
-      font-size: 0.9rem;
-      color: #fff;
-      text-transform: uppercase;
-      margin-bottom: 15px;
-    }
-
-    .footer-column a {
-      display: block;
-      color: #bbb;
-      text-decoration: none;
-      font-size: 0.85rem;
-      margin: 6px 0;
-      transition: color 0.3s ease;
-      cursor: pointer;
-    }
-
-    .footer-column a:hover { color: #fff; }
-
-    .footer-bottom {
-      font-size: 0.65rem;
-      color: #888;
-      text-align: center;
-      border-top: 1px solid #222;
-      padding-top: 20px;
-      width: 100%;
-    }
-
-    .footer-bottom a {
-      color: #888;
-      text-decoration: none;
-      margin: 0 6px;
-    }
-
-    .footer-bottom a:hover { color: #fff; }
-
-    @media (max-width: 768px) {
-      .footer-top { flex-direction: column; align-items: flex-start; gap: 25px; }
-      .footer-bottom { text-align: left; font-size: 0.6rem; }
-    }
-
-    /* FAQ STYLES */
-    .faq details {
-      border-top: 1px solid #fff;
-      padding: 10px 0;
-    }
-    .faq details:last-child {
-      border-bottom: 1px solid #fff;
-    }
-    .faq summary {
-      cursor: pointer;
-      font-weight: 500;
-      font-size: 15px;
-      list-style: none;
-    }
-    .faq summary::-webkit-details-marker {
-      display: none;
-    }
-    .faq .panel {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #555;
-      line-height: 1.6;
-      padding-left: 20px;
-    }
-    .faq .panel ul {
-      margin: 6px 0 0 0;
-      padding-left: 20px;
-    }
-    .faq .panel li {
-      margin-bottom: 4px;
-    }
-  </style>
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeOut{
+  to{opacity:0;visibility:hidden}
+}
+@keyframes logoPulse{
+  0%,100%{opacity:.5;transform:scale(.98)}
+  50%{opacity:1;transform:scale(1)}
+}
+</style>
 </head>
+
 <body>
 
-  <header>
-    <span>Vietnam</span>
-    <span>Established 2024</span>
-  </header>
+<!-- PRELOADER -->
+<div id="loader">
+  <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/refs/heads/main/logo_processed.png"
+       alt="UNDERSOUTHERN Records Logo">
+</div>
 
-  <main>
-    <!-- Trang chính -->
-    <section id="home" class="content">
-      <h1>UNDERSOUTHERN</h1>
-      <p>Independent Record Label</p>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSda_y_qjj18aNyw3x5t9hNQj4Q2sCVdpXpqIRYbnC1PFz8dxQ/viewform?usp=header"
-         target="_blank" class="btn">
-         Submit Your Music
-      </a>
-    </section>
+<header>
+  <div>Vietnam · Established 2024</div>
+  <nav>
+    <a onclick="showPage('contact')">About</a>
+    <a onclick="showPage('contact')">Contact</a>
+  </nav>
+</header>
 
-    <!-- Các trang phụ -->
-    <section id="contact" class="page">
-      <h2>Contact</h2>
-      <p>For general inquiries or collaborations, please contact us at <strong>support@undersouthern.asia</strong>.</p>
-      <a class="back-btn" onclick="goHome()">← Back</a>
-    </section>
+<main>
 
-    <section id="press" class="page">
-      <h2>Press</h2>
-      <p>For interviews, media assets, and official visuals, please contact us at <strong>support@undersouthern.asia</strong>.</p>
-      <a class="back-btn" onclick="goHome()">← Back</a>
-    </section>
+<section id="home" class="content">
+  <h1>UNDERSOUTHERN</h1>
+  <p>Independent Record Label</p>
+  <a class="btn" target="_blank"
+     href="https://docs.google.com/forms/d/e/1FAIpQLSda_y_qjj18aNyw3x5t9hNQj4Q2sCVdpXpqIRYbnC1PFz8dxQ/viewform">
+    Submit Your Music
+  </a>
+</section>
 
-    <section id="careers" class="page">
-      <h2>Careers</h2>
-      <p>We’re always open to creative minds in A&R, marketing, and production. Send your portfolio to <strong>support@undersouthern.asia</strong>.</p>
-      <a class="back-btn" onclick="goHome()">← Back</a>
-    </section>
+<section id="contact" class="page">
+  <h2>Contact</h2>
+  <p>Email: <strong>support@undersouthern.asia</strong></p>
+  <a class="back-btn" onclick="goHome()">← Back</a>
+</section>
 
-    <section id="faq" class="page">
-      <h2>Faq</h2>
-      <div class="faq">
-        <details>
-          <summary>On which platforms will my music be available?</summary>
-          <div class="panel">
-            <ul>
-              <li>Zing MP3</li>
-              <li>Spotify</li>
-              <li>Apple Music &amp; iTunes (including Shazam)</li>
-              <li>Instagram &amp; Facebook</li>
-              <li>TikTok &amp; TikTok Music</li>
-              <li>YouTube Music &amp; Content ID</li>
-              <li>Pandora</li>
-              <li>Deezer</li>
-              <li>TIDAL</li>
-              <li>Amazon Music</li>
-              <li>JioSaavn</li>
-              <li>Anghami</li>
-              <li>Beatport</li>
-              <li>Gracenote</li>
-              <li>7Digital</li>
-              <li>SnapChat</li>
-              <li>Tencent Music</li>
-              <li>Bugs!</li>
-              <li>Audiomack</li>
-              <li>SoundCloud</li>
-              <li>NetEase Cloud Music</li>
-              <li>LINE Music</li>
-              <li>Qobuz</li>
-            </ul>
-          </div>
-        </details>
-        <details>
-      <summary>In which countries will my music be available?</summary>
-      <div class="panel">By default, we distribute your music worldwide.</div>
-    </details>
+</main>
 
-    <details>
-      <summary>How long will it take for my music to be available?</summary>
-      <div class="panel">
-        Typically, your music will be uploaded online within a period of <strong>1-5 business days</strong>,  
-        but this depends on the specific service:
-        <ul>
-          <li><strong>iTunes / Apple Music:</strong> 5 days (Some albums require a manual verification process which may take an additional 1–2 weeks.)</li>
-          <li><strong>Spotify:</strong> 2–3 days</li>
-          <li><strong>Amazon:</strong> 2–3 days</li>
-          <li><strong>YouTube Music:</strong> 2–3 days</li>
-          <li><strong>Deezer:</strong> 2–3 days</li>
-          <li><strong>TIDAL:</strong> 2–3 days</li>
-          <li><strong>Facebook / Instagram:</strong> 2–3 days</li>
-          <li><strong>TikTok:</strong> 2–3 days</li>
-        </ul>
-      </div>
-    </details>
-        
-    <details>
-      <summary>Can I switch to UNDERSOUTHERN from another distributor?</summary>
-      <div class="panel">Of course it's possible, please contact us <strong>contact@undersouthern.asia</strong> If you need further assistance or have any questions.</div>
-    </details>
+<footer>
+© 2026 UNDERSOUTHERN Records
+</footer>
 
+<script>
+function showPage(id){
+  document.querySelectorAll('.content,.page')
+    .forEach(e=>e.style.display='none');
+  document.getElementById(id).style.display='block';
+  window.scrollTo(0,0);
+}
 
-    <details>
-      <summary>UNDERSOUTHERN Records offer pitching services?</summary>
-      <div class="panel">
-        Yes <strong>UNDERSOUTHERN Records</strong> this helps artists submit pitches to curated playlists on Spotify, Apple Music, and other platforms if their releases meet the criteria.
-        Please send an email to <strong>support@undersouthern.asia</strong> Please allow for detailed review and guidance.
-      </div>
-    </details>
+function goHome(){
+  document.querySelectorAll('.page')
+    .forEach(e=>e.style.display='none');
+  document.getElementById('home').style.display='flex';
+}
 
-     <details>
-      <summary>Artist Partnership and Rights Agreement</summary>
-      <div class="panel">
-        You can request this support via email <strong>support@undersouthern.asia</strong>.  
-        </a>.
-      </div>
-    </details>
-
-    <details>
-      <summary>How do I get a TikTok Artist profile?</summary>
-      <div class="panel">
-          Here are our instructions at this link:  
-        <a href="https://www.tiktok.com/m-c/music_artist_certification_h5" target="_blank">
-          Tiktok for Artists
-        </a>.
-      </div>
-    </details>
-
-    <details>
-      <summary>How do I add lyrics to my songs on Spotify and Apple Music?</summary>
-      <div class="panel">
-        You can find more information on how to do this at the following link:  
-        <a href="https://support.spotify.com/vn-vi/artists/article/managing-your-lyrics-on-spotify/" target="_blank">
-          Spotify
-        </a>.
-      </div>
-      <div class="panel">
-        You can find more information on how to do this at the following link:  
-        <a href="https://support.apple.com/en-us/HT204136" target="_blank">
-          Apple Music
-        </a>.
-      </div>
-
-      </div>
-      <a class="back-btn" onclick="goHome()">← Back</a>
-    </section>
-  </main>
-
-  <footer>
-    <div class="footer-top">
-      <div class="footer-logo">
-        <img src="https://github.com/phvinh1968-a11y/my-images/blob/main/logo_processed.png?raw=true" alt="UNDERSOUTHERN Logo">
-      </div>
-
-      <div class="footer-column">
-        <a onclick="showPage('contact')">Contact</a>
-        <a onclick="showPage('press')">Press</a>
-        <a onclick="showPage('careers')">Careers</a>
-        <a onclick="showPage('faq')">Faq</a>
-      </div>
-
-      <div class="footer-column">
-        <a href="https://www.instagram.com/undersouthernrecords" target="_blank">Instagram</a>
-        <a href="https://www.tiktok.com/@undersouthernrecords" target="_blank">TikTok</a>
-        <a href="https://www.youtube.com/@undersouthern" target="_blank">YouTube</a>
-        <a href="https://www.facebook.com/undersouthernrecords" target="_blank">Facebook</a>
-        <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank">Spotify</a>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      © 2026 UNDERSOUTHERN Records 
-      <a href="#">Terms and Conditions</a> 
-      <a href="#">Privacy</a>
-    </div>
-  </footer>
-
-  <script>
-    function showPage(id) {
-      document.querySelectorAll('.content, .page').forEach(el => el.style.display = 'none');
-      document.getElementById(id).style.display = 'block';
-      window.scrollTo(0, 0);
-    }
-
-    function goHome() {
-      document.querySelectorAll('.page').forEach(el => el.style.display = 'none');
-      document.getElementById('home').style.display = 'flex';
-      window.scrollTo(0, 0);
-    }
-
-    window.onload = goHome;
-  </script>
+window.onload=()=>{
+  document.body.style.overflow='auto';
+  goHome();
+};
+</script>
 
 </body>
 </html>
