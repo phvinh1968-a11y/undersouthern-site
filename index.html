@@ -18,11 +18,11 @@ body{
   overflow:hidden;
 }
 
-/* ===== PRELOADER (BLACK BG) ===== */
+/* ===== PRELOADER ===== */
 #loader{
   position:fixed;
   inset:0;
-  background:#0d0f11; /* ✅ nền đen */
+  background:#0d0f11;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -32,10 +32,8 @@ body{
 }
 
 #loader img{
-  width:120px;
-  height:auto;
-  filter:brightness(0) invert(1); /* ✅ ép logo trắng */
-  animation:logoPulse 1.2s ease-in-out infinite;
+  width:140px;
+  animation:pulse 1.2s infinite;
 }
 
 /* ===== HEADER ===== */
@@ -58,9 +56,12 @@ nav a{
 }
 nav a:hover{opacity:.6}
 
+/* ===== MAIN ===== */
+main{flex:1}
+
 /* ===== HOME ===== */
 .content{
-  min-height:calc(100vh - 160px);
+  min-height:calc(100vh - 120px);
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -89,10 +90,7 @@ p{margin-bottom:30px}
   text-transform:uppercase;
   font-size:13px;
 }
-.btn:hover{
-  background:#111;
-  color:#fff;
-}
+.btn:hover{background:#111;color:#fff}
 
 /* ===== PAGES ===== */
 .page{
@@ -101,7 +99,7 @@ p{margin-bottom:30px}
   margin:0 auto;
   padding:100px 20px;
   line-height:1.7;
-  animation:fadeUp .6s ease forwards;
+  animation:fadeUp .25s ease forwards;
 }
 
 .page h2{
@@ -109,6 +107,30 @@ p{margin-bottom:30px}
   text-transform:uppercase;
 }
 
+/* ===== CONTACT ===== */
+.contact-list{
+  margin-top:30px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.contact-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:#111;
+  font-size:14px;
+}
+.contact-item svg{
+  width:18px;
+  height:18px;
+  fill:#111;
+}
+.contact-item:hover{opacity:.6}
+
+/* ===== BACK ===== */
 .back-btn{
   margin-top:40px;
   display:inline-block;
@@ -120,21 +142,17 @@ p{margin-bottom:30px}
   font-size:12px;
   cursor:pointer;
 }
-.back-btn:hover{
-  background:#111;
-  color:#fff;
-}
+.back-btn:hover{background:#111;color:#fff}
 
 /* ===== FOOTER ===== */
 footer{
-  background:#ffffff;
-  color:#666;
-  padding:50px 30px 25px;
+  padding:30px 20px;
   text-align:center;
   font-size:11px;
+  color:#777;
 }
 
-/* ===== ANIMATIONS ===== */
+/* ===== ANIM ===== */
 @keyframes fadeUp{
   from{opacity:0;transform:translateY(14px)}
   to{opacity:1;transform:translateY(0)}
@@ -142,9 +160,9 @@ footer{
 @keyframes fadeOut{
   to{opacity:0;visibility:hidden}
 }
-@keyframes logoPulse{
-  0%,100%{opacity:.5;transform:scale(.98)}
-  50%{opacity:1;transform:scale(1)}
+@keyframes pulse{
+  0%,100%{opacity:.4}
+  50%{opacity:1}
 }
 </style>
 </head>
@@ -153,14 +171,13 @@ footer{
 
 <!-- PRELOADER -->
 <div id="loader">
-  <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/refs/heads/main/logo_processed.png"
-       alt="UNDERSOUTHERN Records Logo">
+  <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/refs/heads/main/logo_processed.png" alt="UNDERSOUTHERN Logo">
 </div>
 
 <header>
   <div>Vietnam · Established 2024</div>
   <nav>
-    <a onclick="showPage('contact')">About</a>
+    <a onclick="goHome()">Home</a>
     <a onclick="showPage('contact')">Contact</a>
   </nav>
 </header>
@@ -178,28 +195,67 @@ footer{
 
 <section id="contact" class="page">
   <h2>Contact</h2>
-  <p>Email: <strong>support@undersouthern.asia</strong></p>
+
+  <div class="contact-list">
+
+    <a class="contact-item" href="https://www.facebook.com/undersouthernrecords" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2V9.5c0-2 1.2-3.1 3-3.1.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 3h-1.9v7A10 10 0 0 0 22 12z"/></svg>
+      Facebook
+    </a>
+
+    <a class="contact-item" href="https://www.instagram.com/undersouthernrecords" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+      Instagram
+    </a>
+
+    <a class="contact-item" href="https://www.tiktok.com/@undersouthernrecords" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M16 3a5 5 0 0 0 4 2v3a8 8 0 0 1-4-1v6a6 6 0 1 1-6-6h1v3h-1a3 3 0 1 0 3 3V3z"/></svg>
+      TikTok
+    </a>
+
+    <a class="contact-item" href="https://www.youtube.com/@undersouthernrecords" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M23 7s-.2-1.7-.8-2.4c-.8-.8-1.7-.8-2.1-.9C17.2 3.5 12 3.5 12 3.5s-5.2 0-8.1.2c-.4.1-1.3.1-2.1.9C1.2 5.3 1 7 1 7s-.2 1.9-.2 3.8v2.4C.8 15.1 1 17 1 17s.2 1.7.8 2.4c.8.8 1.9.8 2.4.9 1.7.2 7.8.2 7.8.2s5.2 0 8.1-.2c.4-.1 1.3-.1 2.1-.9.6-.7.8-2.4.8-2.4s.2-1.9.2-3.8v-2.4C23.2 8.9 23 7 23 7zM9.8 14.6V9.4l5.2 2.6-5.2 2.6z"/></svg>
+      YouTube
+    </a>
+
+    <a class="contact-item" href="https://open.spotify.com/playlist/3LONU63iZ0Np42Uiyztvnm" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm4.6 14.5a.8.8 0 0 1-1.1.3c-3-1.8-6.7-2.2-11-.9a.8.8 0 1 1-.5-1.5c4.7-1.4 8.9-1 12.2 1a.8.8 0 0 1 .4 1.1z"/></svg>
+      Spotify
+    </a>
+
+    <a class="contact-item" href="mailto:support@undersouthern.asia">
+      <svg viewBox="0 0 24 24"><path d="M2 4h20v16H2V4zm10 7L4 6v12h16V6l-8 5z"/></svg>
+      support@undersouthern.asia
+    </a>
+
+  </div>
+
   <a class="back-btn" onclick="goHome()">← Back</a>
 </section>
 
 </main>
 
-<footer>
-© 2026 UNDERSOUTHERN Records
+<footer id="footer">
+  © 2026 UNDERSOUTHERN Records
 </footer>
 
 <script>
 function showPage(id){
-  document.querySelectorAll('.content,.page')
-    .forEach(e=>e.style.display='none');
+  document.getElementById('home').style.display='none';
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  document.getElementById('footer').style.display='none';
   document.getElementById(id).style.display='block';
   window.scrollTo(0,0);
 }
 
 function goHome(){
-  document.querySelectorAll('.page')
-    .forEach(e=>e.style.display='none');
-  document.getElementById('home').style.display='flex';
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  const home=document.getElementById('home');
+  home.style.display='flex';
+  home.style.animation='none';
+  home.style.opacity='1';
+  document.getElementById('footer').style.display='block';
+  window.scrollTo(0,0);
 }
 
 window.onload=()=>{
