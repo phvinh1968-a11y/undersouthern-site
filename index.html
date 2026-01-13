@@ -30,7 +30,6 @@ body{
   animation:fadeOut .8s ease forwards;
   animation-delay:1.6s;
 }
-
 #loader img{
   width:140px;
   animation:pulse 1.2s infinite;
@@ -47,7 +46,6 @@ header{
   font-size:12px;
   letter-spacing:1px;
 }
-
 nav a{
   margin-left:18px;
   text-decoration:none;
@@ -55,9 +53,6 @@ nav a{
   cursor:pointer;
 }
 nav a:hover{opacity:.6}
-
-/* ===== MAIN ===== */
-main{flex:1}
 
 /* ===== HOME ===== */
 .content{
@@ -72,13 +67,11 @@ main{flex:1}
   animation:fadeUp 1s ease forwards;
   animation-delay:1.8s;
 }
-
 h1{
   font-size:clamp(2rem,5vw,2.6rem);
   letter-spacing:2px;
   margin-bottom:8px;
 }
-
 p{margin-bottom:30px}
 
 .btn{
@@ -98,13 +91,16 @@ p{margin-bottom:30px}
   max-width:900px;
   margin:0 auto;
   padding:100px 20px;
-  line-height:1.7;
+  line-height:1.8;
   animation:fadeUp .25s ease forwards;
 }
-
 .page h2{
   margin-bottom:20px;
   text-transform:uppercase;
+}
+.page p{
+  margin-bottom:18px;
+  font-size:15px;
 }
 
 /* ===== CONTACT ===== */
@@ -114,7 +110,6 @@ p{margin-bottom:30px}
   flex-direction:column;
   gap:14px;
 }
-
 .contact-item{
   display:flex;
   align-items:center;
@@ -144,7 +139,7 @@ p{margin-bottom:30px}
 }
 .back-btn:hover{background:#111;color:#fff}
 
-/* ===== FOOTER ===== */
+/* ===== FOOTER (HOME ONLY) ===== */
 footer{
   padding:30px 20px;
   text-align:center;
@@ -171,19 +166,20 @@ footer{
 
 <!-- PRELOADER -->
 <div id="loader">
-  <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/refs/heads/main/logo_processed.png" alt="UNDERSOUTHERN Logo">
+  <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/refs/heads/main/logo_processed.png">
 </div>
 
 <header>
   <div>Vietnam · Established 2024</div>
   <nav>
-    <a onclick="goHome()">Home</a>
+    <a onclick="showPage('about')">About</a>
     <a onclick="showPage('contact')">Contact</a>
   </nav>
 </header>
 
 <main>
 
+<!-- HOME -->
 <section id="home" class="content">
   <h1>UNDERSOUTHERN</h1>
   <p>Independent Record Label</p>
@@ -193,6 +189,22 @@ footer{
   </a>
 </section>
 
+<!-- ABOUT -->
+<section id="about" class="page">
+  <h2>About UNDERSOUTHERN Records</h2>
+
+  <p><strong>UNDERSOUTHERN Records</strong> is an independent record label based in Vietnam, focused on discovering, developing, and distributing music from emerging artists to a global audience.</p>
+
+  <p>We work across digital music distribution, artist development, and strategic release planning, ensuring that each release meets international platform standards.</p>
+
+  <p>Our network covers major DSPs such as Spotify, Apple Music, YouTube Music, TikTok, and regional platforms across Asia, Europe, and North America.</p>
+
+  <p>UNDERSOUTHERN prioritizes creative freedom, transparency, and long-term collaboration with artists.</p>
+
+  <a class="back-btn" onclick="goHome()">← Back</a>
+</section>
+
+<!-- CONTACT -->
 <section id="contact" class="page">
   <h2>Contact</h2>
 
