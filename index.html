@@ -325,6 +325,18 @@ addEventListener("mousemove",e=>{
   }
 });
 
+addEventListener("touchstart", e=>{
+  if(!active) return;
+  const t = e.touches[0];
+  addRipple(t.clientX, t.clientY);
+},{passive:true});
+
+addEventListener("touchmove", e=>{
+  if(!active) return;
+  const t = e.touches[0];
+  addRipple(t.clientX, t.clientY);
+},{passive:true});
+
 function animate(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.globalCompositeOperation="overlay";
