@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <base target="_top">
   <style>
     * {
@@ -9,27 +10,29 @@
     }
 
     body {
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       background: #111;
       color: #fff;
-      padding: 20px;
+      margin: 0;
+      padding: 16px;
       display: flex;
       justify-content: center;
     }
 
     .container {
       width: 100%;
-      max-width: 480px;
+      max-width: 520px;
       background: #0e0e0e;
-      padding: 24px;
+      padding: 20px;
       border-radius: 12px;
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       font-weight: 600;
       text-transform: uppercase;
+      font-size: 18px;
     }
 
     input,
@@ -37,45 +40,49 @@
     textarea,
     button {
       width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
+      padding: 10px;
+      margin-bottom: 12px;
       background: #222;
       color: #fff;
       border: 1px solid #444;
+      border-radius: 4px;
+      font-size: 14px;
     }
 
     textarea {
       min-height: 120px;
+      resize: vertical;
     }
 
     button {
-      padding: 12px;
+      padding: 14px;
       background: #1db954;
       border: none;
       color: #000;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 14px;
+      margin-top: 16px;
+      font-size: 14px;
     }
 
     .upload-section {
-      margin-top: 22px;
-      margin-bottom: 28px;
+      margin-top: 24px;
+      margin-bottom: 30px;
     }
 
     .upload-section label {
       display: block;
       margin-bottom: 10px;
+      font-size: 13px;
     }
 
-    /* SAME SIZE + CENTER CONTENT */
     .file-label {
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 140px;
       width: 100%;
-      padding: 20px;
+      padding: 18px;
       background: #222;
       border: 1px dashed #555;
       cursor: pointer;
@@ -92,14 +99,26 @@
       font-size: 11px;
       color: #aaa;
       line-height: 1.6;
+      max-width: 90%;
+      margin: auto;
+    }
+
+    .file-name,
+    .upload-status,
+    .error {
+      font-size: 11px;
+      margin-top: 8px;
       text-align: center;
     }
 
-    .file-name {
-      font-size: 11px;
-      color: #aaa;
-      margin-top: 8px;
-      text-align: center;
+    .upload-status {
+      color: #1db954;
+      display: none;
+    }
+
+    .error {
+      color: #ff4d4d;
+      display: none;
     }
 
     .progress-bar {
@@ -120,28 +139,27 @@
       transition: width 0.2s;
     }
 
-    .upload-status {
-      font-size: 12px;
-      color: #1db954;
-      margin-top: 6px;
-      display: none;
-      text-align: center;
-    }
-
-    .error {
-      color: #ff4d4d;
-      font-size: 12px;
-      margin-top: 6px;
-      display: none;
-      text-align: center;
-    }
-
     .footer {
       margin-top: 40px;
       text-align: center;
       font-size: 11px;
       color: #666;
       text-transform: capitalize;
+    }
+
+    /* MOBILE SMALL */
+    @media (max-width: 360px) {
+      .container {
+        padding: 16px;
+      }
+
+      h2 {
+        font-size: 16px;
+      }
+
+      .file-label {
+        min-height: 120px;
+      }
     }
   </style>
 </head>
