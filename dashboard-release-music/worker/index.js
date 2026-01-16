@@ -1,57 +1,46 @@
 export default {
   async fetch(request, env) {
-    if (request.method !== "POST") {
-      return new Response("Only POST allowed", { status: 405 });
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "*"
+        }
+      });
     }
 
-    try {
-      const form = await request.formData();
+    if (request.method !== "POST") {
+      return new Response("OK", { status: 200 });
+    }
 
-      // ===== TEXT FIELDS =====
-      const data = {
-        title: form.get("title") || "",
-        version: form.get("version") || "",
-        artist: form.get("artist") || "",
-        featured: form.get("featured") || "",
-        composer: form.get("composer") || "",
-        producer: form.get("producer") || "",
-        release_type: form.get("release_type") || "",
-        release_date: form.get("release_date") || "",
-        genre: form.get("genre") || "",
-        language: form.get("language") || "",
-        lyrics: form.get("lyrics") || "",
-        created_at: new Date().toISOString()
-      };
+    const formData = await request.formData();
 
-      // ===== FILES =====
-      const audio = form.get("audio");
-      const artwork = form.get("artwork");
+    const audio = formData.get("audio");
+    const artwork = formData.get("artwork");
 
-      if (!audio || !artwork) {
-        return new Response("Missing files", { status: 400 });
+    if (!audio || !artwork) {
+      return new Response("Missing files", { status: 400 });
+    }
+
+    const id = crypto.randomUUID();
+
+    await env.BUCKET.put(`audio/${id}-${audio.name}`, audio.stream(), {
+      httpMetadata: { contentType: audio.type }
+    });
+
+    await env.BUCKET.put(`artwork/${id}-${artwork.name}`, artwork.stream(), {
+      httpMetadata: { contentType: artwork.type }
+    });
+
+    return new Response(
+      JSON.stringify({ success: true, id }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }
       }
-
-      const uid = crypto.randomUUID();
-
-      const audioKey = `audio/${uid}-${audio.name}`;
-      const artworkKey = `artwork/${uid}-${artwork.name}`;
-
-      // ===== UPLOAD TO R2 =====
-      await env.MUSIC_BUCKET.put(audioKey, audio.stream(), {
-        httpMetadata: { contentType: audio.type }
-      });
-
-      await env.MUSIC_BUCKET.put(artworkKey, artwork.stream(), {
-        httpMetadata: { contentType: artwork.type }
-      });
-
-      // ===== SAVE LINKS =====
-      data.audio_path = audioKey;
-      data.artwork_path = artworkKey;
-
-      // ===== GOOGLE SHEET =====
-      await fetch(env.SHEET_WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
+    );
+  }
+};
