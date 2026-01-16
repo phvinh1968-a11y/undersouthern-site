@@ -35,6 +35,14 @@
       font-size: 18px;
     }
 
+    /* section title */
+    .section-title {
+      font-size: 13px;
+      font-weight: bold;
+      margin: 20px 0 10px;
+      color: #ccc;
+    }
+
     input,
     select,
     textarea,
@@ -66,14 +74,7 @@
     }
 
     .upload-section {
-      margin-top: 24px;
       margin-bottom: 30px;
-    }
-
-    .upload-section label {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 13px;
     }
 
     .file-label {
@@ -100,7 +101,6 @@
       color: #aaa;
       line-height: 1.6;
       max-width: 90%;
-      margin: auto;
     }
 
     .file-name,
@@ -147,16 +147,7 @@
       text-transform: capitalize;
     }
 
-    /* MOBILE SMALL */
     @media (max-width: 360px) {
-      .container {
-        padding: 16px;
-      }
-
-      h2 {
-        font-size: 16px;
-      }
-
       .file-label {
         min-height: 120px;
       }
@@ -170,6 +161,7 @@
 
 <h2>MUSIC RELEASE PORTAL</h2>
 
+<div class="section-title">track information</div>
 <input placeholder="the track title is">
 <input placeholder="eg. radio edit, remix">
 <input placeholder="the track for mainartist is">
@@ -178,6 +170,7 @@
 <input placeholder="lyricist (legal full name)">
 <input placeholder="producer">
 
+<div class="section-title">release details</div>
 <select>
   <option>single</option>
   <option>ep</option>
@@ -195,11 +188,11 @@
   <option>english (en)</option>
 </select>
 
+<div class="section-title">lyrics</div>
 <textarea placeholder="to ensure the song is distributed, please provide the complete lyrics. the song will not be released if this information is incomplete."></textarea>
 
-<!-- AUDIO -->
+<div class="section-title">audio file</div>
 <div class="upload-section">
-  <label>audio file</label>
   <label class="file-label" id="audioDrop">
     <span class="file-hint">
       drag & drop audio file here or click to select<br>
@@ -213,9 +206,8 @@
   <div class="error" id="audioError">invalid audio file</div>
 </div>
 
-<!-- ARTWORK -->
+<div class="section-title">artwork file</div>
 <div class="upload-section">
-  <label>artwork file</label>
   <label class="file-label" id="artworkDrop">
     <span class="file-hint">
       drag & drop artwork file here or click to select<br>
@@ -232,7 +224,7 @@
 
 <button onclick="submitRelease()">submit release</button>
 
-<div class="footer">Version portal 1</div>
+<div class="footer">Portal Version 1.0</div>
 
 </div>
 
