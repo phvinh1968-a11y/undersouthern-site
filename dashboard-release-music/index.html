@@ -161,13 +161,12 @@
 
 <h2>MUSIC RELEASE PORTAL</h2>
 
-<div class="section-title">track information</div>
-<input placeholder="track title">
-<input placeholder="song version">
-<input placeholder="main artist">
-<input placeholder="featured artist">
-<input placeholder="composer full legal name">
-<input placeholder="producer">
+<input name="track_title" placeholder="track title">
+<input name="song_version" placeholder="song version">
+<input name="main_artist" placeholder="main artist">
+<input name="featured_artist" placeholder="featured artist">
+<input name="composer" placeholder="composer full legal name">
+<input name="producer" placeholder="producer">
 
 <div class="section-title">release details</div>
 <select>
@@ -281,8 +280,10 @@ setupDrop(audioDrop, audio, ['wav','flac'], audioName, audioProgress, audioStatu
 setupDrop(artworkDrop, artwork, ['jpg','jpeg','png','tiff'], artworkName, artworkProgress, artworkStatus, artworkError, 'artwork');
 
 function submitRelease() {
-  alert('release submitted successfully!');
-}
+  fetch("https://withered-firefly-1f97.undersouthern-records.workers.dev/", {
+  method: "POST",
+  body: form
+});
 </script>
 
 </body>
