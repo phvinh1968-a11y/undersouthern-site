@@ -1,38 +1,57 @@
 export default {
   async fetch(request, env) {
     if (request.method !== "POST") {
-      return new Response("Only POST", { status: 405 });
+      return new Response("Only POST allowed", { status: 405 });
     }
 
-    const formData = await request.formData();
+    try {
+      const form = await request.formData();
 
-    const audio = formData.get("audio");
-    const artwork = formData.get("artwork");
+      // ===== TEXT FIELDS =====
+      const data = {
+        title: form.get("title") || "",
+        version: form.get("version") || "",
+        artist: form.get("artist") || "",
+        featured: form.get("featured") || "",
+        composer: form.get("composer") || "",
+        producer: form.get("producer") || "",
+        release_type: form.get("release_type") || "",
+        release_date: form.get("release_date") || "",
+        genre: form.get("genre") || "",
+        language: form.get("language") || "",
+        lyrics: form.get("lyrics") || "",
+        created_at: new Date().toISOString()
+      };
 
-    if (!audio || !artwork) {
-      return new Response("Missing files", { status: 400 });
-    }
+      // ===== FILES =====
+      const audio = form.get("audio");
+      const artwork = form.get("artwork");
 
-    const audioKey = `audio/${Date.now()}-${audio.name}`;
-    const artworkKey = `artwork/${Date.now()}-${artwork.name}`;
+      if (!audio || !artwork) {
+        return new Response("Missing files", { status: 400 });
+      }
 
-    await env.R2.put(audioKey, audio.stream());
-    await env.R2.put(artworkKey, artwork.stream());
+      const uid = crypto.randomUUID();
 
-    await fetch(env.GSHEET_WEBHOOK, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        releaseTitle: formData.get("releaseTitle"),
-        artist: formData.get("artist"),
-        genre: formData.get("genre"),
-        language: formData.get("language"),
-        audio: audioKey,
-        artwork: artworkKey
-      })
-    });
+      const audioKey = `audio/${uid}-${audio.name}`;
+      const artworkKey = `artwork/${uid}-${artwork.name}`;
 
-    return Response.json({ success: true });
-  }
-};
+      // ===== UPLOAD TO R2 =====
+      await env.MUSIC_BUCKET.put(audioKey, audio.stream(), {
+        httpMetadata: { contentType: audio.type }
+      });
 
+      await env.MUSIC_BUCKET.put(artworkKey, artwork.stream(), {
+        httpMetadata: { contentType: artwork.type }
+      });
+
+      // ===== SAVE LINKS =====
+      data.audio_path = audioKey;
+      data.artwork_path = artworkKey;
+
+      // ===== GOOGLE SHEET =====
+      await fetch(env.SHEET_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
