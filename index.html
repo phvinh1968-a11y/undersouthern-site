@@ -387,5 +387,16 @@ window.addEventListener("load", function () {
 });
 </script>
 
+<!-- ===== SHOW CRISP CHAT AFTER PAGE LOADED ===== -->
+<script>
+  window.addEventListener("load", function () {
+    if (window.$crisp) {
+      setTimeout(function () {
+        $crisp.push(["do", "chat:show"]);
+      }, 1500); // chờ animation + preloader xong
+    }
+  });
+</script>
+
 </body>
 </html>
