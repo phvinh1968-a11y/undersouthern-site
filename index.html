@@ -376,5 +376,16 @@ addEventListener("load",()=>{
 });
 </script>
 
+<!-- ===== CRISP RESET CHAT SESSION (ADDED ONLY) ===== -->
+<script>
+window.addEventListener("load", function () {
+  if (window.$crisp) {
+    setTimeout(function () {
+      $crisp.push(["do", "session:reset"]);
+    }, 1200);
+  }
+});
+</script>
+
 </body>
 </html>
