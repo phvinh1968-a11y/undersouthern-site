@@ -173,18 +173,6 @@ header, main, footer{
 }
 </style>
 
-<!-- ===== CRISP CHAT ===== -->
-<script type="text/javascript">
-  window.$crisp=[];
-  window.CRISP_WEBSITE_ID="f300f6df-4575-4974-a4de-7d8156202294";
-  (function(){
-    d=document;
-    s=d.createElement("script");
-    s.src="https://client.crisp.chat/l.js";
-    s.async=1;
-    d.getElementsByTagName("head")[0].appendChild(s);
-  })();
-</script>
 
 </head>
 
@@ -374,28 +362,6 @@ addEventListener("load",()=>{
     animate();
   },900);
 });
-</script>
-
-<!-- ===== CRISP RESET CHAT SESSION (ADDED ONLY) ===== -->
-<script>
-window.addEventListener("load", function () {
-  if (window.$crisp) {
-    setTimeout(function () {
-      $crisp.push(["do", "session:reset"]);
-    }, 1200);
-  }
-});
-</script>
-
-<!-- ===== SHOW CRISP CHAT AFTER PAGE LOADED ===== -->
-<script>
-  window.addEventListener("load", function () {
-    if (window.$crisp) {
-      setTimeout(function () {
-        $crisp.push(["do", "chat:show"]);
-      }, 1500); // chờ animation + preloader xong
-    }
-  });
 </script>
 
 </body>
