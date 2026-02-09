@@ -1,12 +1,277 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <title>BGM Portal</title>
-</head>
-<body>
-  <h1>BGM Portal</h1>
-  <p>Trang bgm-portal chạy độc lập</p>
-</body>
-</html>
+import React, { useState, useEffect } from 'react';
+import { User, UserRole, TrackStats, WithdrawalRequest, SongPermission } from './types';
+import Sidebar from './components/Sidebar';
+import AdminDashboard from './components/AdminDashboard';
+import ClientDashboard from './components/ClientDashboard';
+import LoginScreen from './components/LoginScreen';
+import Settings from './components/Settings';
 
+const INITIAL_USERS: User[] = [
+  { 
+    id: '1', 
+    name: 'UNDERSOUTHERN', 
+    email: 'label@undersouthern.asia', 
+    password: 'Vinh19061998//', 
+    role: UserRole.ADMIN, 
+    balance: 0,
+    status: 'ACTIVE'
+  },
+  { 
+    id: '2', 
+    name: 'James Producer', 
+    email: 'james@producer.com', 
+    password: 'client123', 
+    role: UserRole.CLIENT, 
+    balance: 1250, 
+    paypalEmail: 'james.pay@gmail.com',
+    status: 'ACTIVE'
+  },
+  { 
+    id: '3', 
+    name: 'Sarah Artist', 
+    email: 'sarah@art.com', 
+    password: 'user123', 
+    role: UserRole.USER, 
+    balance: 0,
+    status: 'ACTIVE'
+  },
+];
+
+const App: React.FC = () => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [activeSection, setActiveSection] = useState<string>('OVERVIEW');
+  const [users, setUsers] = useState<User[]>(INITIAL_USERS);
+  const [stats, setStats] = useState<TrackStats[]>([]);
+  const [songPermissions, setSongPermissions] = useState<SongPermission[]>([]);
+  const [withdrawals, setWithdrawals] = useState<WithdrawalRequest[]>([]);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const storedUsers = localStorage.getItem('us_users');
+    const storedStats = localStorage.getItem('us_stats');
+    const storedPermissions = localStorage.getItem('us_permissions');
+    const storedWithdrawals = localStorage.getItem('us_withdrawals');
+    
+    if (storedUsers) {
+      const parsedUsers = JSON.parse(storedUsers);
+      setUsers(parsedUsers.map((u: any) => ({ ...u, status: u.status || 'ACTIVE' })));
+    }
+    if (storedStats) setStats(JSON.parse(storedStats));
+    if (storedPermissions) setSongPermissions(JSON.parse(storedPermissions));
+    if (storedWithdrawals) setWithdrawals(JSON.parse(storedWithdrawals));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('us_users', JSON.stringify(users));
+    localStorage.setItem('us_stats', JSON.stringify(stats));
+    localStorage.setItem('us_permissions', JSON.stringify(songPermissions));
+    localStorage.setItem('us_withdrawals', JSON.stringify(withdrawals));
+  }, [users, stats, songPermissions, withdrawals]);
+
+  const handleLogin = (user: User) => {
+    if (user.status === 'TERMINATED') {
+      alert("This account has been terminated and cannot access the portal.");
+      return;
+    }
+    setCurrentUser(user);
+    setActiveSection('OVERVIEW');
+  };
+  
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setActiveSection('OVERVIEW');
+    setIsSidebarOpen(false);
+  };
+
+  const handleUpdateProfile = (name: string, avatarUrl: string | undefined) => {
+    if (!currentUser) return;
+    const updatedUser = { ...currentUser, name, avatarUrl };
+    handleUpdateUser(updatedUser);
+    alert("Profile synchronized successfully.");
+  };
+
+  const handleAddUser = (newUser: User) => {
+    setUsers(prev => [...prev, { ...newUser, status: 'ACTIVE' }]);
+  };
+
+  const handleUpdateUser = (updatedUser: User) => {
+    setUsers(prev => prev.map(u => u.id === updatedUser.id ? updatedUser : u));
+    if (currentUser && currentUser.id === updatedUser.id) {
+      setCurrentUser(updatedUser);
+    }
+  };
+
+  const handleToggleStatus = (userId: string) => {
+    if (currentUser?.id === userId) {
+      alert("Error: Active session cannot be terminated via local directory.");
+      return;
+    }
+    setUsers(prev => prev.map(u => {
+      if (u.id === userId) {
+        return { ...u, status: u.status === 'ACTIVE' ? 'TERMINATED' : 'ACTIVE' };
+      }
+      return u;
+    }));
+  };
+
+  const handleDeleteUser = (userId: string) => {
+    if (currentUser?.id === userId) {
+      alert("Error: Active session cannot be terminated via local directory.");
+      return;
+    }
+    setUsers(prev => prev.filter(u => u.id !== userId));
+  };
+
+  const grantClientRole = (userId: string) => {
+    setUsers(prev => prev.map(u => u.id === userId ? { ...u, role: UserRole.CLIENT } : u));
+  };
+
+  const uploadStatsCSV = (newStats: TrackStats[]) => {
+    setStats(prev => [...prev, ...newStats]);
+    setUsers(prevUsers => {
+      const updated = [...prevUsers];
+      newStats.forEach(stat => {
+        const userIndex = updated.findIndex(u => u.email === stat.clientEmail);
+        if (userIndex !== -1) {
+          updated[userIndex].balance += stat.revenue;
+        }
+      });
+      return updated;
+    });
+  };
+
+  const uploadPermissionsCSV = (newPermissions: SongPermission[]) => {
+    setSongPermissions(prev => [...prev, ...newPermissions]);
+  };
+
+  const requestWithdrawal = (amount: number, paypal: string) => {
+    if (!currentUser) return;
+    const newRequest: WithdrawalRequest = {
+      id: Math.random().toString(36).substr(2, 9),
+      userId: currentUser.id,
+      amount,
+      paypalEmail: paypal,
+      status: 'PENDING',
+      createdAt: new Date().toISOString()
+    };
+    setWithdrawals(prev => [...prev, newRequest]);
+    setUsers(prev => prev.map(u => u.id === currentUser.id ? { ...u, balance: u.balance - amount } : u));
+    setCurrentUser(prev => prev ? { ...prev, balance: prev.balance - amount } : null);
+  };
+
+  const approveWithdrawal = (id: string) => {
+    setWithdrawals(prev => prev.map(w => w.id === id ? { ...w, status: 'APPROVED' } : w));
+  };
+
+  if (!currentUser) {
+    return <LoginScreen users={users} onLogin={handleLogin} />;
+  }
+
+  const isElevatedRole = currentUser.role === UserRole.ADMIN || currentUser.role === UserRole.MANAGER;
+
+  const renderContent = () => {
+    if (activeSection === 'SETTINGS') {
+      return <Settings user={currentUser} onUpdateProfile={handleUpdateProfile} />;
+    }
+
+    if (isElevatedRole) {
+      return (
+        <AdminDashboard 
+          currentUser={currentUser}
+          users={users} 
+          stats={stats} 
+          songPermissions={songPermissions}
+          withdrawals={withdrawals}
+          onGrantClient={grantClientRole}
+          onUploadStatsCSV={uploadStatsCSV}
+          onUploadPermissionsCSV={uploadPermissionsCSV}
+          onApproveWithdrawal={approveWithdrawal}
+          onImpersonate={(user) => {
+            if(currentUser.role === UserRole.ADMIN) setCurrentUser(user);
+          }}
+          onAddUser={handleAddUser}
+          onUpdateUser={handleUpdateUser}
+          onDeleteUser={handleDeleteUser}
+          onToggleStatus={handleToggleStatus}
+          onUpdateSongPermissions={(updated) => setSongPermissions(updated)}
+          activeView={activeSection}
+        />
+      );
+    }
+
+    return (
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-zinc-900 border border-zinc-800 p-4 rounded-lg">
+          <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Session Mode: User Preview</p>
+          <button 
+            onClick={() => setCurrentUser(users.find(u => u.role === UserRole.ADMIN) || null)}
+            className="text-[10px] bg-white text-black px-4 py-2 uppercase font-black tracking-widest hover:bg-zinc-200 transition-all w-full sm:w-auto"
+          >
+            Return to Admin Registry
+          </button>
+        </div>
+        <ClientDashboard 
+          user={currentUser} 
+          stats={stats.filter(s => s.clientEmail === currentUser.email)}
+          songPermissions={songPermissions.filter(p => p.clientEmail === currentUser.email)}
+          withdrawals={withdrawals.filter(w => w.userId === currentUser.id)}
+          onWithdraw={requestWithdrawal}
+          onUpdatePaypal={(email) => {
+            setUsers(prev => prev.map(u => u.id === currentUser.id ? { ...u, paypalEmail: email } : u));
+            setCurrentUser(prev => prev ? { ...prev, paypalEmail: email } : null);
+          }}
+          activeView={activeSection}
+        />
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex min-h-screen bg-black text-zinc-100 transition-colors duration-500 overflow-x-hidden">
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/80 z-40 lg:hidden backdrop-blur-sm" 
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* DO NOT add onImportCSV as it is not defined in SidebarProps */}
+      <Sidebar 
+        user={currentUser} 
+        onLogout={handleLogout} 
+        activeSection={activeSection}
+        onSectionChange={(section) => {
+          setActiveSection(section);
+          setIsSidebarOpen(false);
+        }}
+        isOpen={isSidebarOpen}
+      />
+
+      <main className="flex-1 overflow-y-auto flex flex-col justify-between">
+        <div className="lg:hidden flex items-center justify-between p-6 border-b border-zinc-900 sticky top-0 bg-black z-30">
+          <h1 className="text-2xl font-black tracking-tighter text-white">BGM</h1>
+          <button 
+            onClick={() => setIsSidebarOpen(true)}
+            className="p-2 border border-zinc-800 text-zinc-400 hover:text-white"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="p-6 md:p-12 lg:p-16 max-w-6xl mx-auto w-full">
+          {renderContent()}
+        </div>
+        
+        <footer className="mt-10 mb-8 border-t border-zinc-900 pt-8 w-full text-center overflow-hidden px-4">
+          <p className="text-[7px] sm:text-[9px] text-zinc-700 font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] select-none whitespace-nowrap inline-block">
+            © 2026 UNDERSOUTHERN | Global Music Distribution
+          </p>
+        </footer>
+      </main>
+    </div>
+  );
+};
+
+export default App;
