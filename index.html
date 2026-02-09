@@ -1,1 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Favicon / Logo tab -->
+<link rel="icon" type="image/png" sizes="32x32"
+      href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+
+<link rel="apple-touch-icon"
+      href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+
+<title>UNDERSOUTHERN – Independent Record Label & Music Distribution</title>
+
+<meta name="description" content="UNDERSOUTHERN is an independent record label and music distribution company based in Vietnam, providing global digital distribution, whitelabel solutions for record labels, and comprehensive services for artists." />
+
+<meta name="keywords" content="
+UNDERSOUTHERN,
+Undersouthern,
+undersouthernrecords,
+undersouthernrecordlabel,
+Undersouthern Record Label,
+UNDERSOUTHERN Vietnam,
+independent record label Vietnam,
+music distribution Vietnam,
+Vietnam music distributor,
+Southeast Asia music distribution,
+SEA music distribution,
+digital music distribution Asia,
+global music distribution,
+international music distribution,
+global music distribution network,
+whitelabel,
+whitelabel music distribution,
+whitelabel distribution for record labels,
+record label services,
+record label distribution services,
+artist music distribution services,
+music distributor for labels,
+label services Asia,
+professional music distribution,
+enterprise music distribution,
+music rights management,
+metadata management music,
+catalog management music,
+royalty reporting music,
+content delivery network music,
+Spotify distribution,
+Apple Music distribution,
+YouTube Music distribution,
+TikTok music distribution,
+ADA distribution,
+ADA music distribution,
+Warner Music distribution network,
+major label distribution partner,
+global label distribution infrastructure
+" />
+
+<meta name="robots" content="index, follow" />
+<meta name="author" content="UNDERSOUTHERN" />
+<link rel="canonical" href="https://undersouthern.asia/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="UNDERSOUTHERN – Independent Record Label & Distribution" />
+<meta property="og:description" content="Independent record label based in Vietnam providing global music distribution, whitelabel solutions, and artist services." />
+<meta property="og:url" content="https://undersouthern.asia/" />
+<meta property="og:image" content="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/refs/heads/main/logo_processed.png" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="UNDERSOUTHERN – Music Distribution & Record Label" />
+<meta name="twitter:description" content="Global music distribution, whitelabel solutions, and artist services from Vietnam." />
+<meta name="twitter:image" content="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/refs/heads/main/logo_processed.png" />
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:#fff;
+  color:#111;
+  min-height:100vh;
+  overflow:hidden;
+}
+
+/* ===== PRELOADER ===== */
+#loader{
+  position:fixed;
+  inset:0;
+  background:#0d0f11;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  animation:fadeOut .8s ease forwards;
+  animation-delay:1.6s;
+}
+#loader img{
+  width:140px;
+  animation:pulse 1.2s infinite;
+}
+
+/* ===== HEADER ===== */
+header{
+  width:100%;
+  padding:18px 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  text-transform:uppercase;
+  font-size:12px;
+  letter-spacing:1px;
+}
+nav a{
+  margin-left:18px;
+  text-decoration:none;
+  color:#111;
+  cursor:pointer;
+}
+nav a:hover{opacity:.6}
+
+/* ===== HOME ===== */
+.content{
+  min-height:calc(100vh - 120px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:40px 20px;
+  opacity:0;
+  animation:fadeUp 1s ease forwards;
+  animation-delay:1.8s;
+}
+h1{
+  font-size:clamp(2rem,5vw,2.6rem);
+  letter-spacing:2px;
+  margin-bottom:8px;
+}
+p{margin-bottom:30px}
+
+.btn{
+  padding:12px 32px;
+  border:1px solid #111;
+  border-radius:30px;
+  text-decoration:none;
+  color:#111;
+  text-transform:uppercase;
+  font-size:13px;
+}
+.btn:hover{background:#111;color:#fff}
+
+/* ===== PAGES ===== */
+.page{
+  display:none;
+  max-width:900px;
+  margin:0 auto;
+  padding:100px 20px;
+  line-height:1.8;
+  animation:fadeUp .25s ease forwards;
+}
+.page h2{
+  margin-bottom:20px;
+  text-transform:uppercase;
+}
+.page p{
+  margin-bottom:18px;
+  font-size:15px;
+}
+
+/* ===== CONTACT ===== */
+.contact-list{
+  margin-top:30px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.contact-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  text-decoration:none;
+  color:#111;
+  font-size:14px;
+}
+.contact-item svg{
+  width:18px;
+  height:18px;
+  fill:#111;
+}
+.contact-item:hover{opacity:.6}
+
+/* ===== BACK ===== */
+.back-btn{
+  margin-top:40px;
+  display:inline-block;
+  padding:10px 26px;
+  border:1px solid #111;
+  border-radius:30px;
+  text-decoration:none;
+  color:#111;
+  font-size:12px;
+  cursor:pointer;
+}
+.back-btn:hover{background:#111;color:#fff}
+
+/* ===== FOOTER (HOME ONLY) ===== */
+footer{
+  padding:30px 20px;
+  text-align:center;
+  font-size:11px;
+  color:#777;
+}
+
+/* ===== ANIM ===== */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeOut{
+  to{opacity:0;visibility:hidden}
+}
+@keyframes pulse{
+  0%,100%{opacity:.4}
+  50%{opacity:1}
+}
+
+/* ====== ADDED: WATER RIPPLE ====== */
+#waterRipple{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+header, main, footer{
+  position:relative;
+  z-index:1;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<!-- ====== ADDED: WATER RIPPLE CANVAS ====== -->
+<canvas id="waterRipple"></canvas>
+
+<!-- PRELOADER -->
+<div id="loader">
+  <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/refs/heads/main/logo_processed.png">
+</div>
+
+<header>
+  <div>Vietnam · Established 2024</div>
+  <nav>
+    <a onclick="showPage('about')">About</a>
+    <a onclick="showPage('contact')">Contact</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="content">
+  <h1>UNDERSOUTHERN</h1>
+  <p>Independent Record Label & Distributor</p>
+  <a class="btn" target="_blank"
+     href="https://docs.google.com/forms/d/e/1FAIpQLSda_y_qjj18aNyw3x5t9hNQj4Q2sCVdpXpqIRYbnC1PFz8dxQ/viewform">
+    Submit Your Music
+  </a>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="page">
+  <h2>About</h2>
+
+  <p><strong>UNDERSOUTHERN</strong> is an independent record label based in Vietnam, focused on discovering, developing, and distributing music from emerging artists to a global audience.</p>
+
+  <p>We work across digital music distribution, artist development, and strategic release planning, ensuring that each release meets international platform standards.</p>
+
+  <p>Our network covers major DSPs such as Spotify, Apple Music, YouTube Music, TikTok, and regional platforms worldwide.</p>
+
+  <p>UNDERSOUTHERN prioritizes creative freedom, transparency, and long-term collaboration with artists.</p>
+
+  <a class="back-btn" onclick="goHome()">← Back</a>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="page">
+  <h2>Contact</h2>
+
+  <div class="contact-list">
+
+    <a class="contact-item" href="https://www.facebook.com/undersouthern" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2V9.5c0-2 1.2-3.1 3-3.1.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 3h-1.9v7A10 10 0 0 0 22 12z"/></svg>
+      Facebook
+    </a>
+
+    <a class="contact-item" href="https://www.instagram.com/undersouthern" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
+      Instagram
+    </a>
+
+    <a class="contact-item" href="https://www.tiktok.com/@undersouthern" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M16 3a5 5 0 0 0 4 2v3a8 8 0 0 1-4-1v6a6 6 0 1 1-6-6h1v3h-1a3 3 0 1 0 3 3V3z"/></svg>
+      TikTok
+    </a>
+
+    <a class="contact-item" href="https://www.youtube.com/@undersouthern" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M23 7s-.2-1.7-.8-2.4c-.8-.8-1.7-.8-2.1-.9C17.2 3.5 12 3.5 12 3.5s-5.2 0-8.1.2c-.4.1-1.3.1-2.1.9C1.2 5.3 1 7 1 7s-.2 1.9-.2 3.8v2.4C.8 15.1 1 17 1 17s.2 1.7.8 2.4c.8.8 1.9.8 2.4.9 1.7.2 7.8.2 7.8.2s5.2 0 8.1-.2c.4-.1 1.3-.1 2.1-.9.6-.7.8-2.4.8-2.4s.2-1.9.2-3.8v-2.4C23.2 8.9 23 7 23 7zM9.8 14.6V9.4l5.2 2.6-5.2 2.6z"/></svg>
+      YouTube
+    </a>
+
+    <a class="contact-item" href="https://open.spotify.com/playlist/3LONU63iZ0Np42Uiyztvnm" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm4.6 14.5a.8.8 0 0 1-1.1.3c-3-1.8-6.7-2.2-11-.9a.8.8 0 1 1-.5-1.5c4.7-1.4 8.9-1 12.2 1a.8.8 0 0 1 .4 1.1z"/></svg>
+      Spotify
+    </a>
+
+   <a class="contact-item" href="mailto:support@undersouthern.asia">
+      <svg viewBox="0 0 24 24"><path d="M2 4h20v16H2V4zm10 7L4 6v12h16V6l-8 5z"/></svg>
+      support@undersouthern.asia
+    </a>
+
+  </div>
+
+  <div class="contact-list">
+    <!-- (giữ nguyên toàn bộ) -->
+  </div>
+
+  <a class="back-btn" onclick="goHome()">← Back</a>
+</section>
+
+</main>
+
+<footer id="footer">
+  © 2026 UNDERSOUTHERN | Global Music Distribution
+</footer>
+
+<script>
+function showPage(id){
+  document.getElementById('home').style.display='none';
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  document.getElementById('footer').style.display='none';
+  document.getElementById(id).style.display='block';
+  window.scrollTo(0,0);
+}
+
+function goHome(){
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  const home=document.getElementById('home');
+  home.style.display='flex';
+  home.style.animation='none';
+  home.style.opacity='1';
+  document.getElementById('footer').style.display='block';
+  window.scrollTo(0,0);
+}
+
+window.onload=()=>{
+  document.body.style.overflow='auto';
+  goHome();
+};
+</script>
+
+<!-- ====== ADDED: WATER RIPPLE SCRIPT (NO JITTER) ====== -->
+<script>
+const canvas = document.getElementById("waterRipple");
+const ctx = canvas.getContext("2d");
+let ripples = [];
+let active = false;
+let last = 0;
+
+function resize(){
+  const dpr = Math.min(devicePixelRatio || 1,1.5);
+  canvas.width = innerWidth * dpr;
+  canvas.height = innerHeight * dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+resize();
+addEventListener("resize", resize);
+
+function addRipple(x,y){
+  ripples.push({x,y,r:0,a:0.28});
+}
+
+addEventListener("mousemove",e=>{
+  if(!active) return;
+  const now = Date.now();
+  if(now-last>260){
+    addRipple(e.clientX,e.clientY);
+    last=now;
+  }
+});
+
+addEventListener("touchstart", e=>{
+  if(!active) return;
+  const t = e.touches[0];
+  addRipple(t.clientX, t.clientY);
+},{passive:true});
+
+addEventListener("touchmove", e=>{
+  if(!active) return;
+  const t = e.touches[0];
+  addRipple(t.clientX, t.clientY);
+},{passive:true});
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.globalCompositeOperation="overlay";
+  ripples.forEach((p,i)=>{
+    p.r+=0.4;
+    p.a-=0.0010;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(120,120,120,${p.a})`;
+    ctx.lineWidth=1;
+    ctx.stroke();
+    if(p.a<=0) ripples.splice(i,1);
+  });
+  ctx.globalCompositeOperation="source-over";
+  requestAnimationFrame(animate);
+}
+
+addEventListener("load",()=>{
+  setTimeout(()=>{
+    active=true;
+    animate();
+  },900);
+});
+</script>
+
+</body>
+</html>
+
+
+
+
 
