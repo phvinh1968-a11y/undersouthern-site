@@ -79,7 +79,10 @@ body{
   background:#fff;
   color:#111;
   min-height:100vh;
-  overflow:hidden;
+  /* Chỉnh sửa để không bị mất nội dung khi có footer cố định */
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 }
 
 /* ===== PRELOADER ===== */
@@ -109,11 +112,14 @@ header{
   text-transform:uppercase;
   font-size:12px;
   letter-spacing:1px;
+  flex-wrap: wrap; /* Thêm để tự xuống dòng trên mobile */
+  gap: 15px;
 }
 .header-left {
   display: flex;
   gap: 15px;
   align-items: center;
+  flex-wrap: wrap;
 }
 .header-left a {
   text-decoration: none;
@@ -121,17 +127,28 @@ header{
   font-weight: 600;
   cursor: pointer;
 }
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 nav a{
-  margin-left:18px;
+  margin-left:8px;
   text-decoration:none;
   color:#111;
   cursor:pointer;
 }
 nav a:hover, .header-left a:hover{opacity:.6}
 
+/* ===== MAIN ===== */
+main {
+  flex: 1;
+  padding-bottom: 80px; /* Tạo khoảng trống để không bị Footer đè lên chữ */
+}
+
 /* ===== HOME ===== */
 .content{
-  min-height:calc(100vh - 120px);
+  min-height:calc(100vh - 150px);
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -143,7 +160,7 @@ nav a:hover, .header-left a:hover{opacity:.6}
   animation-delay:1.8s;
 }
 h1{
-  font-size:clamp(2rem,5vw,2.6rem);
+  font-size:clamp(1.8rem, 5vw, 2.6rem); /* Co giãn font chữ theo màn hình */
   letter-spacing:2px;
   margin-bottom:8px;
 }
@@ -155,10 +172,12 @@ p{margin-bottom:30px}
   width: 100%;
   max-width: 400px;
   justify-content: center;
+  flex-wrap: wrap; /* Tự xếp chồng nút trên điện thoại nhỏ */
 }
 
 .btn{
   flex: 1;
+  min-width: 140px;
   padding: 12px 0;
   border:1px solid #111;
   border-radius:30px;
@@ -168,6 +187,7 @@ p{margin-bottom:30px}
   font-size:13px;
   white-space: nowrap;
   cursor: pointer;
+  text-align: center;
 }
 .btn:hover{background:#111;color:#fff}
 
@@ -176,7 +196,7 @@ p{margin-bottom:30px}
   display:none;
   max-width:900px;
   margin:0 auto;
-  padding:80px 20px;
+  padding:60px 20px 100px;
   line-height:1.8;
   animation:fadeUp .25s ease forwards;
 }
@@ -232,12 +252,19 @@ p{margin-bottom:30px}
 }
 .back-btn:hover{background:#111;color:#fff}
 
-/* ===== FOOTER ===== */
+/* ===== FOOTER CỐ ĐỊNH ===== */
 footer{
-  padding:30px 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding:20px;
   text-align:center;
   font-size:11px;
   color:#777;
+  background: rgba(255, 255, 255, 0.9); /* Nền trắng mờ để chữ rõ hơn khi đè lên sóng */
+  backdrop-filter: blur(5px);
+  z-index: 20;
 }
 
 /* ===== ANIM ===== */
@@ -263,6 +290,18 @@ footer{
 header, main, footer{
   position:relative;
   z-index:1;
+}
+
+/* Tablet & Mobile Adjustments */
+@media (max-width: 600px) {
+  header {
+    padding: 15px;
+    justify-content: center;
+    text-align: center;
+  }
+  .header-left { justify-content: center; }
+  nav { justify-content: center; margin-top: 10px; }
+  .btn { flex: none; width: 100%; }
 }
 </style>
 </head>
@@ -408,7 +447,8 @@ header, main, footer{
 function showPage(id){
   document.getElementById('home').style.display='none';
   document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  document.getElementById('footer').style.display='none';
+  const footer = document.getElementById('footer');
+  // Luôn hiển thị footer nhưng có thể tùy biến nếu cần
   document.getElementById(id).style.display='block';
   window.scrollTo(0,0);
 }
