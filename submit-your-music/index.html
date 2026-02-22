@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Your Music</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -73,13 +74,13 @@
                 <div class="space-y-8"> 
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Email address <span class="text-red-500">*</span></label>
-                        <input type="email" required placeholder="artist@example.com" 
+                        <input type="email" id="email" required placeholder="artist@example.com" 
                             class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all font-sans">
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Release title <span class="text-red-500">*</span></label>
-                        <input type="text" required placeholder="Enter track or album name" 
+                        <input type="text" id="title" required placeholder="Enter track or album name" 
                             class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all text-lg font-semibold tracking-tight">
                     </div>
 
@@ -123,7 +124,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Primary genre <span class="text-red-500">*</span></label>
-                        <select required class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all appearance-none">
+                        <select id="genre" required class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all appearance-none">
                             <option value="">Select a genre</option>
                             <option>Alternative</option><option>Alternative Rock</option><option>Alternativo & Rock Latino</option><option>Anime</option><option>Baladas y Boleros</option><option>Big Band</option><option>Blues</option><option>Brazilian</option><option>C-Pop</option><option>Cantopop/HK-Pop</option><option>Children's</option><option>Chinese</option><option>Christian</option><option>Classical</option><option>Comedy</option><option>Contemporary Latin</option><option>Country</option><option>Dance</option><option>Easy Listening</option><option>Educational</option><option>Electronic</option><option>Enka</option><option>Experimental</option><option>Fitness & Workout</option><option>Folk</option><option>French Pop</option><option>German Folk</option><option>German Pop</option><option>Hip-Hop/Rap</option><option>Holiday</option><option>Indo Pop</option><option>Inspirational</option><option>Instrumental</option><option>J-Pop</option><option>Jazz</option><option>K-Pop</option><option>Karaoke</option><option>Kayokyoku</option><option>Latin</option><option>Latin Jazz</option><option>Metal</option><option>New Age</option><option>Opera</option><option>Original Pilipino Music</option><option>Pop</option><option>Pop Latino</option><option>Punk</option><option>R&B</option><option>Raíces</option><option>Reggae</option><option>Reggaeton y Hip-Hop</option><option>Regional Mexicano</option><option>Rock</option><option>Salsa y Tropical</option><option>Singer/Songwriter</option><option>Soul</option><option>Soundtrack</option><option>Spoken Word</option><option>Tai-Pop</option><option>Thai Pop</option><option>Trot</option><option>Vocal/Nostalgia</option><option>World</option>
                         </select>
@@ -131,7 +132,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Language <span class="text-red-500">*</span></label>
-                        <select required class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all appearance-none">
+                        <select id="language" required class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all appearance-none">
                             <option value="">Select lyrics language</option>
                             <option>Vietnamese (VI)</option><option>English (EN)</option><option>Korean (KO)</option><option>Japanese (JA)</option><option>Chinese (ZH)</option><option>French (FR)</option><option>Spanish (ES)</option><option>German (DE)</option><option>Italian (IT)</option><option>Portuguese (PT)</option><option>Russian (RU)</option><option>Arabic (AR)</option><option>Hindi (HI)</option><option>Thai (TH)</option><option>Indonesian (ID)</option><option>Bengali (BN)</option><option>Turkish (TR)</option><option>Malay (MS)</option><option>Urdu (UR)</option><option>Persian (FA)</option><option>Swahili (SW)</option><option>Tamil (TA)</option><option>Telugu (TE)</option><option>Marathi (MR)</option><option>Gujarati (GU)</option><option>Kannada (KN)</option><option>Punjabi (PA)</option><option>Filipino (TL)</option><option>Malayalam (ML)</option><option>Sinhala (SI)</option><option>Burmese (MY)</option><option>Khmer (KM)</option><option>Lao (LO)</option><option>Nepali (NE)</option><option>Pashto (PS)</option><option>Hebrew (HE)</option><option>Greek (EL)</option><option>Dutch (NL)</option><option>Swedish (SV)</option><option>Norwegian (NO)</option><option>Danish (DA)</option><option>Finnish (FI)</option><option>Polish (PL)</option><option>Czech (CS)</option><option>Hungarian (HU)</option><option>Romanian (RO)</option><option>Bulgarian (BG)</option><option>Serbian (SR)</option><option>Croatian (HR)</option><option>Slovak (SK)</option>
                         </select>
@@ -139,7 +140,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Lyrics <span class="text-red-500">*</span></label>
-                        <textarea required rows="8" placeholder="Paste your full song lyrics here..." 
+                        <textarea id="lyrics" required rows="8" placeholder="Paste your full song lyrics here..." 
                             class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all font-sans text-sm resize-none"></textarea>
                     </div>
                 </div>
@@ -164,7 +165,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1.5">Notes (optional)</label>
-                        <textarea rows="4" placeholder="Enter additional notes..." 
+                        <textarea id="notes" rows="4" placeholder="Enter additional notes..." 
                             class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all font-sans text-sm resize-none"></textarea>
                         <p class="text-[11px] mt-2 text-slate-400 flex items-start gap-1.5 leading-relaxed">
                             <i class="fa-solid fa-circle-info mt-0.5"></i> 
@@ -175,7 +176,7 @@
             </section>
 
             <div class="pt-4">
-                <button type="submit" class="w-full bg-black text-white py-5 font-bold uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-[0.99]">
+                <button type="submit" id="submitBtn" class="w-full bg-black text-white py-5 font-bold uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-[0.99]">
                     Submit release
                 </button>
             </div>
@@ -183,7 +184,13 @@
     </div>
 
     <script>
+        // 2. CẤU HÌNH API SUPABASE
+        const SUPABASE_URL = 'https://jslhpiyvaizwtnrnswhr.supabase.co'; 
+        const SUPABASE_KEY = 'sb_publishable_gzJk-CHEt3rOZJUj5vKKIg_GFvmhaxD'; // Lấy từ hình ảnh của bạn
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         let counts = { primaryContainer: 0, prodContainer: 0, featContainer: 0 };
+        let tagsData = { primaryContainer: [], featContainer: [], prodContainer: [] };
 
         function addTag(inputId, containerId, isRequired) {
             const input = document.getElementById(inputId);
@@ -192,15 +199,21 @@
             if (value !== "") {
                 const tag = document.createElement('span');
                 tag.className = 'artist-tag';
-                tag.innerHTML = `${value} <button type="button" onclick="removeTag(this, '${containerId}', ${isRequired})"><i class="fa-solid fa-xmark"></i></button>`;
+                tag.innerHTML = `${value} <button type="button" onclick="removeTag(this, '${containerId}', '${value}', ${isRequired})"><i class="fa-solid fa-xmark"></i></button>`;
                 container.appendChild(tag);
+                
+                // Lưu dữ liệu tag vào mảng
+                tagsData[containerId].push(value);
+                
                 input.value = "";
                 if (isRequired) { counts[containerId]++; updateValidator(containerId); }
             }
         }
 
-        function removeTag(btn, containerId, isRequired) {
+        function removeTag(btn, containerId, value, isRequired) {
             btn.parentElement.remove();
+            // Xóa dữ liệu khỏi mảng
+            tagsData[containerId] = tagsData[containerId].filter(t => t !== value);
             if (isRequired) { counts[containerId]--; updateValidator(containerId); }
         }
 
@@ -234,34 +247,76 @@
                 const width = this.width;
                 const height = this.height;
                 if (width === 3000 && height === 3000) {
-                    status.innerHTML = `<i class="fa-solid fa-circle-check text-green-600"></i> <span class="text-green-600 font-medium">Valid: ${file.name} (${width}x${height}px)</span>`;
+                    status.innerHTML = `<i class="fa-solid fa-circle-check text-green-600"></i> <span class="text-green-600 font-medium">Valid: ${file.name}</span>`;
                 } else {
                     alert(`Error: Artwork must be exactly 3000x3000px. Your file is ${width}x${height}px.`);
                     input.value = "";
-                    status.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-500"></i> <span class="text-red-500 font-medium">Invalid size: ${width}x${height}px. Please select 3000x3000px.</span>`;
+                    status.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-500"></i> <span class="text-red-500 font-medium">Invalid size: ${width}x${height}px.</span>`;
                 }
             };
         }
 
-        function handleFormSubmit(e) {
+        async function handleFormSubmit(e) {
             e.preventDefault();
             const form = e.target;
+            const btn = document.getElementById('submitBtn');
+            
+            btn.innerText = "UPLOADING...";
+            btn.disabled = true;
 
-            alert("Release submitted successfully!");
-            form.reset();
+            try {
+                const audioFile = document.getElementById('audioFile').files[0];
+                const artFile = document.getElementById('artFile').files[0];
 
-            document.getElementById('primaryContainer').innerHTML = "";
-            document.getElementById('featContainer').innerHTML = "";
-            document.getElementById('prodContainer').innerHTML = "";
+                // 1. Tải tệp lên Storage bucket 'music-assets'
+                const audioPath = `audio/${Date.now()}_${audioFile.name}`;
+                const artPath = `art/${Date.now()}_${artFile.name}`;
 
-            counts = { primaryContainer: 0, prodContainer: 0, featContainer: 0 };
-            document.getElementById('primaryValidator').value = "";
-            document.getElementById('prodValidator').value = "";
+                const { error: audioErr } = await supabaseClient.storage.from('music-assets').upload(audioPath, audioFile);
+                if (audioErr) throw audioErr;
 
-            document.getElementById('audioStatus').innerHTML = `<i class="fa-solid fa-circle-info"></i> Format: FLAC or WAV only`;
-            document.getElementById('artStatus').innerHTML = `<i class="fa-solid fa-image"></i> Specs: 3000x3000px, Square, JPG only`;
+                const { error: artErr } = await supabaseClient.storage.from('music-assets').upload(artPath, artFile);
+                if (artErr) throw artErr;
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+                // 2. Lưu thông tin vào Database Table 'submissions'
+                const { error: dbErr } = await supabaseClient.from('submissions').insert([{
+                    email: document.getElementById('email').value,
+                    title: document.getElementById('title').value,
+                    primary_artists: tagsData.primaryContainer,
+                    featured_artists: tagsData.featContainer,
+                    producers: tagsData.prodContainer,
+                    genre: document.getElementById('genre').value,
+                    language: document.getElementById('language').value,
+                    lyrics: document.getElementById('lyrics').value,
+                    audio_url: audioPath,
+                    art_url: artPath,
+                    notes: document.getElementById('notes').value
+                }]);
+
+                if (dbErr) throw dbErr;
+
+                alert("Release submitted successfully!");
+                
+                // RESET FORM VỀ BAN ĐẦU
+                form.reset();
+                document.getElementById('primaryContainer').innerHTML = "";
+                document.getElementById('featContainer').innerHTML = "";
+                document.getElementById('prodContainer').innerHTML = "";
+                counts = { primaryContainer: 0, prodContainer: 0, featContainer: 0 };
+                tagsData = { primaryContainer: [], featContainer: [], prodContainer: [] };
+                document.getElementById('primaryValidator').value = "";
+                document.getElementById('prodValidator').value = "";
+                document.getElementById('audioStatus').innerHTML = `<i class="fa-solid fa-circle-info"></i> Format: FLAC or WAV only`;
+                document.getElementById('artStatus').innerHTML = `<i class="fa-solid fa-image"></i> Specs: 3000x3000px, Square, JPG only`;
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (err) {
+                alert("Submission failed: " + err.message);
+            } finally {
+                btn.innerText = "SUBMIT RELEASE";
+                btn.disabled = false;
+            }
         }
 
         document.querySelectorAll('input').forEach(el => {
