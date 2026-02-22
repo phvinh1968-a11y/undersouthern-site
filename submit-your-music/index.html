@@ -1,185 +1,277 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Music Editor</title>
+    <title>Artist Submission Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fcfcfd; }
         
-        body { 
-            font-family: 'Inter', sans-serif;
-            background-color: #fff;
-            color: #1a1a1a;
+        /* Force sharp corners */
+        input, select, textarea, button, div, section, span {
+            border-radius: 0 !important;
         }
-
-        /* Sidebar Item - Tối giản */
-        .nav-item {
-            @apply flex items-center justify-between w-full px-4 py-3 text-sm transition-all border-b border-gray-50;
-        }
-        .nav-item.active {
-            @apply bg-gray-50 font-semibold;
-            border-left: 3px solid #000;
-        }
-
-        /* Nút bấm phẳng */
-        .btn-action {
-            @apply py-2 px-4 text-xs font-semibold border border-black hover:bg-black hover:text-white transition-all uppercase tracking-wider;
-        }
-
-        /* Khung nội dung nét đứt cực mảnh */
-        .content-card {
-            border: 1px dashed #e5e7eb;
-            @apply p-10 bg-white;
-        }
-
-        /* Vùng upload tối giản */
-        .upload-zone {
-            border: 1px dashed #000;
-            @apply py-16 text-center cursor-pointer hover:bg-gray-50 transition-all mb-10;
-        }
-
-        /* Input gạch chân mảnh */
-        .field-input {
-            @apply w-full py-2 bg-transparent border-b border-gray-200 outline-none focus:border-black transition-all text-sm;
-        }
-
-        .track-pane { display: none; }
-        .track-pane.active { display: block; }
         
-        /* Ẩn scrollbar */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        /* Custom Tag Style */
+        .artist-tag {
+            display: inline-flex;
+            align-items: center;
+            background: #000;
+            color: #fff;
+            padding: 4px 10px;
+            font-size: 12px;
+            margin-right: 8px;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .artist-tag button {
+            margin-left: 8px;
+            color: #999;
+        }
+        .artist-tag button:hover {
+            color: #ff4d4d;
+        }
+
+        /* Custom file input appearance */
+        input[type="file"]::file-selector-button {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            margin-right: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background: #333;
+        }
     </style>
 </head>
-<body class="h-screen flex flex-col overflow-hidden">
+<body class="text-slate-800 pb-20">
 
-    <div class="flex flex-1 overflow-hidden">
-        
-        <aside class="w-64 border-r border-gray-100 flex flex-col">
-            <div class="p-6 space-y-3">
-                <button onclick="location.reload()" class="btn-action w-full">Start New</button>
-                <button onclick="addNewTrack()" class="btn-action w-full">Add Track</button>
-            </div>
-
-            <div class="px-6 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Collection</div>
-            
-            <div id="track-list" class="flex-1 overflow-y-auto no-scrollbar">
-                </div>
-
-            <div class="p-6 border-t border-gray-50">
-                <button class="w-full py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-gray-800">
-                    Finish & Release
-                </button>
-            </div>
-        </aside>
-
-        <main class="flex-1 overflow-y-auto bg-[#fafafa] p-12">
-            <div id="editor-container" class="max-w-2xl mx-auto">
-                </div>
-        </main>
-    </div>
-
-    <template id="track-template">
-        <div class="track-pane animate-in fade-in duration-500">
-            <div class="content-card">
-                <div class="flex justify-between items-end mb-8">
-                    <h2 class="text-2xl font-light italic">Track <span class="track-num">01</span></h2>
-                    <button onclick="deleteTrack(this)" class="text-[10px] text-gray-400 hover:text-black uppercase tracking-widest">[ Remove ]</button>
-                </div>
-
-                <div class="upload-zone">
-                    <span class="text-xs font-medium uppercase tracking-widest">Drop Audio File</span>
-                    <p class="text-[10px] text-gray-400 mt-2 font-light italic">WAV, MP3, AIFF (Max 500MB)</p>
-                </div>
-
-                <div class="space-y-10">
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Title</label>
-                        <input type="text" class="field-input" placeholder="Track name...">
-                    </div>
-
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Artist</label>
-                        <input type="text" class="field-input" placeholder="Artist name...">
-                    </div>
-
-                    <div class="flex gap-8 items-center pt-2">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Explicit Content</span>
-                        <div class="flex gap-4 text-xs">
-                            <label class="cursor-pointer"><input type="radio" name="exp" class="accent-black mr-1"> No</label>
-                            <label class="cursor-pointer"><input type="radio" name="exp" class="accent-black mr-1"> Yes</label>
-                        </div>
-                    </div>
-                </div>
+    <header class="sticky top-0 z-50 bg-[#fcfcfd]/80 backdrop-blur-md border-b border-slate-100 mb-12">
+        <div class="max-w-xl mx-auto px-6 py-10">
+            <div class="border-l-4 border-black pl-6">
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900">Submit your music</h1>
+                <p class="text-slate-500 mt-2 text-sm">Provide your details and assets for global distribution.</p>
             </div>
         </div>
-    </template>
+    </header>
+
+    <div class="max-w-xl mx-auto px-6">
+        <form id="musicForm" class="space-y-12" onsubmit="handleFormSubmit(event)">
+            
+            <section class="space-y-8">
+                <h2 class="text-sm font-semibold text-slate-400 border-b border-slate-100 pb-2">Release details</h2>
+
+                <div class="space-y-8"> 
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Email address <span class="text-red-500">*</span></label>
+                        <input type="email" required placeholder="artist@example.com" 
+                            class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all font-sans">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Release title <span class="text-red-500">*</span></label>
+                        <input type="text" required placeholder="Enter track or album name" 
+                            class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all text-lg font-semibold tracking-tight">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Primary artist <span class="text-red-500">*</span></label>
+                        <div class="flex">
+                            <input type="text" id="primaryInput" placeholder="Add artist..." 
+                                class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all">
+                            <button type="button" onclick="addTag('primaryInput', 'primaryContainer', true)" class="bg-black text-white px-5 hover:bg-slate-800 transition-colors">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="primaryContainer" class="flex flex-wrap"></div>
+                        <input type="text" id="primaryValidator" required class="opacity-0 h-0 w-0 pointer-events-none block">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Featured artist (optional)</label>
+                        <div class="flex">
+                            <input type="text" id="featInput" placeholder="Add featured artist..." 
+                                class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all">
+                            <button type="button" onclick="addTag('featInput', 'featContainer', false)" class="bg-black text-white px-5 hover:bg-slate-800 transition-colors">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="featContainer" class="flex flex-wrap"></div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Producer <span class="text-red-500">*</span></label>
+                        <div class="flex">
+                            <input type="text" id="prodInput" placeholder="Add producer name..." 
+                                class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all">
+                            <button type="button" onclick="addTag('prodInput', 'prodContainer', true)" class="bg-black text-white px-5 hover:bg-slate-800 transition-colors">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="prodContainer" class="flex flex-wrap"></div>
+                        <input type="text" id="prodValidator" required class="opacity-0 h-0 w-0 pointer-events-none block">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Primary genre <span class="text-red-500">*</span></label>
+                        <select required class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all appearance-none">
+                            <option value="">Select a genre</option>
+                            <option>Alternative</option><option>Alternative Rock</option><option>Alternativo & Rock Latino</option><option>Anime</option><option>Baladas y Boleros</option><option>Big Band</option><option>Blues</option><option>Brazilian</option><option>C-Pop</option><option>Cantopop/HK-Pop</option><option>Children's</option><option>Chinese</option><option>Christian</option><option>Classical</option><option>Comedy</option><option>Contemporary Latin</option><option>Country</option><option>Dance</option><option>Easy Listening</option><option>Educational</option><option>Electronic</option><option>Enka</option><option>Experimental</option><option>Fitness & Workout</option><option>Folk</option><option>French Pop</option><option>German Folk</option><option>German Pop</option><option>Hip-Hop/Rap</option><option>Holiday</option><option>Indo Pop</option><option>Inspirational</option><option>Instrumental</option><option>J-Pop</option><option>Jazz</option><option>K-Pop</option><option>Karaoke</option><option>Kayokyoku</option><option>Latin</option><option>Latin Jazz</option><option>Metal</option><option>New Age</option><option>Opera</option><option>Original Pilipino Music</option><option>Pop</option><option>Pop Latino</option><option>Punk</option><option>R&B</option><option>Raíces</option><option>Reggae</option><option>Reggaeton y Hip-Hop</option><option>Regional Mexicano</option><option>Rock</option><option>Salsa y Tropical</option><option>Singer/Songwriter</option><option>Soul</option><option>Soundtrack</option><option>Spoken Word</option><option>Tai-Pop</option><option>Thai Pop</option><option>Trot</option><option>Vocal/Nostalgia</option><option>World</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Language <span class="text-red-500">*</span></label>
+                        <select required class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all appearance-none">
+                            <option value="">Select lyrics language</option>
+                            <option>Vietnamese (VI)</option><option>English (EN)</option><option>Korean (KO)</option><option>Japanese (JA)</option><option>Chinese (ZH)</option><option>French (FR)</option><option>Spanish (ES)</option><option>German (DE)</option><option>Italian (IT)</option><option>Portuguese (PT)</option><option>Russian (RU)</option><option>Arabic (AR)</option><option>Hindi (HI)</option><option>Thai (TH)</option><option>Indonesian (ID)</option><option>Bengali (BN)</option><option>Turkish (TR)</option><option>Malay (MS)</option><option>Urdu (UR)</option><option>Persian (FA)</option><option>Swahili (SW)</option><option>Tamil (TA)</option><option>Telugu (TE)</option><option>Marathi (MR)</option><option>Gujarati (GU)</option><option>Kannada (KN)</option><option>Punjabi (PA)</option><option>Filipino (TL)</option><option>Malayalam (ML)</option><option>Sinhala (SI)</option><option>Burmese (MY)</option><option>Khmer (KM)</option><option>Lao (LO)</option><option>Nepali (NE)</option><option>Pashto (PS)</option><option>Hebrew (HE)</option><option>Greek (EL)</option><option>Dutch (NL)</option><option>Swedish (SV)</option><option>Norwegian (NO)</option><option>Danish (DA)</option><option>Finnish (FI)</option><option>Polish (PL)</option><option>Czech (CS)</option><option>Hungarian (HU)</option><option>Romanian (RO)</option><option>Bulgarian (BG)</option><option>Serbian (SR)</option><option>Croatian (HR)</option><option>Slovak (SK)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Lyrics <span class="text-red-500">*</span></label>
+                        <textarea required rows="8" placeholder="Paste your full song lyrics here..." 
+                            class="w-full bg-white border border-slate-300 px-4 py-3 focus:border-black outline-none transition-all font-sans text-sm resize-none"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <section class="space-y-8">
+                <h2 class="text-sm font-semibold text-slate-400 border-b border-slate-100 pb-2">Asset Upload</h2>
+                <div class="space-y-8">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Audio master file (.flac) <span class="text-red-500">*</span></label>
+                        <input type="file" id="audioFile" required accept=".flac" onchange="validateAudio(this)"
+                            class="w-full bg-white border border-slate-300 px-4 py-2.5 focus:border-black outline-none transition-all font-sans text-sm">
+                        <p id="audioStatus" class="text-[11px] mt-2 text-slate-400 flex items-center gap-1.5"><i class="fa-solid fa-circle-info"></i> Format: FLAC only</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">Cover artwork file (.jpg) <span class="text-red-500">*</span></label>
+                        <input type="file" id="artFile" required accept=".jpg,.jpeg" onchange="validateArtwork(this)"
+                            class="w-full bg-white border border-slate-300 px-4 py-2.5 focus:border-black outline-none transition-all font-sans text-sm">
+                        <p id="artStatus" class="text-[11px] mt-2 text-slate-400 flex items-center gap-1.5"><i class="fa-solid fa-image"></i> Specs: 3000x3000px, Square, JPG only</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-black text-white py-5 font-bold uppercase tracking-widest hover:bg-slate-800 transition-all active:scale-[0.99]">
+                    Submit release
+                </button>
+            </div>
+        </form>
+    </div>
 
     <script>
-        let tracks = [];
+        // Khởi tạo biến đếm tag
+        let counts = { primaryContainer: 0, prodContainer: 0, featContainer: 0 };
 
-        function addNewTrack() {
-            const id = 'tr-' + Date.now();
-            const num = (tracks.length + 1).toString().padStart(2, '0');
-            tracks.push({ id, num });
-
-            // 1. Sidebar Item
-            const list = document.getElementById('track-list');
-            const nav = document.createElement('div');
-            nav.id = 'nav-' + id;
-            nav.className = 'nav-item cursor-pointer';
-            nav.onclick = () => switchTrack(id);
-            nav.innerHTML = `<span class="nav-label">Track ${num}</span><span class="text-[10px] opacity-0 status-mark">*</span>`;
-            list.appendChild(nav);
-
-            // 2. Editor Pane
-            const container = document.getElementById('editor-container');
-            const temp = document.getElementById('track-template');
-            const clone = temp.content.cloneNode(true);
-            const pane = clone.querySelector('.track-pane');
-            pane.id = 'pane-' + id;
-            pane.querySelector('.track-num').textContent = num;
-            
-            // Đảm bảo radio button không bị trùng lặp giữa các track
-            clone.querySelectorAll('input[type="radio"]').forEach(r => r.name = 'exp-' + id);
-
-            container.appendChild(clone);
-            switchTrack(id);
+        function addTag(inputId, containerId, isRequired) {
+            const input = document.getElementById(inputId);
+            const container = document.getElementById(containerId);
+            const value = input.value.trim();
+            if (value !== "") {
+                const tag = document.createElement('span');
+                tag.className = 'artist-tag';
+                tag.innerHTML = `${value} <button type="button" onclick="removeTag(this, '${containerId}', ${isRequired})"><i class="fa-solid fa-xmark"></i></button>`;
+                container.appendChild(tag);
+                input.value = "";
+                if (isRequired) { counts[containerId]++; updateValidator(containerId); }
+            }
         }
 
-        function switchTrack(id) {
-            // Ẩn/Hiện Pane
-            document.querySelectorAll('.track-pane').forEach(p => p.classList.remove('active'));
-            document.getElementById('pane-' + id).classList.add('active');
+        function removeTag(btn, containerId, isRequired) {
+            btn.parentElement.remove();
+            if (isRequired) { counts[containerId]--; updateValidator(containerId); }
+        }
 
-            // Cập nhật Sidebar
-            document.querySelectorAll('.nav-item').forEach(n => {
-                n.classList.remove('active');
-                n.querySelector('.status-mark').style.opacity = '0';
-                n.querySelector('.nav-label').style.fontStyle = 'normal';
+        function updateValidator(containerId) {
+            const validatorId = containerId === 'primaryContainer' ? 'primaryValidator' : 'prodValidator';
+            const validator = document.getElementById(validatorId);
+            if(validator) validator.value = counts[containerId] > 0 ? "added" : "";
+        }
+
+        function validateAudio(input) {
+            const status = document.getElementById('audioStatus');
+            const file = input.files[0];
+            if (file) {
+                status.innerHTML = `<i class="fa-solid fa-circle-check text-green-600"></i> <span class="text-green-600 font-medium">Ready: ${file.name}</span>`;
+            } else {
+                status.innerHTML = `<i class="fa-solid fa-circle-info"></i> Format: FLAC only`;
+            }
+        }
+
+        function validateArtwork(input) {
+            const file = input.files[0];
+            const status = document.getElementById('artStatus');
+            if (!file) {
+                status.innerHTML = `<i class="fa-solid fa-image"></i> Specs: 3000x3000px, Square, JPG only`;
+                return;
+            }
+
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            img.onload = function() {
+                const width = this.width;
+                const height = this.height;
+                if (width === 3000 && height === 3000) {
+                    status.innerHTML = `<i class="fa-solid fa-circle-check text-green-600"></i> <span class="text-green-600 font-medium">Valid: ${file.name} (${width}x${height}px)</span>`;
+                } else {
+                    alert(`Error: Artwork must be exactly 3000x3000px. Your file is ${width}x${height}px.`);
+                    input.value = "";
+                    status.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-500"></i> <span class="text-red-500 font-medium">Invalid size: ${width}x${height}px. Please select 3000x3000px.</span>`;
+                }
+            };
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+
+            // 1. Hiển thị thông báo thành công
+            alert("Release submitted successfully!");
+
+            // 2. Reset form (xóa text, email, select, file)
+            form.reset();
+
+            // 3. Xóa các Tags (Primary Artist, Featured, Producer) hiển thị trên giao diện
+            document.getElementById('primaryContainer').innerHTML = "";
+            document.getElementById('featContainer').innerHTML = "";
+            document.getElementById('prodContainer').innerHTML = "";
+
+            // 4. Reset lại biến đếm và validator ẩn
+            counts = { primaryContainer: 0, prodContainer: 0, featContainer: 0 };
+            document.getElementById('primaryValidator').value = "";
+            document.getElementById('prodValidator').value = "";
+
+            // 5. Reset lại các dòng thông báo trạng thái file về mặc định
+            document.getElementById('audioStatus').innerHTML = `<i class="fa-solid fa-circle-info"></i> Format: FLAC only`;
+            document.getElementById('artStatus').innerHTML = `<i class="fa-solid fa-image"></i> Specs: 3000x3000px, Square, JPG only`;
+
+            // 6. Cuộn lên đầu trang cho đẹp
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('input').forEach(el => {
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !el.type.includes('file')) {
+                    e.preventDefault();
+                    if (el.id === 'primaryInput') addTag('primaryInput', 'primaryContainer', true);
+                    if (el.id === 'featInput') addTag('featInput', 'featContainer', false);
+                    if (el.id === 'prodInput') addTag('prodInput', 'prodContainer', true);
+                }
             });
-            
-            const activeNav = document.getElementById('nav-' + id);
-            activeNav.classList.add('active');
-            activeNav.querySelector('.status-mark').style.opacity = '1';
-            activeNav.querySelector('.nav-label').style.fontStyle = 'italic';
-        }
-
-        function deleteTrack(btn) {
-            if (!confirm("Xác nhận xóa track?")) return;
-            const pane = btn.closest('.track-pane');
-            const id = pane.id.replace('pane-', '');
-            
-            pane.remove();
-            document.getElementById('nav-' + id).remove();
-            
-            tracks = tracks.filter(t => t.id !== id);
-            if (tracks.length > 0) switchTrack(tracks[0].id);
-        }
-
-        // Khởi tạo track đầu tiên
-        window.onload = addNewTrack;
+        });
     </script>
 </body>
 </html>
