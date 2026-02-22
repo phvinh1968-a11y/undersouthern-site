@@ -1,1 +1,192 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Editor - Ultra Minimalist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+        }
 
+        /* Nút bấm tối giản: Chỉ viền đen và chữ đen */
+        .btn-minimal {
+            border: 1px solid #000000;
+            background: #ffffff;
+            color: #000000;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1px;
+            font-weight: 600;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-minimal:hover {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        /* Track đang được chọn: Đảo ngược màu hoặc gạch chân */
+        .track-active {
+            background: #000000 !important;
+            color: #ffffff !important;
+            font-style: italic;
+        }
+
+        /* Khung nét đứt xám rất mảnh */
+        .dashed-box {
+            border: 1px dashed #e0e0e0;
+            padding: 32px;
+        }
+
+        /* Vùng upload */
+        .upload-area {
+            border: 1px dashed #000000;
+            padding: 48px;
+            text-align: center;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        /* Input chỉ có gạch chân đen */
+        .input-plain {
+            border-bottom: 1px solid #000000;
+            width: 100%;
+            padding: 8px 0;
+            outline: none;
+            font-size: 14px;
+            background: transparent;
+        }
+
+        .track-content { display: none; }
+        .track-content.active { display: block; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <div class="flex flex-1 overflow-hidden">
+        
+        <aside class="w-60 border-r border-gray-100 p-6 flex flex-col">
+            <div class="space-y-2 mb-8">
+                <button onclick="location.reload()" class="btn-minimal w-full">Start again</button>
+                <button onclick="addTrack()" class="btn-minimal w-full">Add track</button>
+            </div>
+
+            <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-4">Tracks</div>
+            
+            <div id="sidebar-list" class="flex-1 overflow-y-auto space-y-2 no-scrollbar">
+                </div>
+
+            <div class="mt-8">
+                <button class="btn-minimal w-full !bg-black !text-white hover:!bg-gray-800">
+                    Release
+                </button>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-12 overflow-y-auto">
+            <div id="display-area" class="max-w-2xl mx-auto">
+                </div>
+        </main>
+    </div>
+
+    <template id="track-template">
+        <div class="track-content animate-in fade-in duration-300">
+            <div class="dashed-box">
+                <h2 class="text-xl font-bold mb-8 uppercase tracking-tighter italic">Track <span class="num">01</span></h2>
+                
+                <div class="upload-area hover:bg-gray-50 transition-colors">
+                    <p class="font-bold">Select Audio File</p>
+                    <p class="text-[10px] text-gray-400 mt-2">WAV / 16-24 Bit / 44.1 kHz</p>
+                </div>
+
+                <div class="space-y-10 mt-12">
+                    <div class="group">
+                        <label class="block text-[10px] font-bold uppercase text-gray-400 tracking-widest mb-1">Title</label>
+                        <input type="text" class="input-plain" placeholder="...">
+                    </div>
+
+                    <div class="group">
+                        <label class="block text-[10px] font-bold uppercase text-gray-400 tracking-widest mb-1">Artist</label>
+                        <input type="text" class="input-plain" placeholder="...">
+                    </div>
+                </div>
+
+                <div class="mt-16 flex justify-between items-center border-t border-gray-50 pt-6">
+                    <span class="text-[10px] text-gray-300 uppercase tracking-widest">Metadata Required</span>
+                    <button onclick="deleteTrack(this)" class="text-[10px] font-bold hover:underline uppercase tracking-widest">
+                        [ Remove ]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        let tracks = [];
+
+        function addTrack() {
+            const id = 't' + Date.now();
+            const num = (tracks.length + 1).toString().padStart(2, '0');
+            tracks.push({ id, num });
+
+            const list = document.getElementById('sidebar-list');
+            const btn = document.createElement('button');
+            btn.id = 'btn-' + id;
+            btn.className = 'btn-minimal w-full !justify-start !px-4';
+            btn.innerHTML = `Track ${num}`;
+            btn.onclick = () => activateTrack(id);
+            list.appendChild(btn);
+
+            const display = document.getElementById('display-area');
+            const temp = document.getElementById('track-template');
+            const clone = temp.content.cloneNode(true);
+            const container = clone.querySelector('.track-content');
+            container.id = 'content-' + id;
+            clone.querySelector('.num').textContent = num;
+            
+            display.appendChild(clone);
+            activateTrack(id);
+            list.scrollTop = list.scrollHeight;
+        }
+
+        function activateTrack(id) {
+            document.querySelectorAll('.track-content').forEach(c => c.classList.remove('active'));
+            document.getElementById('content-' + id).classList.add('active');
+
+            tracks.forEach(t => {
+                const btn = document.getElementById('btn-' + t.id);
+                if (t.id === id) {
+                    btn.classList.add('track-active');
+                    btn.textContent = `Track ${t.num}*`;
+                } else {
+                    btn.classList.remove('track-active');
+                    btn.textContent = `Track ${t.num}`;
+                }
+            });
+        }
+
+        function deleteTrack(btn) {
+            if (!confirm("Remove this track?")) return;
+            const content = btn.closest('.track-content');
+            const id = content.id.replace('content-', '');
+            tracks = tracks.filter(t => t.id !== id);
+            content.remove();
+            document.getElementById('btn-' + id).remove();
+            if (tracks.length > 0) activateTrack(tracks[0].id);
+        }
+
+        window.onload = addTrack;
+    </script>
+</body>
+</html>
