@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- Favicon / Logo tab -->
 <link rel="icon" type="image/png" sizes="32x32"
       href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
 
@@ -61,14 +60,12 @@ global label distribution infrastructure
 <meta name="author" content="UNDERSOUTHERN" />
 <link rel="canonical" href="https://undersouthern.asia/" />
 
-<!-- Open Graph -->
 <meta property="og:type" content="website" />
 <meta property="og:title" content="UNDERSOUTHERN – Independent Record Label & Distribution" />
 <meta property="og:description" content="Independent record label based in Vietnam providing global music distribution, whitelabel solutions, and artist services." />
 <meta property="og:url" content="https://undersouthern.asia/" />
 <meta property="og:image" content="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/refs/heads/main/logo_processed.png" />
 
-<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="UNDERSOUTHERN – Music Distribution & Record Label" />
 <meta name="twitter:description" content="Global music distribution, whitelabel solutions, and artist services from Vietnam." />
@@ -113,13 +110,24 @@ header{
   font-size:12px;
   letter-spacing:1px;
 }
+.header-left {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.header-left a {
+  text-decoration: none;
+  color: #111;
+  font-weight: 600;
+  cursor: pointer;
+}
 nav a{
   margin-left:18px;
   text-decoration:none;
   color:#111;
   cursor:pointer;
 }
-nav a:hover{opacity:.6}
+nav a:hover, .header-left a:hover{opacity:.6}
 
 /* ===== HOME ===== */
 .content{
@@ -141,14 +149,25 @@ h1{
 }
 p{margin-bottom:30px}
 
+.btn-group {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+  justify-content: center;
+}
+
 .btn{
-  padding:12px 32px;
+  flex: 1;
+  padding: 12px 0;
   border:1px solid #111;
   border-radius:30px;
   text-decoration:none;
   color:#111;
   text-transform:uppercase;
   font-size:13px;
+  white-space: nowrap;
+  cursor: pointer;
 }
 .btn:hover{background:#111;color:#fff}
 
@@ -157,7 +176,7 @@ p{margin-bottom:30px}
   display:none;
   max-width:900px;
   margin:0 auto;
-  padding:100px 20px;
+  padding:80px 20px;
   line-height:1.8;
   animation:fadeUp .25s ease forwards;
 }
@@ -170,7 +189,14 @@ p{margin-bottom:30px}
   font-size:15px;
 }
 
-/* ===== CONTACT ===== */
+/* Container Styles */
+.list-container {
+  margin-top: 20px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
 .contact-list{
   margin-top:30px;
   display:flex;
@@ -194,7 +220,7 @@ p{margin-bottom:30px}
 
 /* ===== BACK ===== */
 .back-btn{
-  margin-top:40px;
+  margin-top:30px;
   display:inline-block;
   padding:10px 26px;
   border:1px solid #111;
@@ -206,7 +232,7 @@ p{margin-bottom:30px}
 }
 .back-btn:hover{background:#111;color:#fff}
 
-/* ===== FOOTER (HOME ONLY) ===== */
+/* ===== FOOTER ===== */
 footer{
   padding:30px 20px;
   text-align:center;
@@ -227,7 +253,7 @@ footer{
   50%{opacity:1}
 }
 
-/* ====== ADDED: WATER RIPPLE ====== */
+/* ====== WATER RIPPLE ====== */
 #waterRipple{
   position:fixed;
   inset:0;
@@ -239,97 +265,136 @@ header, main, footer{
   z-index:1;
 }
 </style>
-
-
 </head>
 
 <body>
 
-<!-- ====== ADDED: WATER RIPPLE CANVAS ====== -->
 <canvas id="waterRipple"></canvas>
 
-<!-- PRELOADER -->
 <div id="loader">
   <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/refs/heads/main/logo_processed.png">
 </div>
 
 <header>
-  <div>Vietnam · Established 2024</div>
+  <div class="header-left">
+    <span>Vietnam · Established 2024</span>
+    <a onclick="showPage('artist-page')">Artist</a>
+    <a onclick="showPage('spotify-page')">Spotify</a>
+  </div>
   <nav>
+    <a onclick="showPage('register-page')">Register</a>
     <a onclick="showPage('about')">About</a>
     <a onclick="showPage('contact')">Contact</a>
+    <a onclick="showPage('faq-page')">FAQ</a>
   </nav>
 </header>
 
 <main>
 
-<!-- HOME -->
 <section id="home" class="content">
   <h1>UNDERSOUTHERN</h1>
   <p>Independent Record Label & Distributor</p>
-  <a class="btn" target="_blank"
-     href="https://docs.google.com/forms/d/e/1FAIpQLSda_y_qjj18aNyw3x5t9hNQj4Q2sCVdpXpqIRYbnC1PFz8dxQ/viewform">
-    Submit Your Music
-  </a>
+  <div class="btn-group">
+    <a class="btn" target="_blank"
+       href="https://docs.google.com/forms/d/e/1FAIpQLSda_y_qjj18aNyw3x5t9hNQj4Q2sCVdpXpqIRYbnC1PFz8dxQ/viewform">
+      Submit Music
+    </a>
+    <a class="btn" onclick="showPage('dashboard-page')">
+      Dashboard
+    </a>
+  </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about" class="page">
   <h2>About</h2>
-
   <p><strong>UNDERSOUTHERN</strong> is an independent record label based in Vietnam, focused on discovering, developing, and distributing music from emerging artists to a global audience.</p>
-
   <p>We work across digital music distribution, artist development, and strategic release planning, ensuring that each release meets international platform standards.</p>
-
   <p>Our network covers major DSPs such as Spotify, Apple Music, YouTube Music, TikTok, and regional platforms worldwide.</p>
-
   <p>UNDERSOUTHERN prioritizes creative freedom, transparency, and long-term collaboration with artists.</p>
-
   <a class="back-btn" onclick="goHome()">← Back</a>
 </section>
 
-<!-- CONTACT -->
+<section id="artist-page" class="page">
+  <h2>Artist</h2>
+  <p><strong>Access Denied.</strong> You do not have permission to view this section. If you believe this is an error or wish to inquire about our artist roster, please contact us.</p>
+  <div class="contact-list" style="margin-top:30px;">
+    <a class="contact-item" href="mailto:support@undersouthern.asia">
+      <svg viewBox="0 0 24 24"><path d="M2 4h20v16H2V4zm10 7L4 6v12h16V6l-8 5z"/></svg>
+      support@undersouthern.asia
+    </a>
+  </div>
+  <a class="back-btn" onclick="goHome()">← Back</a>
+</section>
+
+<section id="register-page" class="page">
+  <h2>Register</h2>
+  <p>To register as a new artist or label partner with UNDERSOUTHERN, please contact our support team directly via email.</p>
+  <div class="contact-list" style="margin-top:30px;">
+    <a class="contact-item" href="mailto:support@undersouthern.asia">
+      <svg viewBox="0 0 24 24"><path d="M2 4h20v16H2V4zm10 7L4 6v12h16V6l-8 5z"/></svg>
+      support@undersouthern.asia
+    </a>
+  </div>
+  <a class="back-btn" onclick="goHome()">← Back</a>
+</section>
+
+<section id="dashboard-page" class="page">
+  <h2>Dashboard</h2>
+  <p>Access to the artist dashboard is currently restricted. If you are an active member and need assistance, please reach out to us.</p>
+  <div class="contact-list" style="margin-top:30px;">
+    <a class="contact-item" href="mailto:support@undersouthern.asia">
+      <svg viewBox="0 0 24 24"><path d="M2 4h20v16H2V4zm10 7L4 6v12h16V6l-8 5z"/></svg>
+      support@undersouthern.asia
+    </a>
+  </div>
+  <a class="back-btn" onclick="goHome()">← Back</a>
+</section>
+
+<section id="spotify-page" class="page">
+  <h2>Distribution</h2>
+  <p>Our global distribution catalog. All tracks in this playlist are updated in real-time.</p>
+  <div class="list-container">
+    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2pAVboOJjNY2HKqCx0Ii9J?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  <a class="back-btn" onclick="goHome()">← Back</a>
+</section>
+
+<section id="faq-page" class="page">
+  <h2>FAQ</h2>
+  <p>Have questions about our distribution process or label services? Please contact our support desk for a detailed FAQ guide or specific inquiries.</p>
+  <div class="contact-list" style="margin-top:30px;">
+    <a class="contact-item" href="mailto:support@undersouthern.asia">
+      <svg viewBox="0 0 24 24"><path d="M2 4h20v16H2V4zm10 7L4 6v12h16V6l-8 5z"/></svg>
+      support@undersouthern.asia
+    </a>
+  </div>
+  <a class="back-btn" onclick="goHome()">← Back</a>
+</section>
+
 <section id="contact" class="page">
   <h2>Contact</h2>
-
-  <div class="contact-list">
-
+  <div class="contact-list" style="margin-top:30px;">
     <a class="contact-item" href="https://www.facebook.com/undersouthern" target="_blank">
       <svg viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2V9.5c0-2 1.2-3.1 3-3.1.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.2V12h2.3l-.4 3h-1.9v7A10 10 0 0 0 22 12z"/></svg>
       Facebook
     </a>
-
     <a class="contact-item" href="https://www.instagram.com/undersouthern" target="_blank">
       <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>
       Instagram
     </a>
-
     <a class="contact-item" href="https://www.tiktok.com/@undersouthern" target="_blank">
       <svg viewBox="0 0 24 24"><path d="M16 3a5 5 0 0 0 4 2v3a8 8 0 0 1-4-1v6a6 6 0 1 1-6-6h1v3h-1a3 3 0 1 0 3 3V3z"/></svg>
       TikTok
     </a>
-
     <a class="contact-item" href="https://www.youtube.com/@undersouthern" target="_blank">
       <svg viewBox="0 0 24 24"><path d="M23 7s-.2-1.7-.8-2.4c-.8-.8-1.7-.8-2.1-.9C17.2 3.5 12 3.5 12 3.5s-5.2 0-8.1.2c-.4.1-1.3.1-2.1.9C1.2 5.3 1 7 1 7s-.2 1.9-.2 3.8v2.4C.8 15.1 1 17 1 17s.2 1.7.8 2.4c.8.8 1.9.8 2.4.9 1.7.2 7.8.2 7.8.2s5.2 0 8.1-.2c.4-.1 1.3-.1 2.1-.9.6-.7.8-2.4.8-2.4s.2-1.9.2-3.8v-2.4C23.2 8.9 23 7 23 7zM9.8 14.6V9.4l5.2 2.6-5.2 2.6z"/></svg>
       YouTube
     </a>
-
-    <a class="contact-item" href="https://open.spotify.com/playlist/3LONU63iZ0Np42Uiyztvnm" target="_blank">
-      <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm4.6 14.5a.8.8 0 0 1-1.1.3c-3-1.8-6.7-2.2-11-.9a.8.8 0 1 1-.5-1.5c4.7-1.4 8.9-1 12.2 1a.8.8 0 0 1 .4 1.1z"/></svg>
-      Spotify
-    </a>
-
-   <a class="contact-item" href="mailto:support@undersouthern.asia">
+    <a class="contact-item" href="mailto:support@undersouthern.asia">
       <svg viewBox="0 0 24 24"><path d="M2 4h20v16H2V4zm10 7L4 6v12h16V6l-8 5z"/></svg>
       support@undersouthern.asia
     </a>
-
   </div>
-
-  <div class="contact-list">
-    <!-- (giữ nguyên toàn bộ) -->
-  </div>
-
   <a class="back-btn" onclick="goHome()">← Back</a>
 </section>
 
@@ -364,7 +429,6 @@ window.onload=()=>{
 };
 </script>
 
-<!-- ====== ADDED: WATER RIPPLE SCRIPT (NO JITTER) ====== -->
 <script>
 const canvas = document.getElementById("waterRipple");
 const ctx = canvas.getContext("2d");
@@ -433,8 +497,3 @@ addEventListener("load",()=>{
 
 </body>
 </html>
-
-
-
-
-
