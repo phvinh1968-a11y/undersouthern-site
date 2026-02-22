@@ -3,72 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music Editor - Ultra Minimalist</title>
+    <title>Minimal Music Editor</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+        
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            color: #000000;
+            font-family: 'Inter', sans-serif;
+            background-color: #fff;
+            color: #1a1a1a;
         }
 
-        /* Nút bấm tối giản: Chỉ viền đen và chữ đen */
-        .btn-minimal {
-            border: 1px solid #000000;
-            background: #ffffff;
-            color: #000000;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 1px;
-            font-weight: 600;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Sidebar Item - Tối giản */
+        .nav-item {
+            @apply flex items-center justify-between w-full px-4 py-3 text-sm transition-all border-b border-gray-50;
         }
-        .btn-minimal:hover {
-            background: #000000;
-            color: #ffffff;
+        .nav-item.active {
+            @apply bg-gray-50 font-semibold;
+            border-left: 3px solid #000;
         }
 
-        /* Track đang được chọn: Đảo ngược màu hoặc gạch chân */
-        .track-active {
-            background: #000000 !important;
-            color: #ffffff !important;
-            font-style: italic;
+        /* Nút bấm phẳng */
+        .btn-action {
+            @apply py-2 px-4 text-xs font-semibold border border-black hover:bg-black hover:text-white transition-all uppercase tracking-wider;
         }
 
-        /* Khung nét đứt xám rất mảnh */
-        .dashed-box {
-            border: 1px dashed #e0e0e0;
-            padding: 32px;
+        /* Khung nội dung nét đứt cực mảnh */
+        .content-card {
+            border: 1px dashed #e5e7eb;
+            @apply p-10 bg-white;
         }
 
-        /* Vùng upload */
-        .upload-area {
-            border: 1px dashed #000000;
-            padding: 48px;
-            text-align: center;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
+        /* Vùng upload tối giản */
+        .upload-zone {
+            border: 1px dashed #000;
+            @apply py-16 text-center cursor-pointer hover:bg-gray-50 transition-all mb-10;
         }
 
-        /* Input chỉ có gạch chân đen */
-        .input-plain {
-            border-bottom: 1px solid #000000;
-            width: 100%;
-            padding: 8px 0;
-            outline: none;
-            font-size: 14px;
-            background: transparent;
+        /* Input gạch chân mảnh */
+        .field-input {
+            @apply w-full py-2 bg-transparent border-b border-gray-200 outline-none focus:border-black transition-all text-sm;
         }
 
-        .track-content { display: none; }
-        .track-content.active { display: block; }
-
+        .track-pane { display: none; }
+        .track-pane.active { display: block; }
+        
+        /* Ẩn scrollbar */
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
@@ -76,57 +56,61 @@
 
     <div class="flex flex-1 overflow-hidden">
         
-        <aside class="w-60 border-r border-gray-100 p-6 flex flex-col">
-            <div class="space-y-2 mb-8">
-                <button onclick="location.reload()" class="btn-minimal w-full">Start again</button>
-                <button onclick="addTrack()" class="btn-minimal w-full">Add track</button>
+        <aside class="w-64 border-r border-gray-100 flex flex-col">
+            <div class="p-6 space-y-3">
+                <button onclick="location.reload()" class="btn-action w-full">Start New</button>
+                <button onclick="addNewTrack()" class="btn-action w-full">Add Track</button>
             </div>
 
-            <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-4">Tracks</div>
+            <div class="px-6 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Collection</div>
             
-            <div id="sidebar-list" class="flex-1 overflow-y-auto space-y-2 no-scrollbar">
+            <div id="track-list" class="flex-1 overflow-y-auto no-scrollbar">
                 </div>
 
-            <div class="mt-8">
-                <button class="btn-minimal w-full !bg-black !text-white hover:!bg-gray-800">
-                    Release
+            <div class="p-6 border-t border-gray-50">
+                <button class="w-full py-3 bg-black text-white text-xs font-bold uppercase tracking-widest hover:bg-gray-800">
+                    Finish & Release
                 </button>
             </div>
         </aside>
 
-        <main class="flex-1 p-12 overflow-y-auto">
-            <div id="display-area" class="max-w-2xl mx-auto">
+        <main class="flex-1 overflow-y-auto bg-[#fafafa] p-12">
+            <div id="editor-container" class="max-w-2xl mx-auto">
                 </div>
         </main>
     </div>
 
     <template id="track-template">
-        <div class="track-content animate-in fade-in duration-300">
-            <div class="dashed-box">
-                <h2 class="text-xl font-bold mb-8 uppercase tracking-tighter italic">Track <span class="num">01</span></h2>
-                
-                <div class="upload-area hover:bg-gray-50 transition-colors">
-                    <p class="font-bold">Select Audio File</p>
-                    <p class="text-[10px] text-gray-400 mt-2">WAV / 16-24 Bit / 44.1 kHz</p>
+        <div class="track-pane animate-in fade-in duration-500">
+            <div class="content-card">
+                <div class="flex justify-between items-end mb-8">
+                    <h2 class="text-2xl font-light italic">Track <span class="track-num">01</span></h2>
+                    <button onclick="deleteTrack(this)" class="text-[10px] text-gray-400 hover:text-black uppercase tracking-widest">[ Remove ]</button>
                 </div>
 
-                <div class="space-y-10 mt-12">
-                    <div class="group">
-                        <label class="block text-[10px] font-bold uppercase text-gray-400 tracking-widest mb-1">Title</label>
-                        <input type="text" class="input-plain" placeholder="...">
-                    </div>
-
-                    <div class="group">
-                        <label class="block text-[10px] font-bold uppercase text-gray-400 tracking-widest mb-1">Artist</label>
-                        <input type="text" class="input-plain" placeholder="...">
-                    </div>
+                <div class="upload-zone">
+                    <span class="text-xs font-medium uppercase tracking-widest">Drop Audio File</span>
+                    <p class="text-[10px] text-gray-400 mt-2 font-light italic">WAV, MP3, AIFF (Max 500MB)</p>
                 </div>
 
-                <div class="mt-16 flex justify-between items-center border-t border-gray-50 pt-6">
-                    <span class="text-[10px] text-gray-300 uppercase tracking-widest">Metadata Required</span>
-                    <button onclick="deleteTrack(this)" class="text-[10px] font-bold hover:underline uppercase tracking-widest">
-                        [ Remove ]
-                    </button>
+                <div class="space-y-10">
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Title</label>
+                        <input type="text" class="field-input" placeholder="Track name...">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Artist</label>
+                        <input type="text" class="field-input" placeholder="Artist name...">
+                    </div>
+
+                    <div class="flex gap-8 items-center pt-2">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Explicit Content</span>
+                        <div class="flex gap-4 text-xs">
+                            <label class="cursor-pointer"><input type="radio" name="exp" class="accent-black mr-1"> No</label>
+                            <label class="cursor-pointer"><input type="radio" name="exp" class="accent-black mr-1"> Yes</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -135,58 +119,67 @@
     <script>
         let tracks = [];
 
-        function addTrack() {
-            const id = 't' + Date.now();
+        function addNewTrack() {
+            const id = 'tr-' + Date.now();
             const num = (tracks.length + 1).toString().padStart(2, '0');
             tracks.push({ id, num });
 
-            const list = document.getElementById('sidebar-list');
-            const btn = document.createElement('button');
-            btn.id = 'btn-' + id;
-            btn.className = 'btn-minimal w-full !justify-start !px-4';
-            btn.innerHTML = `Track ${num}`;
-            btn.onclick = () => activateTrack(id);
-            list.appendChild(btn);
+            // 1. Sidebar Item
+            const list = document.getElementById('track-list');
+            const nav = document.createElement('div');
+            nav.id = 'nav-' + id;
+            nav.className = 'nav-item cursor-pointer';
+            nav.onclick = () => switchTrack(id);
+            nav.innerHTML = `<span class="nav-label">Track ${num}</span><span class="text-[10px] opacity-0 status-mark">*</span>`;
+            list.appendChild(nav);
 
-            const display = document.getElementById('display-area');
+            // 2. Editor Pane
+            const container = document.getElementById('editor-container');
             const temp = document.getElementById('track-template');
             const clone = temp.content.cloneNode(true);
-            const container = clone.querySelector('.track-content');
-            container.id = 'content-' + id;
-            clone.querySelector('.num').textContent = num;
+            const pane = clone.querySelector('.track-pane');
+            pane.id = 'pane-' + id;
+            pane.querySelector('.track-num').textContent = num;
             
-            display.appendChild(clone);
-            activateTrack(id);
-            list.scrollTop = list.scrollHeight;
+            // Đảm bảo radio button không bị trùng lặp giữa các track
+            clone.querySelectorAll('input[type="radio"]').forEach(r => r.name = 'exp-' + id);
+
+            container.appendChild(clone);
+            switchTrack(id);
         }
 
-        function activateTrack(id) {
-            document.querySelectorAll('.track-content').forEach(c => c.classList.remove('active'));
-            document.getElementById('content-' + id).classList.add('active');
+        function switchTrack(id) {
+            // Ẩn/Hiện Pane
+            document.querySelectorAll('.track-pane').forEach(p => p.classList.remove('active'));
+            document.getElementById('pane-' + id).classList.add('active');
 
-            tracks.forEach(t => {
-                const btn = document.getElementById('btn-' + t.id);
-                if (t.id === id) {
-                    btn.classList.add('track-active');
-                    btn.textContent = `Track ${t.num}*`;
-                } else {
-                    btn.classList.remove('track-active');
-                    btn.textContent = `Track ${t.num}`;
-                }
+            // Cập nhật Sidebar
+            document.querySelectorAll('.nav-item').forEach(n => {
+                n.classList.remove('active');
+                n.querySelector('.status-mark').style.opacity = '0';
+                n.querySelector('.nav-label').style.fontStyle = 'normal';
             });
+            
+            const activeNav = document.getElementById('nav-' + id);
+            activeNav.classList.add('active');
+            activeNav.querySelector('.status-mark').style.opacity = '1';
+            activeNav.querySelector('.nav-label').style.fontStyle = 'italic';
         }
 
         function deleteTrack(btn) {
-            if (!confirm("Remove this track?")) return;
-            const content = btn.closest('.track-content');
-            const id = content.id.replace('content-', '');
+            if (!confirm("Xác nhận xóa track?")) return;
+            const pane = btn.closest('.track-pane');
+            const id = pane.id.replace('pane-', '');
+            
+            pane.remove();
+            document.getElementById('nav-' + id).remove();
+            
             tracks = tracks.filter(t => t.id !== id);
-            content.remove();
-            document.getElementById('btn-' + id).remove();
-            if (tracks.length > 0) activateTrack(tracks[0].id);
+            if (tracks.length > 0) switchTrack(tracks[0].id);
         }
 
-        window.onload = addTrack;
+        // Khởi tạo track đầu tiên
+        window.onload = addNewTrack;
     </script>
 </body>
 </html>
