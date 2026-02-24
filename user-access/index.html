@@ -3,26 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Add a new user</title>
+<title>User Management - UNDERSOUTHERN</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
   :root {
     --bg-body: #ffffff;
-    --bg-card: #ffffff;
     --primary-black: #000000;
     --text-main: #000000;
     --text-muted: #666666;
     --border-color: #eeeeee;
     --hover-bg: #f5f5f5;
-    --warning-bg: #fffbeb;
-    --warning-border: #fef3c7;
-    --warning-text: #713f12;
-    --info-bg: #eff6ff;
-    --info-text: #1e40af;
     --radius-main: 10px;
-    --font-main: 'Inter', -apple-system, sans-serif;
+    --font-main: 'Inter', sans-serif;
     --container-max-width: 1400px;
   }
 
@@ -33,248 +28,268 @@
     margin: 0;
     padding: 20px 0;
     letter-spacing: -0.01em;
-    box-sizing: border-box;
   }
 
   .layout-wrapper {
     max-width: var(--container-max-width);
     margin: 0 auto;
     padding: 0 20px;
-    box-sizing: border-box;
   }
 
-  h2.page-title {
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .page-title {
     font-size: 24px;
     font-weight: 700;
-    margin: 20px 0 30px 0;
-    padding: 0;
-    width: 100%;
+    margin: 0;
   }
 
-  .container {
-    display: grid;
-    grid-template-columns: 1fr 1.6fr 1fr;
-    gap: 24px;
-    width: 100%;
-  }
-
-  .card {
-    background: var(--bg-card);
-    padding: 24px;
-    border-radius: var(--radius-main);
-    border: 1px solid var(--border-color);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    box-sizing: border-box;
+  .btn-primary {
+    background: var(--primary-black);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.1s;
   }
 
-  h3 {
-    font-size: 13px;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--text-main);
-    margin: 0 0 20px 0;
-    letter-spacing: 0.05em;
+  .btn-primary:active { transform: scale(0.98); }
+
+  .filters {
+    max-width: 500px;
+    margin-bottom: 24px;
   }
 
   label {
     display: block;
     font-size: 13px;
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="password"] {
+  input[type="text"] {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     font-size: 14px;
-    margin-bottom: 18px;
     box-sizing: border-box;
-    font-family: inherit;
+  }
+
+  .table-container {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-main);
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  th {
+    background: #fafafa;
+    text-align: left;
+    padding: 14px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  td {
+    padding: 14px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .password-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .password-wrapper input {
+    border: none;
+    background: transparent;
+    font-family: monospace;
+    width: 90px;
+    outline: none;
+    font-size: 14px;
+  }
+
+  .toggle-eye {
+    cursor: pointer;
+    opacity: 0.5;
+    font-size: 13px;
+  }
+
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .actions button {
+    background: none;
+    border: 1px solid var(--border-color);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
     transition: all 0.2s;
   }
 
-  input:focus {
-    outline: none;
-    border-color: var(--primary-black);
-    background: var(--hover-bg);
-  }
+  .actions button:hover { background: var(--hover-bg); }
 
-  .add-btn {
-    background: var(--primary-black);
-    color: white;
-    border: none;
-    padding: 4px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 8px;
-    text-transform: lowercase;
-  }
-
-  .checkbox-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 10px;
-    font-size: 13.5px;
-    cursor: pointer;
-    font-weight: 400;
-  }
-
-  input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    margin-right: 10px;
-    accent-color: var(--primary-black);
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  .tag-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 15px;
-  }
-
-  .tag {
-    background: #f0f0f0;
-    padding: 4px 10px;
-    border-radius: 20px;
+  .status-tag {
     font-size: 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    font-weight: 600;
+    color: #16a34a;
   }
 
-  .tag span {
+  .pagination {
+    margin-top: 20px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .pagination button {
+    padding: 8px 14px;
+    border: 1px solid var(--border-color);
+    background: white;
+    border-radius: 6px;
     cursor: pointer;
-    font-weight: bold;
   }
 
-  .footer-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 40px;
-    padding-bottom: 40px;
-  }
-
-  .invite-btn {
+  .pagination button.active {
     background: var(--primary-black);
     color: white;
-    border: none;
-    padding: 12px 30px;
-    font-size: 14px;
-    font-weight: 700;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.1s;
-  }
-
-  .invite-btn:active {
-    transform: scale(0.98);
-  }
-
-  @media (max-width: 1100px) {
-    .container { grid-template-columns: 1fr; gap: 20px; }
-    h2.page-title { font-size: 20px; margin-bottom: 20px; }
-    .footer-actions { justify-content: center; }
+    border-color: var(--primary-black);
   }
 </style>
 </head>
 <body>
 
 <div class="layout-wrapper">
-  <h2 class="page-title">Add a new user</h2>
-
-  <div class="container">
-    <div class="card">
-      <h3>Contact Information</h3>
-      
-      <label>Email :</label>
-      <input type="email" placeholder="email@undersouthern.asia">
-
-      <label>Login :</label>
-      <input type="text" placeholder="Username">
-
-      <label>Password :</label>
-      <input type="password" placeholder="Password">
-    </div>
-
-    <div class="card">
-      <h3>User Access</h3>
-
-      <div id="permissionsList" style="margin-top: 10px;">
-        <label class="checkbox-item"><input type="checkbox"> Albums access</label>
-        <label class="checkbox-item"><input type="checkbox"> Edit albums</label>
-        <label class="checkbox-item"><input type="checkbox"> Create albums</label>
-        <label class="checkbox-item"><input type="checkbox"> See sessions</label>
-        <label class="checkbox-item"><input type="checkbox"> Reports access</label>
-        <label class="checkbox-item"><input type="checkbox"> Invoices access</label>
-        <label class="checkbox-item"><input type="checkbox"> Send invoices</label>
-        <label class="checkbox-item"><input type="checkbox"> Update invoices</label>
-        <label class="checkbox-item"><input type="checkbox"> Access to documents</label>
-        <label class="checkbox-item"><input type="checkbox"> Tickets access</label>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3>Catalog Scope</h3>
-      
-      <label>Artists <button class="add-btn" onclick="addAll('artist-tags', 'All Artists')">+ add all</button></label>
-      <div id="artist-tags" class="tag-container"></div>
-      <input type="text" id="artistInput" placeholder="Type artist name and press Enter" onkeypress="handleInput(event, 'artist-tags')">
-
-      <label>Labels <button class="add-btn" onclick="addAll('label-tags', 'All Labels')">+ add all</button></label>
-      <div id="label-tags" class="tag-container"></div>
-      <input type="text" id="labelInput" placeholder="Type label name and press Enter" onkeypress="handleInput(event, 'label-tags')">
-    </div>
+  
+  <div class="top-bar">
+    <h2 class="page-title">User Management</h2>
+    <button class="btn-primary" onclick="goToAddUser()">
+      <i class="fa-solid fa-user-plus"></i> Add a new user
+    </button>
   </div>
 
-  <div class="footer-actions">
-    <button class="invite-btn">Invite User</button>
+  <div class="filters">
+    <label>Search by login or email:</label>
+    <input type="text" placeholder="Type here to search...">
   </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Login</th>
+          <th>Password</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userTableBody">
+        </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button disabled>Previous</button>
+    <button class="active">1</button>
+    <button>Next</button>
+  </div>
+
 </div>
 
 <script>
-  // Chặn nút Back quay về Dashboard
+  // LOGIC ĐỒNG BỘ 1: Chặn nút Back quay về Dashboard
   (function() {
     history.pushState(null, null, window.location.href);
-    window.addEventListener('popstate', function(event) {
+    window.addEventListener('popstate', function() {
       window.location.href = "https://undersouthern.asia/dashboard";
     });
   })();
 
-  // Logic tạo Tag cho Artists và Labels
-  function handleInput(e, containerId) {
-    if (e.key === 'Enter' && e.target.value.trim() !== '') {
-      addTag(containerId, e.target.value.trim());
-      e.target.value = '';
+  // LOGIC ĐỒNG BỘ 2: Điều hướng sang trang Add User
+  function goToAddUser() {
+    window.location.href = "https://undersouthern.asia/user-access"; 
+  }
+
+  // LOGIC ĐỒNG BỘ 3: Render dữ liệu từ localStorage (Đồng bộ với Invite User)
+  function renderUsers() {
+    const tableBody = document.getElementById('userTableBody');
+    const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
+
+    // Nếu rỗng, hiển thị một dòng mặc định
+    if (users.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:#999;">No users found. Click Add a new user to start.</td></tr>`;
+      return;
+    }
+
+    tableBody.innerHTML = users.map((user, index) => `
+      <tr>
+        <td>${user.email}</td>
+        <td>${user.login}</td>
+        <td>
+          <div class="password-wrapper">
+            <input type="password" value="${user.pass}" id="pass-${index}" readonly>
+            <i class="fa-solid fa-eye toggle-eye" onclick="togglePassword('pass-${index}', this)"></i>
+          </div>
+        </td>
+        <td><span class="status-tag">Active</span></td>
+        <td class="actions">
+          <button title="Edit"><i class="fa-solid fa-pen"></i></button>
+          <button title="Delete" onclick="deleteUser(${index})"><i class="fa-solid fa-trash"></i></button>
+          <button title="Disable"><i class="fa-solid fa-ban"></i></button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // LOGIC ĐỒNG BỘ 4: Ẩn/Hiện mật khẩu
+  function togglePassword(inputId, icon) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      input.type = "password";
+      icon.classList.replace("fa-eye-slash", "fa-eye");
     }
   }
 
-  function addTag(containerId, text) {
-    const container = document.getElementById(containerId);
-    const existing = Array.from(container.querySelectorAll('.tag')).map(t => t.firstChild.textContent.trim());
-    if (existing.includes(text)) return;
-
-    const tag = document.createElement('div');
-    tag.className = 'tag';
-    tag.innerHTML = `${text} <span onclick="this.parentElement.remove()">×</span>`;
-    container.appendChild(tag);
+  // Hỗ trợ xóa user
+  function deleteUser(index) {
+    if(confirm("Are you sure you want to delete this user?")) {
+      const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
+      users.splice(index, 1);
+      localStorage.setItem('undersouthern_users', JSON.stringify(users));
+      renderUsers();
+    }
   }
 
-  function addAll(containerId, text) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    addTag(containerId, text);
-  }
+  // Chạy khi load trang
+  window.onload = renderUsers;
 </script>
 
 </body>
