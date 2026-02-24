@@ -19,10 +19,83 @@
     --hover-bg: #f5f5f5;
     --radius-main: 10px;
     --font-main: 'Inter', sans-serif;
+    --header-height: 72px;
   }
 
-  body { font-family: var(--font-main); background-color: var(--bg-body); margin: 0; padding: 20px 0; letter-spacing: -0.01em; }
-  .layout-wrapper { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+  body { 
+    font-family: var(--font-main); 
+    background-color: var(--bg-body); 
+    margin: 0; 
+    padding: 0; 
+    letter-spacing: -0.01em; 
+  }
+
+  /* --- HEADER NGANG (GIỐNG DASHBOARD) --- */
+  .main-header {
+    height: var(--header-height);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 1000;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .brand-name {
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    margin: 0;
+    padding-right: 40px;
+    border-right: 1px solid var(--border-color);
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .user-avatar-circle {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-black);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .user-avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* --- NỘI DUNG CHÍNH --- */
+  .layout-wrapper { 
+    max-width: 1400px; 
+    margin: 0 auto; 
+    padding: 40px 20px; 
+  }
+
   .hidden { display: none !important; }
 
   /* UI COMPONENTS */
@@ -34,6 +107,19 @@
 
   /* LIST VIEW STYLES */
   .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+  .title-group { display: flex; align-items: center; gap: 15px; }
+  
+  .btn-back-main { 
+    background: none; 
+    border: 1px solid var(--border-color); 
+    padding: 8px 12px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    color: var(--primary-black); 
+    transition: all 0.2s;
+  }
+  .btn-back-main:hover { background: var(--hover-bg); border-color: var(--primary-black); }
+
   .btn-primary { background: var(--primary-black); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; }
   .table-container { border: 1px solid var(--border-color); border-radius: var(--radius-main); overflow: hidden; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -50,18 +136,33 @@
   .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; }
   .invite-btn { background: var(--primary-black); color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; }
 
-  /* TAGS & MISC */
   .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
   .add-btn-small { background: #000; color: #fff; border: none; padding: 2px 8px; border-radius: 4px; font-size: 10px; cursor: pointer; margin-left: 5px; }
 </style>
 </head>
 <body>
 
+<header class="main-header">
+  <div class="header-left">
+    <h1 class="brand-name">UNDERSOUTHERN</h1>
+  </div>
+  <div class="header-right">
+    <div class="user-avatar-circle" id="userAvatar">
+      <span id="avatarText">US</span>
+    </div>
+  </div>
+</header>
+
 <div class="layout-wrapper">
   
   <div id="view-list">
     <div class="top-bar">
-      <h2 style="margin:0; font-weight:700">User Management</h2>
+      <div class="title-group">
+        <button class="btn-back-main" onclick="window.location.href='https://undersouthern.asia/dashboard'" title="Quay lại Dashboard">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <h2 style="margin:0; font-weight:700">User Management</h2>
+      </div>
       <button class="btn-primary" onclick="toggleView('add')">
         <i class="fa-solid fa-user-plus"></i> Add a new user
       </button>
@@ -84,7 +185,7 @@
           </tr>
         </thead>
         <tbody id="userTableBody">
-          </tbody>
+        </tbody>
       </table>
     </div>
   </div>
@@ -141,7 +242,17 @@
 </div>
 
 <script>
-  // Chuyển view
+  // Hàm đồng bộ Avatar từ Dashboard
+  function syncAvatar() {
+    const savedImg = localStorage.getItem('userAvatar');
+    const holder = document.getElementById('userAvatar');
+    const text = document.getElementById('avatarText');
+    if (savedImg && holder) {
+      if (text) text.style.display = 'none';
+      holder.innerHTML = `<img src="${savedImg}" alt="Avatar">`;
+    }
+  }
+
   function toggleView(view) {
     if (view === 'add') {
       document.getElementById('view-list').classList.add('hidden');
@@ -152,13 +263,11 @@
     }
   }
 
-  // Chặn Back vật lý
   (function() {
     history.pushState(null, null, window.location.href);
     window.addEventListener('popstate', () => { window.location.href = "https://undersouthern.asia/dashboard"; });
   })();
 
-  // Invite & Quay về trang đầu
   function handleInvite() {
     const email = document.getElementById('inEmail').value;
     const login = document.getElementById('inLogin').value;
@@ -178,7 +287,6 @@
     toggleView('list');
   }
 
-  // Render bảng
   function renderUsers() {
     const container = document.getElementById('userTableBody');
     const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
@@ -206,23 +314,13 @@
     `).join('');
   }
 
-  // LOGIC TÌM KIẾM THEO EMAIL/LOGIN CHÍNH XÁC
   function filterTable() {
     const filter = document.getElementById("searchInput").value.toLowerCase();
     const rows = document.getElementById("userTableBody").getElementsByTagName("tr");
-
     for (let i = 0; i < rows.length; i++) {
-      // Lấy text từ cột Email và Login
       const email = rows[i].getElementsByClassName("email-col")[0].textContent.toLowerCase();
       const login = rows[i].getElementsByClassName("login-col")[0].textContent.toLowerCase();
-
-      // Nếu ô search trống thì hiện tất cả, nếu có chữ thì lọc chính xác
-      if (filter === "") {
-        rows[i].style.display = "";
-      } else {
-        // Tự động hiển thị hàng nếu email hoặc login chứa từ khóa tìm kiếm
-        rows[i].style.display = (email.includes(filter) || login.includes(filter)) ? "" : "none";
-      }
+      rows[i].style.display = (email.includes(filter) || login.includes(filter)) ? "" : "none";
     }
   }
 
@@ -241,7 +339,10 @@
     }
   }
 
-  window.onload = renderUsers;
+  window.onload = () => {
+    syncAvatar();
+    renderUsers();
+  };
 </script>
 
 </body>
