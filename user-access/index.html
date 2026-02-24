@@ -47,8 +47,8 @@
   .card { background: #fff; padding: 24px; border-radius: var(--radius-main); border: 1px solid var(--border-color); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
   h3 { font-size: 13px; text-transform: uppercase; margin: 0 0 20px 0; font-weight: 700; }
   label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
-  input { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; box-sizing: border-box; margin-bottom: 15px; }
-  input:focus { outline: none; border-color: var(--primary-black); }
+  input, select { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; box-sizing: border-box; margin-bottom: 15px; background: #fff; }
+  input:focus, select:focus { outline: none; border-color: var(--primary-black); }
 
   .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
   .title-group { display: flex; align-items: center; gap: 15px; }
@@ -60,7 +60,11 @@
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th { background: #fafafa; text-align: left; padding: 14px; color: var(--text-muted); font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
   td { padding: 14px; border-bottom: 1px solid var(--border-color); }
-  .status-tag { color: #16a34a; font-weight: 600; font-size: 12px; }
+  
+  .status-tag { font-weight: 600; font-size: 12px; }
+  .status-active { color: #16a34a; }
+  .status-disabled { color: #999999; }
+  .scope-cell { color: #6366f1; font-weight: 500; font-size: 13px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* --- MODAL XÁC NHẬN --- */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(2px); }
@@ -137,6 +141,7 @@
                 <th>Email</th>
                 <th>Login</th>
                 <th>Password</th>
+                <th>Artists / Labels</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -159,6 +164,11 @@
             <label>Email :</label><input type="email" id="inEmail" placeholder="email@undersouthern.asia">
             <label>Login :</label><input type="text" id="inLogin" placeholder="Username">
             <label>Password :</label><input type="password" id="inPass" placeholder="Password">
+            <label>Account Status :</label>
+            <select id="inStatus">
+              <option value="Active">Active</option>
+              <option value="Disabled">Disabled</option>
+            </select>
           </div>
           <div class="card">
             <h3>User Access</h3>
@@ -180,7 +190,6 @@
             <label>Artists</label>
             <div id="artist-tags" class="tag-container"></div>
             <input type="text" id="artistInput" placeholder="Type name and press Enter">
-            
             <label>Labels</label>
             <div id="label-tags" class="tag-container"></div>
             <input type="text" id="labelInput" placeholder="Type name and press Enter">
@@ -272,12 +281,10 @@
     document.getElementById('inEmail').value = '';
     document.getElementById('inLogin').value = '';
     document.getElementById('inPass').value = '';
+    document.getElementById('inStatus').value = 'Active';
     document.getElementById('inPass').type = 'password';
-    
-    // Reset checkboxes
     const checks = document.querySelectorAll('#access-checkboxes input');
     checks.forEach(c => c.checked = false);
-
     artistList = []; labelList = [];
     renderTags('artist'); renderTags('label');
     toggleView('add');
@@ -287,25 +294,18 @@
     const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
     const user = users[index];
     editingIndex = index;
-    
     document.getElementById('inEmail').value = user.email;
     document.getElementById('inLogin').value = user.login;
     document.getElementById('inPass').value = user.pass;
-    document.getElementById('inPass').type = 'text'; // Hiện pass khi edit
-    
-    // Khôi phục checkboxes
+    document.getElementById('inPass').type = 'text';
+    document.getElementById('inStatus').value = user.status || 'Active';
     const checks = document.querySelectorAll('#access-checkboxes input');
     const userAccess = user.access || [];
-    checks.forEach(c => {
-      c.checked = userAccess.includes(c.value);
-    });
-
-    artistList = user.artists || [];
-    labelList = user.labels || [];
-    
+    checks.forEach(c => c.checked = userAccess.includes(c.value));
+    artistList = [...(user.artists || [])];
+    labelList = [...(user.labels || [])];
     document.getElementById('formTitle').innerText = "Edit user";
     document.getElementById('submitBtn').innerText = "Save Changes";
-    
     renderTags('artist');
     renderTags('label');
     toggleView('add');
@@ -315,26 +315,15 @@
     const email = document.getElementById('inEmail').value;
     const login = document.getElementById('inLogin').value;
     const pass = document.getElementById('inPass').value;
+    const status = document.getElementById('inStatus').value;
     if (!email || !login || !pass) { alert("Please fill in all information."); return; }
-    
-    // Lấy giá trị checkboxes
     const selectedAccess = [];
     const checks = document.querySelectorAll('#access-checkboxes input:checked');
     checks.forEach(c => selectedAccess.push(c.value));
-
     let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-    const userData = { 
-      email, 
-      login, 
-      pass, 
-      access: selectedAccess, 
-      artists: artistList, 
-      labels: labelList 
-    };
-
+    const userData = { email, login, pass, status, access: selectedAccess, artists: artistList, labels: labelList };
     if (editingIndex === -1) { users.unshift(userData); } 
     else { users[editingIndex] = userData; }
-    
     localStorage.setItem('undersouthern_users', JSON.stringify(users));
     renderUsers();
     toggleView('list');
@@ -344,26 +333,40 @@
     const container = document.getElementById('userTableBody');
     let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
     if (users.length === 0) {
-        users.push({email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123', artists: [], labels: [], access: []});
+        users.push({email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123', status: 'Active', artists: [], labels: [], access: []});
     }
-    container.innerHTML = users.map((u, i) => `
-      <tr id="row-${i}">
-        <td class="email-col">${u.email}</td>
-        <td class="login-col">${u.login}</td>
-        <td>
-          <div style="display:flex; align-items:center; gap:8px">
-            <input type="password" value="${u.pass}" id="p-${i}" readonly style="margin:0; border:none; width:100px; background:none; font-family:monospace;">
-            <i class="fa-solid fa-eye" style="cursor:pointer; opacity:0.5; font-size:12px;" onclick="tglPass('p-${i}', this)"></i>
-          </div>
-        </td>
-        <td><span class="status-tag">Active</span></td>
-        <td style="display:flex; gap:8px">
-          <button class="btn-icon" title="Edit" onclick="editUser(${i})"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
-          <button class="btn-icon" title="Delete" onclick="openModal(${i})"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
-          <button class="btn-icon" title="Switch User"><i class="fa-solid fa-arrows-rotate" style="font-size:11px"></i></button>
-        </td>
-      </tr>
-    `).join('');
+    container.innerHTML = users.map((u, i) => {
+      const statusClass = u.status === 'Disabled' ? 'status-disabled' : 'status-active';
+      
+      // LOGIC HIỂN THỊ TÊN ARTISTS VÀ LABELS TRỰC TIẾP
+      const artistsStr = (u.artists && u.artists.length > 0) ? u.artists.join(', ') : '';
+      const labelsStr = (u.labels && u.labels.length > 0) ? u.labels.join(', ') : '';
+      
+      let scopeDisplay = 'None';
+      if (artistsStr && labelsStr) scopeDisplay = `${artistsStr} / ${labelsStr}`;
+      else if (artistsStr) scopeDisplay = artistsStr;
+      else if (labelsStr) scopeDisplay = labelsStr;
+
+      return `
+        <tr id="row-${i}">
+          <td class="email-col">${u.email}</td>
+          <td class="login-col">${u.login}</td>
+          <td>
+            <div style="display:flex; align-items:center; gap:8px">
+              <input type="password" value="${u.pass}" id="p-${i}" readonly style="margin:0; border:none; width:100px; background:none; font-family:monospace;">
+              <i class="fa-solid fa-eye" style="cursor:pointer; opacity:0.5; font-size:12px;" onclick="tglPass('p-${i}', this)"></i>
+            </div>
+          </td>
+          <td><div class="scope-cell" title="${scopeDisplay}">${scopeDisplay}</div></td>
+          <td><span class="status-tag ${statusClass}">${u.status || 'Active'}</span></td>
+          <td style="display:flex; gap:8px">
+            <button class="btn-icon" title="Edit" onclick="editUser(${i})"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
+            <button class="btn-icon" title="Delete" onclick="openModal(${i})"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
+            <button class="btn-icon" title="Switch User"><i class="fa-solid fa-arrows-rotate" style="font-size:11px"></i></button>
+          </td>
+        </tr>
+      `;
+    }).join('');
 
     const rows = container.querySelectorAll('tr');
     rows.forEach((row, index) => {
