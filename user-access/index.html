@@ -32,6 +32,18 @@
     letter-spacing: -0.01em; 
   }
 
+  /* --- HIỆU ỨNG LOAD CHẬM --- */
+  .fade-item {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-item.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   /* --- HEADER NGANG --- */
   .main-header {
     height: var(--header-height);
@@ -45,8 +57,6 @@
     background: #fff;
     z-index: 1000;
   }
-
-  .header-left { display: flex; align-items: center; height: 100%; }
 
   .brand-name {
     font-weight: 900;
@@ -89,11 +99,10 @@
   input { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; box-sizing: border-box; margin-bottom: 15px; }
   input:focus { outline: none; border-color: var(--primary-black); }
 
-  /* LIST VIEW STYLES */
   .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
   .title-group { display: flex; align-items: center; gap: 15px; }
   .btn-back-main { background: none; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; cursor: pointer; color: var(--primary-black); transition: all 0.2s; }
-  .btn-back-main:hover { background: var(--hover-bg); border-color: var(--primary-black); }
+  .btn-back-main:hover { background: var(--hover-bg); }
 
   .btn-primary { background: var(--primary-black); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; }
   .table-container { border: 1px solid var(--border-color); border-radius: var(--radius-main); overflow: hidden; }
@@ -102,7 +111,7 @@
   td { padding: 14px; border-bottom: 1px solid var(--border-color); }
   .status-tag { color: #16a34a; font-weight: 600; font-size: 12px; }
 
-  /* --- CUSTOM MODAL XÁC NHẬN --- */
+  /* --- MODAL XÁC NHẬN --- */
   .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.4); display: none; align-items: center; justify-content: center; z-index: 2000;
@@ -111,27 +120,30 @@
   .modal-box {
     background: white; padding: 30px; border-radius: 16px; width: 340px; text-align: center;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    animation: modalIn 0.2s ease-out;
   }
-  @keyframes modalIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  .modal-box h2 { font-size: 18px; font-weight: 700; margin: 0 0 10px 0; color: #000; }
-  .modal-box p { font-size: 14px; color: var(--text-muted); margin-bottom: 25px; line-height: 1.5; }
-  .modal-actions { display: flex; gap: 10px; justify-content: center; }
-  .btn-modal-cancel { flex: 1; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; cursor: pointer; background: white; font-weight: 600; font-size: 14px; }
-  .btn-modal-delete { flex: 1; background: #ff3b30; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; }
-  .btn-modal-delete:hover { background: #d32f2f; }
+  .btn-modal-cancel { flex: 1; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; cursor: pointer; background: white; font-weight: 600; }
+  .btn-modal-delete { flex: 1; background: #ff3b30; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; }
 
-  /* FORM STYLES */
-  .page-header { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
-  .btn-back { background: none; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; cursor: pointer; }
   .form-container { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: 24px; }
   .checkbox-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13.5px; cursor: pointer; }
-  .checkbox-item input { width: 16px; height: 16px; margin: 0; cursor: pointer; accent-color: #000; }
+  .checkbox-item input { width: 16px; height: 16px; margin: 0; accent-color: #000; }
   .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; }
   .invite-btn { background: var(--primary-black); color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; }
 
-  .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-  .add-btn-small { background: #000; color: #fff; border: none; padding: 2px 8px; border-radius: 4px; font-size: 10px; cursor: pointer; margin-left: 5px; }
+  /* Delay cho từng dòng table */
+  tbody tr { opacity: 0; transform: translateY(5px); transition: 0.5s ease; }
+  tbody tr.loaded { opacity: 1; transform: translateY(0); }
+
+  /* Style nút action */
+  .btn-icon {
+    border: 1px solid var(--border-color);
+    background: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-icon:hover { background: var(--hover-bg); }
 </style>
 </head>
 <body>
@@ -140,7 +152,7 @@
   <div class="modal-box">
     <h2>Delete User?</h2>
     <p>This action cannot be undone. Are you sure you want to remove this user?</p>
-    <div class="modal-actions">
+    <div class="modal-actions" style="display:flex; gap:10px;">
       <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
       <button class="btn-modal-delete" id="confirmDeleteBtn">Delete</button>
     </div>
@@ -148,7 +160,7 @@
 </div>
 
 <div id="auth-guard">
-    <header class="main-header">
+    <header class="main-header fade-item" id="header-el">
       <div class="header-left">
         <h1 class="brand-name">UNDERSOUTHERN</h1>
       </div>
@@ -161,9 +173,9 @@
 
     <div class="layout-wrapper">
       <div id="view-list">
-        <div class="top-bar">
+        <div class="top-bar fade-item" id="top-bar-el">
           <div class="title-group">
-            <button class="btn-back-main" onclick="window.location.href='https://undersouthern.asia/dashboard'" title="Quay lại Dashboard">
+            <button class="btn-back-main" onclick="window.location.href='https://undersouthern.asia/dashboard'">
               <i class="fa-solid fa-arrow-left"></i>
             </button>
             <h2 style="margin:0; font-weight:700">User Management</h2>
@@ -173,12 +185,12 @@
           </button>
         </div>
 
-        <div style="max-width:400px; margin-bottom:24px;">
+        <div style="max-width:400px; margin-bottom:24px;" class="fade-item" id="search-el">
           <label>Search by login or email:</label>
           <input type="text" id="searchInput" placeholder="Type email or login to find..." onkeyup="filterTable()">
         </div>
 
-        <div class="table-container">
+        <div class="table-container fade-item" id="table-el">
           <table>
             <thead>
               <tr>
@@ -201,15 +213,13 @@
           </button>
           <h2 id="formTitle" style="margin:0; font-weight:700">Add a new user</h2>
         </div>
-
-        <div class="form-container">
+        <div class="form-container" id="form-content">
           <div class="card">
             <h3>Contact Information</h3>
             <label>Email :</label><input type="email" id="inEmail" placeholder="email@undersouthern.asia">
             <label>Login :</label><input type="text" id="inLogin" placeholder="Username">
             <label>Password :</label><input type="password" id="inPass" placeholder="Password">
           </div>
-
           <div class="card">
             <h3>User Access</h3>
             <div style="margin-top:5px;">
@@ -225,19 +235,16 @@
               <label class="checkbox-item"><input type="checkbox"> Tickets access</label>
             </div>
           </div>
-
           <div class="card">
             <h3>Catalog Scope</h3>
             <label>Artists <button class="add-btn-small">+ add all</button></label>
             <div class="tag-container"></div>
             <input type="text" placeholder="Type artist name and press Enter">
-
             <label>Labels <button class="add-btn-small">+ add all</button></label>
             <div class="tag-container"></div>
             <input type="text" placeholder="Type label name and press Enter">
           </div>
         </div>
-
         <div class="footer-actions">
           <button id="submitBtn" class="invite-btn" onclick="handleInvite()">Invite User</button>
         </div>
@@ -247,7 +254,7 @@
 
 <script>
   let editingIndex = -1; 
-  let pendingDeleteIndex = -1; // Biến lưu tạm vị trí cần xóa
+  let pendingDeleteIndex = -1;
 
   (function checkAuth() {
     if (localStorage.getItem('isLoggedIn') !== 'true') {
@@ -256,6 +263,16 @@
       document.getElementById('auth-guard').style.display = 'block';
     }
   })();
+
+  function slowLoadView() {
+    const items = ['header-el', 'top-bar-el', 'search-el', 'table-el'];
+    items.forEach((id, index) => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('show');
+      }, (index + 1) * 200);
+    });
+  }
 
   function syncAvatar() {
     const savedImg = localStorage.getItem('userAvatar');
@@ -275,6 +292,7 @@
       document.getElementById('view-add').classList.add('hidden');
       document.getElementById('view-list').classList.remove('hidden');
       editingIndex = -1;
+      slowLoadView();
     }
   }
 
@@ -312,14 +330,19 @@
     toggleView('list');
   }
 
+  function switchUser(index) {
+    // Logic cho nút Switch User có thể thêm ở đây
+    console.log("Switching to user at index:", index);
+  }
+
   function renderUsers() {
     const container = document.getElementById('userTableBody');
-    const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
+    let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
     if (users.length === 0) {
         users.push({email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123'});
     }
     container.innerHTML = users.map((u, i) => `
-      <tr>
+      <tr id="row-${i}">
         <td class="email-col">${u.email}</td>
         <td class="login-col">${u.login}</td>
         <td>
@@ -330,16 +353,23 @@
         </td>
         <td><span class="status-tag">Active</span></td>
         <td style="display:flex; gap:8px">
-          <button onclick="editUser(${i})" style="border:1px solid #eee; background:#fff; padding:6px 10px; border-radius:6px; cursor:pointer;"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
-          <button onclick="openModal(${i})" style="border:1px solid #eee; background:#fff; padding:6px 10px; border-radius:6px; cursor:pointer;"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
+          <button class="btn-icon" title="Edit" onclick="editUser(${i})"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
+          <button class="btn-icon" title="Delete" onclick="openModal(${i})"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
+          <button class="btn-icon" title="Switch to this user" onclick="switchUser(${i})"><i class="fa-solid fa-arrows-rotate" style="font-size:11px"></i></button>
         </td>
       </tr>
     `).join('');
+
+    const rows = container.querySelectorAll('tr');
+    rows.forEach((row, index) => {
+      setTimeout(() => {
+        row.classList.add('loaded');
+      }, (index + 4) * 150);
+    });
   }
 
-  /* --- LOGIC CUSTOM MODAL XÓA --- */
   function openModal(index) {
-    pendingDeleteIndex = index; // Lưu index lại
+    pendingDeleteIndex = index;
     document.getElementById('confirmModal').style.display = 'flex';
   }
 
@@ -348,7 +378,6 @@
     pendingDeleteIndex = -1;
   }
 
-  // Nút xác nhận xóa trong Modal
   document.getElementById('confirmDeleteBtn').onclick = function() {
     if (pendingDeleteIndex !== -1) {
       let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
@@ -378,6 +407,7 @@
   window.onload = () => {
     syncAvatar();
     renderUsers();
+    slowLoadView();
   };
 </script>
 
