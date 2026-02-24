@@ -22,7 +22,6 @@
     --header-height: 72px;
   }
 
-  /* Ẩn toàn bộ nội dung mặc định để bảo mật trước khi kiểm tra login */
   #auth-guard { display: none; }
 
   body { 
@@ -113,7 +112,7 @@
   .btn-back { background: none; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; cursor: pointer; }
   .form-container { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: 24px; }
   .checkbox-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13.5px; cursor: pointer; }
-  .checkbox-item input { width: 16px; height: 16px; margin: 0; cursor: pointer; accent-color: #000; }
+  .checkbox-item input { width: 16px; height: 16px; margin: 0; accent-color: #000; }
   .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; }
   .invite-btn { background: var(--primary-black); color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; }
 
@@ -144,7 +143,7 @@
             </button>
             <h2 style="margin:0; font-weight:700">User Management</h2>
           </div>
-          <button class="btn-primary" onclick="toggleView('add')">
+          <button class="btn-primary" onclick="openAddForm()">
             <i class="fa-solid fa-user-plus"></i> Add a new user
           </button>
         </div>
@@ -175,7 +174,7 @@
           <button class="btn-back" onclick="toggleView('list')">
             <i class="fa-solid fa-arrow-left"></i>
           </button>
-          <h2 style="margin:0; font-weight:700">Add a new user</h2>
+          <h2 id="formTitle" style="margin:0; font-weight:700">Add a new user</h2>
         </div>
 
         <div class="form-container">
@@ -215,19 +214,20 @@
         </div>
 
         <div class="footer-actions">
-          <button class="invite-btn" onclick="handleInvite()">Invite User</button>
+          <button id="submitBtn" class="invite-btn" onclick="handleInvite()">Invite User</button>
         </div>
       </div>
     </div>
 </div>
 
 <script>
-  // KIỂM TRA ĐĂNG NHẬP NGAY LẬP TỨC
+  let editingIndex = -1; // Biến theo dõi đang sửa user nào (-1 là thêm mới)
+
+  // KIỂM TRA ĐĂNG NHẬP
   (function checkAuth() {
     if (localStorage.getItem('isLoggedIn') !== 'true') {
       window.location.href = "https://undersouthern.asia/login";
     } else {
-      // Nếu đã đăng nhập, hiển thị giao diện
       document.getElementById('auth-guard').style.display = 'block';
     }
   })();
@@ -249,7 +249,37 @@
     } else {
       document.getElementById('view-add').classList.add('hidden');
       document.getElementById('view-list').classList.remove('hidden');
+      editingIndex = -1; // Reset trạng thái sửa
     }
+  }
+
+  // Hàm mở form để thêm mới
+  function openAddForm() {
+    document.getElementById('formTitle').innerText = "Add a new user";
+    document.getElementById('submitBtn').innerText = "Invite User";
+    document.getElementById('inEmail').value = '';
+    document.getElementById('inLogin').value = '';
+    document.getElementById('inPass').value = '';
+    toggleView('add');
+  }
+
+  // Hàm mở form để chỉnh sửa (Edit)
+  function editUser(index) {
+    const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
+    const user = users[index];
+
+    editingIndex = index; // Lưu vị trí đang sửa
+
+    // Điền dữ liệu cũ vào input
+    document.getElementById('inEmail').value = user.email;
+    document.getElementById('inLogin').value = user.login;
+    document.getElementById('inPass').value = user.pass;
+
+    // Đổi giao diện nút và tiêu đề
+    document.getElementById('formTitle').innerText = "Edit user";
+    document.getElementById('submitBtn').innerText = "Save Changes";
+
+    toggleView('add');
   }
 
   (function() {
@@ -264,13 +294,17 @@
 
     if (!email || !login || !pass) { alert("Please fill in all information."); return; }
 
-    const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-    users.unshift({ email, login, pass });
-    localStorage.setItem('undersouthern_users', JSON.stringify(users));
+    let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
 
-    document.getElementById('inEmail').value = '';
-    document.getElementById('inLogin').value = '';
-    document.getElementById('inPass').value = '';
+    if (editingIndex === -1) {
+      // THÊM MỚI
+      users.unshift({ email, login, pass });
+    } else {
+      // CẬP NHẬT (EDIT)
+      users[editingIndex] = { email, login, pass };
+    }
+
+    localStorage.setItem('undersouthern_users', JSON.stringify(users));
 
     renderUsers();
     toggleView('list');
@@ -278,10 +312,13 @@
 
   function renderUsers() {
     const container = document.getElementById('userTableBody');
-    const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
+    let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
     
+    // Nếu rỗng thì tạo user admin mặc định
     if (users.length === 0) {
-        users.push({email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123'});
+        const defaultAdmin = {email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123'};
+        users.push(defaultAdmin);
+        localStorage.setItem('undersouthern_users', JSON.stringify(users));
     }
 
     container.innerHTML = users.map((u, i) => `
@@ -296,7 +333,7 @@
         </td>
         <td><span class="status-tag">Active</span></td>
         <td style="display:flex; gap:8px">
-          <button style="border:1px solid #eee; background:#fff; padding:6px 10px; border-radius:6px; cursor:pointer;"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
+          <button onclick="editUser(${i})" style="border:1px solid #eee; background:#fff; padding:6px 10px; border-radius:6px; cursor:pointer;"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
           <button onclick="delUser(${i})" style="border:1px solid #eee; background:#fff; padding:6px 10px; border-radius:6px; cursor:pointer;"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
         </td>
       </tr>
