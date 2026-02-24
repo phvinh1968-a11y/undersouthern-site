@@ -28,10 +28,17 @@
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Style cho Dropdown */
         #user-dropdown {
             min-width: 180px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style để ảnh avatar luôn tròn và phủ kín ô 32x32 */
+        #main-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 9999px;
         }
 
         @media (max-width: 768px) {
@@ -87,8 +94,8 @@
                 
                 <div class="flex items-center space-x-4 relative">
                     <button onclick="toggleDropdown(event)" id="user-menu-button" class="focus:outline-none">
-                        <div class="w-8 h-8 bg-black rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm hover:scale-105 transition-all">
-                            US
+                        <div id="top-avatar-holder" class="w-8 h-8 bg-black rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm hover:scale-105 transition-all overflow-hidden">
+                            <span id="us-text">US</span>
                         </div>
                     </button>
 
@@ -146,23 +153,32 @@
     </div>
 
     <script>
-        // Toggle Sidebar
+        // HÀM QUAN TRỌNG: Load ảnh từ Local Storage để thay thế chữ US
+        function syncAvatar() {
+            const savedImg = localStorage.getItem('userAvatar');
+            const holder = document.getElementById('top-avatar-holder');
+            const text = document.getElementById('us-text');
+            
+            if (savedImg && holder) {
+                if (text) text.style.display = 'none'; // Ẩn chữ US
+                holder.innerHTML = `<img src="${savedImg}" id="main-avatar-img" alt="Avatar">`;
+            }
+        }
+
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('sidebar-open');
         }
 
-        // Dropdown Logic
         function toggleDropdown(event) {
             event.stopPropagation();
             const dropdown = document.getElementById('user-dropdown');
             dropdown.classList.toggle('hidden');
         }
 
-        // Đóng dropdown khi click ra ngoài
         window.addEventListener('click', function(e) {
             const dropdown = document.getElementById('user-dropdown');
             const button = document.getElementById('user-menu-button');
-            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+            if (dropdown && button && !button.contains(e.target) && !dropdown.contains(e.target)) {
                 dropdown.classList.add('hidden');
             }
         });
@@ -190,11 +206,14 @@
 
             if (window.innerWidth < 768) {
                 const sidebar = document.getElementById('sidebar');
-                if(sidebar.classList.contains('sidebar-open')) toggleSidebar();
+                if(sidebar && sidebar.classList.contains('sidebar-open')) toggleSidebar();
             }
         }
 
         window.onload = () => {
+            // Chạy hàm đồng bộ Avatar ngay khi load trang
+            syncAvatar();
+
             if (localStorage.getItem('isLoggedIn') !== 'true') {
                 window.location.href = "https://undersouthern.asia/login";
             } else {
