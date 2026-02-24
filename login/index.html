@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - UNDERSOUTHERN</title>
+    
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -108,7 +111,7 @@
             </div>
 
             <div id="reset-password-content" class="hidden">
-                <h2 class="text-lg font-bold mb-6 italic">Reset password</h2>
+                <h2 class="text-lg font-bold mb-6">Reset password</h2>
                 <form onsubmit="event.preventDefault();" class="space-y-6">
                     <div>
                         <input type="text" placeholder="Username" class="reset-input text-base">
@@ -118,7 +121,7 @@
                         Request Reset Link
                     </button>
 
-                    <p onclick="showLoginPage()" class="text-xs text-slate-600 hover:underline cursor-pointer text-center block pt-2">
+                    <p onclick="showLoginPage()" class="text-sm text-slate-600 hover:underline cursor-pointer text-center block pt-2">
                         Back to login page
                     </p>
                 </form>
@@ -179,7 +182,7 @@
             const menu = document.getElementById('lang-menu');
             const container = document.getElementById('language-container');
             if (container && !container.contains(event.target)) {
-                menu.classList.add('hidden');
+                if (menu) menu.classList.add('hidden');
             }
         });
     </script>
