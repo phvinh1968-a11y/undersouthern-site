@@ -1,107 +1,141 @@
-<div class="space-y-10 fade-in pb-20">
-    <div>
-        <h2 class="text-3xl font-bold tracking-tight">User Access</h2>
-        <p class="text-slate-400 text-[13px] mt-2 font-medium">Configure contact information and specific access permissions for this user.</p>
+<div class="fade-in space-y-12 pb-24 max-w-6xl mx-auto">
+    
+    <div class="mb-10 pt-4 border-b border-slate-50 pb-8">
+        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-black">User Access</h2>
+        <p class="text-slate-400 text-sm mt-2 font-medium">Manage contact information and account permissions.</p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+    <form class="space-y-16">
         
-        <div class="space-y-6">
-            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 border-b pb-2">Contact Information</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-[12px] font-bold text-slate-700 block mb-1">Login :</label>
-                    <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-[13px] outline-none focus:border-black transition">
+        <div class="space-y-8">
+            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Contact Information</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-3">
+                    <label class="text-[13px] font-bold text-slate-700 ml-1">Login</label>
+                    <input type="text" class="input-field" placeholder="Username">
                 </div>
-                <div>
-                    <label class="text-[12px] font-bold text-slate-700 block mb-1">Email :</label>
-                    <input type="email" class="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-[13px] outline-none focus:border-black transition">
+                <div class="space-y-3">
+                    <label class="text-[13px] font-bold text-slate-700 ml-1">Email</label>
+                    <input type="email" class="input-field" placeholder="email@undersouthern.asia">
                 </div>
             </div>
         </div>
 
-        <div class="space-y-6">
-            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 border-b pb-2">User Access</h3>
+        <div class="border-t border-slate-100"></div>
+
+        <div class="space-y-8">
+            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">User Access</h3>
             
-            <div class="space-y-6">
-                <div>
-                    <label class="text-[12px] font-bold text-slate-700 block mb-1">Permission Level</label>
-                    <select class="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-[13px] outline-none cursor-pointer">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <label class="text-[13px] font-bold text-slate-700">Permission Level</label>
+                <div class="md:col-span-2">
+                    <select class="input-field cursor-pointer font-bold">
                         <option>Standard user</option>
                         <option>Administrator</option>
                         <option>Viewer</option>
                     </select>
                 </div>
+            </div>
 
-                <div class="space-y-6 text-[13px]">
-                    <div>
-                        <p class="font-bold text-slate-900 mb-2">Backstage</p>
-                        <label class="flex items-center space-x-2 text-slate-500 italic mb-2 cursor-pointer"><input type="checkbox" class="rounded"> <span>check/uncheck all</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" checked class="rounded"> <span>News</span></label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-16 pt-6">
+                
+                <div class="space-y-5">
+                    <p class="text-[14px] font-bold text-black border-b border-slate-100 pb-3">Backstage</p>
+                    <div class="space-y-4">
+                        <label class="flex items-center space-x-3 text-[13px] text-slate-400 italic cursor-pointer group">
+                            <input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black transition">
+                            <span class="group-hover:text-black transition">check/uncheck all</span>
+                        </label>
+                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer">
+                            <input type="checkbox" checked class="w-4 h-4 rounded border-slate-300 accent-black">
+                            <span>News</span>
+                        </label>
                     </div>
+                </div>
 
-                    <div class="space-y-2">
-                        <p class="font-bold text-slate-900">New Release</p>
-                        <label class="flex items-center space-x-2"><input type="checkbox" class="rounded"> <span>New Release</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" class="rounded"> <span>One release</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" class="rounded"> <span>Multiple releases</span></label>
+                <div class="space-y-5">
+                    <p class="text-[14px] font-bold text-black border-b border-slate-100 pb-3">New Release</p>
+                    <div class="space-y-4">
+                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>New Release</span></label>
+                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>One release</span></label>
+                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Multiple releases</span></label>
                     </div>
+                </div>
 
-                    <div class="space-y-2">
-                        <p class="font-bold text-slate-900">Catalog</p>
-                        <label class="flex items-center space-x-2"><input type="checkbox" class="rounded"> <span>All Releases</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" class="rounded"> <span>Drafts</span></label>
+                <div class="space-y-5">
+                    <p class="text-[14px] font-bold text-black border-b border-slate-100 pb-3">Catalog</p>
+                    <div class="space-y-4">
+                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>All Releases</span></label>
+                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Drafts</span></label>
                     </div>
+                </div>
 
-                    <div class="space-y-2">
-                        <p class="font-bold text-slate-900">Analytics</p>
-                        <label class="flex items-center space-x-2"><input type="checkbox" class="rounded"> <span>Streams</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" class="rounded"> <span>Daily Trends</span></label>
+                <div class="space-y-5">
+                    <p class="text-[14px] font-bold text-black border-b border-slate-100 pb-3">Analytics</p>
+                    <div class="space-y-4">
+                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Streams</span></label>
+                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Daily Trends</span></label>
                     </div>
+                </div>
 
-                    <div class="space-y-2">
-                        <p class="font-bold text-slate-900">Finance</p>
-                        <label class="flex items-center space-x-2"><input type="checkbox" class="rounded"> <span>Payment & operations</span></label>
-                        <label class="flex items-center space-x-2"><input type="checkbox" class="rounded"> <span>Financial reports</span></label>
+                <div class="space-y-5">
+                    <p class="text-[14px] font-bold text-black border-b border-slate-100 pb-3">Finance</p>
+                    <div class="space-y-4">
+                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Financial reports</span></label>
+                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Payment & operations</span></label>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="space-y-6">
-            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 border-b pb-2">Catalog Scope</h3>
+        <div class="border-t border-slate-100"></div>
+
+        <div class="space-y-8">
+            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Catalog Scope</h3>
             
-            <div class="space-y-6">
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <label class="text-[12px] font-bold text-slate-700">Artists</label>
-                        <button class="text-[10px] bg-green-600 text-white px-2 py-0.5 rounded font-bold uppercase">+ add all</button>
+            <div class="space-y-8 max-w-4xl">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                    <div class="flex items-center space-x-3">
+                        <label class="text-[13px] font-bold text-slate-700">Artists</label>
+                        <button type="button" class="bg-green-600 hover:bg-green-700 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase transition-colors">+ add all</button>
                     </div>
-                    <input type="text" placeholder="Please select an artist" class="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-[12px] outline-none">
+                    <div class="md:col-span-2">
+                        <input type="text" placeholder="Please select an artist" class="input-field">
+                    </div>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <label class="text-[12px] font-bold text-slate-700">Labels</label>
-                        <button class="text-[10px] bg-green-600 text-white px-2 py-0.5 rounded font-bold uppercase">+ add all</button>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                    <div class="flex items-center space-x-3">
+                        <label class="text-[13px] font-bold text-slate-700">Labels</label>
+                        <button type="button" class="bg-green-600 hover:bg-green-700 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase transition-colors">+ add all</button>
                     </div>
-                    <input type="text" placeholder="Choose a label" class="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-[12px] outline-none">
-                </div>
-
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <label class="text-[12px] font-bold text-slate-700">Channels</label>
-                        <button class="text-[10px] bg-green-600 text-white px-2 py-0.5 rounded font-bold uppercase">+ add all</button>
+                    <div class="md:col-span-2">
+                        <input type="text" placeholder="Choose a label" class="input-field">
                     </div>
-                    <input type="text" placeholder="Choose a channel" class="w-full bg-slate-50 border border-slate-200 rounded-md px-3 py-2 text-[12px] outline-none">
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="pt-10 border-t flex justify-end">
-        <button class="bg-black text-white px-10 py-3 rounded-lg text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-slate-800 transition active:scale-95 shadow-lg shadow-slate-200">
-            Save User Permissions
-        </button>
-    </div>
+        <div class="pt-12 border-t border-slate-100">
+            <button type="button" onclick="handleSavePermissions()" class="w-full md:w-auto min-w-[240px] py-4 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg shadow-slate-200">
+                Save User Permissions
+            </button>
+        </div>
+
+    </form>
 </div>
+
+<script>
+    function handleSavePermissions() {
+        const btn = event.currentTarget;
+        const originalText = btn.innerText;
+        btn.innerText = "Processing...";
+        btn.disabled = true;
+        
+        setTimeout(() => {
+            alert("Permissions updated successfully!");
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }, 1000);
+    }
+</script>
