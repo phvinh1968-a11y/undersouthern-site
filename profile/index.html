@@ -1,1 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <title>User Profile - UNDERSOUTHERN</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #ffffff; 
+            color: #000000; 
+            margin: 0;
+        }
+        
+        .header-height { height: 72px; }
+        
+        .input-field {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            width: 100%;
+            color: #0f172a;
+            font-size: 13px;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.2s;
+        }
 
+        .input-field:focus {
+            border-color: #000000;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 1px #000000;
+        }
+
+        .input-field:read-only {
+            background-color: #f1f5f9;
+            color: #64748b;
+            cursor: default;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        .label-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-white">
+
+    <header class="header-height border-b bg-white flex items-center justify-between px-6 md:px-12 sticky top-0 z-50">
+        <div class="flex items-center space-x-4">
+            <a href="https://undersouthern.asia/dashboard" class="text-black hover:bg-slate-100 p-2 rounded-full transition flex items-center justify-center">
+                <i class="fa-solid fa-arrow-left text-lg"></i>
+            </a>
+            <h1 class="font-black text-xl tracking-tighter uppercase">UNDERSOUTHERN</h1>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button id="btn-edit" onclick="toggleEdit(true)" class="text-[11px] font-bold text-black border border-black px-6 py-2 rounded-lg hover:bg-black hover:text-white transition uppercase tracking-widest">
+                Edit Profile
+            </button>
+            <button id="btn-save" onclick="saveProfile()" class="hidden text-[11px] font-bold bg-black text-white border border-black px-6 py-2 rounded-lg hover:bg-slate-800 transition uppercase tracking-widest">
+                Save Changes
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6 md:p-12 fade-in">
+        <div class="mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight">User Profile</h2>
+            <p class="text-slate-400 text-sm mt-2 font-medium">Manage your account information and preferences.</p>
+        </div>
+
+        <form id="profileForm" class="space-y-8">
+            
+            <div>
+                <h3 class="section-title">Preferences</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                    <label class="label-text">Message Language</label>
+                    <div class="md:col-span-2">
+                        <select id="lang" class="input-field" disabled>
+                            <option value="English">English</option>
+                            <option value="Vietnamese">Vietnamese</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-100 pt-4"></div>
+
+            <div>
+                <h3 class="section-title">General Information</h3>
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                        <label class="label-text">Company Name</label>
+                        <div class="md:col-span-2">
+                            <input type="text" value="UNDERSOUTHERN" readonly class="input-field editable">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                        <label class="label-text">E-mail Address</label>
+                        <div class="md:col-span-2">
+                            <input type="email" value="phvinh1968@gmail.com" readonly class="input-field editable">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                        <label class="label-text">Full Address</label>
+                        <div class="md:col-span-2">
+                            <input type="text" value="87, An Khánh, Phước Hiệp, Mỏ Cày Nam, Bến Tre" readonly class="input-field editable">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <label class="label-text self-center">City / Province</label>
+                        <div class="md:col-span-2 grid grid-cols-2 gap-4">
+                            <input type="text" value="Bến Tre" readonly class="input-field editable" placeholder="City">
+                            <input type="text" value="Bến Tre" readonly class="input-field editable" placeholder="Province">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <label class="label-text self-center">Postal / Country</label>
+                        <div class="md:col-span-2 grid grid-cols-2 gap-4">
+                            <input type="text" value="86500" readonly class="input-field editable">
+                            <input type="text" value="Việt Nam" readonly class="input-field editable">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                        <label class="label-text">General Phone</label>
+                        <div class="md:col-span-2">
+                            <input type="text" value="0824444511" readonly class="input-field editable">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        function toggleEdit(isEditing) {
+            const inputs = document.querySelectorAll('.editable');
+            const select = document.getElementById('lang');
+            const btnEdit = document.getElementById('btn-edit');
+            const btnSave = document.getElementById('btn-save');
+
+            if (isEditing) {
+                inputs.forEach(input => input.readOnly = false);
+                select.disabled = false;
+                btnEdit.classList.add('hidden');
+                btnSave.classList.remove('hidden');
+                inputs[0].focus();
+            } else {
+                inputs.forEach(input => input.readOnly = true);
+                select.disabled = true;
+                btnEdit.classList.remove('hidden');
+                btnSave.classList.add('hidden');
+            }
+        }
+
+        function saveProfile() {
+            const btnSave = document.getElementById('btn-save');
+            btnSave.innerText = "Saving...";
+            
+            setTimeout(() => {
+                alert("Profile updated successfully!");
+                btnSave.innerText = "Save Changes";
+                toggleEdit(false);
+            }, 800);
+        }
+    </script>
+</body>
+</html>
