@@ -64,7 +64,7 @@
   .status-tag { font-weight: 600; font-size: 12px; }
   .status-active { color: #16a34a; }
   .status-disabled { color: #999999; }
-  .scope-cell { color: #6366f1; font-weight: 500; font-size: 13px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .scope-cell { color: #6366f1; font-weight: 500; font-size: 13px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: default; }
 
   /* --- MODAL XÁC NHẬN --- */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(2px); }
@@ -164,11 +164,14 @@
             <label>Email :</label><input type="email" id="inEmail" placeholder="email@undersouthern.asia">
             <label>Login :</label><input type="text" id="inLogin" placeholder="Username">
             <label>Password :</label><input type="password" id="inPass" placeholder="Password">
-            <label>Account Status :</label>
-            <select id="inStatus">
-              <option value="Active">Active</option>
-              <option value="Disabled">Disabled</option>
-            </select>
+            
+            <div id="statusWrapper" class="hidden">
+              <label>Account Status :</label>
+              <select id="inStatus">
+                <option value="Active">Active</option>
+                <option value="Disabled">Disabled</option>
+              </select>
+            </div>
           </div>
           <div class="card">
             <h3>User Access</h3>
@@ -278,15 +281,20 @@
   function openAddForm() {
     document.getElementById('formTitle').innerText = "Add a new user";
     document.getElementById('submitBtn').innerText = "Invite User";
+    document.getElementById('statusWrapper').classList.add('hidden');
     document.getElementById('inEmail').value = '';
     document.getElementById('inLogin').value = '';
     document.getElementById('inPass').value = '';
-    document.getElementById('inStatus').value = 'Active';
     document.getElementById('inPass').type = 'password';
-    const checks = document.querySelectorAll('#access-checkboxes input');
-    checks.forEach(c => c.checked = false);
-    artistList = []; labelList = [];
-    renderTags('artist'); renderTags('label');
+    document.getElementById('inStatus').value = 'Active';
+    
+    document.querySelectorAll('#access-checkboxes input').forEach(c => c.checked = false);
+    
+    // TỰ ĐỘNG RESET TAGS KHI MỞ FORM MỚI
+    artistList = []; 
+    labelList = [];
+    renderTags('artist'); 
+    renderTags('label');
     toggleView('add');
   }
 
@@ -294,20 +302,25 @@
     const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
     const user = users[index];
     editingIndex = index;
+    
     document.getElementById('inEmail').value = user.email;
     document.getElementById('inLogin').value = user.login;
     document.getElementById('inPass').value = user.pass;
     document.getElementById('inPass').type = 'text';
+    
+    document.getElementById('statusWrapper').classList.remove('hidden');
     document.getElementById('inStatus').value = user.status || 'Active';
+    
     const checks = document.querySelectorAll('#access-checkboxes input');
     const userAccess = user.access || [];
     checks.forEach(c => c.checked = userAccess.includes(c.value));
+    
     artistList = [...(user.artists || [])];
     labelList = [...(user.labels || [])];
+    
     document.getElementById('formTitle').innerText = "Edit user";
     document.getElementById('submitBtn').innerText = "Save Changes";
-    renderTags('artist');
-    renderTags('label');
+    renderTags('artist'); renderTags('label');
     toggleView('add');
   }
 
@@ -317,14 +330,22 @@
     const pass = document.getElementById('inPass').value;
     const status = document.getElementById('inStatus').value;
     if (!email || !login || !pass) { alert("Please fill in all information."); return; }
+    
     const selectedAccess = [];
-    const checks = document.querySelectorAll('#access-checkboxes input:checked');
-    checks.forEach(c => selectedAccess.push(c.value));
+    document.querySelectorAll('#access-checkboxes input:checked').forEach(c => selectedAccess.push(c.value));
+    
     let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
     const userData = { email, login, pass, status, access: selectedAccess, artists: artistList, labels: labelList };
+    
     if (editingIndex === -1) { users.unshift(userData); } 
     else { users[editingIndex] = userData; }
+    
     localStorage.setItem('undersouthern_users', JSON.stringify(users));
+    
+    // TỰ ĐỘNG RESET SAU KHI LƯU
+    artistList = [];
+    labelList = [];
+    
     renderUsers();
     toggleView('list');
   }
@@ -337,15 +358,12 @@
     }
     container.innerHTML = users.map((u, i) => {
       const statusClass = u.status === 'Disabled' ? 'status-disabled' : 'status-active';
-      
-      // LOGIC HIỂN THỊ TÊN ARTISTS VÀ LABELS TRỰC TIẾP
-      const artistsStr = (u.artists && u.artists.length > 0) ? u.artists.join(', ') : '';
-      const labelsStr = (u.labels && u.labels.length > 0) ? u.labels.join(', ') : '';
-      
-      let scopeDisplay = 'None';
-      if (artistsStr && labelsStr) scopeDisplay = `${artistsStr} / ${labelsStr}`;
-      else if (artistsStr) scopeDisplay = artistsStr;
-      else if (labelsStr) scopeDisplay = labelsStr;
+      const aText = (u.artists && u.artists.length > 0) ? u.artists.join(', ') : '';
+      const lText = (u.labels && u.labels.length > 0) ? u.labels.join(', ') : '';
+      let scopeStr = 'None';
+      if(aText && lText) scopeStr = aText + ' / ' + lText;
+      else if(aText) scopeStr = aText;
+      else if(lText) scopeStr = lText;
 
       return `
         <tr id="row-${i}">
@@ -357,40 +375,31 @@
               <i class="fa-solid fa-eye" style="cursor:pointer; opacity:0.5; font-size:12px;" onclick="tglPass('p-${i}', this)"></i>
             </div>
           </td>
-          <td><div class="scope-cell" title="${scopeDisplay}">${scopeDisplay}</div></td>
+          <td><div class="scope-cell" title="${scopeStr}">${scopeStr}</div></td>
           <td><span class="status-tag ${statusClass}">${u.status || 'Active'}</span></td>
           <td style="display:flex; gap:8px">
-            <button class="btn-icon" title="Edit" onclick="editUser(${i})"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
-            <button class="btn-icon" title="Delete" onclick="openModal(${i})"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
-            <button class="btn-icon" title="Switch User"><i class="fa-solid fa-arrows-rotate" style="font-size:11px"></i></button>
+            <button class="btn-icon" onclick="editUser(${i})"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
+            <button class="btn-icon" onclick="openModal(${i})"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
+            <button class="btn-icon"><i class="fa-solid fa-arrows-rotate" style="font-size:11px"></i></button>
           </td>
         </tr>
       `;
     }).join('');
 
-    const rows = container.querySelectorAll('tr');
-    rows.forEach((row, index) => {
+    container.querySelectorAll('tr').forEach((row, index) => {
       setTimeout(() => { row.classList.add('loaded'); }, (index + 4) * 150);
     });
   }
 
-  function openModal(index) {
-    pendingDeleteIndex = index;
-    document.getElementById('confirmModal').style.display = 'flex';
-  }
-
-  function closeModal() {
-    document.getElementById('confirmModal').style.display = 'none';
-    pendingDeleteIndex = -1;
-  }
+  function openModal(index) { pendingDeleteIndex = index; document.getElementById('confirmModal').style.display = 'flex'; }
+  function closeModal() { document.getElementById('confirmModal').style.display = 'none'; pendingDeleteIndex = -1; }
 
   document.getElementById('confirmDeleteBtn').onclick = function() {
     if (pendingDeleteIndex !== -1) {
       let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
       users.splice(pendingDeleteIndex, 1);
       localStorage.setItem('undersouthern_users', JSON.stringify(users));
-      renderUsers();
-      closeModal();
+      renderUsers(); closeModal();
     }
   };
 
