@@ -185,7 +185,7 @@
             </select>
             <label>Title</label><input type="text" id="inTitle" placeholder="Sun Flowers">
             <label>Artist</label><input type="text" id="inArtist" placeholder="Astrolaw">
-            <label>Label</label><input type="text" id="inLabel" placeholder="Under Southern">
+            <label>Label</label><input type="text" id="inLabel" placeholder="UNDERSOUTHERN">
           </div>
 
           <div class="card">
@@ -360,7 +360,7 @@
     let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
     
     if (catalog.length === 0) {
-      catalog.push({type: 'Single', status: 'Released', title: 'Sun Flowers', artist: 'Astrolaw', label: 'Under Southern', tracks: '1'});
+      catalog.push({type: 'Single', status: 'Released', title: 'Sun Flowers', artist: 'Astrolaw', label: 'UNDERSOUTHERN', tracks: '1'});
     }
 
     container.innerHTML = catalog.map((item, i) => {
