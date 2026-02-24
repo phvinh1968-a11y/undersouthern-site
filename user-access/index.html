@@ -22,6 +22,9 @@
     --header-height: 72px;
   }
 
+  /* Ẩn toàn bộ nội dung mặc định để bảo mật trước khi kiểm tra login */
+  #auth-guard { display: none; }
+
   body { 
     font-family: var(--font-main); 
     background-color: var(--bg-body); 
@@ -30,7 +33,7 @@
     letter-spacing: -0.01em; 
   }
 
-  /* --- HEADER NGANG (GIỐNG DASHBOARD) --- */
+  /* --- HEADER NGANG --- */
   .main-header {
     height: var(--header-height);
     border-bottom: 1px solid var(--border-color);
@@ -44,11 +47,7 @@
     z-index: 1000;
   }
 
-  .header-left {
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
+  .header-left { display: flex; align-items: center; height: 100%; }
 
   .brand-name {
     font-weight: 900;
@@ -63,10 +62,7 @@
     align-items: center;
   }
 
-  .header-right {
-    display: flex;
-    align-items: center;
-  }
+  .header-right { display: flex; align-items: center; }
 
   .user-avatar-circle {
     width: 32px;
@@ -83,19 +79,10 @@
     overflow: hidden;
   }
 
-  .user-avatar-circle img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  .user-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
 
   /* --- NỘI DUNG CHÍNH --- */
-  .layout-wrapper { 
-    max-width: 1400px; 
-    margin: 0 auto; 
-    padding: 40px 20px; 
-  }
-
+  .layout-wrapper { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
   .hidden { display: none !important; }
 
   /* UI COMPONENTS */
@@ -110,13 +97,7 @@
   .title-group { display: flex; align-items: center; gap: 15px; }
   
   .btn-back-main { 
-    background: none; 
-    border: 1px solid var(--border-color); 
-    padding: 8px 12px; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    color: var(--primary-black); 
-    transition: all 0.2s;
+    background: none; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; cursor: pointer; color: var(--primary-black); transition: all 0.2s;
   }
   .btn-back-main:hover { background: var(--hover-bg); border-color: var(--primary-black); }
 
@@ -142,107 +123,115 @@
 </head>
 <body>
 
-<header class="main-header">
-  <div class="header-left">
-    <h1 class="brand-name">UNDERSOUTHERN</h1>
-  </div>
-  <div class="header-right">
-    <div class="user-avatar-circle" id="userAvatar">
-      <span id="avatarText">US</span>
-    </div>
-  </div>
-</header>
-
-<div class="layout-wrapper">
-  
-  <div id="view-list">
-    <div class="top-bar">
-      <div class="title-group">
-        <button class="btn-back-main" onclick="window.location.href='https://undersouthern.asia/dashboard'" title="Quay lại Dashboard">
-          <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        <h2 style="margin:0; font-weight:700">User Management</h2>
+<div id="auth-guard">
+    <header class="main-header">
+      <div class="header-left">
+        <h1 class="brand-name">UNDERSOUTHERN</h1>
       </div>
-      <button class="btn-primary" onclick="toggleView('add')">
-        <i class="fa-solid fa-user-plus"></i> Add a new user
-      </button>
-    </div>
-
-    <div style="max-width:400px; margin-bottom:24px;">
-      <label>Search by login or email:</label>
-      <input type="text" id="searchInput" placeholder="Type email or login to find..." onkeyup="filterTable()">
-    </div>
-
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Email</th>
-            <th>Login</th>
-            <th>Password</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="userTableBody">
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div id="view-add" class="hidden">
-    <div class="page-header">
-      <button class="btn-back" onclick="toggleView('list')">
-        <i class="fa-solid fa-arrow-left"></i>
-      </button>
-      <h2 style="margin:0; font-weight:700">Add a new user</h2>
-    </div>
-
-    <div class="form-container">
-      <div class="card">
-        <h3>Contact Information</h3>
-        <label>Email :</label><input type="email" id="inEmail" placeholder="email@undersouthern.asia">
-        <label>Login :</label><input type="text" id="inLogin" placeholder="Username">
-        <label>Password :</label><input type="password" id="inPass" placeholder="Password">
+      <div class="header-right">
+        <div class="user-avatar-circle" id="userAvatar">
+          <span id="avatarText">US</span>
+        </div>
       </div>
+    </header>
 
-      <div class="card">
-        <h3>User Access</h3>
-        <div style="margin-top:5px;">
-          <label class="checkbox-item"><input type="checkbox"> Albums access</label>
-          <label class="checkbox-item"><input type="checkbox"> Edit albums</label>
-          <label class="checkbox-item"><input type="checkbox"> Create albums</label>
-          <label class="checkbox-item"><input type="checkbox"> See sessions</label>
-          <label class="checkbox-item"><input type="checkbox"> Reports access</label>
-          <label class="checkbox-item"><input type="checkbox"> Invoices access</label>
-          <label class="checkbox-item"><input type="checkbox"> Send invoices</label>
-          <label class="checkbox-item"><input type="checkbox"> Update invoices</label>
-          <label class="checkbox-item"><input type="checkbox"> Access to documents</label>
-          <label class="checkbox-item"><input type="checkbox"> Tickets access</label>
+    <div class="layout-wrapper">
+      <div id="view-list">
+        <div class="top-bar">
+          <div class="title-group">
+            <button class="btn-back-main" onclick="window.location.href='https://undersouthern.asia/dashboard'" title="Quay lại Dashboard">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="margin:0; font-weight:700">User Management</h2>
+          </div>
+          <button class="btn-primary" onclick="toggleView('add')">
+            <i class="fa-solid fa-user-plus"></i> Add a new user
+          </button>
+        </div>
+
+        <div style="max-width:400px; margin-bottom:24px;">
+          <label>Search by login or email:</label>
+          <input type="text" id="searchInput" placeholder="Type email or login to find..." onkeyup="filterTable()">
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Login</th>
+                <th>Password</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody"></tbody>
+          </table>
         </div>
       </div>
 
-      <div class="card">
-        <h3>Catalog Scope</h3>
-        <label>Artists <button class="add-btn-small">+ add all</button></label>
-        <div class="tag-container"></div>
-        <input type="text" placeholder="Type artist name and press Enter">
+      <div id="view-add" class="hidden">
+        <div class="page-header">
+          <button class="btn-back" onclick="toggleView('list')">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <h2 style="margin:0; font-weight:700">Add a new user</h2>
+        </div>
 
-        <label>Labels <button class="add-btn-small">+ add all</button></label>
-        <div class="tag-container"></div>
-        <input type="text" placeholder="Type label name and press Enter">
+        <div class="form-container">
+          <div class="card">
+            <h3>Contact Information</h3>
+            <label>Email :</label><input type="email" id="inEmail" placeholder="email@undersouthern.asia">
+            <label>Login :</label><input type="text" id="inLogin" placeholder="Username">
+            <label>Password :</label><input type="password" id="inPass" placeholder="Password">
+          </div>
+
+          <div class="card">
+            <h3>User Access</h3>
+            <div style="margin-top:5px;">
+              <label class="checkbox-item"><input type="checkbox"> Albums access</label>
+              <label class="checkbox-item"><input type="checkbox"> Edit albums</label>
+              <label class="checkbox-item"><input type="checkbox"> Create albums</label>
+              <label class="checkbox-item"><input type="checkbox"> See sessions</label>
+              <label class="checkbox-item"><input type="checkbox"> Reports access</label>
+              <label class="checkbox-item"><input type="checkbox"> Invoices access</label>
+              <label class="checkbox-item"><input type="checkbox"> Send invoices</label>
+              <label class="checkbox-item"><input type="checkbox"> Update invoices</label>
+              <label class="checkbox-item"><input type="checkbox"> Access to documents</label>
+              <label class="checkbox-item"><input type="checkbox"> Tickets access</label>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Catalog Scope</h3>
+            <label>Artists <button class="add-btn-small">+ add all</button></label>
+            <div class="tag-container"></div>
+            <input type="text" placeholder="Type artist name and press Enter">
+
+            <label>Labels <button class="add-btn-small">+ add all</button></label>
+            <div class="tag-container"></div>
+            <input type="text" placeholder="Type label name and press Enter">
+          </div>
+        </div>
+
+        <div class="footer-actions">
+          <button class="invite-btn" onclick="handleInvite()">Invite User</button>
+        </div>
       </div>
     </div>
-
-    <div class="footer-actions">
-      <button class="invite-btn" onclick="handleInvite()">Invite User</button>
-    </div>
-  </div>
-
 </div>
 
 <script>
-  // Hàm đồng bộ Avatar từ Dashboard
+  // KIỂM TRA ĐĂNG NHẬP NGAY LẬP TỨC
+  (function checkAuth() {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = "https://undersouthern.asia/login";
+    } else {
+      // Nếu đã đăng nhập, hiển thị giao diện
+      document.getElementById('auth-guard').style.display = 'block';
+    }
+  })();
+
   function syncAvatar() {
     const savedImg = localStorage.getItem('userAvatar');
     const holder = document.getElementById('userAvatar');
