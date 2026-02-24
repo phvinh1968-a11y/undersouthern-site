@@ -1,1 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Finance - UNDERSOUTHERN</title>
 
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script>
+    /* KIỂM TRA ĐĂNG NHẬP NGAY LẬP TỨC */
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = "https://undersouthern.asia/login";
+    }
+</script>
+
+<style>
+  :root {
+    --bg-body: #ffffff;
+    --primary-black: #000000;
+    --text-muted: #666666;
+    --border-color: #eeeeee;
+    --hover-bg: #f5f5f5;
+    --radius-main: 12px;
+    --font-main: 'Inter', sans-serif;
+    --header-height: 72px;
+  }
+
+  /* Ẩn nội dung để bảo mật trước khi script xác thực chạy xong */
+  #auth-guard { display: none; }
+
+  body { 
+    font-family: var(--font-main); 
+    background-color: var(--bg-body); 
+    margin: 0; 
+    padding: 0; 
+    letter-spacing: -0.01em; 
+  }
+
+  /* --- HIỆU ỨNG LOAD CHẬM --- */
+  .fade-item { opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-item.show { opacity: 1; transform: translateY(0); }
+
+  /* --- HEADER NGANG --- */
+  .main-header {
+    height: var(--header-height); 
+    border-bottom: 1px solid var(--border-color);
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    padding: 0 40px; 
+    position: sticky; 
+    top: 0; 
+    background: #fff; 
+    z-index: 1000;
+  }
+  .brand-name { 
+    font-weight: 900; 
+    font-size: 20px; 
+    letter-spacing: -0.05em; 
+    text-transform: uppercase; 
+    margin: 0; 
+    padding-right: 40px; 
+    border-right: 1px solid var(--border-color); 
+    height: 100%; 
+    display: flex; 
+    align-items: center; 
+  }
+  .user-avatar-circle { 
+    width: 32px; 
+    height: 32px; 
+    background: var(--primary-black); 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: #fff; 
+    font-size: 10px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    overflow: hidden; 
+  }
+  .user-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* --- LAYOUT FINANCE --- */
+  .layout-wrapper { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+
+  /* BALANCE CARD */
+  .balance-card {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-main);
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+    margin-bottom: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  }
+  .balance-title { font-size: 13px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+  .balance-amount { font-size: 36px; font-weight: 800; color: #000; margin-bottom: 8px; }
+  .balance-update { font-size: 12px; color: #999; }
+
+  /* TABLE FINANCE */
+  .top-bar { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+  .btn-back { border: 1px solid var(--border-color); background: #fff; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  .btn-back:hover { background: var(--hover-bg); }
+
+  .table-container { 
+    border: 1px solid var(--border-color); 
+    border-radius: var(--radius-main); 
+    overflow-x: auto; 
+    background: #fff; 
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 900px; }
+  th { background: #fafafa; text-align: left; padding: 16px 20px; color: var(--text-muted); font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); font-weight: 700; }
+  td { padding: 18px 20px; border-bottom: 1px solid var(--border-color); color: #333; }
+  
+  tbody tr { opacity: 0; transform: translateY(5px); transition: 0.5s ease; }
+  tbody tr.loaded { opacity: 1; transform: translateY(0); }
+  tbody tr:hover { background: #fafafa; }
+
+  .empty-state { text-align: center; padding: 100px 0; color: #999; font-size: 14px; }
+
+  /* Amount styling */
+  .amount-positive { color: #16a34a; font-weight: 700; }
+  .amount-negative { color: #dc2626; font-weight: 700; }
+
+</style>
+</head>
+<body>
+
+<div id="auth-guard">
+    <header class="main-header fade-item" id="header-el">
+      <div class="header-left">
+        <h1 class="brand-name">UNDERSOUTHERN</h1>
+      </div>
+      <div class="header-right">
+        <div class="user-avatar-circle" id="userAvatar">
+          <span id="avatarText">US</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout-wrapper">
+      <div class="top-bar fade-item" id="top-bar-el">
+        <button class="btn-back" onclick="window.location.href='https://undersouthern.asia/dashboard'">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <h2 style="margin:0; font-weight:800; font-size: 28px;">Finance</h2>
+      </div>
+
+      <div class="balance-card fade-item" id="balance-el">
+        <div class="balance-title">Account Balance</div>
+        <div class="balance-amount">$0.00</div>
+        <div class="balance-update" id="current-date">Last update on ...</div>
+      </div>
+
+      <div class="table-container fade-item" id="table-el">
+        <table>
+          <thead>
+            <tr>
+              <th>Date ⇅</th>
+              <th>Transaction Type ⇅</th>
+              <th>Amount ⇅</th>
+              <th>Balance ⇅</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody id="financeTableBody">
+            </tbody>
+        </table>
+        
+        <div id="empty-msg" class="empty-state">
+          <i class="fa-solid fa-inbox" style="font-size: 24px; margin-bottom: 10px; display: block; opacity: 0.5;"></i>
+          There's no data to display
+        </div>
+      </div>
+    </div>
+</div>
+
+<script>
+  /* LOGIC ĐĂNG NHẬP & HIỂN THỊ CHẬM */
+  window.onload = () => {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        document.getElementById('auth-guard').style.display = 'block';
+        updateDate();
+        syncAvatar();
+        slowLoadView();
+        renderFinance();
+    }
+  };
+
+  function updateDate() {
+    const now = new Date();
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    document.getElementById('current-date').innerText = `Last update on ${now.toLocaleDateString('en-US', options)}`;
+  }
+
+  function slowLoadView() {
+    const items = ['header-el', 'top-bar-el', 'balance-el', 'table-el'];
+    items.forEach((id, index) => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('show');
+      }, (index + 1) * 150);
+    });
+  }
+
+  function syncAvatar() {
+    const savedImg = localStorage.getItem('userAvatar');
+    const holder = document.getElementById('userAvatar');
+    if (savedImg && holder) {
+      document.getElementById('avatarText').style.display = 'none';
+      holder.innerHTML = `<img src="${savedImg}" alt="Avatar">`;
+    }
+  }
+
+  function renderFinance() {
+    const container = document.getElementById('financeTableBody');
+    const emptyMsg = document.getElementById('empty-msg');
+    
+    // Giả sử bạn lấy dữ liệu từ một key khác như 'undersouthern_finance'
+    let transactions = JSON.parse(localStorage.getItem('undersouthern_finance') || '[]');
+    
+    if (transactions.length === 0) {
+      emptyMsg.style.display = 'block';
+      return;
+    }
+
+    emptyMsg.style.display = 'none';
+    container.innerHTML = transactions.map((t, i) => `
+      <tr id="row-${i}">
+        <td style="font-weight: 500;">${t.date}</td>
+        <td><span style="background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;">${t.type}</span></td>
+        <td class="${parseFloat(t.amount) >= 0 ? 'amount-positive' : 'amount-negative'}">
+          ${parseFloat(t.amount) >= 0 ? '+' : ''}${t.amount}
+        </td>
+        <td style="font-weight: 600;">${t.balance}</td>
+        <td style="color: #666;">${t.note || '-'}</td>
+      </tr>
+    `).join('');
+
+    // Hiệu ứng hiện từng dòng
+    container.querySelectorAll('tr').forEach((row, index) => {
+      setTimeout(() => { row.classList.add('loaded'); }, (index + 4) * 100);
+    });
+  }
+</script>
+
+</body>
+</html>
