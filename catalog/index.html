@@ -1,1 +1,391 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Catalog Management - UNDERSOUTHERN</title>
 
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  :root {
+    --bg-body: #ffffff;
+    --primary-black: #000000;
+    --text-muted: #666666;
+    --border-color: #eeeeee;
+    --hover-bg: #f5f5f5;
+    --radius-main: 10px;
+    --font-main: 'Inter', sans-serif;
+    --header-height: 72px;
+  }
+
+  #auth-guard { display: none; }
+
+  body { font-family: var(--font-main); background-color: var(--bg-body); margin: 0; padding: 0; letter-spacing: -0.01em; }
+
+  /* --- HIỆU ỨNG LOAD CHẬM --- */
+  .fade-item { opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-item.show { opacity: 1; transform: translateY(0); }
+
+  /* --- HEADER --- */
+  .main-header {
+    height: var(--header-height); border-bottom: 1px solid var(--border-color);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; position: sticky; top: 0; background: #fff; z-index: 1000;
+  }
+  .brand-name { font-weight: 900; font-size: 20px; letter-spacing: -0.05em; text-transform: uppercase; margin: 0; padding-right: 40px; border-right: 1px solid var(--border-color); height: 100%; display: flex; align-items: center; }
+  .user-avatar-circle { width: 32px; height: 32px; background: var(--primary-black); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700; cursor: pointer; overflow: hidden; }
+  .user-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* --- LAYOUT --- */
+  .layout-wrapper { max-width: 1600px; margin: 0 auto; padding: 40px 20px; }
+  .hidden { display: none !important; }
+
+  .card { background: #fff; padding: 24px; border-radius: var(--radius-main); border: 1px solid var(--border-color); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+  h3 { font-size: 13px; text-transform: uppercase; margin: 0 0 20px 0; font-weight: 700; }
+  label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #444; }
+  input, select { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; box-sizing: border-box; margin-bottom: 15px; background: #fff; }
+  input:focus, select:focus { outline: none; border-color: var(--primary-black); }
+
+  .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+  .title-group { display: flex; align-items: center; gap: 15px; }
+  .btn-back-main { background: none; border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; cursor: pointer; color: var(--primary-black); transition: all 0.2s; }
+  .btn-back-main:hover { background: var(--hover-bg); }
+
+  .btn-primary { background: var(--primary-black); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  
+  /* --- BẢNG CATALOG --- */
+  .table-container { border: 1px solid var(--border-color); border-radius: var(--radius-main); overflow-x: auto; background: #fff; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1200px; }
+  th { background: #fafafa; text-align: left; padding: 14px; color: var(--text-muted); font-size: 10px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
+  td { padding: 14px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+  
+  .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+  .st-released { background: #e6f9f0; color: #16a34a; }
+  .st-pending { background: #fff7ed; color: #ea580c; }
+  .st-draft { background: #f1f5f9; color: #64748b; }
+
+  .release-title { font-weight: 700; color: #000; display: block; }
+  .release-artist { font-size: 12px; color: #666; }
+  .date-time { font-size: 12px; line-height: 1.4; color: #444; }
+  .upc-code { font-family: monospace; color: #888; font-size: 11px; }
+  .territory-cell { color: #6366f1; font-weight: 500; font-size: 12px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* --- TAGS --- */
+  .tag-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .tag { background: #f1f5f9; padding: 3px 8px; border-radius: 6px; font-size: 11px; display: flex; align-items: center; gap: 5px; font-weight: 500; }
+  .tag i { cursor: pointer; color: #94a3b8; font-size: 10px; }
+
+  /* --- MODAL --- */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(2px); }
+  .modal-box { background: white; padding: 30px; border-radius: 16px; width: 340px; text-align: center; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
+  .btn-modal-delete { background: #ff3b30; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+
+  .form-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; }
+  .save-btn { background: var(--primary-black); color: white; border: none; padding: 12px 40px; font-weight: 700; border-radius: 8px; cursor: pointer; }
+
+  tbody tr { opacity: 0; transform: translateY(5px); transition: 0.5s ease; }
+  tbody tr.loaded { opacity: 1; transform: translateY(0); }
+  .btn-icon { border: 1px solid var(--border-color); background: #fff; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+  .btn-icon:hover { background: var(--hover-bg); }
+</style>
+</head>
+<body>
+
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <h2>Delete Release?</h2>
+    <p style="font-size: 13px; color: #666; margin-bottom: 25px;">This action will permanently remove this record from your catalog.</p>
+    <div style="display:flex; gap:10px;">
+      <button style="flex:1; border:1px solid #ddd; padding:10px; border-radius:8px; cursor:pointer;" onclick="closeModal()">Cancel</button>
+      <button class="btn-modal-delete" id="confirmDeleteBtn" style="flex:1;">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="auth-guard">
+    <header class="main-header fade-item" id="header-el">
+      <div class="header-left">
+        <h1 class="brand-name">UNDERSOUTHERN</h1>
+      </div>
+      <div class="header-right">
+        <div class="user-avatar-circle" id="userAvatar">
+          <span id="avatarText">US</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout-wrapper">
+      <div id="view-list">
+        <div class="top-bar fade-item" id="top-bar-el">
+          <div class="title-group">
+            <button class="btn-back-main" onclick="window.location.href='https://undersouthern.asia/dashboard'">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 style="margin:0; font-weight:700">Release Catalog</h2>
+          </div>
+          <button class="btn-primary" onclick="openAddForm()">
+            <i class="fa-solid fa-plus"></i> Create New Release
+          </button>
+        </div>
+
+        <div class="table-container fade-item" id="table-el">
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Title / Artist</th>
+                <th>Label</th>
+                <th>Release Info</th>
+                <th># Tracks</th>
+                <th>UPC / Cat #</th>
+                <th>Territories</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="catalogTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="view-add" class="hidden">
+        <div style="display:flex; align-items:center; gap:15px; margin-bottom:30px;">
+          <button class="btn-back-main" onclick="toggleView('list')"><i class="fa-solid fa-arrow-left"></i></button>
+          <h2 id="formTitle" style="margin:0; font-weight:700">New Release</h2>
+        </div>
+
+        <div class="form-container">
+          <div class="card">
+            <h3>Release Info</h3>
+            <label>Type</label>
+            <select id="inType">
+              <option value="Single">Single</option>
+              <option value="EP">EP</option>
+              <option value="Album">Album</option>
+            </select>
+            <label>Title</label><input type="text" id="inTitle" placeholder="Sun Flowers">
+            <label>Artist</label><input type="text" id="inArtist" placeholder="Astrolaw">
+            <label>Label</label><input type="text" id="inLabel" placeholder="Under Southern">
+          </div>
+
+          <div class="card">
+            <h3>Schedule & ID</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+              <div><label>Date</label><input type="date" id="inDate"></div>
+              <div><label>Hour</label><input type="time" id="inHour"></div>
+            </div>
+            <label>Time Zone</label>
+            <select id="inZone">
+              <option value="GMT+07:00">GMT+07:00</option>
+              <option value="UTC">UTC</option>
+            </select>
+            <label>UPC Code</label><input type="text" id="inUPC" placeholder="UPC Code">
+            <label>Catalog Number</label><input type="text" id="inCatNum" placeholder="US-001">
+          </div>
+
+          <div class="card">
+            <h3>Distribution</h3>
+            <label># of Tracks</label><input type="number" id="inTracks" value="1">
+            <label>Promotion Note</label><input type="text" id="inPromo" placeholder="Marketing...">
+            <label>Delivered Territories & Stores</label>
+            <div id="territory-tags" class="tag-container"></div>
+            <input type="text" id="territoryInput" placeholder="Add country and Enter">
+            
+            <div id="statusWrapper" class="hidden">
+              <label>Status</label>
+              <select id="inStatus">
+                <option value="Draft">Draft</option>
+                <option value="Pending">Pending</option>
+                <option value="Released">Released</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-actions">
+          <button id="submitBtn" class="save-btn" onclick="handleSave()">Save Release</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script>
+  let editingIndex = -1;
+  let pendingDeleteIndex = -1;
+  let territoryList = [];
+
+  (function checkAuth() {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = "https://undersouthern.asia/login";
+    } else {
+      document.getElementById('auth-guard').style.display = 'block';
+    }
+  })();
+
+  function slowLoadView() {
+    const items = ['header-el', 'top-bar-el', 'table-el'];
+    items.forEach((id, index) => {
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('show');
+      }, (index + 1) * 200);
+    });
+  }
+
+  function syncAvatar() {
+    const savedImg = localStorage.getItem('userAvatar');
+    const holder = document.getElementById('userAvatar');
+    if (savedImg && holder) {
+      document.getElementById('avatarText').style.display = 'none';
+      holder.innerHTML = `<img src="${savedImg}" alt="Avatar">`;
+    }
+  }
+
+  function toggleView(view) {
+    if (view === 'add') {
+      document.getElementById('view-list').classList.add('hidden');
+      document.getElementById('view-add').classList.remove('hidden');
+    } else {
+      document.getElementById('view-add').classList.add('hidden');
+      document.getElementById('view-list').classList.remove('hidden');
+      slowLoadView();
+    }
+  }
+
+  function renderTags() {
+    const container = document.getElementById('territory-tags');
+    container.innerHTML = territoryList.map((item, index) => `
+      <div class="tag">${item} <i class="fa-solid fa-xmark" onclick="removeTag(${index})"></i></div>
+    `).join('');
+  }
+
+  function removeTag(index) { territoryList.splice(index, 1); renderTags(); }
+
+  function setupTagInput() {
+    const input = document.getElementById('territoryInput');
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && input.value.trim() !== '') {
+        e.preventDefault();
+        territoryList.push(input.value.trim());
+        input.value = '';
+        renderTags();
+      }
+    });
+  }
+
+  function openAddForm() {
+    editingIndex = -1;
+    document.getElementById('formTitle').innerText = "Create New Release";
+    document.getElementById('statusWrapper').classList.add('hidden');
+    document.getElementById('inTitle').value = '';
+    document.getElementById('inArtist').value = '';
+    document.getElementById('inLabel').value = '';
+    document.getElementById('inUPC').value = '';
+    document.getElementById('inCatNum').value = '';
+    document.getElementById('inPromo').value = '';
+    document.getElementById('inTracks').value = '1';
+    territoryList = [];
+    renderTags();
+    toggleView('add');
+  }
+
+  function editRelease(index) {
+    const catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
+    const item = catalog[index];
+    editingIndex = index;
+    document.getElementById('inTitle').value = item.title;
+    document.getElementById('inArtist').value = item.artist;
+    document.getElementById('inLabel').value = item.label;
+    document.getElementById('inUPC').value = item.upc;
+    document.getElementById('inCatNum').value = item.catNum;
+    document.getElementById('inTracks').value = item.tracks;
+    document.getElementById('statusWrapper').classList.remove('hidden');
+    document.getElementById('inStatus').value = item.status;
+    territoryList = [...(item.territories || [])];
+    document.getElementById('formTitle').innerText = "Edit Release";
+    renderTags();
+    toggleView('add');
+  }
+
+  function handleSave() {
+    const title = document.getElementById('inTitle').value;
+    const artist = document.getElementById('inArtist').value;
+    if (!title || !artist) { alert("Please fill Title and Artist."); return; }
+
+    const releaseData = {
+      type: document.getElementById('inType').value,
+      status: editingIndex === -1 ? 'Draft' : document.getElementById('inStatus').value,
+      title, artist,
+      label: document.getElementById('inLabel').value,
+      date: document.getElementById('inDate').value,
+      hour: document.getElementById('inHour').value,
+      zone: document.getElementById('inZone').value,
+      tracks: document.getElementById('inTracks').value,
+      upc: document.getElementById('inUPC').value,
+      catNum: document.getElementById('inCatNum').value,
+      promo: document.getElementById('inPromo').value,
+      territories: territoryList
+    };
+
+    let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
+    if (editingIndex === -1) catalog.unshift(releaseData);
+    else catalog[editingIndex] = releaseData;
+
+    localStorage.setItem('undersouthern_catalog', JSON.stringify(catalog));
+    territoryList = [];
+    renderCatalog();
+    toggleView('list');
+  }
+
+  function renderCatalog() {
+    const container = document.getElementById('catalogTableBody');
+    let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
+    
+    if (catalog.length === 0) {
+      catalog.push({type: 'Single', status: 'Released', title: 'Sun Flowers', artist: 'Astrolaw', label: 'Under Southern', tracks: '1', territories: ['Global']});
+    }
+
+    container.innerHTML = catalog.map((item, i) => {
+      const stClass = `st-${item.status.toLowerCase()}`;
+      const terrStr = (item.territories || []).join(', ') || 'None';
+      return `
+        <tr>
+          <td><b>${item.type}</b></td>
+          <td><span class="status-badge ${stClass}">${item.status}</span></td>
+          <td><span class="release-title">${item.title}</span><span class="release-artist">${item.artist}</span></td>
+          <td>${item.label || '-'}</td>
+          <td><div class="date-time"><b>${item.date || '-'}</b><br>${item.hour || '00:00'}</div></td>
+          <td style="text-align:center;">${item.tracks}</td>
+          <td><div class="upc-code">UPC: ${item.upc || '-'}<br>CAT: ${item.catNum || '-'}</div></td>
+          <td><div class="territory-cell" title="${terrStr}">${terrStr}</div></td>
+          <td style="display:flex; gap:8px">
+            <button class="btn-icon" onclick="editRelease(${i})"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
+            <button class="btn-icon" onclick="openModal(${i})"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    container.querySelectorAll('tr').forEach((row, index) => {
+      setTimeout(() => { row.classList.add('loaded'); }, (index + 3) * 150);
+    });
+  }
+
+  function openModal(index) { pendingDeleteIndex = index; document.getElementById('confirmModal').style.display = 'flex'; }
+  function closeModal() { document.getElementById('confirmModal').style.display = 'none'; }
+  document.getElementById('confirmDeleteBtn').onclick = function() {
+    let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
+    catalog.splice(pendingDeleteIndex, 1);
+    localStorage.setItem('undersouthern_catalog', JSON.stringify(catalog));
+    renderCatalog(); closeModal();
+  };
+
+  window.onload = () => { syncAvatar(); setupTagInput(); renderCatalog(); slowLoadView(); };
+</script>
+
+</body>
+</html>
