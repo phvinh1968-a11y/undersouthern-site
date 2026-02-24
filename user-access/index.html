@@ -6,12 +6,10 @@
 <title>User Access Management - UNDERSOUTHERN</title>
 
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    /* Bảng màu tối giản - Đồng bộ Under Southern */
     --bg-body: #ffffff;
     --bg-card: #ffffff;
     --primary-black: #000000;
@@ -19,16 +17,14 @@
     --text-muted: #666666;
     --border-color: #eeeeee;
     --hover-bg: #f5f5f5;
-    
-    /* Màu cảnh báo dựa trên ảnh gốc */
     --warning-bg: #fffbeb;
     --warning-border: #fef3c7;
     --warning-text: #713f12;
     --info-bg: #eff6ff;
     --info-text: #1e40af;
-
     --radius-main: 10px;
     --font-main: 'Inter', -apple-system, sans-serif;
+    --container-max-width: 1400px;
   }
 
   body {
@@ -36,23 +32,31 @@
     background-color: var(--bg-body);
     color: var(--text-main);
     margin: 0;
-    padding: 40px 20px;
+    padding: 20px 0;
     letter-spacing: -0.01em;
+    box-sizing: border-box;
+  }
+
+  .layout-wrapper {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
   }
 
   h2.page-title {
     font-size: 24px;
     font-weight: 700;
-    margin-bottom: 30px;
-    padding-left: 10px;
+    margin: 20px 0 30px 0;
+    padding: 0;
+    width: 100%;
   }
 
   .container {
     display: grid;
     grid-template-columns: 1fr 1.6fr 1fr;
     gap: 24px;
-    max-width: 1400px;
-    margin: 0 auto;
+    width: 100%;
   }
 
   .card {
@@ -61,6 +65,9 @@
     border-radius: var(--radius-main);
     border: 1px solid var(--border-color);
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
   }
 
   h3 {
@@ -157,6 +164,7 @@
     margin-right: 10px;
     accent-color: var(--primary-black);
     cursor: pointer;
+    flex-shrink: 0;
   }
 
   .indent-group {
@@ -173,119 +181,162 @@
     padding: 6px !important;
   }
 
+  .tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+  }
+
+  .tag {
+    background: #f0f0f0;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tag span {
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .invite-btn {
+    background: var(--primary-black);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+
+  .invite-btn:active {
+    transform: scale(0.98);
+  }
+
   @media (max-width: 1100px) {
-    .container { grid-template-columns: 1fr; }
+    .container { grid-template-columns: 1fr; gap: 20px; }
+    h2.page-title { font-size: 20px; margin-bottom: 20px; }
+    .footer-actions { justify-content: center; }
   }
 </style>
 </head>
 <body>
 
-<h2 class="page-title">User Access Management</h2>
+<div class="layout-wrapper">
+  <h2 class="page-title">User Access Management</h2>
 
-<div class="container">
+  <div class="container">
+    <div class="card">
+      <h3>Contact Information</h3>
+      <label>Login :</label>
+      <input type="text" placeholder="Username">
 
-  <div class="card">
-    <h3>Contact Information</h3>
-    <label>Login :</label>
-    <input type="text" placeholder="Username">
+      <label>Email :</label>
+      <input type="email" placeholder="email@undersouthern.asia">
+    </div>
 
-    <label>Email :</label>
-    <input type="email" placeholder="email@undersouthern.asia">
-  </div>
+    <div class="card">
+      <h3>User Access</h3>
+      <label>Permission Level</label>
+      <select id="permissionLevel">
+        <option value="standard">Standard user</option>
+        <option value="advanced">Advanced user</option>
+      </select>
 
+      <div id="permissionsList">
+        <div class="section-title">News</div>
+        <label class="checkbox-item"><input type="checkbox"> News</label>
 
-  <div class="card">
-    <h3>User Access</h3>
+        <div class="section-title">New Release</div>
+        <label class="checkbox-item"><input type="checkbox"> New Release</label>
+        <label class="checkbox-item"><input type="checkbox"> One release</label>
+        <label class="checkbox-item"><input type="checkbox"> Multiple releases</label>
+        <label class="checkbox-item"><input type="checkbox"> New release creation tool (access)</label>
+        <label class="checkbox-item"><input type="checkbox"> New release creation tool (submission)</label>
 
-    <label>Permission Level</label>
-    <select id="permissionLevel">
-      <option value="standard">Standard user</option>
-      <option value="advanced">Advanced user</option>
-    </select>
+        <div class="section-title">Catalog</div>
+        <label class="checkbox-item"><input type="checkbox"> All Releases</label>
+        <label class="checkbox-item"><input type="checkbox"> Drafts</label>
+        <label class="checkbox-item"><input type="checkbox"> Correction Requested</label>
 
-    <div id="permissionsList">
-      <div class="section-title">News</div>
-      <label class="checkbox-item"><input type="checkbox"> News</label>
+        <div class="section-title">Analytics</div>
+        <label class="checkbox-item"><input type="checkbox"> Streams</label>
+        <label class="checkbox-item"><input type="checkbox"> Daily Trends</label>
+        <label class="checkbox-item"><input type="checkbox"> Playlists & Charts</label>
+        <label class="checkbox-item"><input type="checkbox"> Views</label>
 
-      <div class="section-title">New Release</div>
-      <label class="checkbox-item"><input type="checkbox"> New Release</label>
-      <label class="checkbox-item"><input type="checkbox"> One release</label>
-      <label class="checkbox-item"><input type="checkbox"> Multiple releases</label>
-      <label class="checkbox-item"><input type="checkbox"> New release creation tool (access)</label>
-      <label class="checkbox-item"><input type="checkbox"> New release creation tool (submission)</label>
-
-      <div class="section-title">Catalog</div>
-      <label class="checkbox-item"><input type="checkbox"> All Releases</label>
-      <label class="checkbox-item"><input type="checkbox"> Drafts</label>
-      <label class="checkbox-item"><input type="checkbox"> Correction Requested</label>
-
-      <div class="section-title">Analytics</div>
-      <label class="checkbox-item"><input type="checkbox"> Streams</label>
-      <label class="checkbox-item"><input type="checkbox"> Daily Trends</label>
-      <label class="checkbox-item"><input type="checkbox"> Playlists & Charts</label>
-      <label class="checkbox-item"><input type="checkbox"> Views</label>
-
-      <div class="section-title">Finance</div>
-      <label class="checkbox-item"><input type="checkbox"> Payment & operations</label>
-      <label class="checkbox-item">
-        <input type="checkbox" id="finReportToggle"> Financial reports
-      </label>
-
-      <div id="finDetails" class="indent-group" style="display:none;">
+        <div class="section-title">Finance</div>
+        <label class="checkbox-item"><input type="checkbox"> Payment & operations</label>
         <label class="checkbox-item">
-          <input type="checkbox"> Hide total revenue and royalty rates
+          <input type="checkbox" id="finReportToggle"> Financial reports
         </label>
-        <label class="checkbox-item">
-          <input type="checkbox" id="royaltyToggle"> Add royalty rate between user and you
-        </label>
-        <div id="royaltyBox" style="display:none; margin-top:10px;">
-          <label style="font-size:12px;">User rate :</label>
-          <input type="text" class="rate-field"> %
+
+        <div id="finDetails" class="indent-group" style="display:none;">
+          <label class="checkbox-item">
+            <input type="checkbox"> Hide total revenue and royalty rates
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="royaltyToggle"> Add royalty rate between user and you
+          </label>
+          <div id="royaltyBox" style="display:none; margin-top:10px;">
+            <label style="font-size:12px;">User rate :</label>
+            <input type="text" class="rate-field"> %
+          </div>
         </div>
+
+        <div class="section-title">Legal</div>
+        <label class="checkbox-item"><input type="checkbox"> Rights Manager</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Catalog Scope</h3>
+      <div id="advancedWarning" class="warning-box">
+        <strong>Warning:</strong> An "advanced user" can submit us the releases he creates, if you give him access to "Create my releases" section. Moreover, if you have access to believe FTP account to upload your audio files, the advanced user can access it too. If you want a user creates his catalogue and submit it without your help, choose this option. If you want to keep control on what a user can distribute with us, choose instead "standard user".
       </div>
 
-      <div class="section-title">Legal</div>
-      <label class="checkbox-item"><input type="checkbox"> Rights Manager</label>
+      <div class="info-box">
+        Catalog scope will allow you to define which areas of the interface can be viewed by 'access-only' user accounts.
+      </div>
+
+      <label>Artists <button class="add-btn" onclick="addAll('artist-tags', 'All Artists')">+ add all</button></label>
+      <div id="artist-tags" class="tag-container"></div>
+      <input type="text" id="artistInput" placeholder="Type artist name and press Enter" onkeypress="handleInput(event, 'artist-tags')">
+
+      <label>Labels <button class="add-btn" onclick="addAll('label-tags', 'All Labels')">+ add all</button></label>
+      <div id="label-tags" class="tag-container"></div>
+      <input type="text" id="labelInput" placeholder="Type label name and press Enter" onkeypress="handleInput(event, 'label-tags')">
     </div>
   </div>
 
-
-  <div class="card">
-    <h3>Catalog Scope</h3>
-
-    <div id="advancedWarning" class="warning-box">
-      <strong>Warning:</strong> An "advanced user" can submit us the releases he creates, if you give him access to "Create my releases" section. Moreover, if you have access to believe FTP account to upload your audio files, the advanced user can access it too. If you want a user creates his catalogue and submit it without your help, choose this option. If you want to keep control on what a user can distribute with us, choose instead "standard user".
-    </div>
-
-    <div class="info-box">
-      Catalog scope will allow you to define which areas of the interface can be viewed by 'access-only' user accounts.
-    </div>
-
-    <label>Artists <button class="add-btn">+ add all</button></label>
-    <input type="text" placeholder="Select artist">
-
-    <label>Labels <button class="add-btn">+ add all</button></label>
-    <input type="text" placeholder="Select label">
+  <div class="footer-actions">
+    <button class="invite-btn">Invite User</button>
   </div>
-
 </div>
 
 <script>
-  // --- TÍNH NĂNG CHẶN NÚT BACK ---
   (function() {
-    // Đẩy một trạng thái giả vào lịch sử trình duyệt
     history.pushState(null, null, window.location.href);
-    
     window.addEventListener('popstate', function(event) {
-      // Khi người dùng bấm Back, trình duyệt sẽ bị đẩy về Dashboard thay vì trang trước đó
       window.location.href = "https://undersouthern.asia/dashboard";
     });
   })();
 
-  // --- LOGIC GIAO DIỆN CŨ ---
   const levelSelect = document.getElementById('permissionLevel');
   const warning = document.getElementById('advancedWarning');
-
   levelSelect.addEventListener('change', function() {
     warning.style.display = (this.value === 'advanced') ? 'block' : 'none';
   });
@@ -294,14 +345,36 @@
   const finDetails = document.getElementById('finDetails');
   const royaltyCheck = document.getElementById('royaltyToggle');
   const royaltyBox = document.getElementById('royaltyBox');
-
   finCheck.addEventListener('change', function() {
     finDetails.style.display = this.checked ? 'block' : 'none';
   });
-
   royaltyCheck.addEventListener('change', function() {
     royaltyBox.style.display = this.checked ? 'block' : 'none';
   });
+
+  function handleInput(e, containerId) {
+    if (e.key === 'Enter' && e.target.value.trim() !== '') {
+      addTag(containerId, e.target.value.trim());
+      e.target.value = '';
+    }
+  }
+
+  function addTag(containerId, text) {
+    const container = document.getElementById(containerId);
+    const existing = Array.from(container.querySelectorAll('.tag')).map(t => t.firstChild.textContent.trim());
+    if (existing.includes(text)) return;
+
+    const tag = document.createElement('div');
+    tag.className = 'tag';
+    tag.innerHTML = `${text} <span onclick="this.parentElement.remove()">×</span>`;
+    container.appendChild(tag);
+  }
+
+  function addAll(containerId, text) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    addTag(containerId, text);
+  }
 </script>
 
 </body>
