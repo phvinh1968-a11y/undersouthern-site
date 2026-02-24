@@ -141,7 +141,6 @@
             <div>
                 <h3 class="section-title">General Information</h3>
                 <div class="space-y-8">
-                    
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
                         <label class="label-text pt-2">Profile Avatar</label>
                         <div class="md:col-span-2">
@@ -199,7 +198,6 @@
             <div>
                 <h2 class="text-2xl font-bold tracking-tight mb-6">Notifications</h2>
                 <div class="border border-slate-200 rounded-xl p-6 space-y-8">
-                    
                     <div class="flex items-start justify-between">
                         <div class="max-w-[80%]">
                             <h4 class="font-bold text-sm text-slate-900">Accounts</h4>
@@ -210,7 +208,6 @@
                             <span class="slider"></span>
                         </label>
                     </div>
-
                     <div class="flex items-start justify-between">
                         <div class="max-w-[80%]">
                             <h4 class="font-bold text-sm text-slate-900">Distribution</h4>
@@ -221,7 +218,6 @@
                             <span class="slider"></span>
                         </label>
                     </div>
-
                     <div class="flex items-start justify-between">
                         <div class="max-w-[80%]">
                             <h4 class="font-bold text-sm text-slate-900">Statements</h4>
@@ -232,7 +228,59 @@
                             <span class="slider"></span>
                         </label>
                     </div>
+                </div>
+            </div>
 
+            <div class="border-t border-slate-100 pt-4"></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h2 class="text-[16px] font-bold text-slate-900">Your Browser Sessions</h2>
+                    <p class="text-[13px] text-slate-500 mt-2 leading-relaxed">Here's all of the browser sessions you've logged into your account.</p>
+                </div>
+                <div class="md:col-span-2 space-y-6">
+                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-4 flex items-start space-x-3">
+                        <i class="fa-solid fa-circle-info text-slate-400 mt-1"></i>
+                        <div class="text-[13px] text-slate-600 leading-relaxed">
+                            <p class="font-bold text-slate-800">Browser Sessions</p>
+                            <p class="mt-1">If necessary, you can log out of all other browser sessions across all devices. If you feel your account is compromised, please change your password.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6 pt-2">
+                        <div class="flex items-start space-x-4">
+                            <div class="mt-1 text-slate-900">
+                                <i class="fa-solid fa-desktop text-xl"></i>
+                            </div>
+                            <div class="text-[13px]">
+                                <div class="flex items-center space-x-2">
+                                    <span id="current-browser" class="font-semibold text-slate-900">Chrome</span>
+                                    <span class="text-green-500 font-bold text-[11px] uppercase tracking-wide">This device</span>
+                                </div>
+                                <p class="text-slate-400 mt-0.5"><span id="current-ip">162.159.98.125</span></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4 opacity-80">
+                            <div class="mt-1 text-slate-900">
+                                <i class="fa-solid fa-desktop text-xl"></i>
+                            </div>
+                            <div class="text-[13px]">
+                                <p class="font-semibold text-slate-900">Chrome</p>
+                                <p class="text-slate-400 mt-0.5">162.158.88.80, Last Active 1 hour ago</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4 opacity-80">
+                            <div class="mt-1 text-slate-900">
+                                <i class="fa-solid fa-desktop text-xl"></i>
+                            </div>
+                            <div class="text-[13px]">
+                                <p class="font-semibold text-slate-900">Safari</p>
+                                <p class="text-slate-400 mt-0.5">162.158.163.246, Last Active 3 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -245,8 +293,8 @@
     </main>
 
     <script>
-        // Tải avatar từ localStorage khi trang load
         window.onload = function() {
+            // Load avatar
             const savedAvatar = localStorage.getItem('userAvatar');
             if (savedAvatar) {
                 const preview = document.getElementById('preview');
@@ -255,6 +303,16 @@
                 preview.style.display = 'block';
                 placeholder.style.display = 'none';
             }
+
+            // Tự động cập nhật thông tin trình duyệt đang dùng
+            const userAgent = navigator.userAgent;
+            let browserName = "Unknown Browser";
+            if (userAgent.match(/chrome|chromium|crios/i)) browserName = "Chrome";
+            else if (userAgent.match(/firefox|fxios/i)) browserName = "Firefox";
+            else if (userAgent.match(/safari/i)) browserName = "Safari";
+            else if (userAgent.match(/edg/i)) browserName = "Edge";
+            
+            document.getElementById('current-browser').innerText = browserName;
         };
 
         function previewImage(input) {
@@ -267,8 +325,6 @@
                     preview.src = imageData;
                     preview.style.display = 'block';
                     placeholder.style.display = 'none';
-                    
-                    // Lưu dữ liệu ảnh vào bộ nhớ trình duyệt
                     localStorage.setItem('userAvatar', imageData);
                 }
                 reader.readAsDataURL(input.files[0]);
@@ -280,7 +336,6 @@
             btn.innerText = "Redirecting...";
             btn.disabled = true;
             btn.style.opacity = "0.7";
-            
             setTimeout(() => {
                 window.location.href = "https://undersouthern.asia/dashboard";
             }, 500);
