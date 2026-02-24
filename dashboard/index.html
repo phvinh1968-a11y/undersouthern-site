@@ -77,7 +77,7 @@
                     <a href="#" onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-active flex items-center space-x-3 px-4 py-3 font-bold text-[13px] transition">
                         <i class="fa-solid fa-house w-4 text-center"></i> <span class="no-italic">Dashboard</span>
                     </a>
-                    <a href="#" onclick="showTab('catalog')" id="nav-catalog" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                    <a href="https://undersouthern.asia/catalog" id="nav-catalog" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
                         <i class="fa-solid fa-list-ul w-4 text-center"></i> <span>Catalog</span>
                     </a>
                     <a href="#" onclick="showTab('analytics')" id="nav-analytics" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
@@ -199,14 +199,13 @@
     </div>
 
     <script>
-        // HÀM ĐỒNG BỘ AVATAR TỪ LOCAL STORAGE
         function syncAvatar() {
-            const savedImg = localStorage.getItem('userAvatar'); // Khóa đồng bộ với trang Profile
+            const savedImg = localStorage.getItem('userAvatar');
             const holder = document.getElementById('top-avatar-holder');
             const text = document.getElementById('us-text');
             
             if (savedImg && holder) {
-                if (text) text.style.display = 'none'; // Ẩn chữ US
+                if (text) text.style.display = 'none';
                 holder.innerHTML = `<img src="${savedImg}" id="main-avatar-img" alt="Avatar">`;
             }
         }
