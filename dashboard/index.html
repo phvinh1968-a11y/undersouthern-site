@@ -161,13 +161,8 @@
                                         <th class="px-6 py-4 text-right">Date</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-100 text-[12px]">
-                                    <tr class="hover:bg-slate-50 transition">
-                                        <td class="px-6 py-4 font-bold">Sun Flowers</td>
-                                        <td class="px-6 py-4 text-slate-400">Astrolaw</td>
-                                        <td class="px-6 py-4 text-right font-bold">24/02/2026</td>
-                                    </tr>
-                                </tbody>
+                                <tbody id="catalogListBody" class="divide-y divide-slate-100 text-[12px]">
+                                    </tbody>
                             </table>
                         </div>
                     </div>
@@ -211,14 +206,37 @@
     </div>
 
     <script>
-        function syncAvatar() {
+        // LOGIC ĐỒNG BỘ TOÀN HỆ THỐNG
+        function syncSystemData() {
+            // 1. Đồng bộ Avatar
             const savedImg = localStorage.getItem('userAvatar');
             const holder = document.getElementById('top-avatar-holder');
             const text = document.getElementById('us-text');
-            
             if (savedImg && holder) {
                 if (text) text.style.display = 'none';
                 holder.innerHTML = `<img src="${savedImg}" id="main-avatar-img" alt="Avatar">`;
+            }
+
+            // 2. Đổ dữ liệu Catalog từ trang phụ vào bảng Dashboard
+            const catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
+            const catalogBody = document.getElementById('catalogListBody');
+            if (catalog.length > 0) {
+                catalogBody.innerHTML = catalog.map(item => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="px-6 py-4 font-bold">${item.title}</td>
+                        <td class="px-6 py-4 text-slate-400">${item.artist}</td>
+                        <td class="px-6 py-4 text-right font-bold">${item.date || '---'}</td>
+                    </tr>
+                `).join('');
+            } else {
+                catalogBody.innerHTML = `<tr><td colspan="3" class="px-6 py-10 text-center text-slate-400">No releases found in catalog.</td></tr>`;
+            }
+
+            // 3. Phân quyền hiển thị: Chỉ Admin mới thấy tab User Access
+            const currentUser = localStorage.getItem('activeUser');
+            if (currentUser !== 'UNDERSOUTHERN') {
+                const navUsers = document.getElementById('nav-users');
+                if (navUsers) navUsers.classList.add('hidden');
             }
         }
 
@@ -239,7 +257,8 @@
 
         function handleLogout() {
             localStorage.removeItem('isLoggedIn');
-            window.location.href = "https://undersouthern.asia/login?v=" + new Date().getTime();
+            localStorage.removeItem('activeUser');
+            window.location.href = "https://undersouthern.asia/login";
         }
 
         function showTab(tabId) {
@@ -248,13 +267,16 @@
                 const content = document.getElementById('tab-' + id);
                 const nav = document.getElementById('nav-' + id);
                 if (content) content.classList.add('hidden');
-                if (nav) nav.classList.remove('sidebar-active', 'font-bold');
+                if (nav) nav.classList.remove('sidebar-active', 'font-bold', 'text-white');
                 if (nav) nav.classList.add('text-slate-400');
             });
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            
+            const targetTab = document.getElementById('tab-' + tabId);
+            if(targetTab) targetTab.classList.remove('hidden');
+            
             const activeNav = document.getElementById('nav-' + tabId);
             if(activeNav) {
-                activeNav.classList.add('sidebar-active', 'font-bold');
+                activeNav.classList.add('sidebar-active', 'font-bold', 'text-white');
                 activeNav.classList.remove('text-slate-400');
             }
 
@@ -267,9 +289,6 @@
         function renderUsers() {
             const tableBody = document.getElementById('userTableBody');
             const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-            if (users.length === 0) {
-                users.push({ email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123', status: 'Active' });
-            }
             tableBody.innerHTML = users.map((user, index) => `
                 <tr class="hover:bg-slate-50 transition">
                     <td class="px-6 py-4 font-semibold text-black">${user.email}</td>
@@ -280,7 +299,7 @@
                             <i class="fa-solid fa-eye cursor-pointer opacity-30 hover:opacity-100 transition text-[10px]" onclick="togglePass('pass-${index}', this)"></i>
                         </div>
                     </td>
-                    <td class="px-6 py-4"><span class="status-tag">Active</span></td>
+                    <td class="px-6 py-4"><span class="status-tag">${user.status || 'Active'}</span></td>
                     <td class="px-6 py-4 text-right">
                         <div class="flex justify-end space-x-1">
                             <button class="btn-action"><i class="fa-solid fa-pen text-[10px]"></i></button>
@@ -302,15 +321,6 @@
             }
         }
 
-        function filterUsers() {
-            const filter = document.getElementById("searchInput").value.toLowerCase();
-            const rows = document.getElementById("userTableBody").getElementsByTagName("tr");
-            for (let i = 0; i < rows.length; i++) {
-                const text = rows[i].textContent.toLowerCase();
-                rows[i].style.display = text.includes(filter) ? "" : "none";
-            }
-        }
-
         function deleteUser(index) {
             if (confirm("Delete this user?")) {
                 const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
@@ -321,10 +331,9 @@
         }
 
         window.onload = () => {
-            // Kiểm tra trạng thái và hiển thị
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 document.getElementById('main-content').style.display = 'block';
-                syncAvatar(); // Tự động load ảnh đại diện
+                syncSystemData(); // Chạy hàm đồng bộ dữ liệu ngay khi load
                 renderUsers();
                 showTab('dashboard');
             }
