@@ -1,172 +1,308 @@
-<div class="fade-in space-y-12 pb-24 max-w-7xl mx-auto">
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Access Management - UNDERSOUTHERN</title>
+
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Bảng màu tối giản - Đồng bộ Under Southern */
+    --bg-body: #ffffff;
+    --bg-card: #ffffff;
+    --primary-black: #000000;
+    --text-main: #000000;
+    --text-muted: #666666;
+    --border-color: #eeeeee;
+    --hover-bg: #f5f5f5;
     
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-100 pb-8">
-        <div>
-            <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-black uppercase">User Access</h2>
-            <p class="text-slate-400 text-sm mt-2 font-medium">Configure advanced permissions and catalog restrictions for this account.</p>
+    /* Màu cảnh báo dựa trên ảnh gốc */
+    --warning-bg: #fffbeb;
+    --warning-border: #fef3c7;
+    --warning-text: #713f12;
+    --info-bg: #eff6ff;
+    --info-text: #1e40af;
+
+    --radius-main: 10px;
+    --font-main: 'Inter', -apple-system, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-main);
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    margin: 0;
+    padding: 40px 20px;
+    letter-spacing: -0.01em;
+  }
+
+  h2.page-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    padding-left: 10px;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr 1fr;
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: var(--bg-card);
+    padding: 24px;
+    border-radius: var(--radius-main);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+
+  h3 {
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-main);
+    margin: 0 0 20px 0;
+    letter-spacing: 0.05em;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 18px;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-black);
+    background: var(--hover-bg);
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 24px 0 12px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .warning-box {
+    background: var(--warning-bg);
+    border: 1px solid var(--warning-border);
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--warning-text);
+    margin-bottom: 20px;
+    display: none; 
+  }
+
+  .info-box {
+    background: var(--info-bg);
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: var(--info-text);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .add-btn {
+    background: var(--primary-black);
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 8px;
+    text-transform: lowercase;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    font-size: 13.5px;
+    cursor: pointer;
+    font-weight: 400;
+  }
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    accent-color: var(--primary-black);
+    cursor: pointer;
+  }
+
+  .indent-group {
+    margin-left: 20px;
+    padding-left: 15px;
+    border-left: 1px solid var(--border-color);
+    margin-top: 10px;
+  }
+
+  .rate-field {
+    width: 80px !important;
+    display: inline-block;
+    margin-bottom: 0 !important;
+    padding: 6px !important;
+  }
+
+  @media (max-width: 1100px) {
+    .container { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<h2 class="page-title">User Access Management</h2>
+
+<div class="container">
+
+  <div class="card">
+    <h3>Contact Information</h3>
+    <label>Login :</label>
+    <input type="text" placeholder="Username">
+
+    <label>Email :</label>
+    <input type="email" placeholder="email@undersouthern.asia">
+  </div>
+
+
+  <div class="card">
+    <h3>User Access</h3>
+
+    <label>Permission Level</label>
+    <select id="permissionLevel">
+      <option value="standard">Standard user</option>
+      <option value="advanced">Advanced user</option>
+    </select>
+
+    <div id="permissionsList">
+      <div class="section-title">News</div>
+      <label class="checkbox-item"><input type="checkbox"> News</label>
+
+      <div class="section-title">New Release</div>
+      <label class="checkbox-item"><input type="checkbox"> New Release</label>
+      <label class="checkbox-item"><input type="checkbox"> One release</label>
+      <label class="checkbox-item"><input type="checkbox"> Multiple releases</label>
+      <label class="checkbox-item"><input type="checkbox"> New release creation tool (access)</label>
+      <label class="checkbox-item"><input type="checkbox"> New release creation tool (submission)</label>
+
+      <div class="section-title">Catalog</div>
+      <label class="checkbox-item"><input type="checkbox"> All Releases</label>
+      <label class="checkbox-item"><input type="checkbox"> Drafts</label>
+      <label class="checkbox-item"><input type="checkbox"> Correction Requested</label>
+
+      <div class="section-title">Analytics</div>
+      <label class="checkbox-item"><input type="checkbox"> Streams</label>
+      <label class="checkbox-item"><input type="checkbox"> Daily Trends</label>
+      <label class="checkbox-item"><input type="checkbox"> Playlists & Charts</label>
+      <label class="checkbox-item"><input type="checkbox"> Views</label>
+
+      <div class="section-title">Finance</div>
+      <label class="checkbox-item"><input type="checkbox"> Payment & operations</label>
+      <label class="checkbox-item">
+        <input type="checkbox" id="finReportToggle"> Financial reports
+      </label>
+
+      <div id="finDetails" class="indent-group" style="display:none;">
+        <label class="checkbox-item">
+          <input type="checkbox"> Hide total revenue and royalty rates
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" id="royaltyToggle"> Add royalty rate between user and you
+        </label>
+        <div id="royaltyBox" style="display:none; margin-top:10px;">
+          <label style="font-size:12px;">User rate :</label>
+          <input type="text" class="rate-field"> %
         </div>
-        <div class="flex items-center space-x-3">
-            <button onclick="showTab('dashboard')" class="px-6 py-3 text-[11px] font-bold uppercase tracking-widest border border-slate-200 rounded-lg hover:bg-slate-50 transition active:scale-95">Cancel</button>
-            <button onclick="handleSavePermissions()" class="px-10 py-3 text-[11px] font-bold uppercase tracking-widest bg-black text-white rounded-lg hover:bg-slate-800 transition active:scale-95 shadow-xl shadow-slate-200">Save Permissions</button>
-        </div>
+      </div>
+
+      <div class="section-title">Legal</div>
+      <label class="checkbox-item"><input type="checkbox"> Rights Manager</label>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <h3>Catalog Scope</h3>
+
+    <div id="advancedWarning" class="warning-box">
+      <strong>Warning:</strong> An "advanced user" can submit us the releases he creates, if you give him access to "Create my releases" section. Moreover, if you have access to believe FTP account to upload your audio files, the advanced user can access it too. If you want a user creates his catalogue and submit it without your help, choose this option. If you want to keep control on what a user can distribute with us, choose instead "standard user".
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        
-        <div class="lg:col-span-8 space-y-12">
-            
-            <section class="space-y-6">
-                <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-3">
-                    <span class="w-8 h-[1px] bg-slate-200"></span> Contact Information
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="group">
-                        <label class="text-[12px] font-bold text-slate-500 uppercase mb-2 block transition-colors group-focus-within:text-black">Login ID</label>
-                        <input type="text" placeholder="e.g. vinh.undersouthern" class="input-field !bg-slate-50 focus:!bg-white">
-                    </div>
-                    <div class="group">
-                        <label class="text-[12px] font-bold text-slate-500 uppercase mb-2 block transition-colors group-focus-within:text-black">Email Address</label>
-                        <input type="email" placeholder="vinh@undersouthern.asia" class="input-field !bg-slate-50 focus:!bg-white">
-                    </div>
-                </div>
-            </section>
-
-            <section class="space-y-6">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-3">
-                        <span class="w-8 h-[1px] bg-slate-200"></span> Permissions & Modules
-                    </h3>
-                    <div class="flex items-center gap-4">
-                        <label class="text-[12px] font-bold text-black uppercase">Level:</label>
-                        <select class="bg-white border-b-2 border-black text-[13px] font-bold outline-none pb-1 px-2 cursor-pointer">
-                            <option>Standard user</option>
-                            <option>Administrator</option>
-                            <option>Viewer</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="p-6 border border-slate-100 rounded-2xl hover:border-black transition-all group">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold text-black flex items-center gap-2 italic">
-                                <i class="fa-solid fa-bolt-lightning text-[10px]"></i> Backstage
-                            </h4>
-                            <input type="checkbox" checked class="w-4 h-4 accent-black">
-                        </div>
-                        <p class="text-[12px] text-slate-400">Access to global news and dashboard updates.</p>
-                    </div>
-
-                    <div class="p-6 border border-slate-100 rounded-2xl hover:border-black transition-all group">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold text-black flex items-center gap-2 italic">
-                                <i class="fa-solid fa-plus text-[10px]"></i> New Release
-                            </h4>
-                            <div class="flex gap-2">
-                                <span class="text-[9px] font-bold bg-slate-100 px-2 py-1 rounded uppercase">Multi</span>
-                                <input type="checkbox" class="w-4 h-4 accent-black">
-                            </div>
-                        </div>
-                        <div class="flex gap-4 mt-2">
-                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Single</label>
-                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Batch</label>
-                        </div>
-                    </div>
-
-                    <div class="p-6 border border-slate-100 rounded-2xl hover:border-black transition-all group">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold text-black flex items-center gap-2 italic">
-                                <i class="fa-solid fa-database text-[10px]"></i> Catalog
-                            </h4>
-                            <input type="checkbox" class="w-4 h-4 accent-black">
-                        </div>
-                        <div class="flex gap-4">
-                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Releases</label>
-                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Drafts</label>
-                        </div>
-                    </div>
-
-                    <div class="p-6 border border-slate-100 rounded-2xl hover:border-black transition-all group">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold text-black flex items-center gap-2 italic">
-                                <i class="fa-solid fa-chart-pie text-[10px]"></i> Analytics
-                            </h4>
-                            <input type="checkbox" class="w-4 h-4 accent-black">
-                        </div>
-                        <div class="flex gap-4">
-                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Streams</label>
-                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Trends</label>
-                        </div>
-                    </div>
-
-                    <div class="p-6 border border-slate-card rounded-2xl bg-black text-white shadow-2xl shadow-slate-200">
-                        <div class="flex justify-between items-center mb-4">
-                            <h4 class="font-bold flex items-center gap-2 italic">
-                                <i class="fa-solid fa-dollar-sign text-[10px]"></i> Finance
-                            </h4>
-                            <input type="checkbox" class="w-4 h-4 accent-white">
-                        </div>
-                        <div class="flex gap-4">
-                            <label class="text-[11px] flex items-center gap-1 cursor-pointer opacity-80"><input type="checkbox"> Reports</label>
-                            <label class="text-[11px] flex items-center gap-1 cursor-pointer opacity-80"><input type="checkbox"> Payments</label>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div class="lg:col-span-4">
-            <div class="sticky top-24 space-y-8">
-                <section class="space-y-6">
-                    <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-3">
-                        <span class="w-8 h-[1px] bg-slate-200"></span> Catalog Scope
-                    </h3>
-                    
-                    <div class="space-y-6 bg-slate-50 p-8 rounded-3xl border border-slate-100">
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center">
-                                <label class="text-[12px] font-black uppercase text-black">Artists</label>
-                                <button class="text-[9px] font-bold bg-black text-white px-2 py-1 rounded-full uppercase hover:scale-105 transition">+ Add All</button>
-                            </div>
-                            <div class="relative">
-                                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-xs"></i>
-                                <input type="text" placeholder="Select artist..." class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-[13px] outline-none focus:border-black shadow-sm">
-                            </div>
-                        </div>
-
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center">
-                                <label class="text-[12px] font-black uppercase text-black">Labels</label>
-                                <button class="text-[9px] font-bold bg-black text-white px-2 py-1 rounded-full uppercase hover:scale-105 transition">+ Add All</button>
-                            </div>
-                            <div class="relative">
-                                <i class="fa-solid fa-tag absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-xs"></i>
-                                <input type="text" placeholder="Choose label..." class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-[13px] outline-none focus:border-black shadow-sm">
-                            </div>
-                        </div>
-
-                        <div class="pt-4 border-t border-slate-200">
-                            <p class="text-[11px] text-slate-400 italic leading-relaxed text-center">
-                                Note: Empty scope allows full access to all assets.
-                            </p>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </div>
+    <div class="info-box">
+      Catalog scope will allow you to define which areas of the interface can be viewed by 'access-only' user accounts.
     </div>
+
+    <label>Artists <button class="add-btn">+ add all</button></label>
+    <input type="text" placeholder="Select artist">
+
+    <label>Labels <button class="add-btn">+ add all</button></label>
+    <input type="text" placeholder="Select label">
+  </div>
+
 </div>
 
 <script>
-    function handleSavePermissions() {
-        const btn = event.currentTarget;
-        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Deploying...';
-        btn.disabled = true;
+  // --- TÍNH NĂNG CHẶN NÚT BACK ---
+  (function() {
+    // Đẩy một trạng thái giả vào lịch sử trình duyệt
+    history.pushState(null, null, window.location.href);
+    
+    window.addEventListener('popstate', function(event) {
+      // Khi người dùng bấm Back, trình duyệt sẽ bị đẩy về Dashboard thay vì trang trước đó
+      window.location.href = "https://undersouthern.asia/dashboard";
+    });
+  })();
 
-        setTimeout(() => {
-            btn.innerHTML = 'Save Permissions';
-            btn.disabled = false;
-            showTab('dashboard');
-        }, 1500);
-    }
+  // --- LOGIC GIAO DIỆN CŨ ---
+  const levelSelect = document.getElementById('permissionLevel');
+  const warning = document.getElementById('advancedWarning');
+
+  levelSelect.addEventListener('change', function() {
+    warning.style.display = (this.value === 'advanced') ? 'block' : 'none';
+  });
+
+  const finCheck = document.getElementById('finReportToggle');
+  const finDetails = document.getElementById('finDetails');
+  const royaltyCheck = document.getElementById('royaltyToggle');
+  const royaltyBox = document.getElementById('royaltyBox');
+
+  finCheck.addEventListener('change', function() {
+    finDetails.style.display = this.checked ? 'block' : 'none';
+  });
+
+  royaltyCheck.addEventListener('change', function() {
+    royaltyBox.style.display = this.checked ? 'block' : 'none';
+  });
 </script>
+
+</body>
+</html>
