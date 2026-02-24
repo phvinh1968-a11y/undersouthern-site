@@ -1,1 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | UNDERSOUTHERN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #ffffff; 
+        }
+        .hidden { display: none !important; }
+        
+        .login-input:focus { 
+            border-color: #000000; 
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05); 
+        }
+        
+        .reset-input { 
+            border: none; 
+            border-bottom: 1px solid #e2e8f0; 
+            width: 100%; 
+            padding: 8px 0; 
+            outline: none; 
+            transition: border-color 0.2s; 
+        }
+        .reset-input:focus { border-bottom-color: #000; }
 
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-black overflow-x-hidden">
+
+    <div class="min-h-screen flex items-center justify-center bg-white p-4">
+        <div class="w-full max-w-md p-6 md:p-10 bg-white border border-slate-100 shadow-2xl rounded-2xl relative">
+            
+            <div id="login-form-content" class="fade-in">
+                <div class="text-center mb-6"> 
+                    <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" 
+                         alt="Logo" class="w-20 h-20 md:w-24 md:h-24 mx-auto">
+                </div>
+
+                <form onsubmit="return handleMockLogin(event)" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Username</label>
+                        <input type="text" id="username" name="username" autocomplete="username" required
+                               class="login-input w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none transition-all"
+                               placeholder="Enter your username">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-widest">Password</label>
+                        <input type="password" id="password" name="password" autocomplete="current-password" required
+                               class="login-input w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg text-sm outline-none transition-all"
+                               placeholder="Enter your password">
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-black text-white font-bold py-4 rounded-lg text-sm hover:bg-zinc-800 transition-all tracking-widest uppercase shadow-lg active:scale-[0.98]">
+                        Sign In
+                    </button>
+
+                    <p onclick="showResetPage()" class="text-center text-[10px] text-slate-400 uppercase tracking-tight hover:underline cursor-pointer">
+                        Forgot your password?
+                    </p>
+
+                    <div id="language-container" class="border-t border-slate-100 mt-6 pt-4 relative">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Language</label>
+                        <div class="flex items-center justify-between cursor-pointer text-sm text-slate-600" onclick="toggleLangMenu(event)">
+                            <div class="flex items-center space-x-2 pointer-events-none">
+                                <span id="current-flag" class="font-bold text-[10px] border px-1 rounded">EN</span>
+                                <span id="current-lang-text">English</span>
+                            </div>
+                            <i class="fa-solid fa-caret-down text-[10px] pointer-events-none"></i>
+                        </div>
+                        
+                        <div id="lang-menu" class="hidden absolute bottom-full left-0 w-full bg-white border rounded-lg shadow-xl mb-2 z-50 overflow-hidden">
+                            <div class="p-3 hover:bg-slate-50 cursor-pointer text-sm border-b border-slate-50" onclick="selectLang('GB', 'English')">English</div>
+                            <div class="p-3 hover:bg-slate-50 cursor-pointer text-sm" onclick="selectLang('VN', 'Tiếng Việt')">Tiếng Việt</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div id="reset-password-content" class="hidden fade-in">
+                <h2 class="text-xl font-bold mb-8">Reset password</h2>
+                <form onsubmit="event.preventDefault();" class="space-y-8">
+                    <div>
+                        <input type="text" placeholder="Username" class="reset-input text-lg">
+                    </div>
+                    
+                    <button type="button" class="w-full bg-slate-100 text-slate-400 font-bold py-4 rounded text-sm uppercase tracking-widest cursor-not-allowed">
+                        Request Reset Link
+                    </button>
+
+                    <p onclick="showLoginPage()" class="text-sm text-slate-600 hover:underline cursor-pointer text-center block pt-4">
+                        Back to login page
+                    </p>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const VALID_USERNAME = "UNDERSOUTHERN";
+        const VALID_PASSWORD = "Vinh19061998//";
+
+        function handleMockLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            if (user === VALID_USERNAME && pass === VALID_PASSWORD) {
+                alert("Login successful!");
+            } else {
+                alert("Invalid username or password.");
+            }
+            return false;
+        }
+
+        function showResetPage() {
+            document.getElementById('login-form-content').classList.add('hidden');
+            document.getElementById('reset-password-content').classList.remove('hidden');
+        }
+
+        function showLoginPage() {
+            document.getElementById('reset-password-content').classList.add('hidden');
+            document.getElementById('login-form-content').classList.remove('hidden');
+        }
+
+        // Cải tiến: Ngăn sự kiện click lan ra ngoài khi bấm vào nút chọn ngôn ngữ
+        function toggleLangMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('lang-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function selectLang(flag, langText) {
+            document.getElementById('current-flag').innerText = flag;
+            document.getElementById('current-lang-text').innerText = langText;
+            document.getElementById('lang-menu').classList.add('hidden');
+        }
+
+        // Logic quan trọng: Tự động đóng menu khi click bất kỳ đâu khác trên màn hình
+        window.addEventListener('click', function(event) {
+            const menu = document.getElementById('lang-menu');
+            const container = document.getElementById('language-container');
+            
+            // Nếu click không nằm trong container chứa ngôn ngữ, ẩn menu đi
+            if (!container.contains(event.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
