@@ -131,6 +131,7 @@
         // Tài khoản quản trị mặc định
         const MASTER_USER = "UNDERSOUTHERN";
         const MASTER_PASS = "UNDERSOUTHERN2026//";
+        const DB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/users.json";
 
         window.addEventListener('load', function() {
             setTimeout(function() {
@@ -139,49 +140,65 @@
             }, 1200);
         });
 
-        function handleMockLogin(event) {
+        async function handleMockLogin(event) {
             event.preventDefault();
             const userInp = document.getElementById('username').value;
             const passInp = document.getElementById('password').value;
             const btn = document.getElementById('login-btn');
 
-            // 1. Lấy danh sách người dùng từ localStorage (do trang User Access tạo ra)
-            const savedUsers = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-            
-            // 2. Tìm kiếm người dùng khớp với Username/Email VÀ Password
-            // (Hỗ trợ đăng nhập bằng cả Login ID hoặc Email)
-            const foundUser = savedUsers.find(u => 
-                (u.login === userInp || u.email === userInp) && u.pass === passInp
-            );
+            // 1. Kiểm tra tài khoản Master trước
+            if (userInp === MASTER_USER && passInp === MASTER_PASS) {
+                return performLogin(btn, MASTER_USER);
+            }
 
-            // 3. Kiểm tra điều kiện đăng nhập (Master hoặc User được tạo)
-            if ((userInp === MASTER_USER && passInp === MASTER_PASS) || foundUser) {
-                
-                // Nếu là user thường, kiểm tra xem tài khoản có bị vô hiệu hóa không
-                if (foundUser && foundUser.status === 'Disabled') {
-                    alert("Account has been disabled. Please contact administration.");
-                    return false;
-                }
-
-                btn.innerHTML = '<div class="flex items-center justify-center"><div class="loader mr-2" style="width:14px; height:14px"></div> Redirecting...</div>';
+            // 2. Kiểm tra tài khoản trên Cloud Firebase
+            try {
+                btn.innerHTML = '<div class="flex items-center justify-center"><div class="loader mr-2" style="width:14px; height:14px"></div> Authenticating...</div>';
                 btn.disabled = true;
 
-                // TẠO CHÌA KHÓA SESSION
-                localStorage.setItem('isLoggedIn', 'true');
+                const response = await fetch(DB_URL);
+                const cloudData = await response.json();
                 
-                // Lưu tên hiển thị của người dùng hiện tại
-                const displayName = foundUser ? foundUser.login : MASTER_USER;
-                localStorage.setItem('activeUser', displayName);
+                let foundUser = null;
+                if (cloudData) {
+                    // Firebase lưu dưới dạng object, cần chuyển thành mảng để tìm
+                    foundUser = Object.values(cloudData).find(u => 
+                        (u.login === userInp || u.email === userInp) && u.pass === passInp
+                    );
+                }
 
-                // Chuyển hướng sang Dashboard
-                setTimeout(() => {
-                    window.location.href = "https://undersouthern.asia/dashboard"; 
-                }, 800);
-
-            } else {
-                alert("Invalid username or password.");
+                if (foundUser) {
+                    if (foundUser.status === 'Disabled') {
+                        alert("Account has been disabled. Please contact administration.");
+                        resetBtn(btn);
+                        return false;
+                    }
+                    return performLogin(btn, foundUser.login);
+                } else {
+                    alert("Invalid username or password.");
+                    resetBtn(btn);
+                }
+            } catch (error) {
+                alert("Cloud connection error. Please try again.");
+                resetBtn(btn);
             }
             return false;
+        }
+
+        function performLogin(btn, username) {
+            btn.innerHTML = '<div class="flex items-center justify-center"><div class="loader mr-2" style="width:14px; height:14px"></div> Redirecting...</div>';
+            btn.disabled = true;
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('activeUser', username);
+            setTimeout(() => {
+                window.location.href = "https://undersouthern.asia/dashboard"; 
+            }, 800);
+            return false;
+        }
+
+        function resetBtn(btn) {
+            btn.innerHTML = 'Sign In';
+            btn.disabled = false;
         }
 
         // --- CÁC HÀM GIAO DIỆN GIỮ NGUYÊN 100% ---
