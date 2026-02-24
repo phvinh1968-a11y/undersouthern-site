@@ -9,6 +9,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+<script>
+    /* KIỂM TRA ĐĂNG NHẬP NGAY LẬP TỨC TRƯỚC KHI TẢI CSS/BODY */
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = "https://undersouthern.asia/login";
+    }
+</script>
+
 <style>
   :root {
     --bg-body: #ffffff;
@@ -21,6 +28,7 @@
     --header-height: 72px;
   }
 
+  /* Ẩn nội dung để bảo mật trước khi script xác thực chạy xong */
   #auth-guard { display: none; }
 
   body { font-family: var(--font-main); background-color: var(--bg-body); margin: 0; padding: 0; letter-spacing: -0.01em; }
@@ -98,32 +106,28 @@
 </head>
 <body>
 
-<div class="modal-overlay" id="takedownModal">
-  <div class="modal-box">
-    <h2>Takedown release</h2>
-    <p>Why are you removing this release?</p>
-    
-    <textarea id="takedownReason" rows="3" placeholder="Please provide a reason..."></textarea>
-    
-    <div class="takedown-confirm-box" onclick="toggleTakedownCheckbox()">
-      <input type="checkbox" id="confirmTakedownCheck" onchange="validateTakedown()">
-      <label for="confirmTakedownCheck">
-        Yes, I'm sure I want to remove this release from stores.
-      </label>
-    </div>
-
-    <p style="font-size: 12px; background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 8px; border: 1px solid #ffedd5;">
-      This will remove the release from all stores where it is currently live. You'll continue be paid all royalties owed to you for the release.
-    </p>
-
-    <div style="display:flex; gap:12px; margin-top: 25px;">
-      <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn-modal-takedown" id="takedownBtn" onclick="executeTakedown()">Takedown</button>
-    </div>
-  </div>
-</div>
-
 <div id="auth-guard">
+    <div class="modal-overlay" id="takedownModal">
+      <div class="modal-box">
+        <h2>Takedown release</h2>
+        <p>Why are you removing this release?</p>
+        <textarea id="takedownReason" rows="3" placeholder="Please provide a reason..."></textarea>
+        <div class="takedown-confirm-box" onclick="toggleTakedownCheckbox()">
+          <input type="checkbox" id="confirmTakedownCheck" onchange="validateTakedown()">
+          <label for="confirmTakedownCheck">
+            Yes, I'm sure I want to remove this release from stores.
+          </label>
+        </div>
+        <p style="font-size: 12px; background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 8px; border: 1px solid #ffedd5;">
+          This will remove the release from all stores where it is currently live. You'll continue be paid all royalties owed to you for the release.
+        </p>
+        <div style="display:flex; gap:12px; margin-top: 25px;">
+          <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
+          <button class="btn-modal-takedown" id="takedownBtn" onclick="executeTakedown()">Takedown</button>
+        </div>
+      </div>
+    </div>
+
     <header class="main-header fade-item" id="header-el">
       <div class="header-left">
         <h1 class="brand-name">UNDERSOUTHERN</h1>
@@ -173,7 +177,6 @@
           <button class="btn-back-main" onclick="toggleView('list')"><i class="fa-solid fa-arrow-left"></i></button>
           <h2 id="formTitle" style="margin:0; font-weight:700">New Release</h2>
         </div>
-
         <div class="form-container">
           <div class="card">
             <h3>Release Info</h3>
@@ -187,7 +190,6 @@
             <label>Artist</label><input type="text" id="inArtist" placeholder="Astrolaw">
             <label>Label</label><input type="text" id="inLabel" placeholder="UNDERSOUTHERN">
           </div>
-
           <div class="card">
             <h3>Schedule & ID</h3>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
@@ -202,7 +204,6 @@
             <label>UPC Code</label><input type="text" id="inUPC" placeholder="UPC Code">
             <label>Catalog Number</label><input type="text" id="inCatNum" placeholder="US-001">
           </div>
-
           <div class="card">
             <h3>Distribution</h3>
             <label># of Tracks</label><input type="number" id="inTracks" value="1">
@@ -210,7 +211,6 @@
             <label>Delivered Territories</label>
             <div id="territory-tags" class="tag-container"></div>
             <input type="text" id="territoryInput" placeholder="Add country and Enter">
-            
             <div id="statusWrapper" class="hidden">
               <label>Status</label>
               <select id="inStatus">
@@ -221,7 +221,6 @@
             </div>
           </div>
         </div>
-
         <div class="footer-actions">
           <button id="submitBtn" class="save-btn" onclick="handleSave()">Save Release</button>
         </div>
@@ -234,13 +233,16 @@
   let pendingTakedownIndex = -1;
   let territoryList = [];
 
-  (function checkAuth() {
-    if (localStorage.getItem('isLoggedIn') !== 'true') {
-      window.location.href = "https://undersouthern.asia/login";
-    } else {
-      document.getElementById('auth-guard').style.display = 'block';
+  /* KIỂM TRA ĐĂNG NHẬP ĐỂ HIỆN GIAO DIỆN */
+  window.onload = () => {
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        document.getElementById('auth-guard').style.display = 'block';
+        syncAvatar(); 
+        setupTagInput(); 
+        renderCatalog(); 
+        slowLoadView();
     }
-  })();
+  };
 
   function slowLoadView() {
     const items = ['header-el', 'top-bar-el', 'table-el'];
@@ -329,7 +331,6 @@
     const title = document.getElementById('inTitle').value;
     const artist = document.getElementById('inArtist').value;
     if (!title || !artist) { alert("Please fill Title and Artist."); return; }
-
     const releaseData = {
       type: document.getElementById('inType').value,
       status: editingIndex === -1 ? 'Draft' : document.getElementById('inStatus').value,
@@ -344,11 +345,9 @@
       promo: document.getElementById('inPromo').value,
       territories: territoryList
     };
-
     let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
     if (editingIndex === -1) catalog.unshift(releaseData);
     else catalog[editingIndex] = releaseData;
-
     localStorage.setItem('undersouthern_catalog', JSON.stringify(catalog));
     territoryList = [];
     renderCatalog();
@@ -358,11 +357,9 @@
   function renderCatalog() {
     const container = document.getElementById('catalogTableBody');
     let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
-    
     if (catalog.length === 0) {
       catalog.push({type: 'Single', status: 'Released', title: 'Sun Flowers', artist: 'Astrolaw', label: 'UNDERSOUTHERN', tracks: '1'});
     }
-
     container.innerHTML = catalog.map((item, i) => {
       const stClass = `st-${item.status.toLowerCase()}`;
       return `
@@ -381,13 +378,11 @@
         </tr>
       `;
     }).join('');
-
     container.querySelectorAll('tr').forEach((row, index) => {
       setTimeout(() => { row.classList.add('loaded'); }, (index + 3) * 150);
     });
   }
 
-  /* --- LOGIC TAKEDOWN --- */
   function openTakedownModal(index) {
     pendingTakedownIndex = index;
     document.getElementById('confirmTakedownCheck').checked = false;
@@ -396,9 +391,7 @@
     document.getElementById('takedownModal').style.display = 'flex';
   }
 
-  function closeModal() {
-    document.getElementById('takedownModal').style.display = 'none';
-  }
+  function closeModal() { document.getElementById('takedownModal').style.display = 'none'; }
 
   function validateTakedown() {
     const isChecked = document.getElementById('confirmTakedownCheck').checked;
@@ -415,14 +408,11 @@
 
   function executeTakedown() {
     let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
-    // Thay vì xóa vĩnh viễn, chúng ta có thể đổi trạng thái thành "Takedown" hoặc xóa tùy ý bạn
     catalog.splice(pendingTakedownIndex, 1);
     localStorage.setItem('undersouthern_catalog', JSON.stringify(catalog));
     renderCatalog();
     closeModal();
   }
-
-  window.onload = () => { syncAvatar(); setupTagInput(); renderCatalog(); slowLoadView(); };
 </script>
 
 </body>
