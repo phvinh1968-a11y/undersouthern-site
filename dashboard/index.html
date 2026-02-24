@@ -16,7 +16,6 @@
         .sidebar-active { background-color: #000000; color: #ffffff; border-radius: 8px; }
         .hidden { display: none !important; }
         
-        /* Responsive Sidebar Width */
         .sidebar-width { width: 280px; }
         .header-height { height: 72px; }
         
@@ -33,23 +32,27 @@
 
         /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .sidebar-width { width: 100%; position: fixed; z-index: 50; height: 100vh; left: -100%; transition: 0.3s; }
+            .sidebar-width { width: 85%; max-width: 300px; position: fixed; z-index: 100; height: 100vh; left: -100%; transition: 0.3s; box-shadow: 20px 0 50px rgba(0,0,0,0.1); }
             .sidebar-open { left: 0; }
-            .main-padding { padding: 1.5rem !important; }
+            .main-padding { padding: 1rem !important; }
         }
+
+        /* Overlay khi mở menu trên mobile */
+        #sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 90; }
+        .sidebar-open + #sidebar-overlay { display: block; }
     </style>
 </head>
 <body class="overflow-hidden">
 
     <div class="flex h-screen overflow-hidden relative">
         
-        <aside id="sidebar" class="sidebar-width bg-white border-r flex flex-shrink-0 flex-col transition-all duration-300 absolute md:relative z-50 h-full">
-            <div class="header-height flex items-center justify-between px-6 md:px-10 border-b">
+        <aside id="sidebar" class="sidebar-width bg-white border-r flex flex-shrink-0 flex-col transition-all duration-300 absolute md:relative z-[100] h-full">
+            <div class="header-height flex items-center justify-between px-6 md:px-10 border-b flex-shrink-0">
                 <h1 class="brand-text text-black text-xl font-black tracking-tighter uppercase">UNDERSOUTHERN</h1>
                 <button onclick="toggleSidebar()" class="md:hidden text-black text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <nav class="flex-1 overflow-y-auto py-8 text-[13px] px-6">
+            <nav class="flex-1 overflow-y-auto py-6 text-[13px] px-6">
                 <div class="space-y-1">
                     <a href="#" onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-active flex items-center space-x-3 px-4 py-3 font-bold transition">
                         <i class="fa-solid fa-house w-4 text-center"></i> <span>Overview</span>
@@ -60,10 +63,10 @@
                     <a href="#" onclick="showTab('analytics')" id="nav-analytics" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
                         <i class="fa-solid fa-chart-line w-4 text-center"></i> <span>Analytics</span>
                     </a>
-                    <a href="#" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
+                    <a href="#" onclick="showTab('promotion')" id="nav-promotion" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
                         <i class="fa-solid fa-bullhorn w-4 text-center"></i> <span>Promotion</span>
                     </a>
-                    <a href="#" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
+                    <a href="#" onclick="showTab('finance')" id="nav-finance" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
                         <i class="fa-solid fa-dollar-sign w-4 text-center"></i> <span>Finance</span>
                     </a>
                     <a href="#" onclick="showTab('users')" id="nav-users" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition border-t mt-4 pt-4">
@@ -72,143 +75,79 @@
                 </div>
             </nav>
 
-            <div class="p-8 border-t">
-                <button onclick="handleLogout()" class="w-full py-2.5 text-xs font-bold text-black border border-black rounded hover:bg-black hover:text-white transition uppercase tracking-widest">
-                    Logout
+            <div class="p-6 border-t bg-white flex-shrink-0">
+                <button onclick="handleLogout()" class="w-full py-3 text-xs font-bold text-black border border-black rounded hover:bg-black hover:text-white transition uppercase tracking-widest flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
                 </button>
             </div>
         </aside>
 
+        <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
         <main class="flex-1 flex flex-col min-w-0 bg-white">
-            
-            <header class="header-height border-b bg-white flex items-center justify-between md:justify-end px-6 md:px-12 space-x-8">
-                <button onclick="toggleSidebar()" class="md:hidden text-black text-xl"><i class="fa-solid fa-bars"></i></button>
+            <header class="header-height border-b bg-white flex items-center justify-between md:justify-end px-4 md:px-12 space-x-8">
+                <button onclick="toggleSidebar()" class="md:hidden text-black text-xl p-2"><i class="fa-solid fa-bars"></i></button>
                 
-                <div class="flex items-center space-x-4 md:space-x-8">
-                    <i class="fa-solid fa-magnifying-glass text-slate-300 cursor-pointer hover:text-black transition hidden sm:block"></i>
-                    <div class="flex items-center space-x-4">
-                        <span class="brand-text text-[10px] md:text-[11px] font-bold tracking-tight uppercase hidden xs:block">UNDERSOUTHERN ADMIN</span>
-                        <div class="w-8 h-8 md:w-9 md:h-9 bg-black rounded-full flex items-center justify-center text-[10px] md:text-[11px] font-bold text-white shadow-sm">US</div>
-                    </div>
+                <div class="flex items-center space-x-4">
+                    <span class="brand-text text-[10px] md:text-[11px] font-bold tracking-tight uppercase hidden xs:block">UNDERSOUTHERN ADMIN</span>
+                    <div class="w-8 h-8 md:w-9 md:h-9 bg-black rounded-full flex items-center justify-center text-[10px] md:text-[11px] font-bold text-white shadow-sm">US</div>
                 </div>
             </header>
 
             <div class="scroll-area p-6 md:p-12 w-full max-w-7xl mx-auto main-padding">
                 
-                <div id="tab-dashboard" class="fade-in space-y-8 md:space-y-12">
+                <div id="tab-dashboard" class="fade-in space-y-8">
                     <h1 class="text-3xl md:text-4xl font-bold tracking-tight italic">Welcome,</h1>
-                    
-                    <section>
-                        <div class="flex items-center justify-between mb-6 md:mb-8">
-                            <h2 class="text-base md:text-lg font-bold flex items-center">Latest releases <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                            <div class="flex items-center space-x-6 p-5 md:p-6 border rounded-xl hover:shadow-sm transition cursor-pointer group">
-                                <div class="w-12 h-12 md:w-14 md:h-14 bg-slate-50 flex items-center justify-center rounded-lg text-slate-400 group-hover:bg-black group-hover:text-white transition">
-                                    <i class="fa-solid fa-plus text-lg"></i>
-                                </div>
-                                <span class="text-[10px] md:text-xs font-bold uppercase tracking-wider">Create a new release</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="p-6 border rounded-xl hover:shadow-sm transition cursor-pointer group flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-slate-50 flex items-center justify-center rounded-lg text-slate-400 group-hover:bg-black group-hover:text-white transition">
+                                <i class="fa-solid fa-plus text-lg"></i>
                             </div>
-                        </div>
-                    </section>
-
-                    <section>
-                        <h2 class="text-base md:text-lg font-bold mb-6 flex items-center">Streaming performance <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
-                        <div class="h-40 border-t border-dashed border-slate-200 flex items-center justify-center">
-                            <p class="text-[10px] md:text-xs text-slate-300">No data available for the selected period</p>
-                        </div>
-                    </section>
-
-                    <section>
-                        <h2 class="text-base md:text-lg font-bold mb-6 flex items-center">Top stores <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                            <div class="p-4 border rounded-xl flex items-center justify-between">
-                                <span class="text-xs font-bold">Spotify</span>
-                                <span class="text-[10px] font-bold text-slate-400">45%</span>
-                            </div>
-                            <div class="p-4 border rounded-xl flex items-center justify-between">
-                                <span class="text-xs font-bold">Apple Music</span>
-                                <span class="text-[10px] font-bold text-slate-400">30%</span>
-                            </div>
-                            <div class="p-4 border rounded-xl flex items-center justify-between">
-                                <span class="text-xs font-bold">TikTok</span>
-                                <span class="text-[10px] font-bold text-slate-400">15%</span>
-                            </div>
-                            <div class="p-4 border rounded-xl flex items-center justify-between">
-                                <span class="text-xs font-bold">Amazon</span>
-                                <span class="text-[10px] font-bold text-slate-400">10%</span>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-                <div id="tab-catalog" class="hidden fade-in space-y-6 md:space-y-8">
-                    <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
-                        <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Catalog</h2>
-                        <div class="flex space-x-2 md:space-x-3">
-                            <button class="flex-1 md:flex-none px-4 md:px-5 py-2 border rounded text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 transition">Grid View</button>
-                            <button class="flex-1 md:flex-none bg-black text-white px-5 md:px-6 py-2 rounded text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-800 transition">+ Create</button>
+                            <span class="text-xs font-bold uppercase tracking-wider">Create a new release</span>
                         </div>
                     </div>
-                    
-                    <div class="w-full border rounded-xl overflow-x-auto shadow-sm">
+                </div>
+
+                <div id="tab-catalog" class="hidden fade-in space-y-6">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Catalog</h2>
+                    <div class="w-full border rounded-xl overflow-x-auto">
                         <table class="w-full text-left min-w-[600px]">
                             <thead class="bg-slate-50 border-b table-head-text">
                                 <tr>
-                                    <th class="px-6 md:px-8 py-4 md:py-5">Title</th>
-                                    <th class="px-6 md:px-8 py-4 md:py-5">Artist</th>
-                                    <th class="px-6 md:px-8 py-4 md:py-5">Barcode / Cat Nr.</th>
-                                    <th class="px-6 md:px-8 py-4 md:py-5 text-right">Release Date</th>
+                                    <th class="px-6 py-4">Title</th>
+                                    <th class="px-6 py-4">Artist</th>
+                                    <th class="px-6 py-4">Barcode</th>
+                                    <th class="px-6 py-4 text-right">Date</th>
                                 </tr>
                             </thead>
                             <tbody id="catalog-list" class="divide-y divide-slate-100 table-row-text"></tbody>
                         </table>
                     </div>
-
-                    <div class="flex justify-center items-center space-x-4 pt-4">
-                        <button onclick="changePage(-1)" class="p-2 border rounded hover:bg-slate-50 transition"><i class="fas fa-chevron-left text-[10px]"></i></button>
-                        <span id="page-info" class="text-[10px] md:text-xs font-bold text-slate-600">Page 1 of 10</span>
-                        <button onclick="changePage(1)" class="p-2 border rounded hover:bg-slate-50 transition"><i class="fas fa-chevron-right text-[10px]"></i></button>
-                    </div>
                 </div>
 
-                <div id="tab-analytics" class="hidden fade-in space-y-6 md:space-y-8">
+                <div id="tab-analytics" class="hidden fade-in space-y-6">
                     <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Analytics</h2>
-                    <div class="border-b flex space-x-6 md:space-x-8 text-[10px] md:text-xs font-bold text-slate-400 mb-6 overflow-x-auto">
-                        <button class="pb-4 border-b-2 border-black text-black whitespace-nowrap">Trends</button>
-                        <button class="pb-4 hover:text-black transition whitespace-nowrap">Top Content</button>
-                        <button class="pb-4 hover:text-black transition whitespace-nowrap">Audience</button>
-                    </div>
-                    <div class="p-4 md:p-8 border rounded-2xl bg-white shadow-sm h-[300px] md:h-[400px]">
+                    <div class="p-4 border rounded-2xl bg-white shadow-sm h-[300px] md:h-[400px]">
                         <canvas id="streamsChart"></canvas>
                     </div>
                 </div>
 
-                <div id="tab-users" class="hidden fade-in space-y-6 md:space-y-8">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">User Access</h2>
-                    <div class="bg-white border rounded-xl overflow-x-auto shadow-sm">
-                        <table class="w-full text-left table-row-text min-w-[500px]">
-                            <thead class="bg-slate-50 border-b table-head-text">
-                                <tr>
-                                    <th class="px-6 md:px-10 py-5">Administrator</th>
-                                    <th class="px-6 md:px-10 py-5">Role</th>
-                                    <th class="px-10 py-5 text-right">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y">
-                                <tr>
-                                    <td class="px-6 md:px-10 py-6 flex items-center space-x-4">
-                                        <div class="w-8 h-8 md:w-10 md:h-10 bg-black text-white rounded-full flex items-center justify-center font-bold text-xs">US</div>
-                                        <div>
-                                            <p class="font-bold text-[12px] md:text-sm">Main Admin</p>
-                                            <p class="text-[9px] md:text-[10px] text-slate-400 italic">admin@undersouthern.com</p>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 md:px-10 py-6"><span class="border border-black px-2 md:px-3 py-1 rounded-full text-[8px] md:text-[9px] font-bold uppercase">Super Admin</span></td>
-                                    <td class="px-10 py-6 text-right font-bold text-[9px] md:text-[10px] uppercase text-green-600">Active</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div id="tab-promotion" class="hidden fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Promotion</h2>
+                    <p class="text-slate-400 italic">Interface coming soon...</p>
+                </div>
+
+                <div id="tab-finance" class="hidden fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Finance</h2>
+                    <p class="text-slate-400 italic">Interface coming soon...</p>
+                </div>
+
+                <div id="tab-users" class="hidden fade-in">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">User Access</h2>
+                    <div class="p-6 border rounded-xl">
+                        <p class="font-bold">Main Admin</p>
+                        <p class="text-xs text-green-600 font-bold uppercase">Active</p>
                     </div>
                 </div>
 
@@ -217,105 +156,82 @@
     </div>
 
     <script>
-        // Sidebar Toggle for Mobile
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('sidebar-open');
         }
 
-        // Logout direction
         function handleLogout() {
             localStorage.removeItem('isLoggedIn');
             window.location.href = "https://undersouthern.asia/login";
         }
 
-        // Catalog Logic
-        const mockCatalog = Array.from({ length: 100 }, (_, i) => ({
-            title: i % 2 === 0 ? "Sun Flowers" : "Deep Sea",
-            artist: i % 2 === 0 ? "Astrolaw" : "Midnight Pulse",
-            barcode: "0693887" + (153244 + i),
-            date: "21/07/2025"
-        }));
-
-        let currentPage = 1;
-        const itemsPerPage = 10;
-
-        function renderCatalog() {
-            const list = document.getElementById('catalog-list');
-            const start = (currentPage - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            const items = mockCatalog.slice(start, end);
-
-            list.innerHTML = items.map(item => `
-                <tr class="hover:bg-slate-50 transition cursor-pointer">
-                    <td class="px-6 md:px-8 py-4 md:py-5 font-bold italic whitespace-nowrap">${item.title}</td>
-                    <td class="px-6 md:px-8 py-4 md:py-5 italic text-slate-400 whitespace-nowrap">${item.artist}</td>
-                    <td class="px-6 md:px-8 py-4 md:py-5 font-mono text-slate-400 whitespace-nowrap">${item.barcode}</td>
-                    <td class="px-6 md:px-8 py-4 md:py-5 text-right font-bold whitespace-nowrap">${item.date}</td>
-                </tr>
-            `).join('');
-
-            document.getElementById('page-info').innerText = `Page ${currentPage} of ${Math.ceil(mockCatalog.length / itemsPerPage)}`;
-        }
-
-        function changePage(dir) {
-            const maxPage = Math.ceil(mockCatalog.length / itemsPerPage);
-            currentPage += dir;
-            if (currentPage < 1) currentPage = 1;
-            if (currentPage > maxPage) currentPage = maxPage;
-            renderCatalog();
-        }
-
         function showTab(tabId) {
-            const tabs = ['dashboard', 'catalog', 'analytics', 'users'];
+            const tabs = ['dashboard', 'catalog', 'analytics', 'promotion', 'finance', 'users'];
+            
             tabs.forEach(id => {
-                document.getElementById('tab-' + id).classList.add('hidden');
-                document.getElementById('nav-' + id).classList.remove('sidebar-active', 'font-bold');
-                document.getElementById('nav-' + id).classList.add('text-slate-400');
+                const content = document.getElementById('tab-' + id);
+                const nav = document.getElementById('nav-' + id);
+                if (content) content.classList.add('hidden');
+                if (nav) {
+                    nav.classList.remove('sidebar-active', 'font-bold');
+                    nav.classList.add('text-slate-400');
+                }
             });
 
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            const activeContent = document.getElementById('tab-' + tabId);
             const activeNav = document.getElementById('nav-' + tabId);
-            activeNav.classList.add('sidebar-active', 'font-bold');
-            activeNav.classList.remove('text-slate-400');
+            
+            if (activeContent) activeContent.classList.remove('hidden');
+            if (activeNav) {
+                activeNav.classList.add('sidebar-active', 'font-bold');
+                activeNav.classList.remove('text-slate-400');
+            }
 
-            // Close sidebar on mobile after clicking link
-            if (window.innerWidth < 768) toggleSidebar();
+            // Tự động đóng sidebar khi chọn mục trên mobile
+            if (window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar');
+                if(sidebar.classList.contains('sidebar-open')) toggleSidebar();
+            }
 
-            if(tabId === 'catalog') renderCatalog();
-            if(tabId === 'analytics') initAnalyticsChart();
+            if (tabId === 'catalog') renderCatalog();
+            if (tabId === 'analytics') initAnalyticsChart();
         }
 
+        // Dữ liệu mẫu Catalog
+        function renderCatalog() {
+            const list = document.getElementById('catalog-list');
+            const items = Array.from({ length: 5 }, (_, i) => `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="px-6 py-4 font-bold italic">Sun Flowers</td>
+                    <td class="px-6 py-4 italic text-slate-400">Astrolaw</td>
+                    <td class="px-6 py-4 font-mono text-slate-400">0693887153${i}</td>
+                    <td class="px-6 py-4 text-right font-bold">21/07/2025</td>
+                </tr>
+            `).join('');
+            list.innerHTML = items;
+        }
+
+        // Biểu đồ mẫu
         let chartInstance = null;
         function initAnalyticsChart() {
             const canvas = document.getElementById('streamsChart');
             if(!canvas) return;
             const ctx = canvas.getContext('2d');
             if(chartInstance) chartInstance.destroy();
-
             chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                     datasets: [{
-                        data: [230, 210, 235, 220, 240, 200, 215, 195],
+                        data: [230, 210, 235, 220, 240, 200],
                         borderColor: '#000000',
-                        backgroundColor: 'rgba(0, 0, 0, 0.02)',
+                        backgroundColor: 'rgba(0,0,0,0.02)',
                         fill: true,
-                        tension: 0.4,
-                        borderWidth: 2,
-                        pointRadius: 2
+                        tension: 0.4
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { ticks: { font: { size: 9 }, callback: v => v + 'k' }, grid: { borderDash: [5, 5], color: '#f1f5f9' } },
-                        x: { ticks: { font: { size: 9 } }, grid: { display: false } }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
         }
 
