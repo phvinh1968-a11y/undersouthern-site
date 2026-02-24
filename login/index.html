@@ -145,16 +145,19 @@
             const passInp = document.getElementById('password').value;
             const btn = document.getElementById('login-btn');
 
-            // Lấy danh sách người dùng từ localStorage (từ trang User Access tạo ra)
+            // 1. Lấy danh sách người dùng từ localStorage (do trang User Access tạo ra)
             const savedUsers = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
             
-            // Tìm kiếm trong danh sách người dùng đã đăng ký
-            const foundUser = savedUsers.find(u => (u.login === userInp || u.email === userInp) && u.pass === passInp);
+            // 2. Tìm kiếm người dùng khớp với Username/Email VÀ Password
+            // (Hỗ trợ đăng nhập bằng cả Login ID hoặc Email)
+            const foundUser = savedUsers.find(u => 
+                (u.login === userInp || u.email === userInp) && u.pass === passInp
+            );
 
-            // Kiểm tra: Nếu là tài khoản Admin hoặc User hợp lệ
+            // 3. Kiểm tra điều kiện đăng nhập (Master hoặc User được tạo)
             if ((userInp === MASTER_USER && passInp === MASTER_PASS) || foundUser) {
                 
-                // Kiểm tra trạng thái nếu là user thường
+                // Nếu là user thường, kiểm tra xem tài khoản có bị vô hiệu hóa không
                 if (foundUser && foundUser.status === 'Disabled') {
                     alert("Account has been disabled. Please contact administration.");
                     return false;
@@ -163,13 +166,14 @@
                 btn.innerHTML = '<div class="flex items-center justify-center"><div class="loader mr-2" style="width:14px; height:14px"></div> Redirecting...</div>';
                 btn.disabled = true;
 
-                // TẠO CHÌA KHÓA: Các trang khác sẽ check key này
+                // TẠO CHÌA KHÓA SESSION
                 localStorage.setItem('isLoggedIn', 'true');
                 
-                // Lưu thông tin người dùng hiện tại để các trang khác hiển thị (như Profile)
-                localStorage.setItem('activeUser', userInp);
+                // Lưu tên hiển thị của người dùng hiện tại
+                const displayName = foundUser ? foundUser.login : MASTER_USER;
+                localStorage.setItem('activeUser', displayName);
 
-                // Điều hướng sang Dashboard
+                // Chuyển hướng sang Dashboard
                 setTimeout(() => {
                     window.location.href = "https://undersouthern.asia/dashboard"; 
                 }, 800);
@@ -180,7 +184,7 @@
             return false;
         }
 
-        // --- CÁC HÀM GIAO DIỆN GIỮ NGUYÊN ---
+        // --- CÁC HÀM GIAO DIỆN GIỮ NGUYÊN 100% ---
         function showResetPage() {
             document.getElementById('login-form-content').classList.add('hidden');
             document.getElementById('reset-password-content').classList.remove('hidden').classList.add('fade-in');
