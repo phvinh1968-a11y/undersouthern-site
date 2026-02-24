@@ -123,7 +123,6 @@
         </div>
 
         <form id="profileForm" class="space-y-8">
-            
             <div>
                 <h3 class="section-title">Preferences</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
@@ -159,8 +158,7 @@
                                 <div class="text-slate-400 text-[11px] leading-relaxed">
                                     <p class="font-bold text-slate-900 uppercase mb-1">Upload Requirements</p>
                                     <p>• Allowed: JPG, JPEG, PNG, JFIF</p>
-                                    <p>• Minimum size: 150 x 150 px</p>
-                                    <p>• Max file size: 2MB</p>
+                                    <p>• Size: 150 x 150 px</p>
                                 </div>
                             </div>
                         </div>
@@ -187,14 +185,6 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <label class="label-text self-center">City / Province</label>
-                        <div class="md:col-span-2 grid grid-cols-2 gap-4">
-                            <input type="text" value="Bến Tre" class="input-field" placeholder="City">
-                            <input type="text" value="Bến Tre" class="input-field" placeholder="Province">
-                        </div>
-                    </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <label class="label-text">General Phone</label>
                         <div class="md:col-span-2">
@@ -209,6 +199,7 @@
             <div>
                 <h2 class="text-2xl font-bold tracking-tight mb-6">Notifications</h2>
                 <div class="border border-slate-200 rounded-xl p-6 space-y-8">
+                    
                     <div class="flex items-start justify-between">
                         <div class="max-w-[80%]">
                             <h4 class="font-bold text-sm text-slate-900">Accounts</h4>
@@ -241,6 +232,7 @@
                             <span class="slider"></span>
                         </label>
                     </div>
+
                 </div>
             </div>
 
@@ -253,16 +245,31 @@
     </main>
 
     <script>
+        // Tải avatar từ localStorage khi trang load
+        window.onload = function() {
+            const savedAvatar = localStorage.getItem('userAvatar');
+            if (savedAvatar) {
+                const preview = document.getElementById('preview');
+                const placeholder = document.getElementById('placeholder');
+                preview.src = savedAvatar;
+                preview.style.display = 'block';
+                placeholder.style.display = 'none';
+            }
+        };
+
         function previewImage(input) {
             const preview = document.getElementById('preview');
             const placeholder = document.getElementById('placeholder');
-            
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    preview.src = e.target.result;
+                    const imageData = e.target.result;
+                    preview.src = imageData;
                     preview.style.display = 'block';
                     placeholder.style.display = 'none';
+                    
+                    // Lưu dữ liệu ảnh vào bộ nhớ trình duyệt
+                    localStorage.setItem('userAvatar', imageData);
                 }
                 reader.readAsDataURL(input.files[0]);
             }
@@ -270,14 +277,13 @@
 
         function handleUpdate() {
             const btn = document.querySelector('button[onclick="handleUpdate()"]');
-            btn.innerText = "Saving Changes...";
+            btn.innerText = "Redirecting...";
             btn.disabled = true;
             btn.style.opacity = "0.7";
             
             setTimeout(() => {
-                alert("Account settings have been updated successfully!");
                 window.location.href = "https://undersouthern.asia/dashboard";
-            }, 800);
+            }, 500);
         }
     </script>
 </body>
