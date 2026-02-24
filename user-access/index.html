@@ -76,7 +76,7 @@
 
   .form-container { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: 24px; }
   .checkbox-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13.5px; cursor: pointer; }
-  .checkbox-item input { width: 16px; height: 16px; margin: 0; accent-color: #000; }
+  .checkbox-item input { width: 16px; height: 16px; margin: 0; accent-color: #000; cursor: pointer; }
   .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; }
   .invite-btn { background: var(--primary-black); color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; }
 
@@ -162,13 +162,17 @@
           </div>
           <div class="card">
             <h3>User Access</h3>
-            <div style="margin-top:5px;">
-              <label class="checkbox-item"><input type="checkbox"> Albums access</label>
-              <label class="checkbox-item"><input type="checkbox"> Edit albums</label>
-              <label class="checkbox-item"><input type="checkbox"> Create albums</label>
-              <label class="checkbox-item"><input type="checkbox"> Reports access</label>
-              <label class="checkbox-item"><input type="checkbox"> Invoices access</label>
-              <label class="checkbox-item"><input type="checkbox"> Tickets access</label>
+            <div id="access-checkboxes" style="margin-top:5px;">
+              <label class="checkbox-item"><input type="checkbox" value="albums_access"> Albums access</label>
+              <label class="checkbox-item"><input type="checkbox" value="edit_albums"> Edit albums</label>
+              <label class="checkbox-item"><input type="checkbox" value="create_albums"> Create albums</label>
+              <label class="checkbox-item"><input type="checkbox" value="see_sessions"> See sessions</label>
+              <label class="checkbox-item"><input type="checkbox" value="reports_access"> Reports access</label>
+              <label class="checkbox-item"><input type="checkbox" value="invoices_access"> Invoices access</label>
+              <label class="checkbox-item"><input type="checkbox" value="send_invoices"> Send invoices</label>
+              <label class="checkbox-item"><input type="checkbox" value="update_invoices"> Update invoices</label>
+              <label class="checkbox-item"><input type="checkbox" value="access_documents"> Access to documents</label>
+              <label class="checkbox-item"><input type="checkbox" value="tickets_access"> Tickets access</label>
             </div>
           </div>
           <div class="card">
@@ -235,7 +239,6 @@
     }
   }
 
-  // --- QUẢN LÝ TAGS ARTISTS & LABELS ---
   function renderTags(type) {
     const container = document.getElementById(`${type}-tags`);
     const list = type === 'artist' ? artistList : labelList;
@@ -269,7 +272,12 @@
     document.getElementById('inEmail').value = '';
     document.getElementById('inLogin').value = '';
     document.getElementById('inPass').value = '';
-    document.getElementById('inPass').type = 'password'; // Mặc định ẩn
+    document.getElementById('inPass').type = 'password';
+    
+    // Reset checkboxes
+    const checks = document.querySelectorAll('#access-checkboxes input');
+    checks.forEach(c => c.checked = false);
+
     artistList = []; labelList = [];
     renderTags('artist'); renderTags('label');
     toggleView('add');
@@ -283,8 +291,15 @@
     document.getElementById('inEmail').value = user.email;
     document.getElementById('inLogin').value = user.login;
     document.getElementById('inPass').value = user.pass;
-    document.getElementById('inPass').type = 'text'; // HIỆN PASSWORD KHI EDIT
+    document.getElementById('inPass').type = 'text'; // Hiện pass khi edit
     
+    // Khôi phục checkboxes
+    const checks = document.querySelectorAll('#access-checkboxes input');
+    const userAccess = user.access || [];
+    checks.forEach(c => {
+      c.checked = userAccess.includes(c.value);
+    });
+
     artistList = user.artists || [];
     labelList = user.labels || [];
     
@@ -302,8 +317,20 @@
     const pass = document.getElementById('inPass').value;
     if (!email || !login || !pass) { alert("Please fill in all information."); return; }
     
+    // Lấy giá trị checkboxes
+    const selectedAccess = [];
+    const checks = document.querySelectorAll('#access-checkboxes input:checked');
+    checks.forEach(c => selectedAccess.push(c.value));
+
     let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-    const userData = { email, login, pass, artists: artistList, labels: labelList };
+    const userData = { 
+      email, 
+      login, 
+      pass, 
+      access: selectedAccess, 
+      artists: artistList, 
+      labels: labelList 
+    };
 
     if (editingIndex === -1) { users.unshift(userData); } 
     else { users[editingIndex] = userData; }
@@ -317,7 +344,7 @@
     const container = document.getElementById('userTableBody');
     let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
     if (users.length === 0) {
-        users.push({email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123', artists: [], labels: []});
+        users.push({email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123', artists: [], labels: [], access: []});
     }
     container.innerHTML = users.map((u, i) => `
       <tr id="row-${i}">
