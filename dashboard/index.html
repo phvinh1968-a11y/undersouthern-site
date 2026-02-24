@@ -55,6 +55,12 @@
         }
         #sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 90; backdrop-filter: blur(2px); }
         .sidebar-open + #sidebar-overlay { display: block; }
+
+        /* Announcement Section Custom Styles */
+        .announcement-container { border: 1px solid #f0f0f0; border-radius: 12px; overflow: hidden; background: #fff; }
+        .announcement-header { padding: 24px 32px; border-bottom: 1px solid #f0f0f0; }
+        .announcement-body { padding: 80px 32px; text-align: center; }
+        .announcement-body i { font-size: 48px; color: #cbd5e1; margin-bottom: 24px; transform: rotate(-15deg); }
     </style>
 
     <script>
@@ -129,11 +135,17 @@
 
                 <div class="scroll-area p-6 md:p-12 w-full max-w-7xl mx-auto">
                     <div id="tab-dashboard" class="fade-in space-y-8">
-                        <h1 class="text-3xl md:text-4xl font-bold tracking-tight">Dashboard</h1>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="p-6 border rounded-xl flex items-center space-x-4">
-                                <div class="w-12 h-12 bg-slate-50 flex items-center justify-center rounded-lg text-slate-400"><i class="fa-solid fa-plus text-lg"></i></div>
-                                <span class="text-xs font-bold uppercase tracking-wider">Create a new release</span>
+                        <div class="announcement-container">
+                            <div class="announcement-header">
+                                <h2 class="text-xl font-bold text-[#0f172a] mb-1">Announcements</h2>
+                                <p class="text-[14px] text-slate-400">Announcements from our team.</p>
+                            </div>
+                            <div class="announcement-body">
+                                <i class="fa-solid fa-bullhorn"></i>
+                                <h3 class="text-[18px] font-bold text-[#0f172a] mb-2">No Announcements</h3>
+                                <p class="text-[14px] text-slate-400 max-w-md mx-auto">
+                                    We don't have any news to share right now but when we do, you'll see it here.
+                                </p>
                             </div>
                         </div>
                     </div>
