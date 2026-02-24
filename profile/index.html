@@ -20,8 +20,6 @@
             margin: 0;
         }
         
-        .header-height { height: 72px; }
-        
         .input-field {
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -39,12 +37,6 @@
             border-color: #000000;
             background-color: #ffffff;
             box-shadow: 0 0 0 1px #000000;
-        }
-
-        .input-field:read-only {
-            background-color: #f1f5f9;
-            color: #64748b;
-            cursor: default;
         }
 
         .section-title {
@@ -69,27 +61,10 @@
 </head>
 <body class="bg-white">
 
-    <header class="header-height border-b bg-white flex items-center justify-between px-6 md:px-12 sticky top-0 z-50">
-        <div class="flex items-center space-x-4">
-            <a href="https://undersouthern.asia/dashboard" class="text-black hover:bg-slate-100 p-2 rounded-full transition flex items-center justify-center">
-                <i class="fa-solid fa-arrow-left text-lg"></i>
-            </a>
-            <h1 class="font-black text-xl tracking-tighter uppercase">UNDERSOUTHERN</h1>
-        </div>
-        <div class="flex items-center space-x-3">
-            <button id="btn-edit" onclick="toggleEdit(true)" class="text-[11px] font-bold text-black border border-black px-6 py-2 rounded-lg hover:bg-black hover:text-white transition uppercase tracking-widest">
-                Edit Profile
-            </button>
-            <button id="btn-save" onclick="saveProfile()" class="hidden text-[11px] font-bold bg-black text-white border border-black px-6 py-2 rounded-lg hover:bg-slate-800 transition uppercase tracking-widest">
-                Save Changes
-            </button>
-        </div>
-    </header>
-
     <main class="max-w-4xl mx-auto p-6 md:p-12 fade-in">
-        <div class="mb-10">
+        <div class="mb-10 pt-4">
             <h2 class="text-3xl md:text-4xl font-bold tracking-tight">User Profile</h2>
-            <p class="text-slate-400 text-sm mt-2 font-medium">Manage your account information and preferences.</p>
+            <p class="text-slate-400 text-sm mt-2 font-medium">Update your account information directly.</p>
         </div>
 
         <form id="profileForm" class="space-y-8">
@@ -99,8 +74,8 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                     <label class="label-text">Message Language</label>
                     <div class="md:col-span-2">
-                        <select id="lang" class="input-field" disabled>
-                            <option value="English">English</option>
+                        <select class="input-field cursor-pointer">
+                            <option value="English" selected>English</option>
                             <option value="Vietnamese">Vietnamese</option>
                         </select>
                     </div>
@@ -115,80 +90,68 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <label class="label-text">Company Name</label>
                         <div class="md:col-span-2">
-                            <input type="text" value="UNDERSOUTHERN" readonly class="input-field editable">
+                            <input type="text" value="UNDERSOUTHERN" class="input-field">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <label class="label-text">E-mail Address</label>
                         <div class="md:col-span-2">
-                            <input type="email" value="phvinh1968@gmail.com" readonly class="input-field editable">
+                            <input type="email" value="phvinh1968@gmail.com" class="input-field">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <label class="label-text">Full Address</label>
                         <div class="md:col-span-2">
-                            <input type="text" value="87, An Khánh, Phước Hiệp, Mỏ Cày Nam, Bến Tre" readonly class="input-field editable">
+                            <input type="text" value="87, An Khánh, Phước Hiệp, Mỏ Cày Nam, Bến Tre" class="input-field">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <label class="label-text self-center">City / Province</label>
                         <div class="md:col-span-2 grid grid-cols-2 gap-4">
-                            <input type="text" value="Bến Tre" readonly class="input-field editable" placeholder="City">
-                            <input type="text" value="Bến Tre" readonly class="input-field editable" placeholder="Province">
+                            <input type="text" value="Bến Tre" class="input-field" placeholder="City">
+                            <input type="text" value="Bến Tre" class="input-field" placeholder="Province">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <label class="label-text self-center">Postal / Country</label>
                         <div class="md:col-span-2 grid grid-cols-2 gap-4">
-                            <input type="text" value="86500" readonly class="input-field editable">
-                            <input type="text" value="Việt Nam" readonly class="input-field editable">
+                            <input type="text" value="86500" class="input-field">
+                            <input type="text" value="Việt Nam" class="input-field">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <label class="label-text">General Phone</label>
                         <div class="md:col-span-2">
-                            <input type="text" value="0824444511" readonly class="input-field editable">
+                            <input type="text" value="0824444511" class="input-field">
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="pt-12 pb-20">
+                <button type="button" onclick="handleUpdate()" class="w-full md:w-auto min-w-[220px] py-4 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg shadow-slate-200">
+                    Update Profile
+                </button>
             </div>
         </form>
     </main>
 
     <script>
-        function toggleEdit(isEditing) {
-            const inputs = document.querySelectorAll('.editable');
-            const select = document.getElementById('lang');
-            const btnEdit = document.getElementById('btn-edit');
-            const btnSave = document.getElementById('btn-save');
-
-            if (isEditing) {
-                inputs.forEach(input => input.readOnly = false);
-                select.disabled = false;
-                btnEdit.classList.add('hidden');
-                btnSave.classList.remove('hidden');
-                inputs[0].focus();
-            } else {
-                inputs.forEach(input => input.readOnly = true);
-                select.disabled = true;
-                btnEdit.classList.remove('hidden');
-                btnSave.classList.add('hidden');
-            }
-        }
-
-        function saveProfile() {
-            const btnSave = document.getElementById('btn-save');
-            btnSave.innerText = "Saving...";
+        function handleUpdate() {
+            const btn = document.querySelector('button[onclick="handleUpdate()"]');
+            btn.innerText = "Saving Changes...";
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
             
             setTimeout(() => {
-                alert("Profile updated successfully!");
-                btnSave.innerText = "Save Changes";
-                toggleEdit(false);
+                alert("Profile has been updated successfully!");
+                // Điều hướng về dashboard
+                window.location.href = "https://undersouthern.asia/dashboard";
             }, 800);
         }
     </script>
