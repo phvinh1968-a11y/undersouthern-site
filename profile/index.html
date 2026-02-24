@@ -1,298 +1,345 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Access Management - UNDERSOUTHERN</title>
-
-<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-  :root {
-    /* Bảng màu tối giản - Đồng bộ Under Southern */
-    --bg-body: #ffffff;
-    --bg-card: #ffffff;
-    --primary-black: #000000;
-    --text-main: #000000;
-    --text-muted: #666666;
-    --border-color: #eeeeee;
-    --hover-bg: #f5f5f5;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     
-    /* Màu cảnh báo dựa trên ảnh gốc */
-    --warning-bg: #fffbeb;
-    --warning-border: #fef3c7;
-    --warning-text: #713f12;
-    --info-bg: #eff6ff;
-    --info-text: #1e40af;
+    <title>Account Settings - UNDERSOUTHERN</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #ffffff; 
+            color: #000000; 
+            margin: 0;
+        }
+        
+        .input-field {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            width: 100%;
+            color: #0f172a;
+            font-size: 13px;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.2s;
+        }
 
-    --radius-main: 10px;
-    --font-main: 'Inter', -apple-system, sans-serif;
-  }
+        .input-field:focus {
+            border-color: #000000;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 1px #000000;
+        }
 
-  body {
-    font-family: var(--font-main);
-    background-color: var(--bg-body);
-    color: var(--text-main);
-    margin: 0;
-    padding: 40px 20px;
-    letter-spacing: -0.01em;
-  }
+        .section-title {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
 
-  h2.page-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 30px;
-    padding-left: 10px;
-  }
+        .label-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1e293b;
+        }
 
-  .container {
-    display: grid;
-    grid-template-columns: 1fr 1.6fr 1fr;
-    gap: 24px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
+        /* Avatar Styles */
+        .avatar-container {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
+        }
+        .avatar-container:hover { border-color: #000000; }
+        .avatar-preview { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .avatar-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #94a3b8;
+            font-size: 10px;
+            text-align: center;
+            padding: 10px;
+        }
 
-  .card {
-    background: var(--bg-card);
-    padding: 24px;
-    border-radius: var(--radius-main);
-    border: 1px solid var(--border-color);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-  }
+        /* Toggle Switch Style */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: #e2e8f0;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #4f46e5; }
+        input:checked + .slider:before { transform: translateX(20px); }
 
-  h3 {
-    font-size: 13px;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: var(--text-main);
-    margin: 0 0 20px 0;
-    letter-spacing: 0.05em;
-  }
-
-  label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  select {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 14px;
-    margin-bottom: 18px;
-    box-sizing: border-box;
-    font-family: inherit;
-    transition: all 0.2s;
-  }
-
-  input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary-black);
-    background: var(--hover-bg);
-  }
-
-  .section-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin: 24px 0 12px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .warning-box {
-    background: var(--warning-bg);
-    border: 1px solid var(--warning-border);
-    padding: 15px;
-    border-radius: 6px;
-    font-size: 12.5px;
-    line-height: 1.5;
-    color: var(--warning-text);
-    margin-bottom: 20px;
-    display: none; 
-  }
-
-  .info-box {
-    background: var(--info-bg);
-    padding: 15px;
-    border-radius: 6px;
-    font-size: 12.5px;
-    color: var(--info-text);
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-
-  .add-btn {
-    background: var(--primary-black);
-    color: white;
-    border: none;
-    padding: 4px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 8px;
-    text-transform: lowercase;
-  }
-
-  .checkbox-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 10px;
-    font-size: 13.5px;
-    cursor: pointer;
-    font-weight: 400;
-  }
-
-  input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    margin-right: 10px;
-    accent-color: var(--primary-black);
-    cursor: pointer;
-  }
-
-  .indent-group {
-    margin-left: 20px;
-    padding-left: 15px;
-    border-left: 1px solid var(--border-color);
-    margin-top: 10px;
-  }
-
-  .rate-field {
-    width: 80px !important;
-    display: inline-block;
-    margin-bottom: 0 !important;
-    padding: 6px !important;
-  }
-
-  @media (max-width: 1100px) {
-    .container { grid-template-columns: 1fr; }
-  }
-</style>
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
 </head>
-<body>
+<body class="bg-white">
 
-<h2 class="page-title">User Access Management</h2>
-
-<div class="container">
-
-  <div class="card">
-    <h3>Contact Information</h3>
-    <label>Login :</label>
-    <input type="text" placeholder="Username">
-
-    <label>Email :</label>
-    <input type="email" placeholder="email@undersouthern.asia">
-  </div>
-
-
-  <div class="card">
-    <h3>User Access</h3>
-
-    <label>Permission Level</label>
-    <select id="permissionLevel">
-      <option value="standard">Standard user</option>
-      <option value="advanced">Advanced user</option>
-    </select>
-
-    <div id="permissionsList">
-      <div class="section-title">News</div>
-      <label class="checkbox-item"><input type="checkbox"> News</label>
-
-      <div class="section-title">New Release</div>
-      <label class="checkbox-item"><input type="checkbox"> New Release</label>
-      <label class="checkbox-item"><input type="checkbox"> One release</label>
-      <label class="checkbox-item"><input type="checkbox"> Multiple releases</label>
-      <label class="checkbox-item"><input type="checkbox"> New release creation tool (access)</label>
-      <label class="checkbox-item"><input type="checkbox"> New release creation tool (submission)</label>
-
-      <div class="section-title">Catalog</div>
-      <label class="checkbox-item"><input type="checkbox"> All Releases</label>
-      <label class="checkbox-item"><input type="checkbox"> Drafts</label>
-      <label class="checkbox-item"><input type="checkbox"> Correction Requested</label>
-
-      <div class="section-title">Analytics</div>
-      <label class="checkbox-item"><input type="checkbox"> Streams</label>
-      <label class="checkbox-item"><input type="checkbox"> Daily Trends</label>
-      <label class="checkbox-item"><input type="checkbox"> Playlists & Charts</label>
-      <label class="checkbox-item"><input type="checkbox"> Views</label>
-
-      <div class="section-title">Finance</div>
-      <label class="checkbox-item"><input type="checkbox"> Payment & operations</label>
-      <label class="checkbox-item">
-        <input type="checkbox" id="finReportToggle"> Financial reports
-      </label>
-
-      <div id="finDetails" class="indent-group" style="display:none;">
-        <label class="checkbox-item">
-          <input type="checkbox"> Hide total revenue and royalty rates
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" id="royaltyToggle"> Add royalty rate between user and you
-        </label>
-        <div id="royaltyBox" style="display:none; margin-top:10px;">
-          <label style="font-size:12px;">User rate :</label>
-          <input type="text" class="rate-field"> %
+    <main class="max-w-4xl mx-auto p-6 md:p-12 fade-in">
+        <div class="mb-10 pt-4">
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Account Settings</h2>
+            <p class="text-slate-400 text-sm mt-2 font-medium">Manage your account settings.</p>
         </div>
-      </div>
 
-      <div class="section-title">Legal</div>
-      <label class="checkbox-item"><input type="checkbox"> Rights Manager</label>
-    </div>
-  </div>
+        <form id="profileForm" class="space-y-8">
+            <div>
+                <h3 class="section-title">Preferences</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                    <label class="label-text">Message Language</label>
+                    <div class="md:col-span-2">
+                        <select class="input-field cursor-pointer">
+                            <option value="English" selected>English</option>
+                            <option value="Vietnamese">Vietnamese</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
+            <div class="border-t border-slate-100 pt-4"></div>
 
-  <div class="card">
-    <h3>Catalog Scope</h3>
+            <div>
+                <h3 class="section-title">General Information</h3>
+                <div class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+                        <label class="label-text pt-2">Profile Avatar</label>
+                        <div class="md:col-span-2">
+                            <div class="flex flex-col sm:flex-row items-center gap-6">
+                                <div class="avatar-container group cursor-pointer" onclick="document.getElementById('avatarInput').click()">
+                                    <img id="preview" class="avatar-preview" src="#" alt="Avatar Preview">
+                                    <div id="placeholder" class="avatar-placeholder">
+                                        <i class="fa-solid fa-camera text-2xl mb-2"></i>
+                                        <span class="font-bold uppercase tracking-wider">Upload</span>
+                                        <span class="mt-1 opacity-60">150 x 150</span>
+                                    </div>
+                                    <input type="file" id="avatarInput" hidden accept=".jpg, .jpeg, .png, .jfif" onchange="previewImage(this)">
+                                </div>
+                                <div class="text-slate-400 text-[11px] leading-relaxed">
+                                    <p class="font-bold text-slate-900 uppercase mb-1">Upload Requirements</p>
+                                    <p>• Allowed: JPG, JPEG, PNG, JFIF</p>
+                                    <p>• Size: 150 x 150 px</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-    <div id="advancedWarning" class="warning-box">
-      <strong>Warning:</strong> An "advanced user" can submit us the releases he creates, if you give him access to "Create my releases" section. Moreover, if you have access to believe FTP account to upload your audio files, the advanced user can access it too. If you want a user creates his catalogue and submit it without your help, choose this option. If you want to keep control on what a user can distribute with us, choose instead "standard user".
-    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                        <label class="label-text">Company Name</label>
+                        <div class="md:col-span-2">
+                            <input type="text" value="UNDERSOUTHERN" class="input-field">
+                        </div>
+                    </div>
 
-    <div class="info-box">
-      Catalog scope will allow you to define which areas of the interface can be viewed by 'access-only' user accounts.
-    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                        <label class="label-text">E-mail Address</label>
+                        <div class="md:col-span-2">
+                            <input type="email" value="phvinh1968@gmail.com" class="input-field">
+                        </div>
+                    </div>
 
-    <label>Artists <button class="add-btn">+ add all</button></label>
-    <input type="text" placeholder="Select artist">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                        <label class="label-text">Full Address</label>
+                        <div class="md:col-span-2">
+                            <input type="text" value="87, An Khánh, Phước Hiệp, Mỏ Cày Nam, Bến Tre" class="input-field">
+                        </div>
+                    </div>
 
-    <label>Labels <button class="add-btn">+ add all</button></label>
-    <input type="text" placeholder="Select label">
-  </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                        <label class="label-text">General Phone</label>
+                        <div class="md:col-span-2">
+                            <input type="text" value="0824444511" class="input-field">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-</div>
+            <div class="border-t border-slate-100 pt-4"></div>
 
-<script>
-  // Hiện cảnh báo khi chọn Advanced User
-  const levelSelect = document.getElementById('permissionLevel');
-  const warning = document.getElementById('advancedWarning');
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight mb-6">Notifications</h2>
+                <div class="border border-slate-200 rounded-xl p-6 space-y-8">
+                    <div class="flex items-start justify-between">
+                        <div class="max-w-[80%]">
+                            <h4 class="font-bold text-sm text-slate-900">Accounts</h4>
+                            <p class="text-[13px] text-slate-400 mt-1">Notify me about changes to my accounts, new members, and other related updates.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex items-start justify-between">
+                        <div class="max-w-[80%]">
+                            <h4 class="font-bold text-sm text-slate-900">Distribution</h4>
+                            <p class="text-[13px] text-slate-400 mt-1">Notify me about activity related to assets marked for distribution.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="flex items-start justify-between">
+                        <div class="max-w-[80%]">
+                            <h4 class="font-bold text-sm text-slate-900">Statements</h4>
+                            <p class="text-[13px] text-slate-400 mt-1">Notify me when new statements are ready to review.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-  levelSelect.addEventListener('change', function() {
-    warning.style.display = (this.value === 'advanced') ? 'block' : 'none';
-  });
+            <div class="border-t border-slate-100 pt-4"></div>
 
-  // Toggle Finance
-  const finCheck = document.getElementById('finReportToggle');
-  const finDetails = document.getElementById('finDetails');
-  const royaltyCheck = document.getElementById('royaltyToggle');
-  const royaltyBox = document.getElementById('royaltyBox');
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h2 class="text-[16px] font-bold text-slate-900">Your Browser Sessions</h2>
+                    <p class="text-[13px] text-slate-500 mt-2 leading-relaxed">Here's all of the browser sessions you've logged into your account.</p>
+                </div>
+                <div class="md:col-span-2 space-y-6">
+                    <div class="bg-slate-50 border border-slate-100 rounded-lg p-4 flex items-start space-x-3">
+                        <i class="fa-solid fa-circle-info text-slate-400 mt-1"></i>
+                        <div class="text-[13px] text-slate-600 leading-relaxed">
+                            <p class="font-bold text-slate-800">Browser Sessions</p>
+                            <p class="mt-1">If necessary, you can log out of all other browser sessions across all devices. If you feel your account is compromised, please change your password.</p>
+                        </div>
+                    </div>
 
-  finCheck.addEventListener('change', function() {
-    finDetails.style.display = this.checked ? 'block' : 'none';
-  });
+                    <div class="space-y-6 pt-2">
+                        <div class="flex items-start space-x-4">
+                            <div class="mt-1 text-slate-900">
+                                <i class="fa-solid fa-desktop text-xl"></i>
+                            </div>
+                            <div class="text-[13px]">
+                                <div class="flex items-center space-x-2">
+                                    <span id="current-browser" class="font-semibold text-slate-900">Chrome</span>
+                                    <span class="text-green-500 font-bold text-[11px] uppercase tracking-wide">This device</span>
+                                </div>
+                                <p class="text-slate-400 mt-0.5"><span id="current-ip">162.159.98.125</span></p>
+                            </div>
+                        </div>
 
-  royaltyCheck.addEventListener('change', function() {
-    royaltyBox.style.display = this.checked ? 'block' : 'none';
-  });
-</script>
+                        <div class="flex items-start space-x-4 opacity-80">
+                            <div class="mt-1 text-slate-900">
+                                <i class="fa-solid fa-desktop text-xl"></i>
+                            </div>
+                            <div class="text-[13px]">
+                                <p class="font-semibold text-slate-900">Chrome</p>
+                                <p class="text-slate-400 mt-0.5">162.158.88.80, Last Active 1 hour ago</p>
+                            </div>
+                        </div>
 
+                        <div class="flex items-start space-x-4 opacity-80">
+                            <div class="mt-1 text-slate-900">
+                                <i class="fa-solid fa-desktop text-xl"></i>
+                            </div>
+                            <div class="text-[13px]">
+                                <p class="font-semibold text-slate-900">Safari</p>
+                                <p class="text-slate-400 mt-0.5">162.158.163.246, Last Active 3 hours ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-12 pb-20">
+                <button type="button" onclick="handleUpdate()" class="w-full md:w-auto min-w-[220px] py-4 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg shadow-slate-200">
+                    Update Profile
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        window.onload = function() {
+            // Load avatar
+            const savedAvatar = localStorage.getItem('userAvatar');
+            if (savedAvatar) {
+                const preview = document.getElementById('preview');
+                const placeholder = document.getElementById('placeholder');
+                preview.src = savedAvatar;
+                preview.style.display = 'block';
+                placeholder.style.display = 'none';
+            }
+
+            // Tự động cập nhật thông tin trình duyệt đang dùng
+            const userAgent = navigator.userAgent;
+            let browserName = "Unknown Browser";
+            if (userAgent.match(/chrome|chromium|crios/i)) browserName = "Chrome";
+            else if (userAgent.match(/firefox|fxios/i)) browserName = "Firefox";
+            else if (userAgent.match(/safari/i)) browserName = "Safari";
+            else if (userAgent.match(/edg/i)) browserName = "Edge";
+            
+            document.getElementById('current-browser').innerText = browserName;
+        };
+
+        function previewImage(input) {
+            const preview = document.getElementById('preview');
+            const placeholder = document.getElementById('placeholder');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = e.target.result;
+                    preview.src = imageData;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    localStorage.setItem('userAvatar', imageData);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function handleUpdate() {
+            const btn = document.querySelector('button[onclick="handleUpdate()"]');
+            btn.innerText = "Redirecting...";
+            btn.disabled = true;
+            btn.style.opacity = "0.7";
+            setTimeout(() => {
+                window.location.href = "https://undersouthern.asia/dashboard";
+            }, 500);
+        }
+    </script>
 </body>
 </html>
