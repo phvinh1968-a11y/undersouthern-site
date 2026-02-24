@@ -40,11 +40,11 @@
             border-radius: 9999px;
         }
 
-        /* Styles for Integrated User Management */
-        .card-custom { background: #fff; padding: 24px; border-radius: 10px; border: 1px solid #eeeeee; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        /* --- STYLES DÀNH RIÊNG CHO USER MANAGEMENT --- */
         .status-tag { color: #16a34a; font-weight: 600; font-size: 12px; }
-        .btn-black { background: #000000; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .tag-badge { background: #f0f0f0; padding: 4px 10px; border-radius: 20px; font-size: 12px; display: flex; align-items: center; gap: 6px; }
+        .btn-action { border: 1px solid #eeeeee; background: #ffffff; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+        .btn-action:hover { background: #f5f5f5; }
+        .password-field { font-family: monospace; border: none; background: transparent; outline: none; width: 90px; color: #64748b; font-size: 13px; }
 
         @media (max-width: 768px) {
             .sidebar-width { width: 85% !important; max-width: 300px; position: fixed; z-index: 100; left: -100%; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 15px 0 45px rgba(0,0,0,0.15); }
@@ -153,110 +153,40 @@
                 <div id="tab-promotion" class="hidden fade-in"><h2 class="text-3xl font-bold">Promotion</h2></div>
                 <div id="tab-finance" class="hidden fade-in"><h2 class="text-3xl font-bold">Finance</h2></div>
 
-                <div id="tab-users" class="hidden fade-in">
-                    
-                    <div id="view-user-list">
-                        <div class="flex justify-between items-center mb-8">
-                            <h2 class="text-3xl font-bold tracking-tight">User Management</h2>
-                            <button onclick="toggleUserSubView('add')" class="btn-black">
-                                <i class="fa-solid fa-user-plus"></i> Add a new user
-                            </button>
-                        </div>
-
-                        <div class="max-w-md mb-8">
-                            <label class="text-xs font-bold uppercase text-slate-400 mb-2 block">Search by login or email:</label>
-                            <input type="text" id="searchInput" placeholder="Type email or login to find..." 
-                                   onkeyup="filterTable()" 
-                                   class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black">
-                        </div>
-
-                        <div class="border rounded-xl overflow-hidden shadow-sm">
-                            <table class="w-full text-left text-[13px]">
-                                <thead class="bg-slate-50 border-b text-slate-500 uppercase text-[10px] font-bold">
-                                    <tr>
-                                        <th class="px-6 py-4">Email</th>
-                                        <th class="px-6 py-4">Login</th>
-                                        <th class="px-6 py-4">Password</th>
-                                        <th class="px-6 py-4">Status</th>
-                                        <th class="px-6 py-4 text-right">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="userTableBody" class="divide-y divide-slate-100">
-                                    </tbody>
-                            </table>
-                        </div>
+                <div id="tab-users" class="hidden fade-in space-y-8">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-3xl font-bold tracking-tight">User Management</h2>
+                        <button onclick="window.location.href='https://undersouthern.asia/user-access'" class="bg-black text-white px-5 py-2.5 rounded-lg text-[13px] font-bold flex items-center gap-2 hover:scale-105 transition-all">
+                            <i class="fa-solid fa-user-plus"></i> Add a new user
+                        </button>
                     </div>
 
-                    <div id="view-user-add" class="hidden space-y-8">
-                        <div class="flex items-center space-x-4">
-                            <button onclick="toggleUserSubView('list')" class="p-2 border rounded-lg hover:bg-slate-50 transition">
-                                <i class="fa-solid fa-arrow-left"></i>
-                            </button>
-                            <h2 class="text-3xl font-bold tracking-tight">Add a new user</h2>
-                        </div>
-
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div class="card-custom">
-                                <h3 class="text-xs font-black uppercase mb-6 tracking-widest">Contact Information</h3>
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="text-xs font-bold mb-1 block">Email :</label>
-                                        <input type="email" id="inEmail" placeholder="email@undersouthern.asia" class="w-full px-3 py-2 border rounded-lg text-sm">
-                                    </div>
-                                    <div>
-                                        <label class="text-xs font-bold mb-1 block">Login :</label>
-                                        <input type="text" id="inLogin" placeholder="Username" class="w-full px-3 py-2 border rounded-lg text-sm">
-                                    </div>
-                                    <div>
-                                        <label class="text-xs font-bold mb-1 block">Password :</label>
-                                        <input type="password" id="inPass" placeholder="Password" class="w-full px-3 py-2 border rounded-lg text-sm">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card-custom">
-                                <h3 class="text-xs font-black uppercase mb-6 tracking-widest">User Access</h3>
-                                <div class="space-y-3">
-                                    <label class="flex items-center space-x-3 text-sm cursor-pointer"><input type="checkbox" class="accent-black"> <span>Albums access</span></label>
-                                    <label class="flex items-center space-x-3 text-sm cursor-pointer"><input type="checkbox" class="accent-black"> <span>Edit albums</span></label>
-                                    <label class="flex items-center space-x-3 text-sm cursor-pointer"><input type="checkbox" class="accent-black"> <span>Create albums</span></label>
-                                    <label class="flex items-center space-x-3 text-sm cursor-pointer"><input type="checkbox" class="accent-black"> <span>See sessions</span></label>
-                                    <label class="flex items-center space-x-3 text-sm cursor-pointer"><input type="checkbox" class="accent-black"> <span>Reports access</span></label>
-                                    <label class="flex items-center space-x-3 text-sm cursor-pointer"><input type="checkbox" class="accent-black"> <span>Invoices access</span></label>
-                                    <label class="flex items-center space-x-3 text-sm cursor-pointer"><input type="checkbox" class="accent-black"> <span>Send invoices</span></label>
-                                    <label class="flex items-center space-x-3 text-sm cursor-pointer"><input type="checkbox" class="accent-black"> <span>Update invoices</span></label>
-                                    <label class="flex items-center space-x-3 text-sm cursor-pointer"><input type="checkbox" class="accent-black"> <span>Access to documents</span></label>
-                                    <label class="flex items-center space-x-3 text-sm cursor-pointer"><input type="checkbox" class="accent-black"> <span>Tickets access</span></label>
-                                </div>
-                            </div>
-
-                            <div class="card-custom">
-                                <h3 class="text-xs font-black uppercase mb-6 tracking-widest">Catalog Scope</h3>
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="text-xs font-bold mb-1 block">Artists <span class="bg-black text-white px-2 py-0.5 rounded text-[10px] ml-2 cursor-pointer">+ ALL</span></label>
-                                        <input type="text" placeholder="Type artist name..." class="w-full px-3 py-2 border rounded-lg text-sm">
-                                    </div>
-                                    <div>
-                                        <label class="text-xs font-bold mb-1 block">Labels <span class="bg-black text-white px-2 py-0.5 rounded text-[10px] ml-2 cursor-pointer">+ ALL</span></label>
-                                        <input type="text" placeholder="Type label name..." class="w-full px-3 py-2 border rounded-lg text-sm">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end pt-4">
-                            <button onclick="handleInvite()" class="bg-black text-white px-8 py-3 rounded-xl font-bold hover:scale-105 transition">Invite User</button>
-                        </div>
+                    <div class="max-w-md">
+                        <label class="text-[11px] font-bold uppercase text-slate-400 mb-2 block tracking-wider">Search by login or email:</label>
+                        <input type="text" id="searchInput" placeholder="Type email or login to find..." onkeyup="filterUsers()" class="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-black transition-all">
                     </div>
 
+                    <div class="border rounded-xl overflow-hidden shadow-sm">
+                        <table class="w-full text-left text-[13px]">
+                            <thead class="bg-slate-50 border-b text-slate-500 uppercase text-[10px] font-bold tracking-widest">
+                                <tr>
+                                    <th class="px-6 py-4">Email</th>
+                                    <th class="px-6 py-4">Login</th>
+                                    <th class="px-6 py-4">Password</th>
+                                    <th class="px-6 py-4">Account Status</th>
+                                    <th class="px-6 py-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody" class="divide-y divide-slate-100 bg-white">
+                                </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-        // --- LOGIC HỆ THỐNG GỐC ---
         function syncAvatar() {
             const savedImg = localStorage.getItem('userAvatar');
             const holder = document.getElementById('top-avatar-holder');
@@ -273,21 +203,18 @@
 
         function toggleDropdown(event) {
             event.stopPropagation();
-            const dropdown = document.getElementById('user-dropdown');
-            dropdown.classList.toggle('hidden');
+            document.getElementById('user-dropdown').classList.toggle('hidden');
         }
 
         window.addEventListener('click', function(e) {
             const dropdown = document.getElementById('user-dropdown');
             const button = document.getElementById('user-menu-button');
-            if (dropdown && button && !button.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.add('hidden');
-            }
+            if (dropdown && button && !button.contains(e.target)) dropdown.classList.add('hidden');
         });
 
         function handleLogout() {
             localStorage.removeItem('isLoggedIn');
-            window.location.href = "https://undersouthern.asia/login?v=" + new Date().getTime();
+            window.location.href = "https://undersouthern.asia/login";
         }
 
         function showTab(tabId) {
@@ -296,113 +223,83 @@
                 const content = document.getElementById('tab-' + id);
                 const nav = document.getElementById('nav-' + id);
                 if (content) content.classList.add('hidden');
-                if (nav) {
-                    nav.classList.remove('sidebar-active', 'font-bold');
-                    nav.classList.add('text-slate-400');
-                }
+                if (nav) nav.classList.remove('sidebar-active', 'font-bold');
+                if (nav) nav.classList.add('text-slate-400');
             });
             document.getElementById('tab-' + tabId).classList.remove('hidden');
-            document.getElementById('nav-' + tabId).classList.add('sidebar-active', 'font-bold');
-            document.getElementById('nav-' + tabId).classList.remove('text-slate-400');
+            const activeNav = document.getElementById('nav-' + tabId);
+            activeNav.classList.add('sidebar-active', 'font-bold');
+            activeNav.classList.remove('text-slate-400');
 
             if (window.innerWidth < 768) {
                 const sidebar = document.getElementById('sidebar');
-                if(sidebar && sidebar.classList.contains('sidebar-open')) toggleSidebar();
+                if(sidebar.classList.contains('sidebar-open')) toggleSidebar();
             }
         }
 
-        // --- LOGIC USER MANAGEMENT TÍCH HỢP ---
-        function toggleUserSubView(view) {
-            if (view === 'add') {
-                document.getElementById('view-user-list').classList.add('hidden');
-                document.getElementById('view-user-add').classList.remove('hidden');
-            } else {
-                document.getElementById('view-user-add').classList.add('hidden');
-                document.getElementById('view-user-list').classList.remove('hidden');
-            }
-        }
-
-        function handleInvite() {
-            const email = document.getElementById('inEmail').value;
-            const login = document.getElementById('inLogin').value;
-            const pass = document.getElementById('inPass').value;
-
-            if (!email || !login || !pass) { alert("Please fill in all information."); return; }
-
-            const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-            users.unshift({ email, login, pass });
-            localStorage.setItem('undersouthern_users', JSON.stringify(users));
-
-            // Reset
-            document.getElementById('inEmail').value = '';
-            document.getElementById('inLogin').value = '';
-            document.getElementById('inPass').value = '';
-
-            renderUsers();
-            toggleUserSubView('list');
-        }
-
+        // --- LOGIC QUẢN LÝ NGƯỜI DÙNG ---
         function renderUsers() {
-            const container = document.getElementById('userTableBody');
-            let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-            
+            const tableBody = document.getElementById('userTableBody');
+            const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
+
+            // Data mặc định nếu chưa có
             if (users.length === 0) {
-                users.push({email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123'});
+                users.push({ email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123', status: 'Active' });
             }
 
-            container.innerHTML = users.map((u, i) => `
+            tableBody.innerHTML = users.map((user, index) => `
                 <tr class="hover:bg-slate-50 transition">
-                    <td class="px-6 py-4 font-medium email-col">${u.email}</td>
-                    <td class="px-6 py-4 text-slate-500 login-col">${u.login}</td>
+                    <td class="px-6 py-4 font-semibold text-black">${user.email}</td>
+                    <td class="px-6 py-4 text-slate-500">${user.login}</td>
                     <td class="px-6 py-4">
                         <div class="flex items-center space-x-2">
-                            <input type="password" value="${u.pass}" id="p-${i}" readonly class="bg-transparent border-none outline-none w-20 text-slate-500 font-mono">
-                            <i class="fa-solid fa-eye cursor-pointer opacity-30 hover:opacity-100 transition text-xs" onclick="tglPass('p-${i}', this)"></i>
+                            <input type="password" value="${user.pass}" id="pass-${index}" readonly class="password-field">
+                            <i class="fa-solid fa-eye cursor-pointer opacity-30 hover:opacity-100 transition text-[10px]" onclick="togglePass('pass-${index}', this)"></i>
                         </div>
                     </td>
                     <td class="px-6 py-4"><span class="status-tag">Active</span></td>
                     <td class="px-6 py-4 text-right">
-                        <div class="flex justify-end space-x-2">
-                            <button class="p-2 hover:bg-slate-100 rounded-lg transition"><i class="fa-solid fa-pen text-[10px]"></i></button>
-                            <button onclick="delUser(${i})" class="p-2 hover:bg-red-50 hover:text-red-600 rounded-lg transition"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                        <div class="flex justify-end space-x-1">
+                            <button class="btn-action"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                            <button onclick="deleteUser(${index})" class="btn-action hover:text-red-600 hover:border-red-100"><i class="fa-solid fa-trash text-[10px]"></i></button>
                         </div>
                     </td>
                 </tr>
             `).join('');
         }
 
-        function tglPass(id, icon) {
-            const el = document.getElementById(id);
-            if (el.type === "password") { 
-                el.type = "text"; icon.classList.replace("fa-eye", "fa-eye-slash"); 
-            } else { 
-                el.type = "password"; icon.classList.replace("fa-eye-slash", "fa-eye"); 
+        function togglePass(id, icon) {
+            const input = document.getElementById(id);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.replace("fa-eye-slash", "fa-eye");
             }
         }
 
-        function delUser(index) {
-            if (confirm("Are you sure?")) {
-                let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
+        function filterUsers() {
+            const filter = document.getElementById("searchInput").value.toLowerCase();
+            const rows = document.getElementById("userTableBody").getElementsByTagName("tr");
+            for (let i = 0; i < rows.length; i++) {
+                const text = rows[i].textContent.toLowerCase();
+                rows[i].style.display = text.includes(filter) ? "" : "none";
+            }
+        }
+
+        function deleteUser(index) {
+            if (confirm("Delete this user?")) {
+                const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
                 users.splice(index, 1);
                 localStorage.setItem('undersouthern_users', JSON.stringify(users));
                 renderUsers();
             }
         }
 
-        function filterTable() {
-            const filter = document.getElementById("searchInput").value.toLowerCase();
-            const rows = document.getElementById("userTableBody").getElementsByTagName("tr");
-            for (let i = 0; i < rows.length; i++) {
-                const email = rows[i].querySelector(".email-col").textContent.toLowerCase();
-                const login = rows[i].querySelector(".login-col").textContent.toLowerCase();
-                rows[i].style.display = (email.includes(filter) || login.includes(filter)) ? "" : "none";
-            }
-        }
-
         window.onload = () => {
             syncAvatar();
-            renderUsers(); // Render danh sách user
-
+            renderUsers(); // Tự động load danh sách user khi vào trang
             if (localStorage.getItem('isLoggedIn') !== 'true') {
                 window.location.href = "https://undersouthern.asia/login";
             } else {
