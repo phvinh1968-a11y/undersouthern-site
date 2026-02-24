@@ -290,7 +290,6 @@
     
     document.querySelectorAll('#access-checkboxes input').forEach(c => c.checked = false);
     
-    // TỰ ĐỘNG RESET TAGS KHI MỞ FORM MỚI
     artistList = []; 
     labelList = [];
     renderTags('artist'); 
@@ -335,14 +334,32 @@
     document.querySelectorAll('#access-checkboxes input:checked').forEach(c => selectedAccess.push(c.value));
     
     let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-    const userData = { email, login, pass, status, access: selectedAccess, artists: artistList, labels: labelList };
     
-    if (editingIndex === -1) { users.unshift(userData); } 
-    else { users[editingIndex] = userData; }
+    // --- BỔ SUNG LOGIC ĐỒNG BỘ ĐĂNG NHẬP ---
+    const userData = { 
+        email, 
+        login, 
+        pass, 
+        status: status || 'Active', 
+        access: selectedAccess, 
+        artists: artistList, 
+        labels: labelList 
+    };
+    
+    if (editingIndex === -1) { 
+        // Kiểm tra xem login hoặc email đã tồn tại chưa để tránh trùng lặp
+        const isExist = users.some(u => u.login === login || u.email === email);
+        if (isExist && login !== 'hongphong2347') { // Trừ tài khoản admin mặc định
+            alert("Username or Email already exists.");
+            return;
+        }
+        users.unshift(userData); 
+    } else { 
+        users[editingIndex] = userData; 
+    }
     
     localStorage.setItem('undersouthern_users', JSON.stringify(users));
     
-    // TỰ ĐỘNG RESET SAU KHI LƯU
     artistList = [];
     labelList = [];
     
@@ -353,9 +370,22 @@
   function renderUsers() {
     const container = document.getElementById('userTableBody');
     let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-    if (users.length === 0) {
-        users.push({email: 'phvinh1968@gmail.com', login: 'hongphong2347', pass: 'Admin@123', status: 'Active', artists: [], labels: [], access: []});
+    
+    // Luôn đảm bảo tài khoản mặc định tồn tại trong danh sách để có thể đăng nhập
+    const hasAdmin = users.some(u => u.login === 'hongphong2347');
+    if (!hasAdmin) {
+        users.push({
+            email: 'phvinh1968@gmail.com', 
+            login: 'hongphong2347', 
+            pass: 'Admin@123', 
+            status: 'Active', 
+            artists: [], 
+            labels: [], 
+            access: ['albums_access', 'edit_albums', 'create_albums']
+        });
+        localStorage.setItem('undersouthern_users', JSON.stringify(users));
     }
+
     container.innerHTML = users.map((u, i) => {
       const statusClass = u.status === 'Disabled' ? 'status-disabled' : 'status-active';
       const aText = (u.artists && u.artists.length > 0) ? u.artists.join(', ') : '';
@@ -397,6 +427,12 @@
   document.getElementById('confirmDeleteBtn').onclick = function() {
     if (pendingDeleteIndex !== -1) {
       let users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
+      // Không cho phép xóa tài khoản admin chính để tránh bị khóa hệ thống
+      if (users[pendingDeleteIndex].login === 'hongphong2347') {
+          alert("Cannot delete main administrator account.");
+          closeModal();
+          return;
+      }
       users.splice(pendingDeleteIndex, 1);
       localStorage.setItem('undersouthern_users', JSON.stringify(users));
       renderUsers(); closeModal();
