@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Management System - UNDERSOUTHERN</title>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
     
@@ -12,33 +12,41 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ffffff; color: #000000; height: 100vh; overflow: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ffffff; color: #000000; height: 100vh; height: -webkit-fill-available; overflow: hidden; }
         .sidebar-active { background-color: #000000; color: #ffffff; border-radius: 8px; }
         .hidden { display: none !important; }
         
         .sidebar-width { width: 280px; }
         .header-height { height: 72px; }
         
-        .brand-text { font-style: normal !important; }
-        .table-head-text { font-size: 10px; letter-spacing: 0.05em; color: #94a3b8; text-transform: uppercase; font-weight: 700; }
-        .table-row-text { font-size: 12px; color: #334155; }
+        /* Đảm bảo sidebar luôn bằng chiều cao màn hình thực tế */
+        #sidebar { height: 100vh; height: -webkit-fill-available; display: flex; flex-direction: column; }
 
         .scroll-area { height: calc(100vh - 72px); overflow-y: auto; scrollbar-width: thin; }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
         
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Mobile Adjustments */
         @media (max-width: 768px) {
-            .sidebar-width { width: 85%; max-width: 300px; position: fixed; z-index: 100; height: 100vh; left: -100%; transition: 0.3s; box-shadow: 20px 0 50px rgba(0,0,0,0.1); }
+            .sidebar-width { 
+                width: 80%; 
+                position: fixed; 
+                z-index: 100; 
+                left: -100%; 
+                transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+            }
             .sidebar-open { left: 0; }
-            .main-padding { padding: 1rem !important; }
         }
 
-        /* Overlay khi mở menu trên mobile */
-        #sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 90; }
+        #sidebar-overlay { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.4); 
+            z-index: 90; 
+            backdrop-filter: blur(2px);
+        }
         .sidebar-open + #sidebar-overlay { display: block; }
     </style>
 </head>
@@ -46,119 +54,80 @@
 
     <div class="flex h-screen overflow-hidden relative">
         
-        <aside id="sidebar" class="sidebar-width bg-white border-r flex flex-shrink-0 flex-col transition-all duration-300 absolute md:relative z-[100] h-full">
-            <div class="header-height flex items-center justify-between px-6 md:px-10 border-b flex-shrink-0">
-                <h1 class="brand-text text-black text-xl font-black tracking-tighter uppercase">UNDERSOUTHERN</h1>
-                <button onclick="toggleSidebar()" class="md:hidden text-black text-xl"><i class="fa-solid fa-xmark"></i></button>
+        <aside id="sidebar" class="sidebar-width bg-white border-r flex-shrink-0 transition-all duration-300 absolute md:relative z-[100]">
+            <div class="header-height flex items-center justify-between px-6 border-b flex-shrink-0">
+                <h1 class="font-black text-lg tracking-tighter uppercase">UNDERSOUTHERN</h1>
+                <button onclick="toggleSidebar()" class="md:hidden text-black"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
 
-            <nav class="flex-1 overflow-y-auto py-6 text-[13px] px-6">
-                <div class="space-y-1">
-                    <a href="#" onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-active flex items-center space-x-3 px-4 py-3 font-bold transition">
-                        <i class="fa-solid fa-house w-4 text-center"></i> <span>Overview</span>
-                    </a>
-                    <a href="#" onclick="showTab('catalog')" id="nav-catalog" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
-                        <i class="fa-solid fa-list-ul w-4 text-center"></i> <span>Catalog</span>
-                    </a>
-                    <a href="#" onclick="showTab('analytics')" id="nav-analytics" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
-                        <i class="fa-solid fa-chart-line w-4 text-center"></i> <span>Analytics</span>
-                    </a>
-                    <a href="#" onclick="showTab('promotion')" id="nav-promotion" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
-                        <i class="fa-solid fa-bullhorn w-4 text-center"></i> <span>Promotion</span>
-                    </a>
-                    <a href="#" onclick="showTab('finance')" id="nav-finance" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
-                        <i class="fa-solid fa-dollar-sign w-4 text-center"></i> <span>Finance</span>
-                    </a>
-                    <a href="#" onclick="showTab('users')" id="nav-users" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition border-t mt-4 pt-4">
-                        <i class="fa-solid fa-user-shield w-4 text-center"></i> <span>User Access</span>
-                    </a>
-                </div>
+            <nav class="flex-1 overflow-y-auto py-4 px-4 space-y-1">
+                <a href="#" onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-active flex items-center space-x-3 px-4 py-3 font-bold text-[13px]">
+                    <i class="fa-solid fa-house w-5"></i> <span>Overview</span>
+                </a>
+                <a href="#" onclick="showTab('catalog')" id="nav-catalog" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px]">
+                    <i class="fa-solid fa-list-ul w-5"></i> <span>Catalog</span>
+                </a>
+                <a href="#" onclick="showTab('analytics')" id="nav-analytics" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px]">
+                    <i class="fa-solid fa-chart-line w-5"></i> <span>Analytics</span>
+                </a>
+                <a href="#" onclick="showTab('promotion')" id="nav-promotion" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px]">
+                    <i class="fa-solid fa-bullhorn w-5"></i> <span>Promotion</span>
+                </a>
+                <a href="#" onclick="showTab('finance')" id="nav-finance" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px]">
+                    <i class="fa-solid fa-dollar-sign w-5"></i> <span>Finance</span>
+                </a>
+                <div class="border-t my-2"></div>
+                <a href="#" onclick="showTab('users')" id="nav-users" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px]">
+                    <i class="fa-solid fa-user-shield w-5"></i> <span>User Access</span>
+                </a>
             </nav>
 
-            <div class="p-6 border-t bg-white flex-shrink-0">
-                <button onclick="handleLogout()" class="w-full py-3 text-xs font-bold text-black border border-black rounded hover:bg-black hover:text-white transition uppercase tracking-widest flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
+            <div class="p-4 border-t bg-slate-50 flex-shrink-0 mb-safe">
+                <button onclick="handleLogout()" class="w-full py-3 bg-white border border-black text-black text-[11px] font-bold uppercase tracking-widest rounded-lg flex items-center justify-center space-x-2 active:bg-black active:text-white transition-colors">
+                    <i class="fa-solid fa-power-off"></i>
+                    <span>Log Out</span>
                 </button>
             </div>
         </aside>
 
         <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-        <main class="flex-1 flex flex-col min-w-0 bg-white">
-            <header class="header-height border-b bg-white flex items-center justify-between md:justify-end px-4 md:px-12 space-x-8">
-                <button onclick="toggleSidebar()" class="md:hidden text-black text-xl p-2"><i class="fa-solid fa-bars"></i></button>
-                
-                <div class="flex items-center space-x-4">
-                    <span class="brand-text text-[10px] md:text-[11px] font-bold tracking-tight uppercase hidden xs:block">UNDERSOUTHERN ADMIN</span>
-                    <div class="w-8 h-8 md:w-9 md:h-9 bg-black rounded-full flex items-center justify-center text-[10px] md:text-[11px] font-bold text-white shadow-sm">US</div>
+        <main class="flex-1 flex flex-col min-w-0">
+            <header class="header-height border-b flex items-center justify-between md:justify-end px-4 md:px-10 flex-shrink-0">
+                <button onclick="toggleSidebar()" class="md:hidden p-2"><i class="fa-solid fa-bars-staggered text-xl"></i></button>
+                <div class="flex items-center space-x-3">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 hidden sm:block">Admin Portal</span>
+                    <div class="w-8 h-8 bg-black rounded-full flex items-center justify-center text-[10px] font-bold text-white">US</div>
                 </div>
             </header>
 
-            <div class="scroll-area p-6 md:p-12 w-full max-w-7xl mx-auto main-padding">
-                
-                <div id="tab-dashboard" class="fade-in space-y-8">
-                    <h1 class="text-3xl md:text-4xl font-bold tracking-tight italic">Welcome,</h1>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="p-6 border rounded-xl hover:shadow-sm transition cursor-pointer group flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-slate-50 flex items-center justify-center rounded-lg text-slate-400 group-hover:bg-black group-hover:text-white transition">
-                                <i class="fa-solid fa-plus text-lg"></i>
-                            </div>
-                            <span class="text-xs font-bold uppercase tracking-wider">Create a new release</span>
-                        </div>
+            <div class="scroll-area p-6 md:p-10">
+                <div id="tab-dashboard" class="fade-in">
+                    <h1 class="text-3xl font-bold italic mb-8">Overview</h1>
+                    <div class="p-8 border-2 border-dashed border-slate-100 rounded-2xl text-center">
+                        <i class="fa-solid fa- wand-magic-sparkles text-slate-200 text-3xl mb-3"></i>
+                        <p class="text-slate-400 text-sm">Welcome back to UNDERSOUTHERN</p>
                     </div>
                 </div>
 
-                <div id="tab-catalog" class="hidden fade-in space-y-6">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Catalog</h2>
-                    <div class="w-full border rounded-xl overflow-x-auto">
-                        <table class="w-full text-left min-w-[600px]">
-                            <thead class="bg-slate-50 border-b table-head-text">
-                                <tr>
-                                    <th class="px-6 py-4">Title</th>
-                                    <th class="px-6 py-4">Artist</th>
-                                    <th class="px-6 py-4">Barcode</th>
-                                    <th class="px-6 py-4 text-right">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="catalog-list" class="divide-y divide-slate-100 table-row-text"></tbody>
-                        </table>
+                <div id="tab-catalog" class="hidden fade-in">
+                    <h1 class="text-3xl font-bold mb-8">Catalog</h1>
+                    <div class="overflow-x-auto border rounded-xl">
+                        <div class="min-w-full p-6 text-slate-400 italic">Catalog data loading...</div>
                     </div>
                 </div>
 
-                <div id="tab-analytics" class="hidden fade-in space-y-6">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Analytics</h2>
-                    <div class="p-4 border rounded-2xl bg-white shadow-sm h-[300px] md:h-[400px]">
-                        <canvas id="streamsChart"></canvas>
-                    </div>
-                </div>
-
-                <div id="tab-promotion" class="hidden fade-in">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Promotion</h2>
-                    <p class="text-slate-400 italic">Interface coming soon...</p>
-                </div>
-
-                <div id="tab-finance" class="hidden fade-in">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Finance</h2>
-                    <p class="text-slate-400 italic">Interface coming soon...</p>
-                </div>
-
-                <div id="tab-users" class="hidden fade-in">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">User Access</h2>
-                    <div class="p-6 border rounded-xl">
-                        <p class="font-bold">Main Admin</p>
-                        <p class="text-xs text-green-600 font-bold uppercase">Active</p>
-                    </div>
-                </div>
-
+                <div id="tab-analytics" class="hidden fade-in"><h1 class="text-3xl font-bold mb-8">Analytics</h1></div>
+                <div id="tab-promotion" class="hidden fade-in"><h1 class="text-3xl font-bold mb-8">Promotion</h1></div>
+                <div id="tab-finance" class="hidden fade-in"><h1 class="text-3xl font-bold mb-8">Finance</h1></div>
+                <div id="tab-users" class="hidden fade-in"><h1 class="text-3xl font-bold mb-8">User Access</h1></div>
             </div>
         </main>
     </div>
 
     <script>
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('sidebar-open');
+            document.getElementById('sidebar').classList.toggle('sidebar-open');
         }
 
         function handleLogout() {
@@ -168,78 +137,22 @@
 
         function showTab(tabId) {
             const tabs = ['dashboard', 'catalog', 'analytics', 'promotion', 'finance', 'users'];
-            
             tabs.forEach(id => {
-                const content = document.getElementById('tab-' + id);
-                const nav = document.getElementById('nav-' + id);
-                if (content) content.classList.add('hidden');
-                if (nav) {
-                    nav.classList.remove('sidebar-active', 'font-bold');
-                    nav.classList.add('text-slate-400');
-                }
+                document.getElementById('tab-' + id).classList.add('hidden');
+                document.getElementById('nav-' + id).classList.remove('sidebar-active', 'font-bold');
+                document.getElementById('nav-' + id).classList.add('text-slate-400');
             });
 
-            const activeContent = document.getElementById('tab-' + tabId);
-            const activeNav = document.getElementById('nav-' + tabId);
-            
-            if (activeContent) activeContent.classList.remove('hidden');
-            if (activeNav) {
-                activeNav.classList.add('sidebar-active', 'font-bold');
-                activeNav.classList.remove('text-slate-400');
-            }
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            document.getElementById('nav-' + tabId).classList.add('sidebar-active', 'font-bold');
+            document.getElementById('nav-' + tabId).classList.remove('text-slate-400');
 
-            // Tự động đóng sidebar khi chọn mục trên mobile
-            if (window.innerWidth < 768) {
-                const sidebar = document.getElementById('sidebar');
-                if(sidebar.classList.contains('sidebar-open')) toggleSidebar();
-            }
-
-            if (tabId === 'catalog') renderCatalog();
-            if (tabId === 'analytics') initAnalyticsChart();
-        }
-
-        // Dữ liệu mẫu Catalog
-        function renderCatalog() {
-            const list = document.getElementById('catalog-list');
-            const items = Array.from({ length: 5 }, (_, i) => `
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="px-6 py-4 font-bold italic">Sun Flowers</td>
-                    <td class="px-6 py-4 italic text-slate-400">Astrolaw</td>
-                    <td class="px-6 py-4 font-mono text-slate-400">0693887153${i}</td>
-                    <td class="px-6 py-4 text-right font-bold">21/07/2025</td>
-                </tr>
-            `).join('');
-            list.innerHTML = items;
-        }
-
-        // Biểu đồ mẫu
-        let chartInstance = null;
-        function initAnalyticsChart() {
-            const canvas = document.getElementById('streamsChart');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            if(chartInstance) chartInstance.destroy();
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                    datasets: [{
-                        data: [230, 210, 235, 220, 240, 200],
-                        borderColor: '#000000',
-                        backgroundColor: 'rgba(0,0,0,0.02)',
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
+            if (window.innerWidth < 768) toggleSidebar();
         }
 
         window.onload = () => {
             if (localStorage.getItem('isLoggedIn') !== 'true') {
                 window.location.href = "https://undersouthern.asia/login";
-            } else {
-                showTab('dashboard');
             }
         };
     </script>
