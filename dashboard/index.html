@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* Khóa giao diện cho đến khi xác thực thành công */
+        #main-content { display: none; }
+
         html, body { height: 100% !important; margin: 0; padding: 0; overflow: hidden; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ffffff; color: #000000; display: flex; }
         .no-italic, h1, h2, span, a, button { font-style: normal !important; text-decoration: none !important; }
@@ -52,137 +55,146 @@
         #sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 90; backdrop-filter: blur(2px); }
         .sidebar-open + #sidebar-overlay { display: block; }
     </style>
+
+    <script>
+        // KIỂM TRA ĐĂNG NHẬP NGAY LẬP TỨC (TRƯỚC KHI RENDER BODY)
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = "https://undersouthern.asia/login";
+        }
+    </script>
 </head>
 <body>
 
-    <div class="flex w-full h-full overflow-hidden relative">
-        <aside id="sidebar" class="sidebar-width bg-white border-r flex-shrink-0 transition-all duration-300 absolute md:relative z-[100]">
-            <div class="header-height flex items-center justify-between px-6 border-b flex-shrink-0 bg-white">
-                <h1 class="font-black text-xl tracking-tighter uppercase">UNDERSOUTHERN</h1>
-                <button onclick="toggleSidebar()" class="md:hidden text-black p-2"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <nav class="flex-1 overflow-y-auto py-4 px-4 space-y-1">
-                <a href="#" onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-active flex items-center space-x-3 px-4 py-3 font-bold text-[13px] transition">
-                    <i class="fa-solid fa-house w-4 text-center"></i> <span class="no-italic">Dashboard</span>
-                </a>
-                <a href="#" onclick="showTab('catalog')" id="nav-catalog" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
-                    <i class="fa-solid fa-list-ul w-4 text-center"></i> <span>Catalog</span>
-                </a>
-                <a href="#" onclick="showTab('analytics')" id="nav-analytics" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
-                    <i class="fa-solid fa-chart-line w-4 text-center"></i> <span>Analytics</span>
-                </a>
-                <a href="#" onclick="showTab('promotion')" id="nav-promotion" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
-                    <i class="fa-solid fa-bullhorn w-4 text-center"></i> <span>Promotion</span>
-                </a>
-                <a href="#" onclick="showTab('finance')" id="nav-finance" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
-                    <i class="fa-solid fa-dollar-sign w-4 text-center"></i> <span>Finance</span>
-                </a>
-                <div class="border-t my-4"></div>
-                <a href="https://undersouthern.asia/user-access" id="nav-users" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
-                    <i class="fa-solid fa-user-shield w-4 text-center"></i> <span>User Access</span>
-                </a>
-            </nav>
-            <div class="p-4 border-t bg-white flex-shrink-0">
-                <button onclick="handleLogout()" class="w-full py-3 text-[11px] font-bold text-black border border-black rounded-lg hover:bg-black hover:text-white transition uppercase tracking-widest flex items-center justify-center space-x-2 active:bg-slate-100">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span class="no-italic">Logout</span>
-                </button>
-            </div>
-        </aside>
-
-        <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
-
-        <main class="flex-1 flex flex-col min-w-0 bg-white h-full">
-            <header class="header-height border-b bg-white flex items-center justify-between md:justify-end px-4 md:px-12 flex-shrink-0 relative">
-                <button onclick="toggleSidebar()" class="md:hidden text-black p-2"><i class="fa-solid fa-bars-staggered text-xl"></i></button>
-                
-                <div class="flex items-center space-x-4 relative">
-                    <button onclick="toggleDropdown(event)" id="user-menu-button" class="focus:outline-none">
-                        <div id="top-avatar-holder" class="w-8 h-8 bg-black rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm hover:scale-105 transition-all overflow-hidden">
-                            <span id="us-text">US</span>
-                        </div>
+    <div id="main-content" class="w-full h-full">
+        <div class="flex w-full h-full overflow-hidden relative">
+            <aside id="sidebar" class="sidebar-width bg-white border-r flex-shrink-0 transition-all duration-300 absolute md:relative z-[100]">
+                <div class="header-height flex items-center justify-between px-6 border-b flex-shrink-0 bg-white">
+                    <h1 class="font-black text-xl tracking-tighter uppercase">UNDERSOUTHERN</h1>
+                    <button onclick="toggleSidebar()" class="md:hidden text-black p-2"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <nav class="flex-1 overflow-y-auto py-4 px-4 space-y-1">
+                    <a href="#" onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-active flex items-center space-x-3 px-4 py-3 font-bold text-[13px] transition">
+                        <i class="fa-solid fa-house w-4 text-center"></i> <span class="no-italic">Dashboard</span>
+                    </a>
+                    <a href="#" onclick="showTab('catalog')" id="nav-catalog" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                        <i class="fa-solid fa-list-ul w-4 text-center"></i> <span>Catalog</span>
+                    </a>
+                    <a href="#" onclick="showTab('analytics')" id="nav-analytics" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                        <i class="fa-solid fa-chart-line w-4 text-center"></i> <span>Analytics</span>
+                    </a>
+                    <a href="#" onclick="showTab('promotion')" id="nav-promotion" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                        <i class="fa-solid fa-bullhorn w-4 text-center"></i> <span>Promotion</span>
+                    </a>
+                    <a href="#" onclick="showTab('finance')" id="nav-finance" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                        <i class="fa-solid fa-dollar-sign w-4 text-center"></i> <span>Finance</span>
+                    </a>
+                    <div class="border-t my-4"></div>
+                    <a href="https://undersouthern.asia/user-access" id="nav-users" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                        <i class="fa-solid fa-user-shield w-4 text-center"></i> <span>User Access</span>
+                    </a>
+                </nav>
+                <div class="p-4 border-t bg-white flex-shrink-0">
+                    <button onclick="handleLogout()" class="w-full py-3 text-[11px] font-bold text-black border border-black rounded-lg hover:bg-black hover:text-white transition uppercase tracking-widest flex items-center justify-center space-x-2 active:bg-slate-100">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span class="no-italic">Logout</span>
                     </button>
-
-                    <div id="user-dropdown" class="hidden absolute right-0 top-full mt-2 w-48 bg-[#1e293b] rounded-lg py-2 z-[110] fade-in">
-                        <a href="#" class="flex items-center justify-between px-4 py-2.5 text-slate-200 hover:bg-slate-700/50 transition text-[13px]">
-                            <span>Report a Problem</span>
-                            <i class="fa-solid fa-shield-halved text-[12px] opacity-70"></i>
-                        </a>
-                        <a href="https://undersouthern.asia/profile" class="flex items-center px-4 py-2.5 text-slate-200 hover:bg-slate-700/50 transition text-[13px]">
-                            <span>Your Profile</span>
-                        </a>
-                    </div>
                 </div>
-            </header>
+            </aside>
 
-            <div class="scroll-area p-6 md:p-12 w-full max-w-7xl mx-auto">
-                <div id="tab-dashboard" class="fade-in space-y-8">
-                    <h1 class="text-3xl md:text-4xl font-bold tracking-tight">Dashboard</h1>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="p-6 border rounded-xl flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-slate-50 flex items-center justify-center rounded-lg text-slate-400"><i class="fa-solid fa-plus text-lg"></i></div>
-                            <span class="text-xs font-bold uppercase tracking-wider">Create a new release</span>
+            <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+            <main class="flex-1 flex flex-col min-w-0 bg-white h-full">
+                <header class="header-height border-b bg-white flex items-center justify-between md:justify-end px-4 md:px-12 flex-shrink-0 relative">
+                    <button onclick="toggleSidebar()" class="md:hidden text-black p-2"><i class="fa-solid fa-bars-staggered text-xl"></i></button>
+                    
+                    <div class="flex items-center space-x-4 relative">
+                        <button onclick="toggleDropdown(event)" id="user-menu-button" class="focus:outline-none">
+                            <div id="top-avatar-holder" class="w-8 h-8 bg-black rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm hover:scale-105 transition-all overflow-hidden">
+                                <span id="us-text">US</span>
+                            </div>
+                        </button>
+
+                        <div id="user-dropdown" class="hidden absolute right-0 top-full mt-2 w-48 bg-[#1e293b] rounded-lg py-2 z-[110] fade-in">
+                            <a href="#" class="flex items-center justify-between px-4 py-2.5 text-slate-200 hover:bg-slate-700/50 transition text-[13px]">
+                                <span>Report a Problem</span>
+                                <i class="fa-solid fa-shield-halved text-[12px] opacity-70"></i>
+                            </a>
+                            <a href="https://undersouthern.asia/profile" class="flex items-center px-4 py-2.5 text-slate-200 hover:bg-slate-700/50 transition text-[13px]">
+                                <span>Your Profile</span>
+                            </a>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="scroll-area p-6 md:p-12 w-full max-w-7xl mx-auto">
+                    <div id="tab-dashboard" class="fade-in space-y-8">
+                        <h1 class="text-3xl md:text-4xl font-bold tracking-tight">Dashboard</h1>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="p-6 border rounded-xl flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-slate-50 flex items-center justify-center rounded-lg text-slate-400"><i class="fa-solid fa-plus text-lg"></i></div>
+                                <span class="text-xs font-bold uppercase tracking-wider">Create a new release</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tab-catalog" class="hidden fade-in space-y-6">
+                        <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Catalog</h2>
+                        <div class="w-full border rounded-xl overflow-x-auto shadow-sm">
+                            <table class="w-full text-left min-w-[600px]">
+                                <thead class="bg-slate-50 border-b">
+                                    <tr class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                        <th class="px-6 py-4">Title</th>
+                                        <th class="px-6 py-4">Artist</th>
+                                        <th class="px-6 py-4 text-right">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 text-[12px]">
+                                    <tr class="hover:bg-slate-50 transition">
+                                        <td class="px-6 py-4 font-bold">Sun Flowers</td>
+                                        <td class="px-6 py-4 text-slate-400">Astrolaw</td>
+                                        <td class="px-6 py-4 text-right font-bold">24/02/2026</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="tab-analytics" class="hidden fade-in"><h2 class="text-3xl font-bold">Analytics</h2></div>
+                    <div id="tab-promotion" class="hidden fade-in"><h2 class="text-3xl font-bold">Promotion</h2></div>
+                    <div id="tab-finance" class="hidden fade-in"><h2 class="text-3xl font-bold">Finance</h2></div>
+
+                    <div id="tab-users" class="hidden fade-in space-y-8">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-3xl font-bold tracking-tight">User Management</h2>
+                            <button onclick="window.location.href='https://undersouthern.asia/user-access'" class="bg-black text-white px-5 py-2.5 rounded-lg text-[13px] font-bold flex items-center gap-2 hover:scale-105 transition-all">
+                                <i class="fa-solid fa-user-plus"></i> Add a new user
+                            </button>
+                        </div>
+
+                        <div class="max-w-md">
+                            <label class="text-[11px] font-bold uppercase text-slate-400 mb-2 block tracking-wider">Search by login or email:</label>
+                            <input type="text" id="searchInput" placeholder="Type email or login to find..." onkeyup="filterUsers()" class="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-black transition-all">
+                        </div>
+
+                        <div class="border rounded-xl overflow-hidden shadow-sm">
+                            <table class="w-full text-left text-[13px]">
+                                <thead class="bg-slate-50 border-b text-slate-500 uppercase text-[10px] font-bold tracking-widest">
+                                    <tr>
+                                        <th class="px-6 py-4">Email</th>
+                                        <th class="px-6 py-4">Login</th>
+                                        <th class="px-6 py-4">Password</th>
+                                        <th class="px-6 py-4">Account Status</th>
+                                        <th class="px-6 py-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userTableBody" class="divide-y divide-slate-100 bg-white">
+                                    </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-
-                <div id="tab-catalog" class="hidden fade-in space-y-6">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Catalog</h2>
-                    <div class="w-full border rounded-xl overflow-x-auto shadow-sm">
-                        <table class="w-full text-left min-w-[600px]">
-                            <thead class="bg-slate-50 border-b">
-                                <tr class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                    <th class="px-6 py-4">Title</th>
-                                    <th class="px-6 py-4">Artist</th>
-                                    <th class="px-6 py-4 text-right">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 text-[12px]">
-                                <tr class="hover:bg-slate-50 transition">
-                                    <td class="px-6 py-4 font-bold">Sun Flowers</td>
-                                    <td class="px-6 py-4 text-slate-400">Astrolaw</td>
-                                    <td class="px-6 py-4 text-right font-bold">24/02/2026</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div id="tab-analytics" class="hidden fade-in"><h2 class="text-3xl font-bold">Analytics</h2></div>
-                <div id="tab-promotion" class="hidden fade-in"><h2 class="text-3xl font-bold">Promotion</h2></div>
-                <div id="tab-finance" class="hidden fade-in"><h2 class="text-3xl font-bold">Finance</h2></div>
-
-                <div id="tab-users" class="hidden fade-in space-y-8">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-3xl font-bold tracking-tight">User Management</h2>
-                        <button onclick="window.location.href='https://undersouthern.asia/user-access'" class="bg-black text-white px-5 py-2.5 rounded-lg text-[13px] font-bold flex items-center gap-2 hover:scale-105 transition-all">
-                            <i class="fa-solid fa-user-plus"></i> Add a new user
-                        </button>
-                    </div>
-
-                    <div class="max-w-md">
-                        <label class="text-[11px] font-bold uppercase text-slate-400 mb-2 block tracking-wider">Search by login or email:</label>
-                        <input type="text" id="searchInput" placeholder="Type email or login to find..." onkeyup="filterUsers()" class="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-black transition-all">
-                    </div>
-
-                    <div class="border rounded-xl overflow-hidden shadow-sm">
-                        <table class="w-full text-left text-[13px]">
-                            <thead class="bg-slate-50 border-b text-slate-500 uppercase text-[10px] font-bold tracking-widest">
-                                <tr>
-                                    <th class="px-6 py-4">Email</th>
-                                    <th class="px-6 py-4">Login</th>
-                                    <th class="px-6 py-4">Password</th>
-                                    <th class="px-6 py-4">Account Status</th>
-                                    <th class="px-6 py-4 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="userTableBody" class="divide-y divide-slate-100 bg-white">
-                                </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
 
     <script>
@@ -213,7 +225,7 @@
 
         function handleLogout() {
             localStorage.removeItem('isLoggedIn');
-            window.location.href = "https://undersouthern.asia/login";
+            window.location.href = "https://undersouthern.asia/login?v=" + new Date().getTime();
         }
 
         function showTab(tabId) {
@@ -295,11 +307,11 @@
         }
 
         window.onload = () => {
-            syncAvatar();
-            renderUsers();
-            if (localStorage.getItem('isLoggedIn') !== 'true') {
-                window.location.href = "https://undersouthern.asia/login";
-            } else {
+            // Hiển thị nội dung sau khi đã vượt qua bước kiểm tra script ở <head>
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                document.getElementById('main-content').style.display = 'block';
+                syncAvatar();
+                renderUsers();
                 showTab('dashboard');
             }
         };
