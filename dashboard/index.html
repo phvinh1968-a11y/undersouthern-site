@@ -36,6 +36,7 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
 
+        /* Style để ảnh avatar luôn tròn và phủ kín ô 32x32 */
         #main-avatar-img {
             width: 100%;
             height: 100%;
@@ -198,12 +199,14 @@
     </div>
 
     <script>
+        // HÀM ĐỒNG BỘ AVATAR TỪ LOCAL STORAGE
         function syncAvatar() {
-            const savedImg = localStorage.getItem('userAvatar');
+            const savedImg = localStorage.getItem('userAvatar'); // Khóa đồng bộ với trang Profile
             const holder = document.getElementById('top-avatar-holder');
             const text = document.getElementById('us-text');
+            
             if (savedImg && holder) {
-                if (text) text.style.display = 'none';
+                if (text) text.style.display = 'none'; // Ẩn chữ US
                 holder.innerHTML = `<img src="${savedImg}" id="main-avatar-img" alt="Avatar">`;
             }
         }
@@ -307,10 +310,10 @@
         }
 
         window.onload = () => {
-            // Hiển thị nội dung sau khi đã vượt qua bước kiểm tra script ở <head>
+            // Kiểm tra trạng thái và hiển thị
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 document.getElementById('main-content').style.display = 'block';
-                syncAvatar();
+                syncAvatar(); // Tự động load ảnh đại diện
                 renderUsers();
                 showTab('dashboard');
             }
