@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - UNDERSOUTHERN</title>
+    <title>Management System - UNDERSOUTHERN</title>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,29 +16,37 @@
         .sidebar-active { background-color: #000000; color: #ffffff; border-radius: 8px; }
         .hidden { display: none !important; }
         
+        /* Responsive Sidebar Width */
         .sidebar-width { width: 280px; }
         .header-height { height: 72px; }
         
         .brand-text { font-style: normal !important; }
-
         .table-head-text { font-size: 10px; letter-spacing: 0.05em; color: #94a3b8; text-transform: uppercase; font-weight: 700; }
         .table-row-text { font-size: 12px; color: #334155; }
 
         .scroll-area { height: calc(100vh - 72px); overflow-y: auto; scrollbar-width: thin; }
-        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
         
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .sidebar-width { width: 100%; position: fixed; z-index: 50; height: 100vh; left: -100%; transition: 0.3s; }
+            .sidebar-open { left: 0; }
+            .main-padding { padding: 1.5rem !important; }
+        }
     </style>
 </head>
 <body class="overflow-hidden">
 
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex h-screen overflow-hidden relative">
         
-        <aside class="sidebar-width bg-white border-r flex flex-shrink-0 flex-col transition-all">
-            <div class="header-height flex items-center px-10 border-b">
+        <aside id="sidebar" class="sidebar-width bg-white border-r flex flex-shrink-0 flex-col transition-all duration-300 absolute md:relative z-50 h-full">
+            <div class="header-height flex items-center justify-between px-6 md:px-10 border-b">
                 <h1 class="brand-text text-black text-xl font-black tracking-tighter uppercase">UNDERSOUTHERN</h1>
+                <button onclick="toggleSidebar()" class="md:hidden text-black text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <nav class="flex-1 overflow-y-auto py-8 text-[13px] px-6">
@@ -73,43 +81,47 @@
 
         <main class="flex-1 flex flex-col min-w-0 bg-white">
             
-            <header class="header-height border-b bg-white flex items-center justify-end px-12 space-x-8">
-                <i class="fa-solid fa-magnifying-glass text-slate-300 cursor-pointer hover:text-black transition"></i>
-                <div class="flex items-center space-x-4">
-                    <span class="brand-text text-[11px] font-bold tracking-tight uppercase">UNDERSOUTHERN ADMIN</span>
-                    <div class="w-9 h-9 bg-black rounded-full flex items-center justify-center text-[11px] font-bold text-white shadow-sm">US</div>
+            <header class="header-height border-b bg-white flex items-center justify-between md:justify-end px-6 md:px-12 space-x-8">
+                <button onclick="toggleSidebar()" class="md:hidden text-black text-xl"><i class="fa-solid fa-bars"></i></button>
+                
+                <div class="flex items-center space-x-4 md:space-x-8">
+                    <i class="fa-solid fa-magnifying-glass text-slate-300 cursor-pointer hover:text-black transition hidden sm:block"></i>
+                    <div class="flex items-center space-x-4">
+                        <span class="brand-text text-[10px] md:text-[11px] font-bold tracking-tight uppercase hidden xs:block">UNDERSOUTHERN ADMIN</span>
+                        <div class="w-8 h-8 md:w-9 md:h-9 bg-black rounded-full flex items-center justify-center text-[10px] md:text-[11px] font-bold text-white shadow-sm">US</div>
+                    </div>
                 </div>
             </header>
 
-            <div class="scroll-area p-12 w-full max-w-7xl mx-auto">
+            <div class="scroll-area p-6 md:p-12 w-full max-w-7xl mx-auto main-padding">
                 
-                <div id="tab-dashboard" class="fade-in space-y-12">
-                    <h1 class="text-4xl font-bold tracking-tight italic">Welcome,</h1>
+                <div id="tab-dashboard" class="fade-in space-y-8 md:space-y-12">
+                    <h1 class="text-3xl md:text-4xl font-bold tracking-tight italic">Welcome,</h1>
                     
-                    <div>
-                        <div class="flex items-center justify-between mb-8">
-                            <h2 class="text-lg font-bold flex items-center">Latest releases <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
+                    <section>
+                        <div class="flex items-center justify-between mb-6 md:mb-8">
+                            <h2 class="text-base md:text-lg font-bold flex items-center">Latest releases <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div class="flex items-center space-x-6 p-6 border rounded-xl hover:shadow-sm transition cursor-pointer group">
-                                <div class="w-14 h-14 bg-slate-50 flex items-center justify-center rounded-lg text-slate-400 group-hover:bg-black group-hover:text-white transition">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                            <div class="flex items-center space-x-6 p-5 md:p-6 border rounded-xl hover:shadow-sm transition cursor-pointer group">
+                                <div class="w-12 h-12 md:w-14 md:h-14 bg-slate-50 flex items-center justify-center rounded-lg text-slate-400 group-hover:bg-black group-hover:text-white transition">
                                     <i class="fa-solid fa-plus text-lg"></i>
                                 </div>
-                                <span class="text-xs font-bold uppercase tracking-wider">Create a new release</span>
+                                <span class="text-[10px] md:text-xs font-bold uppercase tracking-wider">Create a new release</span>
                             </div>
                         </div>
-                    </div>
+                    </section>
 
-                    <div>
-                        <h2 class="text-lg font-bold mb-6 flex items-center">Streaming performance <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
+                    <section>
+                        <h2 class="text-base md:text-lg font-bold mb-6 flex items-center">Streaming performance <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
                         <div class="h-40 border-t border-dashed border-slate-200 flex items-center justify-center">
-                            <p class="text-xs text-slate-300">No data available for the selected period</p>
+                            <p class="text-[10px] md:text-xs text-slate-300">No data available for the selected period</p>
                         </div>
-                    </div>
+                    </section>
 
-                    <div>
-                        <h2 class="text-lg font-bold mb-6 flex items-center">Top stores <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <section>
+                        <h2 class="text-base md:text-lg font-bold mb-6 flex items-center">Top stores <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                             <div class="p-4 border rounded-xl flex items-center justify-between">
                                 <span class="text-xs font-bold">Spotify</span>
                                 <span class="text-[10px] font-bold text-slate-400">45%</span>
@@ -127,74 +139,73 @@
                                 <span class="text-[10px] font-bold text-slate-400">10%</span>
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
 
-                <div id="tab-catalog" class="hidden fade-in space-y-8">
-                    <div class="flex justify-between items-end">
-                        <h2 class="text-4xl font-bold tracking-tight">Catalog</h2>
-                        <div class="flex space-x-3">
-                            <button class="px-5 py-2 border rounded text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 transition">Grid View</button>
-                            <button class="bg-black text-white px-6 py-2 rounded text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-800 transition">+ Create</button>
+                <div id="tab-catalog" class="hidden fade-in space-y-6 md:space-y-8">
+                    <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-4">
+                        <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Catalog</h2>
+                        <div class="flex space-x-2 md:space-x-3">
+                            <button class="flex-1 md:flex-none px-4 md:px-5 py-2 border rounded text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 transition">Grid View</button>
+                            <button class="flex-1 md:flex-none bg-black text-white px-5 md:px-6 py-2 rounded text-[9px] md:text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-800 transition">+ Create</button>
                         </div>
                     </div>
                     
-                    <div class="w-full border rounded-xl overflow-hidden shadow-sm">
-                        <table class="w-full text-left">
+                    <div class="w-full border rounded-xl overflow-x-auto shadow-sm">
+                        <table class="w-full text-left min-w-[600px]">
                             <thead class="bg-slate-50 border-b table-head-text">
                                 <tr>
-                                    <th class="px-8 py-5">Title</th>
-                                    <th class="px-8 py-5">Artist</th>
-                                    <th class="px-8 py-5">Barcode / Cat Nr.</th>
-                                    <th class="px-8 py-5 text-right">Release Date</th>
+                                    <th class="px-6 md:px-8 py-4 md:py-5">Title</th>
+                                    <th class="px-6 md:px-8 py-4 md:py-5">Artist</th>
+                                    <th class="px-6 md:px-8 py-4 md:py-5">Barcode / Cat Nr.</th>
+                                    <th class="px-6 md:px-8 py-4 md:py-5 text-right">Release Date</th>
                                 </tr>
                             </thead>
-                            <tbody id="catalog-list" class="divide-y divide-slate-100 table-row-text">
-                                </tbody>
+                            <tbody id="catalog-list" class="divide-y divide-slate-100 table-row-text"></tbody>
                         </table>
                     </div>
 
                     <div class="flex justify-center items-center space-x-4 pt-4">
                         <button onclick="changePage(-1)" class="p-2 border rounded hover:bg-slate-50 transition"><i class="fas fa-chevron-left text-[10px]"></i></button>
-                        <span id="page-info" class="text-xs font-bold">Page 1 of 10</span>
+                        <span id="page-info" class="text-[10px] md:text-xs font-bold text-slate-600">Page 1 of 10</span>
                         <button onclick="changePage(1)" class="p-2 border rounded hover:bg-slate-50 transition"><i class="fas fa-chevron-right text-[10px]"></i></button>
                     </div>
                 </div>
 
-                <div id="tab-analytics" class="hidden fade-in space-y-8">
-                    <h2 class="text-4xl font-bold tracking-tight">Analytics</h2>
-                    <div class="border-b flex space-x-8 text-xs font-bold text-slate-400 mb-6">
-                        <button class="pb-4 border-b-2 border-black text-black">Trends</button>
-                        <button class="pb-4 hover:text-black transition">Top Content</button>
-                        <button class="pb-4 hover:text-black transition">Audience</button>
+                <div id="tab-analytics" class="hidden fade-in space-y-6 md:space-y-8">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Analytics</h2>
+                    <div class="border-b flex space-x-6 md:space-x-8 text-[10px] md:text-xs font-bold text-slate-400 mb-6 overflow-x-auto">
+                        <button class="pb-4 border-b-2 border-black text-black whitespace-nowrap">Trends</button>
+                        <button class="pb-4 hover:text-black transition whitespace-nowrap">Top Content</button>
+                        <button class="pb-4 hover:text-black transition whitespace-nowrap">Audience</button>
                     </div>
-                    <div class="p-8 border rounded-2xl bg-white shadow-sm h-[400px]">
+                    <div class="p-4 md:p-8 border rounded-2xl bg-white shadow-sm h-[300px] md:h-[400px]">
                         <canvas id="streamsChart"></canvas>
                     </div>
                 </div>
 
-                <div id="tab-users" class="hidden fade-in space-y-8">
-                    <h2 class="text-4xl font-bold tracking-tight">User Access</h2>
-                    <div class="bg-white border rounded-xl overflow-hidden shadow-sm">
-                        <table class="w-full text-left table-row-text">
+                <div id="tab-users" class="hidden fade-in space-y-6 md:space-y-8">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">User Access</h2>
+                    <div class="bg-white border rounded-xl overflow-x-auto shadow-sm">
+                        <table class="w-full text-left table-row-text min-w-[500px]">
                             <thead class="bg-slate-50 border-b table-head-text">
                                 <tr>
-                                    <th class="px-10 py-5">Administrator</th>
-                                    <th class="px-10 py-5">Role</th>
+                                    <th class="px-6 md:px-10 py-5">Administrator</th>
+                                    <th class="px-6 md:px-10 py-5">Role</th>
                                     <th class="px-10 py-5 text-right">Status</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y">
                                 <tr>
-                                    <td class="px-10 py-6 flex items-center space-x-4">
-                                        <div class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold">US</div>
+                                    <td class="px-6 md:px-10 py-6 flex items-center space-x-4">
+                                        <div class="w-8 h-8 md:w-10 md:h-10 bg-black text-white rounded-full flex items-center justify-center font-bold text-xs">US</div>
                                         <div>
-                                            <p class="font-bold">Main Admin</p>
-                                            <p class="text-[10px] text-slate-400 italic">admin@undersouthern.com</p>
+                                            <p class="font-bold text-[12px] md:text-sm">Main Admin</p>
+                                            <p class="text-[9px] md:text-[10px] text-slate-400 italic">admin@undersouthern.com</p>
                                         </div>
                                     </td>
-                                    <td class="px-10 py-6"><span class="border border-black px-3 py-1 rounded-full text-[9px] font-bold uppercase">Super Admin</span></td>
-                                    <td class="px-10 py-6 text-right font-bold text-[10px] uppercase text-green-600">Active</td>
+                                    <td class="px-6 md:px-10 py-6"><span class="border border-black px-2 md:px-3 py-1 rounded-full text-[8px] md:text-[9px] font-bold uppercase">Super Admin</span></td>
+                                    <td class="px-10 py-6 text-right font-bold text-[9px] md:text-[10px] uppercase text-green-600">Active</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -206,15 +217,19 @@
     </div>
 
     <script>
-        // Hàm Logout chuyển hướng về trang login
+        // Sidebar Toggle for Mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('sidebar-open');
+        }
+
+        // Logout direction
         function handleLogout() {
-            // Xóa trạng thái đăng nhập trong localStorage
             localStorage.removeItem('isLoggedIn');
-            // Chuyển hướng về link login của bạn
             window.location.href = "https://undersouthern.asia/login";
         }
 
-        // Catalog Pagination Logic (100 items)
+        // Catalog Logic
         const mockCatalog = Array.from({ length: 100 }, (_, i) => ({
             title: i % 2 === 0 ? "Sun Flowers" : "Deep Sea",
             artist: i % 2 === 0 ? "Astrolaw" : "Midnight Pulse",
@@ -233,10 +248,10 @@
 
             list.innerHTML = items.map(item => `
                 <tr class="hover:bg-slate-50 transition cursor-pointer">
-                    <td class="px-8 py-5 font-bold italic">${item.title}</td>
-                    <td class="px-8 py-5 italic text-slate-400">${item.artist}</td>
-                    <td class="px-8 py-5 font-mono text-slate-400">${item.barcode}</td>
-                    <td class="px-8 py-5 text-right font-bold">${item.date}</td>
+                    <td class="px-6 md:px-8 py-4 md:py-5 font-bold italic whitespace-nowrap">${item.title}</td>
+                    <td class="px-6 md:px-8 py-4 md:py-5 italic text-slate-400 whitespace-nowrap">${item.artist}</td>
+                    <td class="px-6 md:px-8 py-4 md:py-5 font-mono text-slate-400 whitespace-nowrap">${item.barcode}</td>
+                    <td class="px-6 md:px-8 py-4 md:py-5 text-right font-bold whitespace-nowrap">${item.date}</td>
                 </tr>
             `).join('');
 
@@ -264,13 +279,18 @@
             activeNav.classList.add('sidebar-active', 'font-bold');
             activeNav.classList.remove('text-slate-400');
 
+            // Close sidebar on mobile after clicking link
+            if (window.innerWidth < 768) toggleSidebar();
+
             if(tabId === 'catalog') renderCatalog();
             if(tabId === 'analytics') initAnalyticsChart();
         }
 
         let chartInstance = null;
         function initAnalyticsChart() {
-            const ctx = document.getElementById('streamsChart').getContext('2d');
+            const canvas = document.getElementById('streamsChart');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
             if(chartInstance) chartInstance.destroy();
 
             chartInstance = new Chart(ctx, {
@@ -284,7 +304,7 @@
                         fill: true,
                         tension: 0.4,
                         borderWidth: 2,
-                        pointRadius: 3
+                        pointRadius: 2
                     }]
                 },
                 options: {
@@ -292,15 +312,14 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { ticks: { font: { size: 10 }, callback: v => v + 'k' }, grid: { borderDash: [5, 5], color: '#f1f5f9' } },
-                        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
+                        y: { ticks: { font: { size: 9 }, callback: v => v + 'k' }, grid: { borderDash: [5, 5], color: '#f1f5f9' } },
+                        x: { ticks: { font: { size: 9 } }, grid: { display: false } }
                     }
                 }
             });
         }
 
         window.onload = () => {
-            // Kiểm tra bảo mật cơ bản: Nếu chưa có session trong localStorage thì quay về login
             if (localStorage.getItem('isLoggedIn') !== 'true') {
                 window.location.href = "https://undersouthern.asia/login";
             } else {
