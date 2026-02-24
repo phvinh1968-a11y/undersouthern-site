@@ -8,7 +8,6 @@
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -52,13 +51,6 @@
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Dashboard Styles */
-        .sidebar-width { width: 280px; }
-        .header-height { height: 72px; }
-        .sidebar-active { background-color: #000000; color: #ffffff; border-radius: 8px; }
-        .brand-text { font-style: normal !important; }
-        .scroll-area { height: calc(100vh - 72px); overflow-y: auto; scrollbar-width: thin; }
     </style>
 </head>
 <body class="text-black overflow-x-hidden">
@@ -90,7 +82,7 @@
                                placeholder="Password">
                     </div>
                     
-                    <button type="submit" class="w-full bg-black text-white font-bold py-3.5 rounded-lg text-xs hover:bg-zinc-800 transition-all tracking-widest uppercase shadow-lg active:scale-[0.98]">
+                    <button type="submit" id="login-btn" class="w-full bg-black text-white font-bold py-3.5 rounded-lg text-xs hover:bg-zinc-800 transition-all tracking-widest uppercase shadow-lg active:scale-[0.98]">
                         Sign In
                     </button>
 
@@ -135,145 +127,11 @@
         </div>
     </div>
 
-    <div id="main-app" class="hidden flex h-screen bg-white overflow-hidden">
-        
-        <aside class="sidebar-width bg-white border-r flex flex-shrink-0 flex-col transition-all">
-            <div class="header-height flex items-center px-10 border-b">
-                <h1 class="brand-text text-black text-xl font-black tracking-tighter uppercase">UNDERSOUTHERN</h1>
-            </div>
-
-            <nav class="flex-1 overflow-y-auto py-8 text-[13px] px-6">
-                <div class="space-y-1">
-                    <a href="#" onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-active flex items-center space-x-3 px-4 py-3 font-bold transition">
-                        <i class="fa-solid fa-house w-4 text-center"></i> <span>Overview</span>
-                    </a>
-                    <a href="#" onclick="showTab('catalog')" id="nav-catalog" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
-                        <i class="fa-solid fa-list-ul w-4 text-center"></i> <span>Catalog</span>
-                    </a>
-                    <a href="#" onclick="showTab('analytics')" id="nav-analytics" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
-                        <i class="fa-solid fa-chart-line w-4 text-center"></i> <span>Analytics</span>
-                    </a>
-                    <a href="#" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition">
-                        <i class="fa-solid fa-dollar-sign w-4 text-center"></i> <span>Finance</span>
-                    </a>
-                    <a href="#" onclick="showTab('users')" id="nav-users" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black transition border-t mt-4 pt-4">
-                        <i class="fa-solid fa-user-shield w-4 text-center"></i> <span>User Access</span>
-                    </a>
-                </div>
-            </nav>
-
-            <div class="p-8 border-t">
-                <button onclick="window.location.reload()" class="w-full py-2.5 text-xs font-bold text-black border border-black rounded hover:bg-black hover:text-white transition uppercase tracking-widest">
-                    Logout
-                </button>
-            </div>
-        </aside>
-
-        <main class="flex-1 flex flex-col min-w-0 bg-white">
-            <header class="header-height border-b bg-white flex items-center justify-end px-12 space-x-8">
-                <i class="fa-solid fa-magnifying-glass text-slate-300 cursor-pointer hover:text-black transition"></i>
-                <div class="flex items-center space-x-4">
-                    <span class="brand-text text-[11px] font-bold tracking-tight uppercase">UNDERSOUTHERN ADMIN</span>
-                    <div class="w-9 h-9 bg-black rounded-full flex items-center justify-center text-[11px] font-bold text-white shadow-sm">US</div>
-                </div>
-            </header>
-
-            <div class="scroll-area p-12 w-full max-w-7xl mx-auto">
-                <div id="tab-dashboard" class="fade-in space-y-12">
-                    <h1 class="text-4xl font-bold tracking-tight italic">Welcome,</h1>
-                    
-                    <div>
-                        <div class="flex items-center justify-between mb-8">
-                            <h2 class="text-lg font-bold flex items-center">Latest releases <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div class="flex items-center space-x-6 p-6 border rounded-xl hover:shadow-sm transition cursor-pointer group">
-                                <div class="w-14 h-14 bg-slate-50 flex items-center justify-center rounded-lg text-slate-400 group-hover:bg-black group-hover:text-white transition">
-                                    <i class="fa-solid fa-plus text-lg"></i>
-                                </div>
-                                <span class="text-xs font-bold uppercase tracking-wider">Create a new release</span>
-                            </div>
-                            <div class="flex items-center justify-between p-6 border rounded-xl hover:border-black transition cursor-pointer">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-14 h-14 bg-slate-200 rounded-lg flex items-center justify-center">
-                                        <i class="fas fa-music text-slate-400"></i>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold text-sm">Sun Flowers</p>
-                                        <p class="text-[10px] text-slate-400">Astrolaw</p>
-                                    </div>
-                                </div>
-                                <span class="text-[10px] font-bold text-slate-500">12 streams</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h2 class="text-lg font-bold mb-6 flex items-center">Top stores <i class="fa-solid fa-chevron-right text-[10px] ml-2"></i></h2>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            <div class="p-4 border rounded-xl flex items-center justify-between">
-                                <span class="text-xs font-bold">Spotify</span>
-                                <span class="text-[10px] font-bold text-slate-400">45%</span>
-                            </div>
-                            <div class="p-4 border rounded-xl flex items-center justify-between">
-                                <span class="text-xs font-bold">Apple Music</span>
-                                <span class="text-[10px] font-bold text-slate-400">30%</span>
-                            </div>
-                            <div class="p-4 border rounded-xl flex items-center justify-between">
-                                <span class="text-xs font-bold">TikTok</span>
-                                <span class="text-[10px] font-bold text-slate-400">15%</span>
-                            </div>
-                            <div class="p-4 border rounded-xl flex items-center justify-between">
-                                <span class="text-xs font-bold">Amazon</span>
-                                <span class="text-[10px] font-bold text-slate-400">10%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="tab-catalog" class="hidden fade-in space-y-8">
-                    <div class="flex justify-between items-end">
-                        <h2 class="text-4xl font-bold tracking-tight">Catalog</h2>
-                        <div class="flex space-x-3">
-                            <button class="bg-black text-white px-6 py-2 rounded text-[10px] font-bold uppercase tracking-widest hover:bg-zinc-800 transition">+ Create</button>
-                        </div>
-                    </div>
-                    <div class="w-full border rounded-xl overflow-hidden shadow-sm">
-                        <table class="w-full text-left">
-                            <thead class="bg-slate-50 border-b text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                                <tr>
-                                    <th class="px-8 py-5">Title</th>
-                                    <th class="px-8 py-5">Artist</th>
-                                    <th class="px-8 py-5">Barcode</th>
-                                    <th class="px-8 py-5 text-right">Release Date</th>
-                                </tr>
-                            </thead>
-                            <tbody id="catalog-list" class="divide-y divide-slate-100 text-[12px]">
-                                </tbody>
-                        </table>
-                    </div>
-                    <div class="flex justify-center items-center space-x-4">
-                        <button onclick="changePage(-1)" class="p-2 border rounded hover:bg-slate-50 transition"><i class="fas fa-chevron-left text-[10px]"></i></button>
-                        <span id="page-info" class="text-xs font-bold">Page 1 of 10</span>
-                        <button onclick="changePage(1)" class="p-2 border rounded hover:bg-slate-50 transition"><i class="fas fa-chevron-right text-[10px]"></i></button>
-                    </div>
-                </div>
-
-                <div id="tab-analytics" class="hidden fade-in space-y-8">
-                    <h2 class="text-4xl font-bold tracking-tight">Analytics</h2>
-                    <div class="p-8 border rounded-2xl bg-white shadow-sm h-[400px]">
-                        <canvas id="streamsChart"></canvas>
-                    </div>
-                </div>
-
-            </div>
-        </main>
-    </div>
-
     <script>
         const VALID_USERNAME = "UNDERSOUTHERN";
         const VALID_PASSWORD = "Vinh19061998//";
 
+        // Xử lý hiệu ứng loader khi tải trang
         window.addEventListener('load', function() {
             setTimeout(function() {
                 document.getElementById('loader-screen').classList.add('hidden');
@@ -281,27 +139,30 @@
             }, 1200);
         });
 
-        // MODIFIED: This function now handles the transition to the Dashboard
+        // Xử lý Đăng nhập và Điều hướng
         function handleMockLogin(event) {
             event.preventDefault();
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
+            const btn = document.getElementById('login-btn');
 
             if (user === VALID_USERNAME && pass === VALID_PASSWORD) {
-                // Hide Login
-                document.getElementById('content-screen').classList.add('hidden');
-                document.body.style.backgroundColor = "#ffffff";
-                // Show Dashboard
-                document.getElementById('main-app').classList.remove('hidden');
-                // Initialize Data
-                renderCatalog();
-                initAnalyticsChart();
+                // Hiệu ứng nút khi đang xử lý
+                btn.innerHTML = '<div class="flex items-center justify-center"><div class="loader mr-2" style="width:14px; height:14px"></div> Redirecting...</div>';
+                btn.disabled = true;
+
+                // Lưu trạng thái vào localStorage (để Dashboard kiểm tra)
+                localStorage.setItem('isLoggedIn', 'true');
+
+                // Chuyển hướng sang trang Dashboard riêng
+                window.location.href = "https://undersouthern.asia/dashboard";
             } else {
                 alert("Invalid username or password.");
             }
             return false;
         }
 
+        // Chuyển đổi giao diện Quên mật khẩu
         function showResetPage() {
             document.getElementById('login-form-content').classList.add('hidden');
             document.getElementById('reset-password-content').classList.remove('hidden');
@@ -314,6 +175,7 @@
             document.getElementById('login-form-content').classList.add('fade-in');
         }
 
+        // Menu ngôn ngữ
         function toggleLangMenu(event) {
             event.stopPropagation();
             const menu = document.getElementById('lang-menu');
@@ -326,88 +188,7 @@
             document.getElementById('lang-menu').classList.add('hidden');
         }
 
-        // Dashboard Tabs Logic
-        function showTab(tabId) {
-            const tabs = ['dashboard', 'catalog', 'analytics', 'users'];
-            tabs.forEach(id => {
-                const tabEl = document.getElementById('tab-' + id);
-                const navEl = document.getElementById('nav-' + id);
-                if (tabEl) tabEl.classList.add('hidden');
-                if (navEl) {
-                    navEl.classList.remove('sidebar-active', 'font-bold');
-                    navEl.classList.add('text-slate-400');
-                }
-            });
-
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-            const activeNav = document.getElementById('nav-' + tabId);
-            activeNav.classList.add('sidebar-active', 'font-bold');
-            activeNav.classList.remove('text-slate-400');
-            
-            if(tabId === 'analytics') initAnalyticsChart();
-        }
-
-        // Catalog Pagination
-        let currentPage = 1;
-        function renderCatalog() {
-            const list = document.getElementById('catalog-list');
-            const data = Array.from({ length: 10 }, (_, i) => ({
-                title: "Track " + ((currentPage-1)*10 + i + 1),
-                artist: "Artist " + (i + 1),
-                barcode: "0693887" + (153244 + i),
-                date: "21/07/2025"
-            }));
-            list.innerHTML = data.map(item => `
-                <tr class="hover:bg-slate-50 transition cursor-pointer">
-                    <td class="px-8 py-5 font-bold italic">${item.title}</td>
-                    <td class="px-8 py-5 italic text-slate-400">${item.artist}</td>
-                    <td class="px-8 py-5 font-mono text-slate-400">${item.barcode}</td>
-                    <td class="px-8 py-5 text-right font-bold">${item.date}</td>
-                </tr>
-            `).join('');
-            document.getElementById('page-info').innerText = `Page ${currentPage} of 10`;
-        }
-
-        function changePage(dir) {
-            currentPage += dir;
-            if (currentPage < 1) currentPage = 1;
-            if (currentPage > 10) currentPage = 10;
-            renderCatalog();
-        }
-
-        // Analytics Chart
-        let chartInstance = null;
-        function initAnalyticsChart() {
-            const canvas = document.getElementById('streamsChart');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            if(chartInstance) chartInstance.destroy();
-
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
-                    datasets: [{
-                        data: [230, 210, 235, 220, 240, 200, 215, 195],
-                        borderColor: '#000000',
-                        backgroundColor: 'rgba(0, 0, 0, 0.02)',
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { ticks: { font: { size: 10 }, callback: v => v + 'k' }, grid: { borderDash: [5, 5] } },
-                        x: { ticks: { font: { size: 10 } }, grid: { display: false } }
-                    }
-                }
-            });
-        }
-
+        // Đóng menu ngôn ngữ khi bấm ra ngoài
         window.addEventListener('click', function(event) {
             const menu = document.getElementById('lang-menu');
             const container = document.getElementById('language-container');
