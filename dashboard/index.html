@@ -115,6 +115,8 @@
                     <button onclick="toggleSidebar()" class="md:hidden text-black p-2"><i class="fa-solid fa-bars-staggered text-xl"></i></button>
                     
                     <div class="flex items-center space-x-4 relative">
+                        <div id="admin-return-container"></div>
+
                         <button onclick="toggleDropdown(event)" id="user-menu-button" class="focus:outline-none">
                             <div id="top-avatar-holder" class="w-8 h-8 bg-black rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm hover:scale-105 transition-all overflow-hidden">
                                 <span id="us-text">US</span>
@@ -232,12 +234,39 @@
                 catalogBody.innerHTML = `<tr><td colspan="3" class="px-6 py-10 text-center text-slate-400">No releases found in catalog.</td></tr>`;
             }
 
-            // 3. Phân quyền hiển thị: Chỉ Admin mới thấy tab User Access
+            // 3. LOGIC SWITCH ACCOUNT VÀ PHÂN QUYỀN ADMIN
             const currentUser = localStorage.getItem('activeUser');
-            if (currentUser !== 'UNDERSOUTHERN') {
-                const navUsers = document.getElementById('nav-users');
+            const isSwitched = localStorage.getItem('isSwitchedMode');
+            const navUsers = document.getElementById('nav-users');
+
+            if (isSwitched === 'true') {
+                // ĐANG TRONG CHẾ ĐỘ XEM TÀI KHOẢN NGƯỜI DÙNG
+                // Hiện nút quay lại Admin
+                const returnContainer = document.getElementById('admin-return-container');
+                returnContainer.innerHTML = `
+                    <button onclick="backToAdmin()" class="bg-red-600 text-white px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider hover:bg-red-700 transition flex items-center gap-2">
+                        <i class="fa-solid fa-user-shield"></i> Return to Admin
+                    </button>
+                `;
+                // Ẩn tính năng Admin
                 if (navUsers) navUsers.classList.add('hidden');
+            } else {
+                // CHẾ ĐỘ BÌNH THƯỜNG
+                if (currentUser !== 'UNDERSOUTHERN') {
+                    // Nếu là user thường đăng nhập trực tiếp
+                    if (navUsers) navUsers.classList.add('hidden');
+                } else {
+                    // Nếu là Admin xịn
+                    if (navUsers) navUsers.classList.remove('hidden');
+                }
             }
+        }
+
+        // Hàm quay lại quyền Admin
+        function backToAdmin() {
+            localStorage.setItem('activeUser', 'UNDERSOUTHERN');
+            localStorage.removeItem('isSwitchedMode');
+            window.location.reload();
         }
 
         function toggleSidebar() {
@@ -258,7 +287,8 @@
         function handleLogout() {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('activeUser');
-            window.location.href = "https://undersouthern.asia/login";
+            localStorage.removeItem('isSwitchedMode');
+            window.location.href = "https://undersouthern.asia/login?v=" + new Date().getTime();
         }
 
         function showTab(tabId) {
@@ -333,7 +363,7 @@
         window.onload = () => {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 document.getElementById('main-content').style.display = 'block';
-                syncSystemData(); // Chạy hàm đồng bộ dữ liệu ngay khi load
+                syncSystemData(); 
                 renderUsers();
                 showTab('dashboard');
             }
