@@ -91,12 +91,19 @@
 
   /* --- TAGS --- */
   .tag-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-  .tag { background: #f1f5f9; padding: 3px 8px; border-radius: 6px; font-size: 11px; display: flex; align-items: center; gap: 5px; font-weight: 500; }
-  .tag i { cursor: pointer; color: #94a3b8; font-size: 10px; }
+  .tag { background: #000; color: #fff; padding: 3px 8px; border-radius: 6px; font-size: 11px; display: flex; align-items: center; gap: 5px; font-weight: 500; }
+  .tag i { cursor: pointer; color: #fff; font-size: 10px; opacity: 0.7; }
 
   .form-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
   .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; }
   .save-btn { background: var(--primary-black); color: white; border: none; padding: 12px 40px; font-weight: 700; border-radius: 8px; cursor: pointer; }
+
+  /* --- TRACKLIST --- */
+  .tracklist-card { grid-column: span 3; margin-top: 10px; border-top: 2px solid #000; padding-top: 20px; }
+  .track-row { display: grid; grid-template-columns: 30px 1.5fr 1fr 1.5fr 1.5fr 1.2fr 1.2fr 30px; gap: 10px; align-items: center; background: #f9f9f9; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #eee; }
+  .track-row input { margin-bottom: 0; font-size: 11px; }
+  .audio-upload-btn { background: #fff; border: 1px solid #ddd; padding: 6px; border-radius: 6px; font-size: 10px; cursor: pointer; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .btn-add-track { background: #fff; border: 1px dashed #000; padding: 10px; width: 100%; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px; }
 
   tbody tr { opacity: 0; transform: translateY(5px); transition: 0.5s ease; }
   tbody tr.loaded { opacity: 1; transform: translateY(0); }
@@ -109,21 +116,21 @@
 <div id="auth-guard">
     <div class="modal-overlay" id="takedownModal">
       <div class="modal-box">
-        <h2>Takedown release</h2>
-        <p>Why are you removing this release?</p>
+        <h2 id="modalTitle">Takedown release</h2>
+        <p id="modalDesc">Why are you removing this release?</p>
         <textarea id="takedownReason" rows="3" placeholder="Please provide a reason..."></textarea>
-        <div class="takedown-confirm-box" onclick="toggleTakedownCheckbox()">
+        <div class="takedown-confirm-box" id="confirmBox" onclick="toggleTakedownCheckbox()">
           <input type="checkbox" id="confirmTakedownCheck" onchange="validateTakedown()">
           <label for="confirmTakedownCheck">
             Yes, I'm sure I want to remove this release from stores.
           </label>
         </div>
-        <p style="font-size: 12px; background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 8px; border: 1px solid #ffedd5;">
+        <p id="takedownWarning" style="font-size: 12px; background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 8px; border: 1px solid #ffedd5;">
           This will remove the release from all stores where it is currently live. You'll continue be paid all royalties owed to you for the release.
         </p>
         <div style="display:flex; gap:12px; margin-top: 25px;">
           <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
-          <button class="btn-modal-takedown" id="takedownBtn" onclick="executeTakedown()">Takedown</button>
+          <button class="btn-modal-takedown" id="takedownBtn" onclick="executeAction()">Confirm</button>
         </div>
       </div>
     </div>
@@ -174,20 +181,24 @@
 
       <div id="view-add" class="hidden">
         <div style="display:flex; align-items:center; gap:15px; margin-bottom:30px;">
-          <button class="btn-back-main" onclick="toggleView('list')"><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="btn-icon" onclick="toggleView('list')"><i class="fa-solid fa-arrow-left"></i></button>
           <h2 id="formTitle" style="margin:0; font-weight:700">New Release</h2>
         </div>
         <div class="form-container">
           <div class="card">
             <h3>Release Info</h3>
             <label>Type</label>
-            <select id="inType">
+            <select id="inType" onchange="toggleTracklist()">
               <option value="Single">Single</option>
               <option value="EP">EP</option>
               <option value="Album">Album</option>
             </select>
-            <label>Title</label><input type="text" id="inTitle" placeholder="Sun Flowers">
-            <label>Artist</label><input type="text" id="inArtist" placeholder="Astrolaw">
+            <label>Title</label><input type="text" id="inTitle" placeholder="Moonlight">
+            
+            <label>Primary Artist(s)</label>
+            <div id="main-artist-tags" class="tag-container"></div>
+            <input type="text" id="inMainArtist" placeholder="Add artist and Enter">
+
             <label>Label</label><input type="text" id="inLabel" placeholder="UNDERSOUTHERN">
           </div>
           <div class="card">
@@ -196,21 +207,15 @@
               <div><label>Date</label><input type="date" id="inDate"></div>
               <div><label>Hour</label><input type="time" id="inHour"></div>
             </div>
-            <label>Time Zone</label>
-            <select id="inZone">
-              <option value="GMT+07:00">GMT+07:00</option>
-              <option value="UTC">UTC</option>
-            </select>
-            <label>UPC Code</label><input type="text" id="inUPC" placeholder="UPC Code">
+            <label>UPC Code</label><input type="text" id="inUPC" placeholder="Auto-gen if empty">
             <label>Catalog Number</label><input type="text" id="inCatNum" placeholder="US-001">
           </div>
           <div class="card">
             <h3>Distribution</h3>
-            <label># of Tracks</label><input type="number" id="inTracks" value="1">
-            <label>Promotion Note</label><input type="text" id="inPromo" placeholder="Marketing...">
             <label>Delivered Territories</label>
             <div id="territory-tags" class="tag-container"></div>
             <input type="text" id="territoryInput" placeholder="Add country and Enter">
+            
             <div id="statusWrapper" class="hidden">
               <label>Status</label>
               <select id="inStatus">
@@ -219,6 +224,15 @@
                 <option value="Released">Released</option>
               </select>
             </div>
+          </div>
+
+          <div class="card tracklist-card">
+            <h3>Tracklist Configuration</h3>
+            <div id="track-header" class="track-row" style="background:none; border:none; font-weight:700; font-size:9px; color:#666; text-transform:uppercase;">
+                <div>#</div><div>Title</div><div>Version</div><div>Primary Artists</div><div>Feats</div><div>ISRC</div><div>Audio</div><div></div>
+            </div>
+            <div id="tracks-container"></div>
+            <button class="btn-add-track" id="addTrackBtn" onclick="addTrackRow()">+ Add New Track</button>
           </div>
         </div>
         <div class="footer-actions">
@@ -230,189 +244,207 @@
 
 <script>
   let editingIndex = -1;
-  let pendingTakedownIndex = -1;
+  let pendingActionIndex = -1;
+  let currentAction = ''; // 'takedown' or 'delete'
   let territoryList = [];
+  let mainArtists = [];
 
-  /* KIỂM TRA ĐĂNG NHẬP ĐỂ HIỆN GIAO DIỆN */
   window.onload = () => {
     if (localStorage.getItem('isLoggedIn') === 'true') {
         document.getElementById('auth-guard').style.display = 'block';
         syncAvatar(); 
-        setupTagInput(); 
+        setupTagInputs();
         renderCatalog(); 
         slowLoadView();
     }
   };
 
-  function slowLoadView() {
-    const items = ['header-el', 'top-bar-el', 'table-el'];
-    items.forEach((id, index) => {
-      setTimeout(() => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('show');
-      }, (index + 1) * 200);
-    });
-  }
+  // --- AUTO GEN ---
+  function generateUPC() { return "840" + Math.floor(100000000 + Math.random() * 900000000); }
+  function generateISRC() { return "US-S12-" + new Date().getFullYear().toString().slice(-2) + "-" + Math.floor(10000 + Math.random() * 90000); }
 
-  function syncAvatar() {
-    const savedImg = localStorage.getItem('userAvatar');
-    const holder = document.getElementById('userAvatar');
-    if (savedImg && holder) {
-      document.getElementById('avatarText').style.display = 'none';
-      holder.innerHTML = `<img src="${savedImg}" alt="Avatar">`;
-    }
-  }
-
-  function toggleView(view) {
-    if (view === 'add') {
-      document.getElementById('view-list').classList.add('hidden');
-      document.getElementById('view-add').classList.remove('hidden');
-    } else {
-      document.getElementById('view-add').classList.add('hidden');
-      document.getElementById('view-list').classList.remove('hidden');
-      slowLoadView();
-    }
-  }
-
-  function setupTagInput() {
-    const input = document.getElementById('territoryInput');
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && input.value.trim() !== '') {
-        e.preventDefault();
-        territoryList.push(input.value.trim());
-        input.value = '';
-        renderTags();
-      }
-    });
+  function setupTagInputs() {
+    // Territory
+    const tInp = document.getElementById('territoryInput');
+    tInp.onkeydown = (e) => { if(e.key==='Enter' && tInp.value.trim()){ e.preventDefault(); territoryList.push(tInp.value.trim()); tInp.value=''; renderTags(); } };
+    
+    // Main Artists
+    const aInp = document.getElementById('inMainArtist');
+    aInp.onkeydown = (e) => { if(e.key==='Enter' && aInp.value.trim()){ e.preventDefault(); mainArtists.push(aInp.value.trim()); aInp.value=''; renderMainArtistTags(); } };
   }
 
   function renderTags() {
-    const container = document.getElementById('territory-tags');
-    container.innerHTML = territoryList.map((item, index) => `
-      <div class="tag">${item} <i class="fa-solid fa-xmark" onclick="territoryList.splice(${index}, 1); renderTags();"></i></div>
-    `).join('');
+    document.getElementById('territory-tags').innerHTML = territoryList.map((t, i) => `<div class="tag">${t} <i class="fa-solid fa-xmark" onclick="territoryList.splice(${i},1);renderTags()"></i></div>`).join('');
   }
 
-  function openAddForm() {
-    editingIndex = -1;
-    document.getElementById('formTitle').innerText = "Create New Release";
-    document.getElementById('statusWrapper').classList.add('hidden');
-    document.getElementById('inTitle').value = '';
-    document.getElementById('inArtist').value = '';
-    document.getElementById('inLabel').value = '';
-    document.getElementById('inUPC').value = '';
-    document.getElementById('inCatNum').value = '';
-    document.getElementById('inPromo').value = '';
-    document.getElementById('inTracks').value = '1';
-    territoryList = [];
-    renderTags();
-    toggleView('add');
+  function renderMainArtistTags() {
+    document.getElementById('main-artist-tags').innerHTML = mainArtists.map((a, i) => `<div class="tag">${a} <i class="fa-solid fa-xmark" onclick="mainArtists.splice(${i},1);renderMainArtistTags()"></i></div>`).join('');
   }
 
-  function editRelease(index) {
-    const catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
-    const item = catalog[index];
-    editingIndex = index;
-    document.getElementById('inTitle').value = item.title;
-    document.getElementById('inArtist').value = item.artist;
-    document.getElementById('inLabel').value = item.label;
-    document.getElementById('inUPC').value = item.upc;
-    document.getElementById('inCatNum').value = item.catNum;
-    document.getElementById('inTracks').value = item.tracks;
-    document.getElementById('statusWrapper').classList.remove('hidden');
-    document.getElementById('inStatus').value = item.status;
-    territoryList = [...(item.territories || [])];
-    document.getElementById('formTitle').innerText = "Edit Release";
-    renderTags();
-    toggleView('add');
+  // --- TRACKS ---
+  let trackCount = 0;
+  function addTrackRow(data = {}) {
+    trackCount++;
+    const container = document.getElementById('tracks-container');
+    const row = document.createElement('div');
+    row.className = 'track-row'; row.id = `track-row-${trackCount}`;
+    row.artists = data.artists || [];
+    row.feats = data.feats || [];
+    
+    row.innerHTML = `
+        <div style="font-weight:700;">${trackCount}</div>
+        <input type="text" class="t-title" placeholder="Title" value="${data.title || ''}">
+        <input type="text" class="t-version" placeholder="Mix" value="${data.version || ''}">
+        <div><div id="tr-art-${trackCount}" class="tag-container"></div><input type="text" class="tr-art-in" placeholder="+ Enter"></div>
+        <div><div id="tr-feat-${trackCount}" class="tag-container"></div><input type="text" class="tr-feat-in" placeholder="+ Enter"></div>
+        <input type="text" class="t-isrc" placeholder="Auto" value="${data.isrc || ''}">
+        <div class="audio-col"><button class="audio-upload-btn" id="audio-btn-${trackCount}" onclick="triggerAudio(${trackCount})">${data.audioName || 'Upload WAV'}</button><input type="file" id="audio-input-${trackCount}" hidden accept=".wav,.flac" onchange="handleAudioSelect(${trackCount})"></div>
+        <i class="fa-solid fa-trash" style="cursor:pointer; color:#ff4d4d" onclick="removeTrackRow(${trackCount})"></i>
+    `;
+    container.appendChild(row);
+
+    const artIn = row.querySelector('.tr-art-in');
+    const featIn = row.querySelector('.tr-feat-in');
+    
+    const trRenderArt = () => { document.getElementById(`tr-art-${row.id.split('-')[2]}`).innerHTML = row.artists.map((a,i)=>`<div class="tag" style="font-size:8px">${a} <i class="fa-solid fa-xmark" onclick="removeTrackTag('${row.id}', 'artists', ${i})"></i></div>`).join(''); };
+    const trRenderFeat = () => { document.getElementById(`tr-feat-${row.id.split('-')[2]}`).innerHTML = row.feats.map((a,i)=>`<div class="tag" style="font-size:8px">${a} <i class="fa-solid fa-xmark" onclick="removeTrackTag('${row.id}', 'feats', ${i})"></i></div>`).join(''); };
+
+    artIn.onkeydown = (e) => { if(e.key==='Enter' && artIn.value.trim()){ e.preventDefault(); row.artists.push(artIn.value.trim()); artIn.value=''; trRenderArt(); } };
+    featIn.onkeydown = (e) => { if(e.key==='Enter' && featIn.value.trim()){ e.preventDefault(); row.feats.push(featIn.value.trim()); featIn.value=''; trRenderFeat(); } };
+    
+    trRenderArt(); trRenderFeat();
   }
+
+  function removeTrackTag(rowId, type, index) {
+    const row = document.getElementById(rowId);
+    row[type].splice(index, 1);
+    // Re-render specifically for this row
+    const trackNum = rowId.split('-')[2];
+    const containerId = type === 'artists' ? `tr-art-${trackNum}` : `tr-feat-${trackNum}`;
+    document.getElementById(containerId).innerHTML = row[type].map((a,i)=>`<div class="tag" style="font-size:8px">${a} <i class="fa-solid fa-xmark" onclick="removeTrackTag('${rowId}', '${type}', ${i})"></i></div>`).join('');
+  }
+
+  function triggerAudio(id) { document.getElementById(`audio-input-${id}`).click(); }
+  function handleAudioSelect(id) { const f = document.getElementById(`audio-input-${id}`).files[0]; if(f) document.getElementById(`audio-btn-${id}`).innerText = f.name; }
+  function removeTrackRow(id) { if (document.querySelectorAll('.track-row').length > 1) document.getElementById(`track-row-${id}`).remove(); }
 
   function handleSave() {
     const title = document.getElementById('inTitle').value;
-    const artist = document.getElementById('inArtist').value;
-    if (!title || !artist) { alert("Please fill Title and Artist."); return; }
-    const releaseData = {
-      type: document.getElementById('inType').value,
-      status: editingIndex === -1 ? 'Draft' : document.getElementById('inStatus').value,
-      title, artist,
-      label: document.getElementById('inLabel').value,
-      date: document.getElementById('inDate').value,
-      hour: document.getElementById('inHour').value,
-      zone: document.getElementById('inZone').value,
-      tracks: document.getElementById('inTracks').value,
-      upc: document.getElementById('inUPC').value,
-      catNum: document.getElementById('inCatNum').value,
-      promo: document.getElementById('inPromo').value,
-      territories: territoryList
+    if (!title || mainArtists.length === 0) return alert("Title and Artists required.");
+
+    const tracks = Array.from(document.querySelectorAll('.track-row')).map(row => ({
+        title: row.querySelector('.t-title').value,
+        version: row.querySelector('.t-version').value,
+        artists: row.artists,
+        feats: row.feats,
+        isrc: row.querySelector('.t-isrc').value || generateISRC(),
+        audioName: row.querySelector('.audio-upload-btn').innerText
+    }));
+
+    const release = {
+        title, artists: mainArtists, upc: document.getElementById('inUPC').value || generateUPC(),
+        type: document.getElementById('inType').value, label: document.getElementById('inLabel').value,
+        catNum: document.getElementById('inCatNum').value, date: document.getElementById('inDate').value || '-',
+        hour: document.getElementById('inHour').value, status: editingIndex === -1 ? 'Draft' : document.getElementById('inStatus').value,
+        tracks: tracks, numTracks: tracks.length, territories: territoryList
     };
+
     let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
-    if (editingIndex === -1) catalog.unshift(releaseData);
-    else catalog[editingIndex] = releaseData;
+    if (editingIndex === -1) catalog.unshift(release); else catalog[editingIndex] = release;
     localStorage.setItem('undersouthern_catalog', JSON.stringify(catalog));
-    territoryList = [];
-    renderCatalog();
-    toggleView('list');
+    renderCatalog(); toggleView('list');
   }
 
   function renderCatalog() {
     const container = document.getElementById('catalogTableBody');
     let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
-    if (catalog.length === 0) {
-      catalog.push({type: 'Single', status: 'Released', title: 'Sun Flowers', artist: 'Astrolaw', label: 'UNDERSOUTHERN', tracks: '1'});
-    }
-    container.innerHTML = catalog.map((item, i) => {
-      const stClass = `st-${item.status.toLowerCase()}`;
-      return `
+    container.innerHTML = catalog.map((item, i) => `
         <tr>
           <td><b>${item.type}</b></td>
-          <td><span class="status-badge ${stClass}">${item.status}</span></td>
-          <td><span class="release-title">${item.title}</span><span class="release-artist">${item.artist}</span></td>
+          <td><span class="status-badge st-${item.status.toLowerCase()}">${item.status}</span></td>
+          <td><span class="release-title">${item.title}</span><span class="release-artist">${item.artists.join(', ')}</span></td>
           <td>${item.label || '-'}</td>
-          <td><b>${item.date || '-'}</b><br>${item.hour || '00:00'}</td>
-          <td style="text-align:center;">${item.tracks}</td>
-          <td><div class="upc-code">UPC: ${item.upc || '-'}<br>CAT: ${item.catNum || '-'}</div></td>
+          <td><b>${item.date}</b><br>${item.hour || '00:00'}</td>
+          <td style="text-align:center;">${item.numTracks}</td>
+          <td><div class="upc-code">UPC: ${item.upc}<br>CAT: ${item.catNum || '-'}</div></td>
           <td style="display:flex; gap:8px">
-            <button class="btn-icon" onclick="editRelease(${i})" title="Edit"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
-            <button class="btn-icon" onclick="openTakedownModal(${i})" title="Takedown release"><i class="fa-solid fa-arrow-down-long" style="font-size:11px"></i></button>
+            <button class="btn-icon" onclick="editRelease(${i})"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn-icon" onclick="openActionModal(${i}, '${item.status}')"><i class="fa-solid fa-trash"></i></button>
           </td>
         </tr>
-      `;
-    }).join('');
-    container.querySelectorAll('tr').forEach((row, index) => {
-      setTimeout(() => { row.classList.add('loaded'); }, (index + 3) * 150);
-    });
+      `).join('');
+    container.querySelectorAll('tr').forEach((row, index) => setTimeout(() => row.classList.add('loaded'), index * 100));
   }
 
-  function openTakedownModal(index) {
-    pendingTakedownIndex = index;
-    document.getElementById('confirmTakedownCheck').checked = false;
-    document.getElementById('takedownReason').value = '';
-    validateTakedown();
+  function openActionModal(index, status) {
+    pendingActionIndex = index;
+    if (status === 'Draft') {
+      currentAction = 'delete';
+      document.getElementById('modalTitle').innerText = "Delete Draft";
+      document.getElementById('modalDesc').innerText = "Are you sure you want to permanently delete this draft?";
+      document.getElementById('confirmBox').style.display = 'none';
+      document.getElementById('takedownWarning').style.display = 'none';
+      document.getElementById('takedownReason').style.display = 'none';
+      document.getElementById('takedownBtn').className = "btn-modal-takedown active";
+    } else {
+      currentAction = 'takedown';
+      document.getElementById('modalTitle').innerText = "Takedown Release";
+      document.getElementById('modalDesc').innerText = "Why are you removing this release?";
+      document.getElementById('confirmBox').style.display = 'flex';
+      document.getElementById('takedownWarning').style.display = 'block';
+      document.getElementById('takedownReason').style.display = 'block';
+      validateTakedown();
+    }
     document.getElementById('takedownModal').style.display = 'flex';
   }
 
-  function closeModal() { document.getElementById('takedownModal').style.display = 'none'; }
-
-  function validateTakedown() {
-    const isChecked = document.getElementById('confirmTakedownCheck').checked;
-    const btn = document.getElementById('takedownBtn');
-    if (isChecked) btn.classList.add('active');
-    else btn.classList.remove('active');
-  }
-
-  function toggleTakedownCheckbox() {
-    const checkbox = document.getElementById('confirmTakedownCheck');
-    checkbox.checked = !checkbox.checked;
-    validateTakedown();
-  }
-
-  function executeTakedown() {
+  function executeAction() {
     let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
-    catalog.splice(pendingTakedownIndex, 1);
+    catalog.splice(pendingActionIndex, 1);
     localStorage.setItem('undersouthern_catalog', JSON.stringify(catalog));
-    renderCatalog();
-    closeModal();
+    renderCatalog(); closeModal();
   }
+
+  function openAddForm() {
+    editingIndex = -1; trackCount = 0; territoryList = []; mainArtists = [];
+    document.getElementById('tracks-container').innerHTML = '';
+    document.getElementById('statusWrapper').classList.add('hidden');
+    document.getElementById('inTitle').value = '';
+    document.getElementById('inUPC').value = '';
+    addTrackRow(); renderTags(); renderMainArtistTags();
+    toggleView('add');
+  }
+
+  function editRelease(index) {
+    editingIndex = index;
+    const item = JSON.parse(localStorage.getItem('undersouthern_catalog'))[index];
+    document.getElementById('inTitle').value = item.title;
+    document.getElementById('inType').value = item.type;
+    document.getElementById('inLabel').value = item.label;
+    document.getElementById('inUPC').value = item.upc;
+    document.getElementById('inCatNum').value = item.catNum;
+    document.getElementById('inDate').value = item.date;
+    document.getElementById('inHour').value = item.hour;
+    document.getElementById('inStatus').value = item.status;
+    document.getElementById('statusWrapper').classList.remove('hidden');
+    
+    mainArtists = [...(item.artists || [])];
+    territoryList = [...(item.territories || [])];
+    
+    document.getElementById('tracks-container').innerHTML = ''; trackCount = 0;
+    item.tracks.forEach(t => addTrackRow(t));
+    
+    renderTags(); renderMainArtistTags(); toggleView('add');
+  }
+
+  // --- UI HELPERS ---
+  function slowLoadView() { ['header-el', 'top-bar-el', 'table-el'].forEach((id, i) => setTimeout(() => document.getElementById(id)?.classList.add('show'), (i + 1) * 200)); }
+  function toggleView(v) { document.getElementById('view-list').classList.toggle('hidden', v==='add'); document.getElementById('view-add').classList.toggle('hidden', v==='list'); }
+  function syncAvatar() { const img = localStorage.getItem('userAvatar'); if (img) document.getElementById('userAvatar').innerHTML = `<img src="${img}">`; }
+  function closeModal() { document.getElementById('takedownModal').style.display = 'none'; }
+  function toggleTakedownCheckbox() { const c = document.getElementById('confirmTakedownCheck'); c.checked = !c.checked; validateTakedown(); }
+  function validateTakedown() { const isChecked = document.getElementById('confirmTakedownCheck').checked; const btn = document.getElementById('takedownBtn'); btn.className = isChecked ? "btn-modal-takedown active" : "btn-modal-takedown"; }
+  function toggleTracklist() { const type = document.getElementById('inType').value; document.getElementById('addTrackBtn').style.display = (type === 'Single') ? 'none' : 'block'; }
 </script>
 
 </body>
