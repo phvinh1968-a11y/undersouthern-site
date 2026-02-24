@@ -1,141 +1,172 @@
-<div class="fade-in space-y-12 pb-24 max-w-6xl mx-auto">
+<div class="fade-in space-y-12 pb-24 max-w-7xl mx-auto">
     
-    <div class="mb-10 pt-4 border-b border-slate-50 pb-8">
-        <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-black">User Access</h2>
-        <p class="text-slate-400 text-sm mt-2 font-medium">Manage contact information and account permissions.</p>
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-100 pb-8">
+        <div>
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-black uppercase">User Access</h2>
+            <p class="text-slate-400 text-sm mt-2 font-medium">Configure advanced permissions and catalog restrictions for this account.</p>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button onclick="showTab('dashboard')" class="px-6 py-3 text-[11px] font-bold uppercase tracking-widest border border-slate-200 rounded-lg hover:bg-slate-50 transition active:scale-95">Cancel</button>
+            <button onclick="handleSavePermissions()" class="px-10 py-3 text-[11px] font-bold uppercase tracking-widest bg-black text-white rounded-lg hover:bg-slate-800 transition active:scale-95 shadow-xl shadow-slate-200">Save Permissions</button>
+        </div>
     </div>
 
-    <form class="space-y-16">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
         
-        <div class="space-y-8">
-            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Contact Information</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="space-y-3">
-                    <label class="text-[13px] font-bold text-slate-700 ml-1">Login</label>
-                    <input type="text" class="input-field" placeholder="Username">
-                </div>
-                <div class="space-y-3">
-                    <label class="text-[13px] font-bold text-slate-700 ml-1">Email</label>
-                    <input type="email" class="input-field" placeholder="email@undersouthern.asia">
-                </div>
-            </div>
-        </div>
-
-        <div class="border-t border-slate-100"></div>
-
-        <div class="space-y-8">
-            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">User Access</h3>
+        <div class="lg:col-span-8 space-y-12">
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                <label class="text-[13px] font-bold text-slate-700">Permission Level</label>
-                <div class="md:col-span-2">
-                    <select class="input-field cursor-pointer font-bold">
-                        <option>Standard user</option>
-                        <option>Administrator</option>
-                        <option>Viewer</option>
-                    </select>
+            <section class="space-y-6">
+                <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-3">
+                    <span class="w-8 h-[1px] bg-slate-200"></span> Contact Information
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="group">
+                        <label class="text-[12px] font-bold text-slate-500 uppercase mb-2 block transition-colors group-focus-within:text-black">Login ID</label>
+                        <input type="text" placeholder="e.g. vinh.undersouthern" class="input-field !bg-slate-50 focus:!bg-white">
+                    </div>
+                    <div class="group">
+                        <label class="text-[12px] font-bold text-slate-500 uppercase mb-2 block transition-colors group-focus-within:text-black">Email Address</label>
+                        <input type="email" placeholder="vinh@undersouthern.asia" class="input-field !bg-slate-50 focus:!bg-white">
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-16 pt-6">
-                
-                <div class="space-y-5">
-                    <p class="text-[14px] font-bold text-black border-b border-slate-100 pb-3">Backstage</p>
-                    <div class="space-y-4">
-                        <label class="flex items-center space-x-3 text-[13px] text-slate-400 italic cursor-pointer group">
-                            <input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black transition">
-                            <span class="group-hover:text-black transition">check/uncheck all</span>
-                        </label>
-                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer">
-                            <input type="checkbox" checked class="w-4 h-4 rounded border-slate-300 accent-black">
-                            <span>News</span>
-                        </label>
+            <section class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-3">
+                        <span class="w-8 h-[1px] bg-slate-200"></span> Permissions & Modules
+                    </h3>
+                    <div class="flex items-center gap-4">
+                        <label class="text-[12px] font-bold text-black uppercase">Level:</label>
+                        <select class="bg-white border-b-2 border-black text-[13px] font-bold outline-none pb-1 px-2 cursor-pointer">
+                            <option>Standard user</option>
+                            <option>Administrator</option>
+                            <option>Viewer</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="space-y-5">
-                    <p class="text-[14px] font-bold text-black border-b border-slate-100 pb-3">New Release</p>
-                    <div class="space-y-4">
-                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>New Release</span></label>
-                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>One release</span></label>
-                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Multiple releases</span></label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-6 border border-slate-100 rounded-2xl hover:border-black transition-all group">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold text-black flex items-center gap-2 italic">
+                                <i class="fa-solid fa-bolt-lightning text-[10px]"></i> Backstage
+                            </h4>
+                            <input type="checkbox" checked class="w-4 h-4 accent-black">
+                        </div>
+                        <p class="text-[12px] text-slate-400">Access to global news and dashboard updates.</p>
                     </div>
-                </div>
 
-                <div class="space-y-5">
-                    <p class="text-[14px] font-bold text-black border-b border-slate-100 pb-3">Catalog</p>
-                    <div class="space-y-4">
-                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>All Releases</span></label>
-                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Drafts</span></label>
+                    <div class="p-6 border border-slate-100 rounded-2xl hover:border-black transition-all group">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold text-black flex items-center gap-2 italic">
+                                <i class="fa-solid fa-plus text-[10px]"></i> New Release
+                            </h4>
+                            <div class="flex gap-2">
+                                <span class="text-[9px] font-bold bg-slate-100 px-2 py-1 rounded uppercase">Multi</span>
+                                <input type="checkbox" class="w-4 h-4 accent-black">
+                            </div>
+                        </div>
+                        <div class="flex gap-4 mt-2">
+                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Single</label>
+                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Batch</label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="space-y-5">
-                    <p class="text-[14px] font-bold text-black border-b border-slate-100 pb-3">Analytics</p>
-                    <div class="space-y-4">
-                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Streams</span></label>
-                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Daily Trends</span></label>
+                    <div class="p-6 border border-slate-100 rounded-2xl hover:border-black transition-all group">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold text-black flex items-center gap-2 italic">
+                                <i class="fa-solid fa-database text-[10px]"></i> Catalog
+                            </h4>
+                            <input type="checkbox" class="w-4 h-4 accent-black">
+                        </div>
+                        <div class="flex gap-4">
+                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Releases</label>
+                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Drafts</label>
+                        </div>
                     </div>
-                </div>
 
-                <div class="space-y-5">
-                    <p class="text-[14px] font-bold text-black border-b border-slate-100 pb-3">Finance</p>
-                    <div class="space-y-4">
-                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Financial reports</span></label>
-                        <label class="flex items-center space-x-3 text-[13px] font-semibold cursor-pointer"><input type="checkbox" class="w-4 h-4 rounded border-slate-300 accent-black"> <span>Payment & operations</span></label>
+                    <div class="p-6 border border-slate-100 rounded-2xl hover:border-black transition-all group">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold text-black flex items-center gap-2 italic">
+                                <i class="fa-solid fa-chart-pie text-[10px]"></i> Analytics
+                            </h4>
+                            <input type="checkbox" class="w-4 h-4 accent-black">
+                        </div>
+                        <div class="flex gap-4">
+                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Streams</label>
+                            <label class="text-[11px] flex items-center gap-1 cursor-pointer"><input type="checkbox" class="accent-black"> Trends</label>
+                        </div>
+                    </div>
+
+                    <div class="p-6 border border-slate-card rounded-2xl bg-black text-white shadow-2xl shadow-slate-200">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold flex items-center gap-2 italic">
+                                <i class="fa-solid fa-dollar-sign text-[10px]"></i> Finance
+                            </h4>
+                            <input type="checkbox" class="w-4 h-4 accent-white">
+                        </div>
+                        <div class="flex gap-4">
+                            <label class="text-[11px] flex items-center gap-1 cursor-pointer opacity-80"><input type="checkbox"> Reports</label>
+                            <label class="text-[11px] flex items-center gap-1 cursor-pointer opacity-80"><input type="checkbox"> Payments</label>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
-        <div class="border-t border-slate-100"></div>
+        <div class="lg:col-span-4">
+            <div class="sticky top-24 space-y-8">
+                <section class="space-y-6">
+                    <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-3">
+                        <span class="w-8 h-[1px] bg-slate-200"></span> Catalog Scope
+                    </h3>
+                    
+                    <div class="space-y-6 bg-slate-50 p-8 rounded-3xl border border-slate-100">
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <label class="text-[12px] font-black uppercase text-black">Artists</label>
+                                <button class="text-[9px] font-bold bg-black text-white px-2 py-1 rounded-full uppercase hover:scale-105 transition">+ Add All</button>
+                            </div>
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-xs"></i>
+                                <input type="text" placeholder="Select artist..." class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-[13px] outline-none focus:border-black shadow-sm">
+                            </div>
+                        </div>
 
-        <div class="space-y-8">
-            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-400">Catalog Scope</h3>
-            
-            <div class="space-y-8 max-w-4xl">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                    <div class="flex items-center space-x-3">
-                        <label class="text-[13px] font-bold text-slate-700">Artists</label>
-                        <button type="button" class="bg-green-600 hover:bg-green-700 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase transition-colors">+ add all</button>
-                    </div>
-                    <div class="md:col-span-2">
-                        <input type="text" placeholder="Please select an artist" class="input-field">
-                    </div>
-                </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <label class="text-[12px] font-black uppercase text-black">Labels</label>
+                                <button class="text-[9px] font-bold bg-black text-white px-2 py-1 rounded-full uppercase hover:scale-105 transition">+ Add All</button>
+                            </div>
+                            <div class="relative">
+                                <i class="fa-solid fa-tag absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 text-xs"></i>
+                                <input type="text" placeholder="Choose label..." class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-3 text-[13px] outline-none focus:border-black shadow-sm">
+                            </div>
+                        </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                    <div class="flex items-center space-x-3">
-                        <label class="text-[13px] font-bold text-slate-700">Labels</label>
-                        <button type="button" class="bg-green-600 hover:bg-green-700 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase transition-colors">+ add all</button>
+                        <div class="pt-4 border-t border-slate-200">
+                            <p class="text-[11px] text-slate-400 italic leading-relaxed text-center">
+                                Note: Empty scope allows full access to all assets.
+                            </p>
+                        </div>
                     </div>
-                    <div class="md:col-span-2">
-                        <input type="text" placeholder="Choose a label" class="input-field">
-                    </div>
-                </div>
+                </section>
             </div>
         </div>
-
-        <div class="pt-12 border-t border-slate-100">
-            <button type="button" onclick="handleSavePermissions()" class="w-full md:w-auto min-w-[240px] py-4 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg shadow-slate-200">
-                Save User Permissions
-            </button>
-        </div>
-
-    </form>
+    </div>
 </div>
 
 <script>
     function handleSavePermissions() {
         const btn = event.currentTarget;
-        const originalText = btn.innerText;
-        btn.innerText = "Processing...";
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Deploying...';
         btn.disabled = true;
-        
+
         setTimeout(() => {
-            alert("Permissions updated successfully!");
-            btn.innerText = originalText;
+            btn.innerHTML = 'Save Permissions';
             btn.disabled = false;
-        }, 1000);
+            showTab('dashboard');
+        }, 1500);
     }
 </script>
