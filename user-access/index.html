@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Access Management - UNDERSOUTHERN</title>
+<title>Add a new user</title>
 
-<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -88,7 +87,7 @@
 
   input[type="text"],
   input[type="email"],
-  select {
+  input[type="password"] {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid var(--border-color);
@@ -100,40 +99,10 @@
     transition: all 0.2s;
   }
 
-  input:focus, select:focus {
+  input:focus {
     outline: none;
     border-color: var(--primary-black);
     background: var(--hover-bg);
-  }
-
-  .section-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin: 24px 0 12px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .warning-box {
-    background: var(--warning-bg);
-    border: 1px solid var(--warning-border);
-    padding: 15px;
-    border-radius: 6px;
-    font-size: 12.5px;
-    line-height: 1.5;
-    color: var(--warning-text);
-    margin-bottom: 20px;
-    display: none; 
-  }
-
-  .info-box {
-    background: var(--info-bg);
-    padding: 15px;
-    border-radius: 6px;
-    font-size: 12.5px;
-    color: var(--info-text);
-    margin-bottom: 20px;
-    line-height: 1.5;
   }
 
   .add-btn {
@@ -165,20 +134,6 @@
     accent-color: var(--primary-black);
     cursor: pointer;
     flex-shrink: 0;
-  }
-
-  .indent-group {
-    margin-left: 20px;
-    padding-left: 15px;
-    border-left: 1px solid var(--border-color);
-    margin-top: 10px;
-  }
-
-  .rate-field {
-    width: 80px !important;
-    display: inline-block;
-    margin-bottom: 0 !important;
-    padding: 6px !important;
   }
 
   .tag-container {
@@ -236,82 +191,42 @@
 <body>
 
 <div class="layout-wrapper">
-  <h2 class="page-title">User Access Management</h2>
+  <h2 class="page-title">Add a new user</h2>
 
   <div class="container">
     <div class="card">
       <h3>Contact Information</h3>
+      
+      <label>Email :</label>
+      <input type="email" placeholder="email@undersouthern.asia">
+
       <label>Login :</label>
       <input type="text" placeholder="Username">
 
-      <label>Email :</label>
-      <input type="email" placeholder="email@undersouthern.asia">
+      <label>Password :</label>
+      <input type="password" placeholder="Password">
     </div>
 
     <div class="card">
       <h3>User Access</h3>
-      <label>Permission Level</label>
-      <select id="permissionLevel">
-        <option value="standard">Standard user</option>
-        <option value="advanced">Advanced user</option>
-      </select>
 
-      <div id="permissionsList">
-        <div class="section-title">News</div>
-        <label class="checkbox-item"><input type="checkbox"> News</label>
-
-        <div class="section-title">New Release</div>
-        <label class="checkbox-item"><input type="checkbox"> New Release</label>
-        <label class="checkbox-item"><input type="checkbox"> One release</label>
-        <label class="checkbox-item"><input type="checkbox"> Multiple releases</label>
-        <label class="checkbox-item"><input type="checkbox"> New release creation tool (access)</label>
-        <label class="checkbox-item"><input type="checkbox"> New release creation tool (submission)</label>
-
-        <div class="section-title">Catalog</div>
-        <label class="checkbox-item"><input type="checkbox"> All Releases</label>
-        <label class="checkbox-item"><input type="checkbox"> Drafts</label>
-        <label class="checkbox-item"><input type="checkbox"> Correction Requested</label>
-
-        <div class="section-title">Analytics</div>
-        <label class="checkbox-item"><input type="checkbox"> Streams</label>
-        <label class="checkbox-item"><input type="checkbox"> Daily Trends</label>
-        <label class="checkbox-item"><input type="checkbox"> Playlists & Charts</label>
-        <label class="checkbox-item"><input type="checkbox"> Views</label>
-
-        <div class="section-title">Finance</div>
-        <label class="checkbox-item"><input type="checkbox"> Payment & operations</label>
-        <label class="checkbox-item">
-          <input type="checkbox" id="finReportToggle"> Financial reports
-        </label>
-
-        <div id="finDetails" class="indent-group" style="display:none;">
-          <label class="checkbox-item">
-            <input type="checkbox"> Hide total revenue and royalty rates
-          </label>
-          <label class="checkbox-item">
-            <input type="checkbox" id="royaltyToggle"> Add royalty rate between user and you
-          </label>
-          <div id="royaltyBox" style="display:none; margin-top:10px;">
-            <label style="font-size:12px;">User rate :</label>
-            <input type="text" class="rate-field"> %
-          </div>
-        </div>
-
-        <div class="section-title">Legal</div>
-        <label class="checkbox-item"><input type="checkbox"> Rights Manager</label>
+      <div id="permissionsList" style="margin-top: 10px;">
+        <label class="checkbox-item"><input type="checkbox"> Albums access</label>
+        <label class="checkbox-item"><input type="checkbox"> Edit albums</label>
+        <label class="checkbox-item"><input type="checkbox"> Create albums</label>
+        <label class="checkbox-item"><input type="checkbox"> See sessions</label>
+        <label class="checkbox-item"><input type="checkbox"> Reports access</label>
+        <label class="checkbox-item"><input type="checkbox"> Invoices access</label>
+        <label class="checkbox-item"><input type="checkbox"> Send invoices</label>
+        <label class="checkbox-item"><input type="checkbox"> Update invoices</label>
+        <label class="checkbox-item"><input type="checkbox"> Access to documents</label>
+        <label class="checkbox-item"><input type="checkbox"> Tickets access</label>
       </div>
     </div>
 
     <div class="card">
       <h3>Catalog Scope</h3>
-      <div id="advancedWarning" class="warning-box">
-        <strong>Warning:</strong> An "advanced user" can submit us the releases he creates, if you give him access to "Create my releases" section. Moreover, if you have access to believe FTP account to upload your audio files, the advanced user can access it too. If you want a user creates his catalogue and submit it without your help, choose this option. If you want to keep control on what a user can distribute with us, choose instead "standard user".
-      </div>
-
-      <div class="info-box">
-        Catalog scope will allow you to define which areas of the interface can be viewed by 'access-only' user accounts.
-      </div>
-
+      
       <label>Artists <button class="add-btn" onclick="addAll('artist-tags', 'All Artists')">+ add all</button></label>
       <div id="artist-tags" class="tag-container"></div>
       <input type="text" id="artistInput" placeholder="Type artist name and press Enter" onkeypress="handleInput(event, 'artist-tags')">
@@ -328,6 +243,7 @@
 </div>
 
 <script>
+  // Chặn nút Back quay về Dashboard
   (function() {
     history.pushState(null, null, window.location.href);
     window.addEventListener('popstate', function(event) {
@@ -335,23 +251,7 @@
     });
   })();
 
-  const levelSelect = document.getElementById('permissionLevel');
-  const warning = document.getElementById('advancedWarning');
-  levelSelect.addEventListener('change', function() {
-    warning.style.display = (this.value === 'advanced') ? 'block' : 'none';
-  });
-
-  const finCheck = document.getElementById('finReportToggle');
-  const finDetails = document.getElementById('finDetails');
-  const royaltyCheck = document.getElementById('royaltyToggle');
-  const royaltyBox = document.getElementById('royaltyBox');
-  finCheck.addEventListener('change', function() {
-    finDetails.style.display = this.checked ? 'block' : 'none';
-  });
-  royaltyCheck.addEventListener('change', function() {
-    royaltyBox.style.display = this.checked ? 'block' : 'none';
-  });
-
+  // Logic tạo Tag cho Artists và Labels
   function handleInput(e, containerId) {
     if (e.key === 'Enter' && e.target.value.trim() !== '') {
       addTag(containerId, e.target.value.trim());
