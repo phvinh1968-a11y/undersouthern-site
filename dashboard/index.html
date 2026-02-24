@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
     <title>Management System - UNDERSOUTHERN</title>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
     
@@ -12,15 +16,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ffffff; color: #000000; height: 100vh; height: -webkit-fill-available; overflow: hidden; }
-        .sidebar-active { background-color: #000000; color: #ffffff; border-radius: 8px; }
+        /* Ép buộc chiều cao để luôn thấy Logout trên điện thoại */
+        html, body { height: 100% !important; margin: 0; padding: 0; overflow: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ffffff; color: #000000; display: flex; }
+        
+        /* KHỬ TOÀN BỘ CHỮ NGHIÊNG CHO DASHBOARD */
+        .no-italic, h1, h2, span, a, button { font-style: normal !important; text-decoration: none !important; }
+
+        .sidebar-active { background-color: #000000 !important; color: #ffffff !important; border-radius: 8px; }
         .hidden { display: none !important; }
         
         .sidebar-width { width: 280px; }
         .header-height { height: 72px; }
         
-        /* Đảm bảo sidebar luôn bằng chiều cao màn hình thực tế */
-        #sidebar { height: 100vh; height: -webkit-fill-available; display: flex; flex-direction: column; }
+        /* Sidebar Layout cố định nút Logout ở đáy */
+        #sidebar { 
+            display: flex !important; 
+            flex-direction: column !important; 
+            height: 100% !important; 
+            background: white;
+        }
 
         .scroll-area { height: calc(100vh - 72px); overflow-y: auto; scrollbar-width: thin; }
         
@@ -29,14 +44,15 @@
 
         @media (max-width: 768px) {
             .sidebar-width { 
-                width: 80%; 
+                width: 85% !important; 
+                max-width: 300px; 
                 position: fixed; 
                 z-index: 100; 
                 left: -100%; 
                 transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+                box-shadow: 15px 0 45px rgba(0,0,0,0.15);
             }
-            .sidebar-open { left: 0; }
+            .sidebar-open { left: 0 !important; }
         }
 
         #sidebar-overlay { 
@@ -50,77 +66,96 @@
         .sidebar-open + #sidebar-overlay { display: block; }
     </style>
 </head>
-<body class="overflow-hidden">
+<body>
 
-    <div class="flex h-screen overflow-hidden relative">
+    <div class="flex w-full h-full overflow-hidden relative">
         
         <aside id="sidebar" class="sidebar-width bg-white border-r flex-shrink-0 transition-all duration-300 absolute md:relative z-[100]">
-            <div class="header-height flex items-center justify-between px-6 border-b flex-shrink-0">
-                <h1 class="font-black text-lg tracking-tighter uppercase">UNDERSOUTHERN</h1>
-                <button onclick="toggleSidebar()" class="md:hidden text-black"><i class="fa-solid fa-xmark text-xl"></i></button>
+            
+            <div class="header-height flex items-center justify-between px-6 border-b flex-shrink-0 bg-white">
+                <h1 class="font-black text-xl tracking-tighter uppercase">UNDERSOUTHERN</h1>
+                <button onclick="toggleSidebar()" class="md:hidden text-black p-2"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
 
             <nav class="flex-1 overflow-y-auto py-4 px-4 space-y-1">
-                <a href="#" onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-active flex items-center space-x-3 px-4 py-3 font-bold text-[13px]">
-                    <i class="fa-solid fa-house w-5"></i> <span>Overview</span>
+                <a href="#" onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-active flex items-center space-x-3 px-4 py-3 font-bold text-[13px] transition">
+                    <i class="fa-solid fa-house w-4 text-center"></i> <span class="no-italic">Dashboard</span>
                 </a>
-                <a href="#" onclick="showTab('catalog')" id="nav-catalog" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px]">
-                    <i class="fa-solid fa-list-ul w-5"></i> <span>Catalog</span>
+                <a href="#" onclick="showTab('catalog')" id="nav-catalog" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                    <i class="fa-solid fa-list-ul w-4 text-center"></i> <span>Catalog</span>
                 </a>
-                <a href="#" onclick="showTab('analytics')" id="nav-analytics" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px]">
-                    <i class="fa-solid fa-chart-line w-5"></i> <span>Analytics</span>
+                <a href="#" onclick="showTab('analytics')" id="nav-analytics" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                    <i class="fa-solid fa-chart-line w-4 text-center"></i> <span>Analytics</span>
                 </a>
-                <a href="#" onclick="showTab('promotion')" id="nav-promotion" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px]">
-                    <i class="fa-solid fa-bullhorn w-5"></i> <span>Promotion</span>
+                <a href="#" onclick="showTab('promotion')" id="nav-promotion" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                    <i class="fa-solid fa-bullhorn w-4 text-center"></i> <span>Promotion</span>
                 </a>
-                <a href="#" onclick="showTab('finance')" id="nav-finance" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px]">
-                    <i class="fa-solid fa-dollar-sign w-5"></i> <span>Finance</span>
+                <a href="#" onclick="showTab('finance')" id="nav-finance" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                    <i class="fa-solid fa-dollar-sign w-4 text-center"></i> <span>Finance</span>
                 </a>
-                <div class="border-t my-2"></div>
-                <a href="#" onclick="showTab('users')" id="nav-users" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px]">
-                    <i class="fa-solid fa-user-shield w-5"></i> <span>User Access</span>
+                <div class="border-t my-4"></div>
+                <a href="#" onclick="showTab('users')" id="nav-users" class="flex items-center space-x-3 px-4 py-3 font-semibold text-slate-400 hover:text-black text-[13px] transition">
+                    <i class="fa-solid fa-user-shield w-4 text-center"></i> <span>User Access</span>
                 </a>
             </nav>
 
-            <div class="p-4 border-t bg-slate-50 flex-shrink-0 mb-safe">
-                <button onclick="handleLogout()" class="w-full py-3 bg-white border border-black text-black text-[11px] font-bold uppercase tracking-widest rounded-lg flex items-center justify-center space-x-2 active:bg-black active:text-white transition-colors">
-                    <i class="fa-solid fa-power-off"></i>
-                    <span>Log Out</span>
+            <div class="p-4 border-t bg-white flex-shrink-0">
+                <button onclick="handleLogout()" class="w-full py-3 text-[11px] font-bold text-black border border-black rounded-lg hover:bg-black hover:text-white transition uppercase tracking-widest flex items-center justify-center space-x-2 active:bg-slate-100">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="no-italic">Logout</span>
                 </button>
             </div>
         </aside>
 
         <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-        <main class="flex-1 flex flex-col min-w-0">
-            <header class="header-height border-b flex items-center justify-between md:justify-end px-4 md:px-10 flex-shrink-0">
-                <button onclick="toggleSidebar()" class="md:hidden p-2"><i class="fa-solid fa-bars-staggered text-xl"></i></button>
-                <div class="flex items-center space-x-3">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 hidden sm:block">Admin Portal</span>
-                    <div class="w-8 h-8 bg-black rounded-full flex items-center justify-center text-[10px] font-bold text-white">US</div>
+        <main class="flex-1 flex flex-col min-w-0 bg-white h-full">
+            <header class="header-height border-b bg-white flex items-center justify-between md:justify-end px-4 md:px-12 flex-shrink-0">
+                <button onclick="toggleSidebar()" class="md:hidden text-black p-2"><i class="fa-solid fa-bars-staggered text-xl"></i></button>
+                <div class="flex items-center space-x-4">
+                    <div class="w-8 h-8 bg-black rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm">US</div>
                 </div>
             </header>
 
-            <div class="scroll-area p-6 md:p-10">
-                <div id="tab-dashboard" class="fade-in">
-                    <h1 class="text-3xl font-bold italic mb-8">Overview</h1>
-                    <div class="p-8 border-2 border-dashed border-slate-100 rounded-2xl text-center">
-                        <i class="fa-solid fa- wand-magic-sparkles text-slate-200 text-3xl mb-3"></i>
-                        <p class="text-slate-400 text-sm">Welcome back to UNDERSOUTHERN</p>
+            <div class="scroll-area p-6 md:p-12 w-full max-w-7xl mx-auto">
+                
+                <div id="tab-dashboard" class="fade-in space-y-8">
+                    <h1 class="text-3xl md:text-4xl font-bold tracking-tight">Dashboard</h1>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="p-6 border rounded-xl flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-slate-50 flex items-center justify-center rounded-lg text-slate-400"><i class="fa-solid fa-plus text-lg"></i></div>
+                            <span class="text-xs font-bold uppercase tracking-wider">Create a new release</span>
+                        </div>
                     </div>
                 </div>
 
-                <div id="tab-catalog" class="hidden fade-in">
-                    <h1 class="text-3xl font-bold mb-8">Catalog</h1>
-                    <div class="overflow-x-auto border rounded-xl">
-                        <div class="min-w-full p-6 text-slate-400 italic">Catalog data loading...</div>
+                <div id="tab-catalog" class="hidden fade-in space-y-6">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Catalog</h2>
+                    <div class="w-full border rounded-xl overflow-x-auto shadow-sm">
+                        <table class="w-full text-left min-w-[600px]">
+                            <thead class="bg-slate-50 border-b">
+                                <tr class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                    <th class="px-6 py-4">Title</th>
+                                    <th class="px-6 py-4">Artist</th>
+                                    <th class="px-6 py-4 text-right">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-[12px]">
+                                <tr class="hover:bg-slate-50 transition">
+                                    <td class="px-6 py-4 font-bold">Sun Flowers</td>
+                                    <td class="px-6 py-4 text-slate-400">Astrolaw</td>
+                                    <td class="px-6 py-4 text-right font-bold">24/02/2026</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <div id="tab-analytics" class="hidden fade-in"><h1 class="text-3xl font-bold mb-8">Analytics</h1></div>
-                <div id="tab-promotion" class="hidden fade-in"><h1 class="text-3xl font-bold mb-8">Promotion</h1></div>
-                <div id="tab-finance" class="hidden fade-in"><h1 class="text-3xl font-bold mb-8">Finance</h1></div>
-                <div id="tab-users" class="hidden fade-in"><h1 class="text-3xl font-bold mb-8">User Access</h1></div>
+                <div id="tab-analytics" class="hidden fade-in"><h2 class="text-3xl font-bold">Analytics</h2></div>
+                <div id="tab-promotion" class="hidden fade-in"><h2 class="text-3xl font-bold">Promotion</h2></div>
+                <div id="tab-finance" class="hidden fade-in"><h2 class="text-3xl font-bold">Finance</h2></div>
+                <div id="tab-users" class="hidden fade-in"><h2 class="text-3xl font-bold">User Access</h2></div>
+
             </div>
         </main>
     </div>
@@ -132,27 +167,37 @@
 
         function handleLogout() {
             localStorage.removeItem('isLoggedIn');
-            window.location.href = "https://undersouthern.asia/login";
+            // Thêm tham số ngẫu nhiên vào link để buộc trình duyệt load lại trang login mới nhất
+            window.location.href = "https://undersouthern.asia/login?v=" + new Date().getTime();
         }
 
         function showTab(tabId) {
             const tabs = ['dashboard', 'catalog', 'analytics', 'promotion', 'finance', 'users'];
             tabs.forEach(id => {
-                document.getElementById('tab-' + id).classList.add('hidden');
-                document.getElementById('nav-' + id).classList.remove('sidebar-active', 'font-bold');
-                document.getElementById('nav-' + id).classList.add('text-slate-400');
+                const content = document.getElementById('tab-' + id);
+                const nav = document.getElementById('nav-' + id);
+                if (content) content.classList.add('hidden');
+                if (nav) {
+                    nav.classList.remove('sidebar-active', 'font-bold');
+                    nav.classList.add('text-slate-400');
+                }
             });
 
             document.getElementById('tab-' + tabId).classList.remove('hidden');
             document.getElementById('nav-' + tabId).classList.add('sidebar-active', 'font-bold');
             document.getElementById('nav-' + tabId).classList.remove('text-slate-400');
 
-            if (window.innerWidth < 768) toggleSidebar();
+            if (window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar');
+                if(sidebar.classList.contains('sidebar-open')) toggleSidebar();
+            }
         }
 
         window.onload = () => {
             if (localStorage.getItem('isLoggedIn') !== 'true') {
                 window.location.href = "https://undersouthern.asia/login";
+            } else {
+                showTab('dashboard');
             }
         };
     </script>
