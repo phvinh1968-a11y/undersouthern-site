@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -14,215 +14,139 @@
 
     <style>
         :root {
-            --bg-system: #f1f5f9;
-            --card-bg: #ffffff;
+            --bg-system: #f8fafc;
             --primary-dark: #0f172a;
-            --accent: #000000;
-            --border-soft: #e2e8f0;
-            --text-main: #1e293b;
-            --text-sub: #64748b;
+            --border-soft: #f1f5f9;
         }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background: var(--bg-system); 
-            color: var(--text-main); 
+            color: #1e293b; 
             margin: 0; 
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
         }
 
-        /* --- Header: Loại bỏ mọi thông tin cá nhân dư thừa --- */
+        /* --- Header Tối Giản --- */
         .glass-header {
-            height: 72px; background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-soft);
+            height: 72px; background: #ffffff;
+            border-bottom: 1px solid var(--border-soft);
             position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
         }
 
-        .main-container { max-width: 1440px; margin: 0 auto; padding: 48px 40px; }
+        .main-container { max-width: 1200px; margin: 0 auto; padding: 60px 40px; }
 
-        .analytic-card {
-            background: var(--card-bg); border-radius: 32px; border: 1px solid var(--border-soft);
-            padding: 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* --- Analytic Card tối giản --- */
+        .stat-card {
+            background: #ffffff; border-radius: 24px; border: 1px solid #f1f5f9;
+            padding: 32px; transition: 0.3s;
         }
-        .analytic-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05); }
+        .stat-card:hover { border-color: #e2e8f0; transform: translateY(-2px); }
 
         .nav-link {
-            font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em;
-            color: var(--text-sub); transition: 0.2s;
+            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+            color: #94a3b8; transition: 0.2s;
         }
-        .nav-link:hover, .nav-link.active { color: var(--accent); }
+        .nav-link:hover, .nav-link.active { color: #000; }
 
-        /* --- UI Elements --- */
-        .section-label { font-size: 10px; font-weight: 900; text-transform: uppercase; color: var(--text-sub); letter-spacing: 0.3em; margin-bottom: 8px; display: block; }
-        .section-title { font-size: 42px; font-weight: 900; letter-spacing: -0.05em; color: var(--primary-dark); line-height: 1; }
+        /* --- Typography --- */
+        .section-title { font-size: 32px; font-weight: 900; letter-spacing: -0.04em; color: var(--primary-dark); }
+        .stat-value { font-size: 48px; font-weight: 900; letter-spacing: -0.05em; line-height: 1; }
 
-        .broadcast-box {
-            background: #fff; border: 1px solid var(--border-soft); border-radius: 32px; overflow: hidden;
-        }
-        .broadcast-header { padding: 24px 32px; border-bottom: 1px solid var(--border-soft); background: #fcfcfc; }
-        .broadcast-body { padding: 80px 32px; text-align: center; }
-        .broadcast-body i { font-size: 56px; color: #e2e8f0; margin-bottom: 24px; transform: rotate(-10deg); }
-
-        .badge-node { padding: 6px 14px; border-radius: 100px; font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; }
-
-        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <header class="glass-header">
     <div class="flex items-center">
-        <div class="logo font-black text-2xl tracking-tighter mr-12">UNDERSOUTHERN</div>
-        <nav class="flex gap-10">
+        <div class="logo font-black text-xl tracking-tighter mr-12">UNDERSOUTHERN</div>
+        <nav class="flex gap-8">
             <a href="#" class="nav-link active">Portal</a>
             <a href="https://undersouthern.asia/catalog" class="nav-link">Catalog</a>
             <a href="https://undersouthern.asia/analytics" class="nav-link">Analytics</a>
             <a href="https://undersouthern.asia/finance" class="nav-link">Finance</a>
-            <a href="https://undersouthern.asia/user-access" id="master-nav" class="nav-link hidden">Master Access</a>
+            <a href="https://undersouthern.asia/user-access" id="master-nav" class="nav-link hidden">Admin</a>
         </nav>
     </div>
-    <div id="status-badge-container">
-        <div class="flex items-center gap-2 bg-slate-900 text-white px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-widest shadow-xl">
-            <i class="fa-solid fa-signal text-emerald-400"></i> Node Active
-        </div>
+    <div class="flex items-center gap-2 bg-slate-100 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-slate-500">
+        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Node Active
     </div>
 </header>
 
 <main class="main-container">
     <div class="fade-in">
-        <div class="mb-16">
-            <span class="section-label">Central Management Node</span>
+        <div class="mb-12 text-center">
             <h1 class="section-title">Portal Dashboard</h1>
-            <p class="text-slate-400 font-bold mt-4 text-sm tracking-tight">System overview and communication interface.</p>
+            <p class="text-slate-400 font-medium mt-2">Tổng quan trạng thái hệ thống và dữ liệu phân phối.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
-            <div class="analytic-card flex flex-col justify-between min-h-[170px]">
-                <div class="w-12 h-12 bg-slate-50 text-slate-900 rounded-2xl flex items-center justify-center shadow-sm"><i class="fa-solid fa-box-archive"></i></div>
-                <div>
-                    <div id="stat-total" class="text-4xl font-black tracking-tighter">--</div>
-                    <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Catalog Units</div>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="stat-card text-center">
+                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Tổng tài sản</div>
+                <div id="stat-total" class="stat-value text-slate-900">--</div>
             </div>
 
-            <div class="analytic-card flex flex-col justify-between min-h-[170px]">
-                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center shadow-sm"><i class="fa-solid fa-spinner"></i></div>
-                <div>
-                    <div id="stat-pending" class="text-4xl font-black tracking-tighter text-amber-600">--</div>
-                    <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Pending Review</div>
-                </div>
+            <div class="stat-card text-center">
+                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Đang chờ duyệt</div>
+                <div id="stat-pending" class="stat-value text-amber-500">--</div>
             </div>
 
-            <div class="analytic-card flex flex-col justify-between min-h-[170px]">
-                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center shadow-sm"><i class="fa-solid fa-check-to-slot"></i></div>
-                <div>
-                    <div id="stat-live" class="text-4xl font-black tracking-tighter text-emerald-600">--</div>
-                    <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Distributed Live</div>
-                </div>
-            </div>
-
-            <div class="analytic-card flex flex-col justify-between min-h-[170px] bg-slate-900 text-white border-slate-800">
-                <div class="w-12 h-12 bg-slate-800 text-white rounded-2xl flex items-center justify-center shadow-sm"><i class="fa-solid fa-link"></i></div>
-                <div>
-                    <div class="text-4xl font-black tracking-tighter italic text-emerald-400">Stable</div>
-                    <div class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">System Sync</div>
-                </div>
+            <div class="stat-card text-center">
+                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Đã phát hành</div>
+                <div id="stat-live" class="stat-value text-emerald-500">--</div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <div class="lg:col-span-2">
-                <div class="broadcast-box">
-                    <div class="broadcast-header flex justify-between items-center">
-                        <div>
-                            <h2 class="text-xl font-black text-slate-900">Broadcast Channel</h2>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Administrative Feed</p>
-                        </div>
-                        <span class="badge-node bg-emerald-50 text-emerald-600">Active Node</span>
-                    </div>
-                    <div class="broadcast-body">
-                        <i class="fa-solid fa-tower-broadcast"></i>
-                        <h3 class="text-2xl font-black text-slate-900 mb-2">Metadata Stream Clear</h3>
-                        <p class="text-sm font-medium text-slate-400 max-w-sm mx-auto leading-relaxed">
-                            No urgent system announcements. All distribution channels are operating within expected parameters.
-                        </p>
-                    </div>
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white border border-slate-100 rounded-[32px] p-10 text-center">
+                <div class="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fa-solid fa-bell-slash text-slate-300 text-sm"></i>
                 </div>
-            </div>
-
-            <div class="space-y-8">
-                <div class="analytic-card">
-                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-8">Metadata Integrity</h3>
-                    <div class="space-y-6">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-slate-600">DB Encryption</span>
-                            <span class="text-[9px] font-black text-emerald-500">AES-256</span>
-                        </div>
-                        <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-slate-900 w-[100%] rounded-full"></div>
-                        </div>
-                        <div class="flex items-center justify-between pt-2">
-                            <span class="text-xs font-bold text-slate-600">Uptime Reliability</span>
-                            <span class="text-[9px] font-black text-emerald-500">99.9%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="analytic-card bg-slate-900 text-white border-slate-800">
-                    <div class="flex items-start gap-5">
-                        <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0">
-                            <i class="fa-solid fa-user-shield text-rose-500"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-xs font-black uppercase tracking-widest mb-1">Security Node</h4>
-                            <p class="text-[10px] font-bold text-slate-400 leading-relaxed">Access is currently restricted to verified administrative users only.</p>
-                        </div>
-                    </div>
-                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-1">Hệ thống ổn định</h3>
+                <p class="text-sm text-slate-400">Hiện tại không có thông báo mới từ ban quản trị.</p>
             </div>
         </div>
     </div>
 </main>
 
 <script>
-    const FIREBASE_CATALOG = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog.json";
-    const sessionUser = localStorage.getItem('activeUser') || 'Anonymous';
+    const FIREBASE_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog.json";
+    const sessionUser = localStorage.getItem('activeUser') || 'Unauthorized';
     const isRootAdmin = (sessionUser === 'UNDERSOUTHERN');
 
     window.onload = async () => {
-        // Auth Enforcement
+        // Kiểm tra đăng nhập
         if (localStorage.getItem('isLoggedIn') !== 'true') {
             window.location.href = "https://undersouthern.asia/login";
         }
 
-        // Admin Access UI
+        // Quyền Admin
         if (isRootAdmin) {
-            const masterNav = document.getElementById('master-nav');
-            if(masterNav) masterNav.classList.remove('hidden');
+            document.getElementById('master-nav').classList.remove('hidden');
         }
 
-        await fetchSyncData();
+        await fetchDashboardStats();
     };
 
-    async function fetchSyncData() {
+    async function fetchDashboardStats() {
         try {
-            const response = await fetch(FIREBASE_CATALOG);
+            const response = await fetch(FIREBASE_URL);
             const data = await response.json() || {};
-            const catalogArray = Object.values(data);
+            const assets = Object.values(data);
             
-            // Phân tách dữ liệu theo quyền hạn
-            const filteredData = isRootAdmin ? catalogArray : catalogArray.filter(item => item.owner === sessionUser);
+            // Phân loại dữ liệu
+            const filtered = isRootAdmin ? assets : assets.filter(i => i.owner === sessionUser);
 
-            // Cập nhật số liệu Real-time
-            document.getElementById('stat-total').innerText = filteredData.length;
-            document.getElementById('stat-pending').innerText = filteredData.filter(item => item.status === 'Pending').length;
-            document.getElementById('stat-live').innerText = filteredData.filter(item => item.status === 'Released').length;
+            // Gán giá trị
+            document.getElementById('stat-total').innerText = filtered.length;
+            document.getElementById('stat-pending').innerText = filtered.filter(i => i.status === 'Pending').length;
+            document.getElementById('stat-live').innerText = filtered.filter(i => i.status === 'Released').length;
 
-        } catch (error) {
-            console.error("Portal Dashboard: Connection Error");
+        } catch (e) {
+            console.error("Portal Error");
         }
     }
 </script>
