@@ -6,10 +6,11 @@
 <title>Catalog Management - UNDERSOUTHERN</title>
 
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <script>
+    /* KIỂM TRA QUYỀN TRUY CẬP TRƯỚC KHI RENDER */
     if (localStorage.getItem('isLoggedIn') !== 'true') {
         window.location.href = "https://undersouthern.asia/login";
     }
@@ -19,161 +20,224 @@
   :root {
     --bg-body: #ffffff;
     --primary-black: #000000;
-    --text-muted: #666666;
-    --border-color: #eeeeee;
-    --hover-bg: #f5f5f5;
-    --radius-main: 10px;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --hover-bg: #f8fafc;
+    --radius-main: 12px;
     --font-main: 'Inter', sans-serif;
     --header-height: 72px;
   }
 
   #auth-guard { display: none; }
-  body { font-family: var(--font-main); background-color: var(--bg-body); margin: 0; padding: 0; letter-spacing: -0.01em; }
+  body { font-family: var(--font-main); background-color: var(--bg-body); margin: 0; padding: 0; letter-spacing: -0.01em; color: #0f172a; }
 
-  .fade-item { opacity: 0; transform: translateY(10px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  /* HIỆU ỨNG ANIMATION */
+  .fade-item { opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
   .fade-item.show { opacity: 1; transform: translateY(0); }
+  .fade-in { animation: fadeIn 0.4s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+  /* HEADER */
   .main-header {
     height: var(--header-height); border-bottom: 1px solid var(--border-color);
     display: flex; align-items: center; justify-content: space-between;
-    padding: 0 40px; position: sticky; top: 0; background: #fff; z-index: 1000;
+    padding: 0 40px; position: sticky; top: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); z-index: 1000;
   }
   .brand-name { font-weight: 900; font-size: 20px; letter-spacing: -0.05em; text-transform: uppercase; margin: 0; padding-right: 40px; border-right: 1px solid var(--border-color); height: 100%; display: flex; align-items: center; }
-  .user-avatar-circle { width: 32px; height: 32px; background: var(--primary-black); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700; cursor: pointer; overflow: hidden; }
+  .user-avatar-circle { width: 32px; height: 32px; background: var(--primary-black); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 700; cursor: pointer; overflow: hidden; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--primary-black); }
   .user-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
 
-  .layout-wrapper { max-width: 1600px; margin: 0 auto; padding: 40px 20px; }
+  /* LAYOUT */
+  .layout-wrapper { max-width: 1600px; margin: 0 auto; padding: 40px; }
   .hidden { display: none !important; }
 
-  .card { background: #fff; padding: 24px; border-radius: var(--radius-main); border: 1px solid var(--border-color); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-  h3 { font-size: 13px; text-transform: uppercase; margin: 0 0 20px 0; font-weight: 700; }
-  label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 8px; color: #444; }
-  input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; box-sizing: border-box; margin-bottom: 15px; background: #fff; }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary-black); }
-
-  .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-  .btn-primary { background: var(--primary-black); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  /* CARDS */
+  .card { background: #fff; padding: 28px; border-radius: var(--radius-main); border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+  h3 { font-size: 11px; text-transform: uppercase; margin: 0 0 20px 0; font-weight: 800; color: #94a3b8; letter-spacing: 0.1em; }
+  label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 8px; color: #1e293b; text-transform: uppercase; }
   
+  input, select, textarea { 
+    width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 10px; 
+    font-size: 14px; box-sizing: border-box; margin-bottom: 18px; background: #fcfcfc; color: #0f172a; transition: all 0.2s;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: #000; background: #fff; box-shadow: 0 0 0 3px rgba(0,0,0,0.03); }
+  input:disabled, select:disabled { background: #f1f5f9; cursor: not-allowed; opacity: 0.7; }
+
+  /* BUTTONS */
+  .btn-primary { background: var(--primary-black); color: white; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  
+  .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; gap: 15px; border-top: 1px solid var(--border-color); padding-top: 30px; }
+  .save-btn { background: #f1f5f9; color: #475569; border: none; padding: 12px 30px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+  .save-btn:hover { background: #e2e8f0; }
+  .submit-btn { background: var(--primary-black); color: white; border: none; padding: 12px 45px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+  .submit-btn:hover { background: #1e293b; letter-spacing: 0.5px; }
+  .delete-btn { background: #fee2e2; color: #dc2626; border: none; padding: 12px 30px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+  .delete-btn:hover { background: #fecaca; }
+
+  /* TABLE */
   .table-container { border: 1px solid var(--border-color); border-radius: var(--radius-main); overflow-x: auto; background: #fff; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1200px; }
-  th { background: #fafafa; text-align: left; padding: 14px; color: var(--text-muted); font-size: 10px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
-  td { padding: 14px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 1100px; }
+  th { background: #f8fafc; text-align: left; padding: 16px; color: #64748b; font-size: 10px; text-transform: uppercase; font-weight: 800; border-bottom: 1px solid var(--border-color); }
+  td { padding: 16px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+  tr:hover td { background-color: #fcfcfc; }
   
-  .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-  .st-released { background: #e6f9f0; color: #16a34a; }
-  .st-pending { background: #fff7ed; color: #ea580c; }
-  .st-draft { background: #f1f5f9; color: #64748b; }
-  .st-rejected { background: #fef2f2; color: #dc2626; }
+  .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; display: inline-flex; align-items: center; gap: 5px; }
+  .st-released { background: #dcfce7; color: #16a34a; }
+  .st-pending { background: #fef3c7; color: #d97706; }
+  .st-draft { background: #f1f5f9; color: #475569; }
+  .st-rejected { background: #fee2e2; color: #dc2626; }
 
-  /* MODAL STYLE */
-  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(4px); }
-  .modal-box { background: white; padding: 32px; border-radius: 20px; width: 450px; text-align: left; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
-  .modal-box h2 { font-size: 20px; font-weight: 800; margin: 0 0 15px 0; color: #000; }
-  .modal-box p { font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+  /* TAGS */
+  .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .tag { background: #0f172a; color: #fff; padding: 4px 12px; border-radius: 8px; font-size: 11px; display: flex; align-items: center; gap: 8px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+  .tag i { cursor: pointer; font-size: 10px; opacity: 0.6; transition: 0.2s; }
+  .tag i:hover { opacity: 1; transform: scale(1.2); }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(5px); }
+  .modal-box { background: white; padding: 40px; border-radius: 24px; width: 100%; max-width: 480px; text-align: left; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform: translateY(0); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .modal-box h2 { font-size: 22px; font-weight: 900; margin: 0 0 10px 0; color: #0f172a; }
+  .modal-box p { font-size: 14px; color: #64748b; margin-bottom: 25px; line-height: 1.6; }
   
-  .confirm-check-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
-  .confirm-check-box input { width: 18px; height: 18px; margin: 0; margin-top: 2px; cursor: pointer; accent-color: #000; }
-  .confirm-check-box label { font-size: 13px; font-weight: 500; color: #000; line-height: 1.4; margin: 0; cursor: pointer; }
+  .confirm-check-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 16px; margin-bottom: 20px; display: flex; gap: 14px; align-items: center; cursor: pointer; transition: 0.2s; }
+  .confirm-check-box:hover { border-color: #cbd5e1; }
+  .confirm-check-box input { width: 20px; height: 20px; margin: 0; cursor: pointer; accent-color: #000; }
+  .confirm-check-box label { font-size: 13px; font-weight: 700; color: #0f172a; margin: 0; cursor: pointer; user-select: none; }
 
-  .btn-modal-cancel { border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; cursor: pointer; background: white; font-weight: 600; font-size: 14px; flex: 1; transition: 0.2s; }
-  .btn-modal-cancel:hover { background: #f9f9f9; }
-  .btn-modal-confirm { background: #000; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; flex: 1; transition: 0.3s; }
-  .btn-modal-confirm:disabled { opacity: 0.3; pointer-events: none; }
+  .btn-modal-confirm { background: #000; color: white; border: none; padding: 14px 28px; border-radius: 12px; cursor: pointer; font-weight: 700; flex: 1; transition: 0.3s; }
+  .btn-modal-confirm:disabled { opacity: 0.2; pointer-events: none; }
 
-  .tag-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-  .tag { background: #000; color: #fff; padding: 3px 8px; border-radius: 6px; font-size: 11px; display: flex; align-items: center; gap: 5px; font-weight: 500; }
-  .tag i { cursor: pointer; color: #fff; font-size: 10px; opacity: 0.7; }
-
-  .form-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
-  .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; gap: 15px; }
-  .save-btn { background: #64748b; color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-  .submit-btn { background: var(--primary-black); color: white; border: none; padding: 12px 40px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-  .delete-btn { background: #dc2626; color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-
-  .artwork-uploader { width: 100%; aspect-ratio: 1/1; border: 2px dashed #ddd; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; background: #fafafa; }
+  /* ARTWORK */
+  .artwork-uploader { 
+    width: 100%; aspect-ratio: 1/1; border: 2px dashed #e2e8f0; border-radius: 20px; 
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    cursor: pointer; overflow: hidden; position: relative; background: #f8fafc; transition: 0.3s;
+  }
+  .artwork-uploader:hover { border-color: #000; background: #f1f5f9; }
   .artwork-uploader img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 5; display: none; }
+  .artwork-uploader i { font-size: 32px; color: #cbd5e1; margin-bottom: 12px; }
   
-  .btn-icon { border: 1px solid var(--border-color); background: #fff; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
-  .btn-icon:hover { background: var(--hover-bg); }
+  /* TRACKLIST */
+  .track-row { 
+    display: grid; grid-template-columns: 40px 2fr 1.2fr 1.5fr 40px; gap: 15px; align-items: center; 
+    background: #f8fafc; padding: 15px; border-radius: 14px; margin-bottom: 12px; border: 1px solid #f1f5f9; 
+  }
+  .track-row input { margin-bottom: 0 !important; font-weight: 500; }
+
+  .btn-icon { border: 1px solid var(--border-color); background: #fff; padding: 8px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s; color: #1e293b; }
+  .btn-icon:hover { background: #f1f5f9; border-color: #94a3b8; }
 </style>
 </head>
 <body>
 
 <div id="auth-guard">
     <div class="modal-overlay" id="actionModal">
-      <div class="modal-box">
+      <div class="modal-box fade-in">
         <h2 id="modalTitle">Process Changes</h2>
         <p id="modalDesc">Are you sure you want to proceed?</p>
-        <div class="confirm-check-box" id="confirmBox" onclick="toggleConfirmCheckbox()">
-          <input type="checkbox" id="actionCheck" onchange="validateAction()">
-          <label id="checkLabel">Yes, I'm sure I want to proceed with this action.</label>
+        
+        <div id="rejectReasonSection" class="hidden">
+           <label>Reject Reason</label>
+           <textarea id="adminRejectReasonInput" placeholder="Describe what needs to be fixed..." rows="3" style="margin-bottom: 20px;"></textarea>
         </div>
-        <p id="actionNotice" style="font-size: 12px; background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 8px; border: 1px solid #ffedd5; display: none;">Note: This action cannot be undone once confirmed.</p>
+
+        <div class="confirm-check-box" onclick="toggleConfirmCheckbox()">
+          <input type="checkbox" id="actionCheck" onchange="validateAction()">
+          <label id="checkLabel">Yes, I'm sure I want to proceed.</label>
+        </div>
+
+        <p id="actionNotice" style="font-size: 11px; background: #fff7ed; color: #9a3412; padding: 15px; border-radius: 12px; border: 1px solid #ffedd5; display: none;">
+          <i class="fa-solid fa-triangle-exclamation mr-1"></i> This action will be synchronized across all systems and cannot be undone.
+        </p>
+
         <div style="display:flex; gap:12px; margin-top: 25px;">
-          <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
-          <button class="btn-modal-confirm" id="confirmBtn" onclick="executeAction()" disabled>Confirm</button>
+          <button class="btn-modal-cancel" style="flex:1; border:1px solid #ddd; border-radius:12px; font-weight:700;" onclick="closeModal()">Cancel</button>
+          <button class="btn-modal-confirm" id="confirmBtn" onclick="executeAction()" disabled>Confirm Action</button>
         </div>
       </div>
     </div>
 
     <header class="main-header">
       <div class="header-left"><h1 class="brand-name">UNDERSOUTHERN</h1></div>
-      <div class="header-right"><div class="user-avatar-circle" id="userAvatar"><span id="avatarText">US</span></div></div>
+      <div class="header-right">
+        <div class="flex items-center gap-6">
+           <div id="adminBadge" class="hidden text-[10px] font-black bg-red-100 text-red-600 px-3 py-1 rounded-full uppercase tracking-tighter">System Admin</div>
+           <div class="user-avatar-circle" id="userAvatar"><span id="avatarText">US</span></div>
+        </div>
+      </div>
     </header>
 
     <div class="layout-wrapper">
-      <div id="view-list">
+      <div id="view-list" class="fade-in">
         <div class="top-bar">
           <div class="title-group" style="display:flex; align-items:center; gap:15px;">
             <button class="btn-icon" onclick="window.location.href='https://undersouthern.asia/dashboard'"><i class="fa-solid fa-arrow-left"></i></button>
-            <h2 style="margin:0; font-weight:700">Release Catalog</h2>
+            <h2 style="margin:0; font-size: 28px; font-weight:900; tracking-tighter: -0.05em;">Catalog</h2>
           </div>
-          <button class="btn-primary" onclick="openAddForm()"><i class="fa-solid fa-plus"></i> Create New Release</button>
+          <button class="btn-primary" onclick="openAddForm()"><i class="fa-solid fa-plus"></i> New Release</button>
         </div>
         <div class="table-container">
           <table>
-            <thead><tr><th>Type</th><th>Status</th><th>Title / Artist</th><th>Label</th><th>Release Info</th><th># Tracks</th><th>UPC / Cat #</th><th>Actions</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Release Details</th>
+                <th>Label</th>
+                <th>Release Date</th>
+                <th>Tracks</th>
+                <th>Identifier</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
             <tbody id="catalogTableBody"></tbody>
           </table>
         </div>
       </div>
 
-      <div id="view-add" class="hidden">
-        <div style="display:flex; align-items:center; gap:15px; margin-bottom:30px;">
-          <button class="btn-icon" onclick="toggleView('list')"><i class="fa-solid fa-arrow-left"></i></button>
-          <h2 id="formTitle" style="margin:0; font-weight:700">New Release</h2>
+      <div id="view-add" class="hidden fade-in">
+        <div style="display:flex; align-items:center; justify-content: space-between; margin-bottom:40px;">
+          <div style="display:flex; align-items:center; gap:20px;">
+            <button class="btn-icon" onclick="toggleView('list')"><i class="fa-solid fa-arrow-left"></i></button>
+            <h2 id="formTitle" style="margin:0; font-size: 24px; font-weight:900; tracking-tighter: -0.05em;">New Release</h2>
+          </div>
+          <div id="statusBadgeContainer"></div>
         </div>
+
         <div class="form-container" id="releaseFormFields">
           <div class="card">
-            <h3>Release Info</h3>
-            <label>Artwork</label>
+            <h3>1. Content Visual</h3>
+            <label>Artwork (3000 x 3000px)</label>
             <div class="artwork-uploader" id="artZone" onclick="document.getElementById('artworkIn').click()">
                 <img id="artworkPreview" src="" alt="Preview">
-                <i class="fa-solid fa-image text-2xl text-gray-300"></i>
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span class="text-[10px] font-extrabold text-slate-400 uppercase">Click to upload</span>
                 <input type="file" id="artworkIn" hidden accept="image/*" onchange="previewArtwork(this)">
             </div>
-            <div style="margin-top:20px;">
-                <label>Type</label>
+            <div style="margin-top:25px;">
+                <label>Release Type</label>
                 <select id="inType"><option value="Single">Single</option><option value="EP">EP</option><option value="Album">Album</option></select>
-                <label>Title</label><input type="text" id="inTitle" placeholder="Title">
+                <label>Title</label><input type="text" id="inTitle" placeholder="e.g. Moonlight Sonata">
                 <label>Primary Artist(s)</label>
                 <div id="main-artist-tags" class="tag-container"></div>
-                <input type="text" id="inMainArtist" placeholder="Enter artist name">
+                <input type="text" id="inMainArtist" placeholder="Press Enter to add artist">
                 <label>Label</label><input type="text" id="inLabel" value="UNDERSOUTHERN">
             </div>
           </div>
+
           <div class="card">
-            <h3>Schedule & ID</h3>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-              <div><label>Date</label><input type="date" id="inDate"></div>
-              <div><label>Hour</label><input type="time" id="inHour"></div>
+            <h3>2. Schedule & Data</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+              <div><label>Release Date</label><input type="date" id="inDate"></div>
+              <div><label>Go-live Time</label><input type="time" id="inHour"></div>
             </div>
-            <label>UPC Code</label><input type="text" id="inUPC" placeholder="Auto">
+            <label>UPC / EAN</label><input type="text" id="inUPC" placeholder="Auto-generated">
             <label>Catalog Number</label><input type="text" id="inCatNum" placeholder="US-001">
             
-            <div id="adminStatusZone" class="hidden">
-                <h3 class="mt-6 text-red-600">Admin Control</h3>
-                <label>Change Status</label>
+            <div id="adminStatusZone" class="hidden" style="background: #fff1f2; padding: 20px; border-radius: 14px; border: 1px solid #fecdd3; margin-top: 10px;">
+                <h3 style="color: #be123c; margin-bottom: 15px;"><i class="fa-solid fa-shield-halved mr-1"></i> Admin Management</h3>
+                <label style="color: #be123c;">Override Status</label>
                 <select id="adminInStatus" onchange="checkRejectReasonField()">
                     <option value="Draft">Draft</option>
                     <option value="Pending">Pending</option>
@@ -181,43 +245,53 @@
                     <option value="Rejected">Rejected</option>
                 </select>
                 <div id="adminRejectReasonContainer" class="hidden">
-                   <label>Reject Reason</label>
-                   <textarea id="adminRejectReasonText" placeholder="Why is this rejected?"></textarea>
+                   <label style="color: #be123c;">Rejection Reason</label>
+                   <textarea id="adminRejectReasonText" placeholder="Enter reason..." style="background: #fff;"></textarea>
                 </div>
             </div>
           </div>
+
           <div class="card">
-            <h3>Distribution</h3>
+            <h3>3. Distribution</h3>
             <label>Territories</label>
             <div id="territory-tags" class="tag-container"></div>
-            <input type="text" id="territoryInput" placeholder="Enter country">
+            <input type="text" id="territoryInput" placeholder="e.g. Vietnam, USA">
             
-            <div id="statusDisplayZone" class="mt-10 p-4 border rounded-lg bg-gray-50">
-                <label class="text-gray-400">Current Status</label>
-                <div id="displayStatusText" class="font-bold text-lg">-</div>
-                <div id="displayRejectReason" class="text-red-500 text-xs mt-2 italic"></div>
+            <div id="statusInfoBox" class="mt-10 p-6 border rounded-xl bg-slate-50">
+                <label class="text-slate-400">Current Lifecycle</label>
+                <div id="displayStatusText" class="font-black text-2xl uppercase tracking-tighter">-</div>
+                <div id="displayRejectReason" class="text-red-600 text-xs mt-3 font-medium p-3 bg-red-50 rounded-lg hidden"></div>
             </div>
           </div>
-          <div class="card tracklist-card" style="grid-column: span 3; margin-top: 10px; border-top: 2px solid #000; padding-top: 20px;">
-            <h3>Tracks</h3>
+
+          <div class="card tracklist-card">
+            <div class="flex justify-between items-center mb-6">
+                <h3>4. Tracklist Configuration</h3>
+                <span id="trackCountBadge" class="bg-black text-white text-[10px] px-2 py-0.5 rounded-full font-bold">0 Tracks</span>
+            </div>
             <div id="tracks-container"></div>
-            <button class="btn-add-track" id="addTrackBtn" style="width:100%; border:1px dashed #ccc; padding:10px; border-radius:8px;" onclick="addTrackRow()">+ Add Track</button>
+            <button class="btn-add-track mt-4" id="addTrackBtn" onclick="addTrackRow()">
+                <i class="fa-solid fa-plus mr-1"></i> Add New Track
+            </button>
           </div>
         </div>
+
         <div class="footer-actions">
-          <button id="btnDeleteRelease" class="delete-btn hidden" onclick="prepareAction('delete')">Delete</button>
-          <button id="btnSaveDraft" class="save-btn" onclick="prepareAction('save_draft')">Save Draft</button>
-          <button id="btnSubmitRelease" class="submit-btn" onclick="prepareAction('submit_pending')">Submitted</button>
+          <button id="btnDeleteRelease" class="delete-btn hidden" onclick="prepareAction('delete')"><i class="fa-solid fa-trash-can mr-1"></i> Delete</button>
+          <button id="btnSaveDraft" class="save-btn" onclick="prepareAction('save_draft')">Save as Draft</button>
+          <button id="btnSubmitRelease" class="submit-btn" onclick="prepareAction('submit_pending')">Submitted Release</button>
         </div>
       </div>
     </div>
 </div>
 
 <script>
+  /* CONFIGURATION */
   const FB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog";
   const currentUser = localStorage.getItem('activeUser');
-  const isAdmin = currentUser === 'UNDERSOUTHERN';
+  const isAdmin = (currentUser === 'UNDERSOUTHERN');
 
+  /* APP STATE */
   let editingId = null;
   let currentAction = ''; 
   let territoryList = [];
@@ -225,29 +299,85 @@
   let currentArtworkBase64 = "";
   let fullCatalogData = {};
 
+  /* INITIALIZATION */
   window.onload = async () => {
-    if (localStorage.getItem('isLoggedIn') === 'true') {
-        document.getElementById('auth-guard').style.display = 'block';
-        syncAvatar(); setupTagInputs(); await fetchCatalog();
-    }
+    if (isAdmin) document.getElementById('adminBadge').classList.remove('hidden');
+    syncAvatar();
+    setupTagInputs();
+    await fetchCatalog();
+    setTimeout(() => {
+        ['header-el', 'top-bar-el', 'table-el'].forEach((id, i) => {
+            document.getElementById(id)?.classList.add('show');
+        });
+    }, 100);
   };
 
+  /* DATA CORE */
   async function fetchCatalog() {
     try { 
         const res = await fetch(`${FB_URL}.json`); 
         fullCatalogData = await res.json() || {}; 
         renderCatalog(); 
-    } catch (e) {}
+    } catch (e) { console.error("Firebase Sync Error"); }
   }
 
   function setupTagInputs() {
-    document.getElementById('territoryInput').onkeydown = (e) => { if(e.key==='Enter'){ e.preventDefault(); territoryList.push(e.target.value); e.target.value=''; renderTags(); }};
-    document.getElementById('inMainArtist').onkeydown = (e) => { if(e.key==='Enter'){ e.preventDefault(); mainArtists.push(e.target.value); e.target.value=''; renderMainArtistTags(); }};
+    const tInp = document.getElementById('territoryInput');
+    tInp.onkeydown = (e) => { 
+        if(e.key==='Enter' && tInp.value.trim()){ 
+            e.preventDefault(); 
+            territoryList.push(tInp.value.trim()); 
+            tInp.value=''; renderTags(); 
+        }
+    };
+    const aInp = document.getElementById('inMainArtist');
+    aInp.onkeydown = (e) => { 
+        if(e.key==='Enter' && aInp.value.trim()){ 
+            e.preventDefault(); 
+            mainArtists.push(aInp.value.trim()); 
+            aInp.value=''; renderMainArtistTags(); 
+        }
+    };
   }
 
-  function renderTags() { document.getElementById('territory-tags').innerHTML = territoryList.map((t, i) => `<div class="tag">${t} <i class="fa-solid fa-xmark" onclick="territoryList.splice(${i},1);renderTags()"></i></div>`).join(''); }
-  function renderMainArtistTags() { document.getElementById('main-artist-tags').innerHTML = mainArtists.map((a, i) => `<div class="tag">${a} <i class="fa-solid fa-xmark" onclick="mainArtists.splice(${i},1);renderMainArtistTags()"></i></div>`).join(''); }
+  function renderTags() { 
+    document.getElementById('territory-tags').innerHTML = territoryList.map((t, i) => 
+        `<div class="tag">${t} <i class="fa-solid fa-xmark" onclick="territoryList.splice(${i},1);renderTags()"></i></div>`
+    ).join(''); 
+  }
 
+  function renderMainArtistTags() { 
+    document.getElementById('main-artist-tags').innerHTML = mainArtists.map((a, i) => 
+        `<div class="tag">${a} <i class="fa-solid fa-xmark" onclick="mainArtists.splice(${i},1);renderMainArtistTags()"></i></div>`
+    ).join(''); 
+  }
+
+  /* TRACKLIST LOGIC */
+  function addTrackRow(data = {}) {
+    const container = document.getElementById('tracks-container');
+    const div = document.createElement('div');
+    div.className = 'track-row';
+    const trackNum = container.children.length + 1;
+    
+    div.innerHTML = `
+        <div class="text-[10px] font-black text-slate-300">#${trackNum}</div>
+        <input type="text" class="t-title" placeholder="Track Title" value="${data.title || ''}">
+        <input type="text" class="t-isrc" placeholder="ISRC (Optional)" value="${data.isrc || ''}">
+        <div class="text-[10px] font-bold text-slate-400 bg-slate-100 p-2 rounded-lg text-center">Audio: Pending</div>
+        <button class="btn-icon text-red-400 border-none" onclick="this.parentElement.remove(); updateTrackBadge();">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    `;
+    container.appendChild(div);
+    updateTrackBadge();
+  }
+
+  function updateTrackBadge() {
+    const count = document.getElementById('tracks-container').children.length;
+    document.getElementById('trackCountBadge').innerText = `${count} Track${count > 1 ? 's' : ''}`;
+  }
+
+  /* MEDIA LOGIC */
   function previewArtwork(input) {
       if (input.files && input.files[0]) {
           const reader = new FileReader();
@@ -260,27 +390,42 @@
       }
   }
 
-  function addTrackRow(data = {}) {
-    const container = document.getElementById('tracks-container');
-    const div = document.createElement('div');
-    div.className = 'track-row flex items-center gap-4 mb-4 bg-gray-50 p-3 rounded';
-    div.innerHTML = `<input type="text" class="t-title flex-1" placeholder="Track Title" value="${data.title || ''}"><div class="text-xs text-gray-400">ISRC: ${data.isrc || 'Auto'}</div><i class="fa-solid fa-trash text-red-300 cursor-pointer" onclick="this.parentElement.remove()"></i>`;
-    container.appendChild(div);
-  }
-
+  /* RENDERING */
   function renderCatalog() {
     const container = document.getElementById('catalogTableBody');
     const catalogArray = Object.keys(fullCatalogData).map(key => ({ id: key, ...fullCatalogData[key] }));
     const filtered = isAdmin ? catalogArray : catalogArray.filter(item => item.owner === currentUser);
     
+    if (filtered.length === 0) {
+        container.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 100px; color:#94a3b8;">No records found in catalog.</td></tr>`;
+        return;
+    }
+
     container.innerHTML = filtered.map((item) => `
-        <tr><td><b>${item.type}</b></td>
+        <tr class="fade-in">
+          <td><span class="font-bold text-slate-900">${item.type}</span></td>
           <td><span class="status-badge st-${item.status.toLowerCase()}">${item.status}</span></td>
-          <td><span class="release-title">${item.title}</span><span class="release-artist">${item.artists ? item.artists.join(', ') : '-'}</span></td>
-          <td>${item.label || '-'}</td><td>${item.date || '-'}</td><td>${item.numTracks || 0}</td><td>${item.upc || '-'}</td>
-          <td><button class="btn-icon" onclick="editRelease('${item.id}')"><i class="fa-solid fa-pen"></i></button></td></tr>`).join('');
+          <td>
+            <div style="display:flex; align-items:center; gap:12px;">
+                <img src="${item.artwork || 'https://via.placeholder.com/40'}" style="width:40px; height:40px; border-radius:6px; object-fit:cover;">
+                <div>
+                    <span class="release-title">${item.title}</span>
+                    <span class="release-artist">${item.artists ? item.artists.join(', ') : '-'}</span>
+                </div>
+            </div>
+          </td>
+          <td><span class="font-medium">${item.label || 'UNDERSOUTHERN'}</span></td>
+          <td><span class="font-bold text-[11px]">${item.date || '-'}</span></td>
+          <td><span class="bg-slate-100 px-2 py-1 rounded text-[10px] font-bold">${item.numTracks || 0} Trks</span></td>
+          <td><span class="upc-code">${item.upc || '-'}</span></td>
+          <td style="text-align:right;">
+            <button class="btn-icon" onclick="editRelease('${item.id}')"><i class="fa-solid fa-pen-to-square"></i></button>
+          </td>
+        </tr>
+    `).join('');
   }
 
+  /* SYSTEM ACTION LOGIC */
   function checkRejectReasonField() {
       const status = document.getElementById('adminInStatus').value;
       document.getElementById('adminRejectReasonContainer').classList.toggle('hidden', status !== 'Rejected');
@@ -289,40 +434,80 @@
   function prepareAction(action) {
     currentAction = action;
     const title = document.getElementById('inTitle').value;
-    if (action !== 'delete' && (!title || mainArtists.length === 0 || !currentArtworkBase64)) return alert("Please fill Artwork, Title and Artists.");
+    
+    if (action !== 'delete' && (!title || mainArtists.length === 0 || !currentArtworkBase64)) {
+        return alert("Metadata Error: Artwork, Title and Primary Artists are mandatory.");
+    }
 
     const titleEl = document.getElementById('modalTitle');
+    const descEl = document.getElementById('modalDesc');
     const labelEl = document.getElementById('checkLabel');
     const noticeEl = document.getElementById('actionNotice');
+    const rejectField = document.getElementById('rejectReasonSection');
 
-    if (action === 'delete') { titleEl.innerText = "Delete Release"; labelEl.innerText = "Yes, I want to delete this release."; noticeEl.style.display = 'block'; }
-    else if (action === 'submit_pending') { titleEl.innerText = "Submit Release"; labelEl.innerText = "Yes, I want to submit for review."; noticeEl.style.display = 'block'; }
-    else { titleEl.innerText = "Process Changes"; labelEl.innerText = "Yes, I want to synchronize changes."; noticeEl.style.display = 'none'; }
-    
+    rejectField.classList.add('hidden');
+    noticeEl.style.display = 'none';
+
+    if (action === 'delete') {
+        titleEl.innerText = "Confirm Deletion";
+        descEl.innerText = "You are about to permanently delete this release from the catalog. This cannot be undone.";
+        labelEl.innerText = "I understand and wish to delete this release.";
+        noticeEl.style.display = 'block';
+    } else if (action === 'submit_pending') {
+        titleEl.innerText = "Distribution Request";
+        descEl.innerText = "Send this catalog item to the administration for review and distribution to DSPs.";
+        labelEl.innerText = "I confirm all metadata is correct.";
+    } else if (action === 'save_draft') {
+        titleEl.innerText = "Save Local Draft";
+        descEl.innerText = "Save current changes as a draft? You can return and edit this anytime.";
+        labelEl.innerText = "Synchronize draft to cloud.";
+    }
+
     document.getElementById('actionCheck').checked = false;
     validateAction();
     document.getElementById('actionModal').style.display = 'flex';
   }
 
-  function closeModal() { document.getElementById('actionModal').style.display = 'none'; }
-  function toggleConfirmCheckbox() { const c = document.getElementById('actionCheck'); c.checked = !c.checked; validateAction(); }
-  function validateAction() { document.getElementById('confirmBtn').disabled = !document.getElementById('actionCheck').checked; }
-
   async function executeAction() {
     if (currentAction === 'delete') {
         await fetch(`${FB_URL}/${editingId}.json`, { method: 'DELETE' });
     } else {
-        const status = isAdmin ? document.getElementById('adminInStatus').value : (currentAction === 'submit_pending' ? 'Pending' : 'Draft');
-        const tracks = Array.from(document.querySelectorAll('.track-row')).map(row => ({ title: row.querySelector('.t-title').value }));
+        // Advanced Status Logic
+        let status;
+        let reason = "";
+        
+        if (isAdmin && editingId) {
+            status = document.getElementById('adminInStatus').value;
+            reason = document.getElementById('adminRejectReasonText').value;
+        } else {
+            status = currentAction === 'submit_pending' ? 'Pending' : 'Draft';
+            reason = editingId ? (fullCatalogData[editingId].rejectReason || "") : "";
+        }
+
+        const tracks = Array.from(document.querySelectorAll('.track-row')).map((row, i) => ({ 
+            title: row.querySelector('.t-title').value,
+            isrc: row.querySelector('.t-isrc').value || `US-HP1-${new Date().getFullYear()}-${1000 + i}`
+        }));
+        
         const release = {
             title: document.getElementById('inTitle').value,
-            artists: mainArtists, artwork: currentArtworkBase64, type: document.getElementById('inType').value,
-            label: document.getElementById('inLabel').value, date: document.getElementById('inDate').value,
-            hour: document.getElementById('inHour').value, upc: document.getElementById('inUPC').value || "AUTO",
-            catNum: document.getElementById('inCatNum').value, status: status, territories: territoryList,
-            owner: editingId ? fullCatalogData[editingId].owner : currentUser, numTracks: tracks.length, tracks: tracks,
-            rejectReason: isAdmin && status === 'Rejected' ? document.getElementById('adminRejectReasonText').value : (editingId ? fullCatalogData[editingId].rejectReason : "")
+            artists: mainArtists,
+            artwork: currentArtworkBase64,
+            type: document.getElementById('inType').value,
+            label: document.getElementById('inLabel').value,
+            date: document.getElementById('inDate').value,
+            hour: document.getElementById('inHour').value,
+            upc: document.getElementById('inUPC').value || `840${Math.floor(100000000 + Math.random() * 900000000)}`,
+            catNum: document.getElementById('inCatNum').value,
+            status: status,
+            owner: editingId ? fullCatalogData[editingId].owner : currentUser,
+            numTracks: tracks.length,
+            tracks: tracks,
+            territories: territoryList,
+            rejectReason: reason,
+            updatedAt: new Date().toISOString()
         };
+
         const method = editingId ? 'PATCH' : 'POST';
         const url = editingId ? `${FB_URL}/${editingId}.json` : `${FB_URL}.json`;
         await fetch(url, { method, body: JSON.stringify(release) });
@@ -330,9 +515,11 @@
     await fetchCatalog(); closeModal(); toggleView('list');
   }
 
+  /* NAVIGATION & UI */
   function editRelease(id) {
     editingId = id;
     const item = fullCatalogData[id];
+    
     document.getElementById('inTitle').value = item.title;
     document.getElementById('inType').value = item.type;
     document.getElementById('inLabel').value = item.label;
@@ -345,11 +532,18 @@
     currentArtworkBase64 = item.artwork || "";
     document.getElementById('artworkPreview').src = currentArtworkBase64;
     document.getElementById('artworkPreview').style.display = currentArtworkBase64 ? 'block' : 'none';
-    document.getElementById('displayStatusText').innerText = item.status;
-    document.getElementById('displayRejectReason').innerText = item.rejectReason || "";
     
-    // Nút Delete chỉ dành cho Admin
-    document.getElementById('btnDeleteRelease').classList.toggle('hidden', !isAdmin);
+    document.getElementById('displayStatusText').innerText = item.status;
+    const reasonBox = document.getElementById('displayRejectReason');
+    if(item.rejectReason) {
+        reasonBox.innerText = `REJECTION LOG: ${item.rejectReason}`;
+        reasonBox.classList.remove('hidden');
+    } else {
+        reasonBox.classList.add('hidden');
+    }
+    
+    // RBAC: Logic nút Delete (Admin + Draft)
+    document.getElementById('btnDeleteRelease').classList.toggle('hidden', !(isAdmin && item.status === 'Draft'));
 
     if (isAdmin) {
         document.getElementById('adminStatusZone').classList.remove('hidden');
@@ -359,7 +553,8 @@
         enableForm(true);
     } else {
         document.getElementById('adminStatusZone').classList.add('hidden');
-        enableForm(item.status === 'Draft' || item.status === 'Rejected');
+        const canEdit = (item.status === 'Draft' || item.status === 'Rejected');
+        enableForm(canEdit);
     }
 
     document.getElementById('tracks-container').innerHTML = '';
@@ -368,7 +563,9 @@
   }
 
   function enableForm(status) {
-    document.querySelectorAll('#releaseFormFields input, #releaseFormFields select').forEach(f => { if (!f.closest('#adminStatusZone')) f.disabled = !status; });
+    document.querySelectorAll('#releaseFormFields input, #releaseFormFields select, #releaseFormFields textarea').forEach(f => {
+        if (!f.closest('#adminStatusZone')) f.disabled = !status;
+    });
     document.getElementById('btnSaveDraft').style.display = status ? 'block' : 'none';
     document.getElementById('btnSubmitRelease').style.display = status ? 'block' : 'none';
     document.getElementById('addTrackBtn').style.display = status ? 'block' : 'none';
@@ -379,14 +576,28 @@
     editingId = null; territoryList = []; mainArtists = []; currentArtworkBase64 = "";
     document.getElementById('artworkPreview').style.display = 'none';
     document.getElementById('tracks-container').innerHTML = '';
-    document.getElementById('displayStatusText').innerText = "Draft";
+    document.getElementById('displayStatusText').innerText = "DRAFT";
+    document.getElementById('displayRejectReason').classList.add('hidden');
     document.getElementById('adminStatusZone').classList.add('hidden');
     document.getElementById('btnDeleteRelease').classList.add('hidden');
-    enableForm(true); addTrackRow(); toggleView('add');
+    enableForm(true);
+    addTrackRow(); 
+    toggleView('add');
   }
 
-  function toggleView(v) { document.getElementById('view-list').classList.toggle('hidden', v==='add'); document.getElementById('view-add').classList.toggle('hidden', v==='list'); }
-  function syncAvatar() { const img = localStorage.getItem('userAvatar'); if (img) document.getElementById('userAvatar').innerHTML = `<img src="${img}" class="w-full h-full object-cover">`; }
+  function toggleView(v) { 
+    document.getElementById('view-list').classList.toggle('hidden', v==='add'); 
+    document.getElementById('view-add').classList.toggle('hidden', v==='list'); 
+  }
+  
+  function closeModal() { document.getElementById('actionModal').style.display = 'none'; }
+  function toggleConfirmCheckbox() { const c = document.getElementById('actionCheck'); c.checked = !c.checked; validateAction(); }
+  function validateAction() { document.getElementById('confirmBtn').disabled = !document.getElementById('actionCheck').checked; }
+  
+  function syncAvatar() { 
+    const img = localStorage.getItem('userAvatar'); 
+    if (img) document.getElementById('userAvatar').innerHTML = `<img src="${img}">`; 
+  }
 </script>
 </body>
 </html>
