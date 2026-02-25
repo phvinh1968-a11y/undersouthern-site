@@ -65,11 +65,20 @@
   .st-draft { background: #f1f5f9; color: #64748b; }
   .st-rejected { background: #fef2f2; color: #dc2626; }
 
+  /* MODAL STYLE (TAKEDOWN STYLE) */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(4px); }
   .modal-box { background: white; padding: 32px; border-radius: 20px; width: 450px; text-align: left; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+  .modal-box h2 { font-size: 20px; font-weight: 800; margin: 0 0 15px 0; color: #000; }
+  .modal-box p { font-size: 13.5px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
   
-  .btn-modal-takedown { background: #000; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; flex: 1; transition: 0.3s; }
-  .btn-modal-takedown:disabled { opacity: 0.3; pointer-events: none; }
+  .confirm-check-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
+  .confirm-check-box input { width: 18px; height: 18px; margin: 0; margin-top: 2px; cursor: pointer; accent-color: #000; }
+  .confirm-check-box label { font-size: 13px; font-weight: 500; color: #000; line-height: 1.4; margin: 0; cursor: pointer; }
+
+  .btn-modal-cancel { border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; cursor: pointer; background: white; font-weight: 600; font-size: 14px; flex: 1; transition: 0.2s; }
+  .btn-modal-cancel:hover { background: #f9f9f9; }
+  .btn-modal-confirm { background: #000; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; flex: 1; transition: 0.3s; }
+  .btn-modal-confirm:disabled { opacity: 0.3; pointer-events: none; }
 
   .tag-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
   .tag { background: #000; color: #fff; padding: 3px 8px; border-radius: 6px; font-size: 11px; display: flex; align-items: center; gap: 5px; font-weight: 500; }
@@ -77,9 +86,12 @@
 
   .form-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
   .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; gap: 15px; }
-  .save-btn { background: #64748b; color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; }
-  .submit-btn { background: var(--primary-black); color: white; border: none; padding: 12px 40px; font-weight: 700; border-radius: 8px; cursor: pointer; }
-  .delete-btn { background: #dc2626; color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; }
+  .save-btn { background: #64748b; color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  .save-btn:hover { background: #475569; }
+  .submit-btn { background: var(--primary-black); color: white; border: none; padding: 12px 40px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  .submit-btn:hover { opacity: 0.85; }
+  .delete-btn { background: #dc2626; color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+  .delete-btn:hover { background: #b91c1c; }
 
   .artwork-uploader { width: 100%; aspect-ratio: 1/1; border: 2px dashed #ddd; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; background: #fafafa; }
   .artwork-uploader img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 5; display: none; }
@@ -91,18 +103,23 @@
 <body>
 
 <div id="auth-guard">
-    <div class="modal-overlay" id="takedownModal">
+    <div class="modal-overlay" id="actionModal">
       <div class="modal-box">
-        <h2 id="modalTitle" class="text-xl font-bold mb-4">Confirm Action</h2>
-        <p id="modalDesc" class="mb-4">Are you sure you want to proceed?</p>
-        <textarea id="rejectReasonInput" class="hidden w-full border p-2 rounded mb-4" rows="3" placeholder="Enter reason for rejection..."></textarea>
-        <div class="takedown-confirm-box" id="confirmBox" onclick="toggleTakedownCheckbox()" style="display:flex; gap:10px; background:#f8fafc; padding:15px; border-radius:12px; margin-bottom:15px; cursor:pointer;">
-          <input type="checkbox" id="confirmTakedownCheck" onchange="validateTakedown()">
-          <label class="text-xs font-bold">Yes, I'm sure I want to proceed.</label>
+        <h2 id="modalTitle">Process Changes</h2>
+        <p id="modalDesc">Are you sure you want to synchronize these changes to the system?</p>
+        
+        <div class="confirm-check-box" id="confirmBox" onclick="toggleConfirmCheckbox()">
+          <input type="checkbox" id="actionCheck" onchange="validateAction()">
+          <label id="checkLabel">Yes, I'm sure I want to proceed with this action.</label>
         </div>
-        <div style="display:flex; gap:12px;">
-          <button class="btn-modal-cancel" style="flex:1; border:1px solid #ddd; border-radius:8px;" onclick="closeModal()">Cancel</button>
-          <button class="btn-modal-takedown" id="takedownBtn" onclick="executeAction()" disabled>Confirm</button>
+
+        <p id="actionNotice" style="font-size: 12px; background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 8px; border: 1px solid #ffedd5; display: none;">
+          Note: This action cannot be undone once confirmed.
+        </p>
+
+        <div style="display:flex; gap:12px; margin-top: 25px;">
+          <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
+          <button class="btn-modal-confirm" id="confirmBtn" onclick="executeAction()" disabled>Confirm</button>
         </div>
       </div>
     </div>
@@ -277,6 +294,7 @@
       document.getElementById('adminRejectReasonContainer').classList.toggle('hidden', status !== 'Rejected');
   }
 
+  // --- MODAL LOGIC (CHUYÊN NGHIỆP GIỐNG TAKEDOWN) ---
   function prepareAction(action) {
     currentAction = action;
     const title = document.getElementById('inTitle').value;
@@ -285,21 +303,36 @@
         return alert("Please fill Artwork, Title and Artists.");
     }
 
+    const titleEl = document.getElementById('modalTitle');
+    const descEl = document.getElementById('modalDesc');
+    const labelEl = document.getElementById('checkLabel');
+    const noticeEl = document.getElementById('actionNotice');
+
     if (action === 'delete') {
-        document.getElementById('modalTitle').innerText = "Confirm Deletion";
-        document.getElementById('modalDesc').innerText = "Are you sure you want to permanently remove this release? This cannot be undone.";
+        titleEl.innerText = "Delete Release";
+        descEl.innerText = "Are you sure you want to permanently remove this release from the system?";
+        labelEl.innerText = "Yes, I'm sure I want to delete this release.";
+        noticeEl.style.display = 'block';
     } else if (action === 'submit_pending') {
-        document.getElementById('modalTitle').innerText = "Submit to Admin";
-        document.getElementById('modalDesc').innerText = "Send this release to Admin for review? You won't be able to edit until reviewed.";
+        titleEl.innerText = "Submit Release";
+        descEl.innerText = "Are you sure you want to submit this release for distribution?";
+        labelEl.innerText = "Yes, I'm sure I want to proceed with this submission.";
+        noticeEl.style.display = 'block';
     } else {
-        document.getElementById('modalTitle').innerText = "Process Changes";
-        document.getElementById('modalDesc').innerText = "Save and synchronize these changes to the system?";
+        titleEl.innerText = "Process Changes";
+        descEl.innerText = "Do you want to save the current changes for this release?";
+        labelEl.innerText = "Yes, I'm sure I want to synchronize these changes.";
+        noticeEl.style.display = 'none';
     }
     
-    document.getElementById('confirmTakedownCheck').checked = false;
-    validateTakedown();
-    document.getElementById('takedownModal').style.display = 'flex';
+    document.getElementById('actionCheck').checked = false;
+    validateAction();
+    document.getElementById('actionModal').style.display = 'flex';
   }
+
+  function closeModal() { document.getElementById('actionModal').style.display = 'none'; }
+  function toggleConfirmCheckbox() { const c = document.getElementById('actionCheck'); c.checked = !c.checked; validateAction(); }
+  function validateAction() { document.getElementById('confirmBtn').disabled = !document.getElementById('actionCheck').checked; }
 
   async function executeAction() {
     if (currentAction === 'delete') {
@@ -308,7 +341,6 @@
         return;
     }
 
-    // Logic status dựa trên vai trò
     let status;
     let reason = "";
     
@@ -366,7 +398,6 @@
     document.getElementById('displayStatusText').innerText = item.status;
     document.getElementById('displayRejectReason').innerText = item.rejectReason || "";
     
-    // Logic nút Delete (Chỉ Admin mới có quyền xóa khi bài hát ở trạng thái Draft)
     if (isAdmin && item.status === 'Draft') {
         document.getElementById('btnDeleteRelease').classList.remove('hidden');
     } else {
@@ -392,10 +423,7 @@
 
   function enableForm(status) {
     const fields = document.querySelectorAll('#releaseFormFields input, #releaseFormFields select, #releaseFormFields textarea');
-    fields.forEach(f => {
-        // Tránh disable phần Admin Control nếu status là false cho user
-        if (!f.closest('#adminStatusZone')) f.disabled = !status;
-    });
+    fields.forEach(f => { if (!f.closest('#adminStatusZone')) f.disabled = !status; });
     document.getElementById('btnSaveDraft').style.display = status ? 'block' : 'none';
     document.getElementById('btnSubmitRelease').style.display = status ? 'block' : 'none';
     document.getElementById('addTrackBtn').style.display = status ? 'block' : 'none';
@@ -414,9 +442,6 @@
   }
 
   function toggleView(v) { document.getElementById('view-list').classList.toggle('hidden', v==='add'); document.getElementById('view-add').classList.toggle('hidden', v==='list'); }
-  function closeModal() { document.getElementById('takedownModal').style.display = 'none'; }
-  function toggleTakedownCheckbox() { const c = document.getElementById('confirmTakedownCheck'); c.checked = !c.checked; validateTakedown(); }
-  function validateTakedown() { document.getElementById('takedownBtn').disabled = !document.getElementById('confirmTakedownCheck').checked; }
   function syncAvatar() { const img = localStorage.getItem('userAvatar'); if (img) document.getElementById('userAvatar').innerHTML = `<img src="${img}" class="w-full h-full object-cover">`; }
 </script>
 </body>
