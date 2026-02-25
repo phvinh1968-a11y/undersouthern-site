@@ -70,12 +70,13 @@
   .st-released { background: #e6f9f0; color: #16a34a; }
   .st-pending { background: #fff7ed; color: #ea580c; }
   .st-draft { background: #f1f5f9; color: #64748b; }
+  .st-rejected { background: #fef2f2; color: #dc2626; }
 
   .release-title { font-weight: 700; color: #000; display: block; }
   .release-artist { font-size: 12px; color: #666; }
   .upc-code { font-family: monospace; color: #888; font-size: 11px; }
 
-  /* --- MODAL TAKEDOWN --- */
+  /* --- MODAL TAKEDOWN / ACTION --- */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(4px); }
   .modal-box { background: white; padding: 32px; border-radius: 20px; width: 450px; text-align: left; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
   .modal-box h2 { font-size: 20px; font-weight: 800; margin: 0 0 15px 0; color: #000; }
@@ -109,6 +110,9 @@
   tbody tr.loaded { opacity: 1; transform: translateY(0); }
   .btn-icon { border: 1px solid var(--border-color); background: #fff; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
   .btn-icon:hover { background: var(--hover-bg); }
+
+  /* Thêm màu cho lý do Reject */
+  .reject-text { font-size: 11px; color: #ef4444; margin-top: 4px; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -122,11 +126,11 @@
         <div class="takedown-confirm-box" id="confirmBox" onclick="toggleTakedownCheckbox()">
           <input type="checkbox" id="confirmTakedownCheck" onchange="validateTakedown()">
           <label for="confirmTakedownCheck">
-            Yes, I'm sure I want to remove this release from stores.
+            Yes, I'm sure I want to proceed with this action.
           </label>
         </div>
         <p id="takedownWarning" style="font-size: 12px; background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 8px; border: 1px solid #ffedd5;">
-          This will remove the release from all stores where it is currently live. You'll continue be paid all royalties owed to you for the release.
+          This action will update the status of the release across the system.
         </p>
         <div style="display:flex; gap:12px; margin-top: 25px;">
           <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
@@ -222,6 +226,7 @@
                 <option value="Draft">Draft</option>
                 <option value="Pending">Pending</option>
                 <option value="Released">Released</option>
+                <option value="Rejected">Rejected</option>
               </select>
             </div>
           </div>
@@ -243,32 +248,41 @@
 </div>
 
 <script>
-  let editingIndex = -1;
-  let pendingActionIndex = -1;
-  let currentAction = ''; // 'takedown' or 'delete'
+  const DB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog";
+  const currentUser = localStorage.getItem('activeUser');
+  const isAdmin = (currentUser === 'UNDERSOUTHERN');
+
+  let editingKey = null;
+  let pendingActionKey = null;
+  let currentAction = ''; 
   let territoryList = [];
   let mainArtists = [];
+  let firebaseCatalog = {};
 
-  window.onload = () => {
+  window.onload = async () => {
     if (localStorage.getItem('isLoggedIn') === 'true') {
         document.getElementById('auth-guard').style.display = 'block';
         syncAvatar(); 
         setupTagInputs();
-        renderCatalog(); 
+        await syncFromCloud();
         slowLoadView();
     }
   };
 
-  // --- AUTO GEN ---
+  async function syncFromCloud() {
+    try {
+        const res = await fetch(`${DB_URL}.json`);
+        firebaseCatalog = await res.json() || {};
+        renderCatalog();
+    } catch (e) { console.error("Cloud Error"); }
+  }
+
   function generateUPC() { return "840" + Math.floor(100000000 + Math.random() * 900000000); }
   function generateISRC() { return "US-S12-" + new Date().getFullYear().toString().slice(-2) + "-" + Math.floor(10000 + Math.random() * 90000); }
 
   function setupTagInputs() {
-    // Territory
     const tInp = document.getElementById('territoryInput');
     tInp.onkeydown = (e) => { if(e.key==='Enter' && tInp.value.trim()){ e.preventDefault(); territoryList.push(tInp.value.trim()); tInp.value=''; renderTags(); } };
-    
-    // Main Artists
     const aInp = document.getElementById('inMainArtist');
     aInp.onkeydown = (e) => { if(e.key==='Enter' && aInp.value.trim()){ e.preventDefault(); mainArtists.push(aInp.value.trim()); aInp.value=''; renderMainArtistTags(); } };
   }
@@ -281,7 +295,6 @@
     document.getElementById('main-artist-tags').innerHTML = mainArtists.map((a, i) => `<div class="tag">${a} <i class="fa-solid fa-xmark" onclick="mainArtists.splice(${i},1);renderMainArtistTags()"></i></div>`).join('');
   }
 
-  // --- TRACKS ---
   let trackCount = 0;
   function addTrackRow(data = {}) {
     trackCount++;
@@ -290,7 +303,6 @@
     row.className = 'track-row'; row.id = `track-row-${trackCount}`;
     row.artists = data.artists || [];
     row.feats = data.feats || [];
-    
     row.innerHTML = `
         <div style="font-weight:700;">${trackCount}</div>
         <input type="text" class="t-title" placeholder="Title" value="${data.title || ''}">
@@ -302,23 +314,18 @@
         <i class="fa-solid fa-trash" style="cursor:pointer; color:#ff4d4d" onclick="removeTrackRow(${trackCount})"></i>
     `;
     container.appendChild(row);
-
     const artIn = row.querySelector('.tr-art-in');
     const featIn = row.querySelector('.tr-feat-in');
-    
     const trRenderArt = () => { document.getElementById(`tr-art-${row.id.split('-')[2]}`).innerHTML = row.artists.map((a,i)=>`<div class="tag" style="font-size:8px">${a} <i class="fa-solid fa-xmark" onclick="removeTrackTag('${row.id}', 'artists', ${i})"></i></div>`).join(''); };
     const trRenderFeat = () => { document.getElementById(`tr-feat-${row.id.split('-')[2]}`).innerHTML = row.feats.map((a,i)=>`<div class="tag" style="font-size:8px">${a} <i class="fa-solid fa-xmark" onclick="removeTrackTag('${row.id}', 'feats', ${i})"></i></div>`).join(''); };
-
     artIn.onkeydown = (e) => { if(e.key==='Enter' && artIn.value.trim()){ e.preventDefault(); row.artists.push(artIn.value.trim()); artIn.value=''; trRenderArt(); } };
     featIn.onkeydown = (e) => { if(e.key==='Enter' && featIn.value.trim()){ e.preventDefault(); row.feats.push(featIn.value.trim()); featIn.value=''; trRenderFeat(); } };
-    
     trRenderArt(); trRenderFeat();
   }
 
   function removeTrackTag(rowId, type, index) {
     const row = document.getElementById(rowId);
     row[type].splice(index, 1);
-    // Re-render specifically for this row
     const trackNum = rowId.split('-')[2];
     const containerId = type === 'artists' ? `tr-art-${trackNum}` : `tr-feat-${trackNum}`;
     document.getElementById(containerId).innerHTML = row[type].map((a,i)=>`<div class="tag" style="font-size:8px">${a} <i class="fa-solid fa-xmark" onclick="removeTrackTag('${rowId}', '${type}', ${i})"></i></div>`).join('');
@@ -328,10 +335,9 @@
   function handleAudioSelect(id) { const f = document.getElementById(`audio-input-${id}`).files[0]; if(f) document.getElementById(`audio-btn-${id}`).innerText = f.name; }
   function removeTrackRow(id) { if (document.querySelectorAll('.track-row').length > 1) document.getElementById(`track-row-${id}`).remove(); }
 
-  function handleSave() {
+  async function handleSave() {
     const title = document.getElementById('inTitle').value;
     if (!title || mainArtists.length === 0) return alert("Title and Artists required.");
-
     const tracks = Array.from(document.querySelectorAll('.track-row')).map(row => ({
         title: row.querySelector('.t-title').value,
         version: row.querySelector('.t-version').value,
@@ -340,48 +346,60 @@
         isrc: row.querySelector('.t-isrc').value || generateISRC(),
         audioName: row.querySelector('.audio-upload-btn').innerText
     }));
-
     const release = {
         title, artists: mainArtists, upc: document.getElementById('inUPC').value || generateUPC(),
         type: document.getElementById('inType').value, label: document.getElementById('inLabel').value,
         catNum: document.getElementById('inCatNum').value, date: document.getElementById('inDate').value || '-',
-        hour: document.getElementById('inHour').value, status: editingIndex === -1 ? 'Draft' : document.getElementById('inStatus').value,
-        tracks: tracks, numTracks: tracks.length, territories: territoryList
+        hour: document.getElementById('inHour').value, status: editingKey ? document.getElementById('inStatus').value : 'Pending',
+        tracks: tracks, numTracks: tracks.length, territories: territoryList, owner: currentUser
     };
 
-    let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
-    if (editingIndex === -1) catalog.unshift(release); else catalog[editingIndex] = release;
-    localStorage.setItem('undersouthern_catalog', JSON.stringify(catalog));
-    renderCatalog(); toggleView('list');
+    try {
+        const method = editingKey ? 'PATCH' : 'POST';
+        const url = editingKey ? `${DB_URL}/${editingKey}.json` : `${DB_URL}.json`;
+        await fetch(url, { method, body: JSON.stringify(release) });
+        await syncFromCloud(); toggleView('list');
+    } catch(e) { alert("Save Error"); }
   }
 
   function renderCatalog() {
     const container = document.getElementById('catalogTableBody');
-    let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
-    container.innerHTML = catalog.map((item, i) => `
+    const catalogArr = Object.keys(firebaseCatalog).map(key => ({ key, ...firebaseCatalog[key] }));
+    
+    // Logic: Admin xem tất cả, User chỉ xem của mình
+    const filtered = isAdmin ? catalogArr : catalogArr.filter(item => item.owner === currentUser);
+
+    container.innerHTML = filtered.map((item) => `
         <tr>
           <td><b>${item.type}</b></td>
-          <td><span class="status-badge st-${item.status.toLowerCase()}">${item.status}</span></td>
+          <td>
+            <span class="status-badge st-${item.status.toLowerCase()}">${item.status}</span>
+            ${item.rejectReason ? `<div class="reject-text">Reject Reason: ${item.rejectReason}</div>` : ''}
+          </td>
           <td><span class="release-title">${item.title}</span><span class="release-artist">${item.artists.join(', ')}</span></td>
           <td>${item.label || '-'}</td>
           <td><b>${item.date}</b><br>${item.hour || '00:00'}</td>
           <td style="text-align:center;">${item.numTracks}</td>
           <td><div class="upc-code">UPC: ${item.upc}<br>CAT: ${item.catNum || '-'}</div></td>
           <td style="display:flex; gap:8px">
-            <button class="btn-icon" onclick="editRelease(${i})"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn-icon" onclick="openActionModal(${i}, '${item.status}')"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn-icon" onclick="editRelease('${item.key}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn-icon" onclick="openActionModal('${item.key}', '${item.status}')"><i class="fa-solid fa-trash"></i></button>
+            ${isAdmin && item.status === 'Pending' ? `
+              <button class="btn-icon" style="color:#16a34a" onclick="adminApprove('${item.key}')" title="Approve"><i class="fa-solid fa-check"></i></button>
+              <button class="btn-icon" style="color:#dc2626" onclick="openRejectModal('${item.key}')" title="Reject"><i class="fa-solid fa-xmark"></i></button>
+            ` : ''}
           </td>
         </tr>
       `).join('');
     container.querySelectorAll('tr').forEach((row, index) => setTimeout(() => row.classList.add('loaded'), index * 100));
   }
 
-  function openActionModal(index, status) {
-    pendingActionIndex = index;
-    if (status === 'Draft') {
+  function openActionModal(key, status) {
+    pendingActionKey = key;
+    if (status === 'Draft' || isAdmin) {
       currentAction = 'delete';
-      document.getElementById('modalTitle').innerText = "Delete Draft";
-      document.getElementById('modalDesc').innerText = "Are you sure you want to permanently delete this draft?";
+      document.getElementById('modalTitle').innerText = "Delete Release";
+      document.getElementById('modalDesc').innerText = "Are you sure you want to permanently delete this release from the system?";
       document.getElementById('confirmBox').style.display = 'none';
       document.getElementById('takedownWarning').style.display = 'none';
       document.getElementById('takedownReason').style.display = 'none';
@@ -398,15 +416,41 @@
     document.getElementById('takedownModal').style.display = 'flex';
   }
 
-  function executeAction() {
-    let catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
-    catalog.splice(pendingActionIndex, 1);
-    localStorage.setItem('undersouthern_catalog', JSON.stringify(catalog));
-    renderCatalog(); closeModal();
+  function openRejectModal(key) {
+    pendingActionKey = key;
+    currentAction = 'reject';
+    document.getElementById('modalTitle').innerText = "Reject Release";
+    document.getElementById('modalDesc').innerText = "Please provide the reason for rejection:";
+    document.getElementById('confirmBox').style.display = 'flex';
+    document.getElementById('takedownWarning').style.display = 'none';
+    document.getElementById('takedownReason').style.display = 'block';
+    validateTakedown();
+    document.getElementById('takedownModal').style.display = 'flex';
+  }
+
+  async function adminApprove(key) {
+    if(confirm("Duyệt phát hành bản ghi này?")) {
+        await fetch(`${DB_URL}/${key}.json`, { method: 'PATCH', body: JSON.stringify({ status: 'Released', rejectReason: null }) });
+        await syncFromCloud();
+    }
+  }
+
+  async function executeAction() {
+    try {
+        if (currentAction === 'delete') {
+            await fetch(`${DB_URL}/${pendingActionKey}.json`, { method: 'DELETE' });
+        } else if (currentAction === 'takedown') {
+            await fetch(`${DB_URL}/${pendingActionKey}.json`, { method: 'PATCH', body: JSON.stringify({ status: 'Draft' }) });
+        } else if (currentAction === 'reject') {
+            const reason = document.getElementById('takedownReason').value;
+            await fetch(`${DB_URL}/${pendingActionKey}.json`, { method: 'PATCH', body: JSON.stringify({ status: 'Rejected', rejectReason: reason }) });
+        }
+        await syncFromCloud(); closeModal();
+    } catch(e) { alert("Action Error"); }
   }
 
   function openAddForm() {
-    editingIndex = -1; trackCount = 0; territoryList = []; mainArtists = [];
+    editingKey = null; trackCount = 0; territoryList = []; mainArtists = [];
     document.getElementById('tracks-container').innerHTML = '';
     document.getElementById('statusWrapper').classList.add('hidden');
     document.getElementById('inTitle').value = '';
@@ -415,9 +459,9 @@
     toggleView('add');
   }
 
-  function editRelease(index) {
-    editingIndex = index;
-    const item = JSON.parse(localStorage.getItem('undersouthern_catalog'))[index];
+  function editRelease(key) {
+    editingKey = key;
+    const item = firebaseCatalog[key];
     document.getElementById('inTitle').value = item.title;
     document.getElementById('inType').value = item.type;
     document.getElementById('inLabel').value = item.label;
@@ -427,13 +471,10 @@
     document.getElementById('inHour').value = item.hour;
     document.getElementById('inStatus').value = item.status;
     document.getElementById('statusWrapper').classList.remove('hidden');
-    
     mainArtists = [...(item.artists || [])];
     territoryList = [...(item.territories || [])];
-    
     document.getElementById('tracks-container').innerHTML = ''; trackCount = 0;
     item.tracks.forEach(t => addTrackRow(t));
-    
     renderTags(); renderMainArtistTags(); toggleView('add');
   }
 
@@ -441,7 +482,7 @@
   function slowLoadView() { ['header-el', 'top-bar-el', 'table-el'].forEach((id, i) => setTimeout(() => document.getElementById(id)?.classList.add('show'), (i + 1) * 200)); }
   function toggleView(v) { document.getElementById('view-list').classList.toggle('hidden', v==='add'); document.getElementById('view-add').classList.toggle('hidden', v==='list'); }
   function syncAvatar() { const img = localStorage.getItem('userAvatar'); if (img) document.getElementById('userAvatar').innerHTML = `<img src="${img}">`; }
-  function closeModal() { document.getElementById('takedownModal').style.display = 'none'; }
+  function closeModal() { document.getElementById('takedownModal').style.display = 'none'; document.getElementById('confirmTakedownCheck').checked = false; }
   function toggleTakedownCheckbox() { const c = document.getElementById('confirmTakedownCheck'); c.checked = !c.checked; validateTakedown(); }
   function validateTakedown() { const isChecked = document.getElementById('confirmTakedownCheck').checked; const btn = document.getElementById('takedownBtn'); btn.className = isChecked ? "btn-modal-takedown active" : "btn-modal-takedown"; }
   function toggleTracklist() { const type = document.getElementById('inType').value; document.getElementById('addTrackBtn').style.display = (type === 'Single') ? 'none' : 'block'; }
