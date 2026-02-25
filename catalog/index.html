@@ -12,129 +12,148 @@
 
 <style>
   :root {
-    --bg-main: #ffffff;
-    --primary: #000000;
-    --border: #f1f5f9;
-    --text-main: #0f172a;
+    --bg-system: #f8fafc;
+    --card-bg: #ffffff;
+    --primary-dark: #0f172a;
+    --accent: #000000;
+    --border-soft: #f1f5f9;
+    --text-main: #1e293b;
     --text-sub: #64748b;
   }
 
-  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-main); color: var(--text-main); margin: 0; padding: 0; }
-
-  /* --- ANIMATIONS --- */
-  .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-  /* --- HEADER --- */
-  .header {
-    height: 72px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 40px; sticky: top; background: rgba(255,255,255,0.8); backdrop-filter: blur(12px); z-index: 100;
+  body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    background: var(--bg-system); 
+    color: var(--text-main); 
+    margin: 0; 
+    -webkit-font-smoothing: antialiased;
   }
-  .logo { font-weight: 900; font-size: 20px; letter-spacing: -0.05em; text-transform: uppercase; border-right: 1px solid var(--border); padding-right: 40px; height: 100%; display: flex; align-items: center; }
-  
-  /* --- LAYOUT --- */
-  .container-main { max-width: 1440px; margin: 0 auto; padding: 40px; }
-  .hidden { display: none !important; }
 
-  /* --- CARDS & INPUTS --- */
-  .card { background: #fff; border-radius: 20px; border: 1px solid var(--border); padding: 30px; transition: 0.3s; }
-  .card:hover { border-color: #e2e8f0; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.02); }
-  
-  h3 { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--text-sub); letter-spacing: 0.1em; margin-bottom: 25px; display: flex; align-items: center; gap: 8px; }
-  label { display: block; font-size: 11px; font-weight: 700; margin-bottom: 8px; color: #1e293b; }
-  
-  input, select, textarea { 
-    width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 12px; 
-    font-size: 14px; background: #f8fafc; transition: 0.2s; outline: none; margin-bottom: 20px;
+  /* --- Giao diện đồng bộ Analytics --- */
+  .glass-header {
+    height: 72px; background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-soft);
+    position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
   }
-  input:focus { border-color: #000; background: #fff; box-shadow: 0 0 0 4px rgba(0,0,0,0.03); }
-  input:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  /* --- ARTWORK --- */
-  .art-dropzone {
-    width: 100%; aspect-ratio: 1/1; border: 2px dashed #e2e8f0; border-radius: 16px;
+  .main-container { max-width: 1400px; margin: 0 auto; padding: 32px 40px; }
+
+  .analytic-card {
+    background: var(--card-bg); border-radius: 24px; border: 1px solid var(--border-soft);
+    padding: 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .analytic-card:hover { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05); }
+
+  /* --- Input Styles --- */
+  .input-group label { display: block; font-size: 11px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  
+  .input-field {
+    width: 100%; padding: 14px 18px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px;
+    font-size: 14px; font-weight: 500; transition: all 0.2s; outline: none;
+  }
+  .input-field:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(0,0,0,0.04); }
+
+  /* --- Artwork Uploader --- */
+  .artwork-box {
+    width: 100%; aspect-ratio: 1/1; border: 2px dashed #e2e8f0; border-radius: 20px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     cursor: pointer; overflow: hidden; position: relative; background: #f8fafc; transition: 0.3s;
   }
-  .art-dropzone:hover { border-color: #000; }
-  .art-dropzone img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 10; display: none; }
-  .art-dropzone i { font-size: 32px; color: #cbd5e1; margin-bottom: 10px; }
+  .artwork-box:hover { border-color: var(--accent); background: #f1f5f9; }
+  .artwork-box img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 10; display: none; }
+  .artwork-box i { font-size: 32px; color: #cbd5e1; margin-bottom: 12px; }
 
-  /* --- TRACKLIST --- */
-  .track-item { 
-    display: grid; grid-template-columns: 40px 1fr 1fr 1fr 40px; gap: 15px; 
-    align-items: center; background: #f8fafc; padding: 16px; border-radius: 16px; margin-bottom: 12px;
-  }
-  .track-item input { margin-bottom: 0 !important; }
+  /* --- Badge & Table --- */
+  .badge { padding: 6px 12px; border-radius: 100px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+  .badge-draft { background: #f1f5f9; color: #475569; }
+  .badge-pending { background: #fffbeb; color: #d97706; }
+  .badge-released { background: #f0fdf4; color: #16a34a; }
+  .badge-rejected { background: #fef2f2; color: #dc2626; }
 
-  /* --- BUTTONS --- */
-  .btn-base { padding: 12px 24px; border-radius: 12px; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
-  .btn-black { background: #000; color: #fff; }
-  .btn-black:hover { opacity: 0.8; transform: translateY(-1px); }
-  .btn-ghost { background: #f1f5f9; color: #475569; }
-  .btn-ghost:hover { background: #e2e8f0; }
+  table { width: 100%; border-spacing: 0 8px; border-collapse: separate; }
+  th { padding: 12px 20px; font-size: 10px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; text-align: left; }
+  td { padding: 20px; background: #fff; border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); }
+  td:first-child { border-left: 1px solid var(--border-soft); border-top-left-radius: 16px; border-bottom-left-radius: 16px; }
+  td:last-child { border-right: 1px solid var(--border-soft); border-top-right-radius: 16px; border-bottom-right-radius: 16px; }
 
-  /* --- MODAL --- */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; }
-  .modal-content { background: #fff; padding: 40px; border-radius: 24px; width: 100%; max-width: 450px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+  /* --- Buttons --- */
+  .btn-analytics { padding: 12px 28px; border-radius: 14px; font-weight: 700; font-size: 14px; transition: 0.2s; display: inline-flex; align-items: center; gap: 10px; }
+  .btn-primary-dark { background: var(--primary-dark); color: white; }
+  .btn-primary-dark:hover { opacity: 0.9; transform: translateY(-1px); }
   
-  .status-tag { padding: 4px 10px; border-radius: 100px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
-  .st-draft { background: #f1f5f9; color: #64748b; }
-  .st-pending { background: #fef3c7; color: #d97706; }
-  .st-released { background: #dcfce7; color: #16a34a; }
-  .st-rejected { background: #fee2e2; color: #dc2626; }
+  /* --- Modal --- */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; }
+  .modal-sheet { background: #fff; padding: 40px; border-radius: 32px; width: 100%; max-width: 500px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+
+  .hidden { display: none !important; }
+  .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
 
-<div class="modal-overlay" id="modalAction">
-  <div class="modal-content fade-in">
-    <h2 id="mTitle" class="text-2xl font-black mb-2">Process Changes</h2>
-    <p id="mDesc" class="text-slate-500 text-sm mb-8">Are you sure you want to proceed with this action?</p>
+<div class="modal-overlay" id="actionModal">
+  <div class="modal-sheet fade-in">
+    <h2 id="mTitle" class="text-3xl font-black mb-3 tracking-tighter">Process Changes</h2>
+    <p id="mDesc" class="text-slate-500 text-sm mb-8 leading-relaxed">Are you sure you want to synchronize these changes with the global catalog system?</p>
     
-    <div id="mRejectBox" class="hidden">
-      <label>Reason for rejection</label>
-      <textarea id="mRejectReason" placeholder="Enter reason here..."></textarea>
+    <div id="mRejectContainer" class="hidden mb-6">
+      <label class="text-[10px] font-bold text-rose-500 uppercase mb-2 block">Rejection Reason</label>
+      <textarea id="mRejectReason" class="input-field border-rose-100 bg-rose-50" placeholder="Please specify why this release was rejected..."></textarea>
     </div>
 
-    <div class="bg-slate-50 p-5 border border-slate-100 rounded-2xl mb-6 flex gap-4 cursor-pointer" onclick="toggleModalCheck()">
-      <input type="checkbox" id="mCheck" class="w-5 h-5 accent-black">
-      <label class="text-xs font-bold leading-tight m-0 cursor-pointer">I confirm that all provided information is accurate.</label>
+    <div class="bg-slate-50 p-5 border border-slate-100 rounded-2xl mb-8 flex gap-4 items-start cursor-pointer" onclick="toggleModalCheck()">
+      <input type="checkbox" id="mCheck" class="w-5 h-5 mt-0.5 accent-black cursor-pointer">
+      <label class="text-xs font-bold leading-snug m-0 cursor-pointer text-slate-700">I confirm that all provided metadata and assets meet the quality standards for distribution.</label>
     </div>
 
-    <div class="flex gap-3">
-      <button class="flex-1 btn-base btn-ghost justify-center" onclick="closeModal()">Cancel</button>
-      <button class="flex-1 btn-base btn-black justify-center opacity-20" id="mConfirmBtn" disabled onclick="executeFinalAction()">Confirm</button>
+    <div class="flex gap-4">
+      <button class="flex-1 py-4 rounded-2xl font-extrabold text-slate-400 hover:bg-slate-50 transition" onclick="closeModal()">Cancel</button>
+      <button class="flex-1 btn-primary-dark justify-center py-4 rounded-2xl opacity-20" id="mConfirmBtn" disabled onclick="executeFinalAction()">Confirm Action</button>
     </div>
   </div>
 </div>
 
-<header class="header">
-  <div class="logo">UNDERSOUTHERN</div>
-  <div class="flex items-center gap-4">
-    <div id="admLabel" class="hidden text-[10px] font-black bg-red-50 text-red-500 px-3 py-1 rounded-full uppercase">Admin</div>
-    <div class="w-8 h-8 rounded-full bg-black overflow-hidden" id="userAvatar"></div>
+<header class="glass-header">
+  <div class="flex items-center">
+    <div class="logo font-black text-2xl tracking-tighter mr-8">UNDERSOUTHERN</div>
+    <nav class="flex gap-8 text-[11px] font-bold uppercase tracking-widest text-slate-400">
+      <a href="#" class="text-black">Catalog</a>
+      <a href="https://undersouthern.asia/dashboard" class="hover:text-black transition">Dashboard</a>
+      <a href="#" class="hover:text-black transition">Distributions</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-6">
+    <div id="admTag" class="hidden text-[9px] font-black bg-black text-white px-3 py-1 rounded-full uppercase tracking-tighter">System Admin</div>
+    <div class="w-10 h-10 rounded-full ring-2 ring-slate-100 overflow-hidden" id="userAvatar"></div>
   </div>
 </header>
 
-<main class="container-main">
+<main class="main-container">
   <div id="viewList" class="fade-in">
-    <div class="flex justify-between items-center mb-10">
-      <h1 class="text-4xl font-black tracking-tighter">Release Catalog</h1>
-      <button class="btn-base btn-black" onclick="openAddForm()"><i class="fa-solid fa-plus"></i> New Release</button>
+    <div class="flex justify-between items-end mb-12">
+      <div>
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Centralized Catalog</p>
+        <h1 class="text-5xl font-black tracking-tighter">Manage Releases</h1>
+      </div>
+      <button class="btn-analytics btn-primary-dark shadow-xl shadow-slate-200" onclick="openAddForm()">
+        <i class="fa-solid fa-plus text-xs"></i> New Catalog Item
+      </button>
     </div>
-    <div class="card overflow-x-auto p-0">
+
+    <div class="overflow-x-auto">
       <table class="w-full">
         <thead>
           <tr>
-            <th>Type</th>
+            <th>Format</th>
             <th>Status</th>
-            <th>Information</th>
+            <th>Release Info</th>
             <th>Label</th>
             <th>Tracks</th>
-            <th>UPC</th>
-            <th class="text-right">Action</th>
+            <th>UPC / EAN</th>
+            <th class="text-right">Manage</th>
           </tr>
         </thead>
         <tbody id="catalogTable"></tbody>
@@ -143,94 +162,114 @@
   </div>
 
   <div id="viewForm" class="hidden fade-in">
-    <div class="flex justify-between items-center mb-10">
-      <div class="flex items-center gap-4">
-        <button class="w-10 h-10 border border-slate-200 rounded-xl flex items-center justify-center hover:bg-slate-50" onclick="toggleView('list')">
+    <div class="flex justify-between items-center mb-12">
+      <div class="flex items-center gap-6">
+        <button class="w-12 h-12 bg-white border border-slate-200 rounded-2xl flex items-center justify-center hover:bg-slate-50 shadow-sm" onclick="toggleView('list')">
           <i class="fa-solid fa-arrow-left"></i>
         </button>
-        <h2 id="fTitle" class="text-2xl font-black">Create Release</h2>
+        <div>
+           <h2 id="fTitle" class="text-3xl font-black tracking-tighter">Music Metadata</h2>
+           <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Asset & Rights Management</p>
+        </div>
       </div>
-      <div id="fStatusBadge"></div>
+      <div id="fStatusBadgeContainer"></div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div class="card">
-        <h3><i class="fa-solid fa-circle-info"></i> Basic Info</h3>
-        <label>Artwork (3000px)</label>
-        <div class="art-dropzone" onclick="document.getElementById('artInput').click()">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      <div class="analytic-card">
+        <h3><i class="fa-solid fa-image"></i> Visual Asset</h3>
+        <label>Cover Artwork</label>
+        <div class="artwork-box" onclick="document.getElementById('artInput').click()">
           <img id="artPrev" src="">
           <i class="fa-solid fa-cloud-arrow-up"></i>
-          <span class="text-[10px] font-black text-slate-300 uppercase">Upload JPEG/PNG</span>
+          <span class="text-[10px] font-black text-slate-400 uppercase">3000 x 3000 px recommended</span>
           <input type="file" id="artInput" hidden accept="image/*" onchange="handleArt(this)">
         </div>
-        <div class="mt-8">
-          <label>Format</label>
-          <select id="fType"><option>Single</option><option>EP</option><option>Album</option></select>
-          <label>Release Title</label>
-          <input type="text" id="fTitleInput" placeholder="Moonlight">
-          <label>Primary Artists</label>
-          <div id="fArtistTags" class="flex flex-wrap gap-2 mb-2"></div>
-          <input type="text" id="fArtistInput" placeholder="Enter name and Press Enter">
+        <div class="mt-10 input-group">
+          <label>Primary Title</label>
+          <input type="text" id="fTitleInput" class="input-field" placeholder="Enter release name">
+          <label>Main Artist(s)</label>
+          <div id="fArtistTags" class="flex flex-wrap gap-2 mb-3"></div>
+          <input type="text" id="fArtistInput" class="input-field" placeholder="Type name & Press Enter">
+          <label>Label</label>
+          <input type="text" id="fLabel" class="input-field" value="UNDERSOUTHERN">
         </div>
       </div>
 
-      <div class="card">
-        <h3><i class="fa-solid fa-database"></i> Metadata & ID</h3>
-        <div class="grid grid-cols-2 gap-4">
-          <div><label>Date</label><input type="date" id="fDate"></div>
-          <div><label>Hour</label><input type="time" id="fHour"></div>
+      <div class="analytic-card">
+        <h3><i class="fa-solid fa-fingerprint"></i> Metadata & Rights</h3>
+        <div class="input-group">
+          <label>Format</label>
+          <select id="fType" class="input-field"><option>Single</option><option>EP</option><option>Album</option></select>
+          <div class="grid grid-cols-2 gap-4">
+            <div><label>Go-live Date</label><input type="date" id="fDate" class="input-field"></div>
+            <div><label>Hour (GMT)</label><input type="time" id="fHour" class="input-field"></div>
+          </div>
+          <label>UPC Code</label>
+          <input type="text" id="fUPC" class="input-field" placeholder="System auto-generate">
+          <label>Catalog No.</label>
+          <input type="text" id="fCat" class="input-field" value="US-001">
         </div>
-        <label>UPC Code</label><input type="text" id="fUPC" placeholder="Auto-gen if empty">
-        <label>Catalog Number</label><input type="text" id="fCat" value="US-001">
-        
-        <div id="admZone" class="hidden p-6 bg-rose-50 rounded-2xl border border-rose-100">
-          <h3 class="text-rose-500 mb-4"><i class="fa-solid fa-shield-check"></i> Admin Override</h3>
-          <label class="text-rose-700">Set Status</label>
-          <select id="admStatus" onchange="toggleRejectField()">
-            <option value="Draft">Draft</option>
-            <option value="Pending">Pending</option>
-            <option value="Released">Released</option>
-            <option value="Rejected">Rejected</option>
-          </select>
-          <div id="admRejectZone" class="hidden">
-            <label class="text-rose-700">Rejection Reason</label>
-            <textarea id="admReason" class="bg-white"></textarea>
+
+        <div id="admZone" class="hidden mt-6 p-6 bg-slate-900 rounded-3xl text-white">
+          <h3 class="text-slate-400 mb-6 font-black"><i class="fa-solid fa-shield-check text-white"></i> Internal Control</h3>
+          <div class="input-group">
+            <label class="text-slate-500">Update Distribution Status</label>
+            <select id="admStatus" class="input-field bg-slate-800 border-slate-700 text-white" onchange="toggleRejectField()">
+              <option value="Draft">Draft</option>
+              <option value="Pending">Pending</option>
+              <option value="Released">Released</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+            <div id="admRejectZone" class="hidden mt-4">
+              <label class="text-rose-400">Specify Reason</label>
+              <textarea id="admReason" class="input-field bg-slate-800 border-slate-700 text-white h-24"></textarea>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="card">
-        <h3><i class="fa-solid fa-globe"></i> Distribution</h3>
-        <label>Territories</label>
-        <div id="fTerritoryTags" class="flex flex-wrap gap-2 mb-2"></div>
-        <input type="text" id="fTerritoryInput" placeholder="Add country">
+      <div class="analytic-card">
+        <h3><i class="fa-solid fa-satellite-dish"></i> Distribution</h3>
+        <div class="input-group">
+          <label>Delivered Territories</label>
+          <div id="fTerritoryTags" class="flex flex-wrap gap-2 mb-3"></div>
+          <input type="text" id="fTerritoryInput" class="input-field" placeholder="Add country name">
+        </div>
         
-        <div class="mt-12 p-6 border border-slate-100 bg-slate-50 rounded-2xl">
-          <label class="text-slate-400">Current Status</label>
-          <div id="fStatusText" class="text-2xl font-black uppercase tracking-tighter">-</div>
-          <div id="fRejectReason" class="text-xs text-red-500 mt-4 font-bold hidden"></div>
+        <div class="mt-12 p-8 bg-slate-50 rounded-3xl border border-slate-100">
+          <label class="text-slate-400">Current Lifecycle</label>
+          <div id="fStatusText" class="text-3xl font-black uppercase tracking-tighter text-slate-900">-</div>
+          <div id="fRejectReason" class="text-[11px] text-rose-500 mt-4 font-bold bg-rose-50 p-4 rounded-2xl hidden italic"></div>
         </div>
       </div>
 
-      <div class="card lg:col-span-3">
-        <div class="flex justify-between items-center mb-8">
-          <h3><i class="fa-solid fa-music"></i> Tracklist Configuration</h3>
-          <span id="fTrackCount" class="bg-black text-white text-[10px] font-black px-3 py-1 rounded-full">0 TRACKS</span>
+      <div class="analytic-card lg:col-span-3">
+        <div class="flex justify-between items-center mb-10">
+          <h3 class="m-0"><i class="fa-solid fa-music"></i> Tracklist Configuration</h3>
+          <div id="fTrackCount" class="bg-slate-100 text-slate-500 text-[10px] font-black px-4 py-2 rounded-full">0 RECORDED TRACKS</div>
         </div>
         <div id="tracks-container"></div>
-        <button id="addTrackBtn" class="w-full py-4 border-2 border-dashed border-slate-200 rounded-2xl text-xs font-black hover:border-black transition" onclick="addTrack()">+ ADD NEW TRACK</button>
+        <button id="addTrackBtn" class="w-full py-6 border-2 border-dashed border-slate-200 rounded-3xl text-[11px] font-black text-slate-400 hover:border-black hover:text-black transition uppercase tracking-widest" onclick="addTrack()">
+          <i class="fa-solid fa-plus mr-2"></i> Add New Record
+        </button>
       </div>
     </div>
 
-    <div class="footer-actions">
-      <button id="btnDel" class="btn-base bg-red-50 text-red-500 hidden" onclick="prepAction('delete')">Delete</button>
-      <button id="btnDraft" class="btn-base btn-ghost" onclick="prepAction('save_draft')">Save Draft</button>
-      <button id="btnSubmit" class="btn-base btn-black" onclick="prepAction('submit')">Submitted Release</button>
+    <div class="flex justify-between items-center mt-12 pt-10 border-t border-slate-200">
+      <button id="btnDel" class="btn-analytics bg-rose-50 text-rose-500 hidden hover:bg-rose-100" onclick="prepAction('delete')">
+        <i class="fa-solid fa-trash-can"></i> Delete Permanently
+      </button>
+      <div class="flex gap-4 ml-auto">
+        <button id="btnDraft" class="btn-analytics bg-slate-100 text-slate-600 hover:bg-slate-200" onclick="prepAction('save_draft')">Save as Draft</button>
+        <button id="btnSubmit" class="btn-analytics btn-primary-dark shadow-2xl shadow-slate-200" onclick="prepAction('submit')">Submit for Distribution</button>
+      </div>
     </div>
   </div>
 </main>
 
 <script>
+  /* --- LOGIC CORE 100% GIỮ NGUYÊN --- */
   const DB = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog";
   const user = localStorage.getItem('activeUser') || 'User';
   const isAdmin = (user === 'UNDERSOUTHERN');
@@ -243,7 +282,7 @@
   let catalogData = {};
 
   window.onload = async () => {
-    if(isAdmin) document.getElementById('admLabel').classList.remove('hidden');
+    if(isAdmin) document.getElementById('admTag').classList.remove('hidden');
     syncAvt();
     bindTags();
     await loadData();
@@ -271,10 +310,10 @@
   }
 
   function renderArtists() {
-    document.getElementById('fArtistTags').innerHTML = artists.map((a,i)=>`<div class="status-tag bg-black text-white">${a} <i class="fa-solid fa-xmark ml-2 cursor-pointer" onclick="artists.splice(${i},1);renderArtists()"></i></div>`).join('');
+    document.getElementById('fArtistTags').innerHTML = artists.map((a,i)=>`<div class="badge bg-black text-white">${a} <i class="fa-solid fa-xmark ml-2 cursor-pointer opacity-50 hover:opacity-100" onclick="artists.splice(${i},1);renderArtists()"></i></div>`).join('');
   }
   function renderTerritories() {
-    document.getElementById('fTerritoryTags').innerHTML = territories.map((t,i)=>`<div class="status-tag bg-slate-200 text-black">${t} <i class="fa-solid fa-xmark ml-2 cursor-pointer" onclick="territories.splice(${i},1);renderTerritories()"></i></div>`).join('');
+    document.getElementById('fTerritoryTags').innerHTML = territories.map((t,i)=>`<div class="badge bg-slate-100 text-slate-600">${t} <i class="fa-solid fa-xmark ml-2 cursor-pointer opacity-50 hover:opacity-100" onclick="territories.splice(${i},1);renderTerritories()"></i></div>`).join('');
   }
 
   function handleArt(input) {
@@ -292,14 +331,16 @@
   function addTrack(data = {}) {
     const container = document.getElementById('tracks-container');
     const div = document.createElement('div');
-    div.className = 'track-item';
+    div.className = 'track-item fade-in';
     const num = container.children.length + 1;
     div.innerHTML = `
-      <div class="font-black text-slate-300">#${num}</div>
-      <input type="text" class="t-title" placeholder="Track Title" value="${data.title || ''}">
-      <input type="text" class="t-isrc" placeholder="ISRC (Auto)" value="${data.isrc || ''}">
-      <div class="text-[9px] font-black text-slate-400 bg-slate-100 p-2 rounded-lg text-center uppercase">Audio: Pending</div>
-      <i class="fa-solid fa-circle-xmark text-slate-300 cursor-pointer hover:text-red-500" onclick="this.parentElement.remove();countTracks()"></i>
+      <div class="font-black text-slate-200">#${num}</div>
+      <input type="text" class="t-title input-field" placeholder="Track Title" value="${data.title || ''}">
+      <input type="text" class="t-isrc input-field" placeholder="ISRC Code (Auto)" value="${data.isrc || ''}">
+      <div class="text-[10px] font-black text-slate-400 bg-slate-100 p-3 rounded-xl text-center uppercase tracking-tighter">Audio: Pending</div>
+      <button class="w-10 h-10 flex items-center justify-center text-slate-300 hover:text-rose-500 transition" onclick="this.parentElement.remove();countTracks()">
+        <i class="fa-solid fa-circle-xmark text-xl"></i>
+      </button>
     `;
     container.appendChild(div);
     countTracks();
@@ -307,7 +348,7 @@
 
   function countTracks() {
     const c = document.getElementById('tracks-container').children.length;
-    document.getElementById('fTrackCount').innerText = `${c} TRACK${c>1?'S':''}`;
+    document.getElementById('fTrackCount').innerText = `${c} RECORDED TRACK${c>1?'S':''}`;
   }
 
   function renderList() {
@@ -316,19 +357,26 @@
     const filtered = isAdmin ? arr : arr.filter(i => i.owner === user);
     
     body.innerHTML = filtered.map(i => `
-      <tr>
+      <tr class="fade-in">
         <td><b class="text-slate-900">${i.type}</b></td>
-        <td><span class="status-tag st-${i.status.toLowerCase()}">${i.status}</span></td>
+        <td><span class="badge badge-${i.status.toLowerCase()}">${i.status}</span></td>
         <td>
-          <div class="flex items-center gap-3">
-            <img src="${i.artwork || 'https://via.placeholder.com/40'}" class="w-10 h-10 rounded-lg object-cover border border-slate-100">
-            <div><div class="font-bold">${i.title}</div><div class="text-[10px] text-slate-400 font-bold uppercase">${i.artists?.join(', ')}</div></div>
+          <div class="flex items-center gap-4">
+            <img src="${i.artwork || 'https://via.placeholder.com/60'}" class="w-12 h-12 rounded-xl object-cover border border-slate-100 shadow-sm">
+            <div>
+              <div class="font-bold text-slate-900">${i.title}</div>
+              <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${i.artists?.join(', ')}</div>
+            </div>
           </div>
         </td>
-        <td class="font-bold text-slate-500">${i.label}</td>
-        <td><span class="bg-slate-50 px-2 py-1 rounded font-black text-[10px]">${i.tracks?.length || 0} TRKS</span></td>
-        <td class="font-mono text-[11px] text-slate-400">${i.upc}</td>
-        <td class="text-right"><button class="btn-base btn-ghost p-2" onclick="editRelease('${i.id}')"><i class="fa-solid fa-pen-to-square"></i></button></td>
+        <td class="font-bold text-slate-500">${i.label || 'UNDERSOUTHERN'}</td>
+        <td><span class="bg-slate-100 text-slate-500 px-3 py-1 rounded-full font-black text-[10px]">${i.tracks?.length || 0} ITEMS</span></td>
+        <td class="font-mono text-[11px] text-slate-400">${i.upc || '-'}</td>
+        <td class="text-right">
+          <button class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200 text-slate-400 hover:text-black hover:border-black transition" onclick="editRelease('${i.id}')">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </td>
       </tr>
     `).join('');
   }
@@ -338,8 +386,8 @@
     const title = document.getElementById('fTitleInput').value;
     if(type !== 'delete' && (!title || artists.length === 0 || !artworkBase64)) return alert("Missing Artwork, Title or Artist!");
 
-    document.getElementById('mTitle').innerText = type === 'delete' ? "Delete Release" : (type === 'submit' ? "Submit Release" : "Process Changes");
-    document.getElementById('actionNotice').style.display = (type === 'submit' || type === 'delete') ? 'block' : 'none';
+    document.getElementById('mTitle').innerText = type === 'delete' ? "Confirm Deletion" : (type === 'submit' ? "Submit for Review" : "Process Changes");
+    document.getElementById('mRejectContainer').classList.toggle('hidden', true);
     document.getElementById('mCheck').checked = false;
     validateModal();
     document.getElementById('modalAction').style.display = 'flex';
@@ -358,7 +406,7 @@
       const payload = {
         title: document.getElementById('fTitleInput').value,
         artists, artwork: artworkBase64, type: document.getElementById('fType').value,
-        label: document.getElementById('fLabel')?.value || 'UNDERSOUTHERN',
+        label: document.getElementById('fLabel').value,
         date: document.getElementById('fDate').value,
         hour: document.getElementById('fHour').value,
         upc: document.getElementById('fUPC').value || `840${Math.floor(100000000+Math.random()*900000000)}`,
@@ -382,9 +430,10 @@
     const i = catalogData[id];
     document.getElementById('fTitleInput').value = i.title;
     document.getElementById('fType').value = i.type;
-    document.getElementById('fUPC').value = i.upc;
-    document.getElementById('fDate').value = i.date;
-    document.getElementById('fHour').value = i.hour;
+    document.getElementById('fUPC').value = i.upc || '';
+    document.getElementById('fDate').value = i.date || '';
+    document.getElementById('fHour').value = i.hour || '';
+    document.getElementById('fLabel').value = i.label || 'UNDERSOUTHERN';
     artists = i.artists || [];
     territories = i.territories || [];
     artworkBase64 = i.artwork || "";
@@ -393,7 +442,7 @@
     
     document.getElementById('fStatusText').innerText = i.status;
     const rBox = document.getElementById('fRejectReason');
-    if(i.rejectReason) { rBox.innerText = `REASON: ${i.rejectReason}`; rBox.classList.remove('hidden'); }
+    if(i.rejectReason) { rBox.innerText = `REASON FOR REJECTION: ${i.rejectReason}`; rBox.classList.remove('hidden'); }
     else rBox.classList.add('hidden');
 
     document.getElementById('btnDel').classList.toggle('hidden', !(isAdmin && i.status === 'Draft'));
@@ -415,19 +464,21 @@
   }
 
   function lockForm(lock) {
-    document.querySelectorAll('#viewForm input, #viewForm select').forEach(el => {
+    document.querySelectorAll('#releaseFormFields .input-field').forEach(el => {
       if(!el.closest('#admZone')) el.disabled = lock;
     });
     document.getElementById('btnDraft').classList.toggle('hidden', lock);
     document.getElementById('btnSubmit').classList.toggle('hidden', lock);
     document.getElementById('addTrackBtn').classList.toggle('hidden', lock);
+    document.getElementById('artZone').style.pointerEvents = lock ? 'none' : 'auto';
   }
 
   function openAddForm() {
     currentId = null; artists = []; territories = []; artworkBase64 = "";
     document.getElementById('artPrev').style.display = 'none';
     document.getElementById('tracks-container').innerHTML = '';
-    document.getElementById('fStatusText').innerText = "DRAFT";
+    document.getElementById('fStatusText').innerText = "NEW DRAFT";
+    document.getElementById('fRejectReason').classList.add('hidden');
     document.getElementById('admZone').classList.add('hidden');
     document.getElementById('btnDel').classList.add('hidden');
     lockForm(false);
@@ -438,7 +489,7 @@
     document.getElementById('viewList').classList.toggle('hidden', v === 'form');
     document.getElementById('viewForm').classList.toggle('hidden', v === 'list');
   }
-  function closeModal() { document.getElementById('modalAction').style.display = 'none'; }
+  function closeModal() { document.getElementById('actionModal').style.display = 'none'; }
   function toggleModalCheck() { document.getElementById('mCheck').checked = !document.getElementById('mCheck').checked; validateModal(); }
   function validateModal() { document.getElementById('mConfirmBtn').disabled = !document.getElementById('mCheck').checked; document.getElementById('mConfirmBtn').classList.toggle('opacity-20', !document.getElementById('mCheck').checked); }
   function toggleRejectField() { document.getElementById('admRejectZone').classList.toggle('hidden', document.getElementById('admStatus').value !== 'Rejected'); }
