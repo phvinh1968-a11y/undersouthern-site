@@ -209,7 +209,7 @@
           <div class="card tracklist-card">
             <h3>Tracks</h3>
             <div id="tracks-container"></div>
-            <button class="btn-add-track" id="addTrackBtn" onclick="addTrackRow()">+ Add Track</button>
+            <button class="btn-add-track" id="addTrackBtn" onclick="addTrackRow()" style="width:100%; border:1px dashed #ccc; padding:10px; border-radius:8px;">+ Add Track</button>
           </div>
         </div>
         <div class="footer-actions">
@@ -294,7 +294,6 @@
       document.getElementById('adminRejectReasonContainer').classList.toggle('hidden', status !== 'Rejected');
   }
 
-  // --- MODAL LOGIC (CHUYÊN NGHIỆP GIỐNG TAKEDOWN) ---
   function prepareAction(action) {
     currentAction = action;
     const title = document.getElementById('inTitle').value;
@@ -337,44 +336,22 @@
   async function executeAction() {
     if (currentAction === 'delete') {
         await fetch(`${FB_URL}/${editingId}.json`, { method: 'DELETE' });
-        await fetchCatalog(); closeModal(); toggleView('list');
-        return;
-    }
-
-    let status;
-    let reason = "";
-    
-    if (isAdmin) {
-        status = document.getElementById('adminInStatus').value;
-        reason = document.getElementById('adminRejectReasonText').value;
     } else {
-        status = currentAction === 'submit_pending' ? 'Pending' : 'Draft';
-        reason = editingId ? (fullCatalogData[editingId].rejectReason || "") : "";
+        let status = isAdmin ? document.getElementById('adminInStatus').value : (currentAction === 'submit_pending' ? 'Pending' : 'Draft');
+        const tracks = Array.from(document.querySelectorAll('.track-row')).map(row => ({ title: row.querySelector('.t-title').value }));
+        const release = {
+            title: document.getElementById('inTitle').value,
+            artists: mainArtists, artwork: currentArtworkBase64, type: document.getElementById('inType').value,
+            label: document.getElementById('inLabel').value, date: document.getElementById('inDate').value,
+            hour: document.getElementById('inHour').value, upc: document.getElementById('inUPC').value || "AUTO",
+            catNum: document.getElementById('inCatNum').value, status: status, territories: territoryList,
+            owner: editingId ? fullCatalogData[editingId].owner : currentUser, numTracks: tracks.length, tracks: tracks,
+            rejectReason: isAdmin && status === 'Rejected' ? document.getElementById('adminRejectReasonText').value : (editingId ? (fullCatalogData[editingId].rejectReason || "") : "")
+        };
+        const method = editingId ? 'PATCH' : 'POST';
+        const url = editingId ? `${FB_URL}/${editingId}.json` : `${FB_URL}.json`;
+        await fetch(url, { method, body: JSON.stringify(release) });
     }
-
-    const tracks = Array.from(document.querySelectorAll('.track-row')).map(row => ({ title: row.querySelector('.t-title').value }));
-    
-    const release = {
-        title: document.getElementById('inTitle').value,
-        artists: mainArtists,
-        artwork: currentArtworkBase64,
-        type: document.getElementById('inType').value,
-        label: document.getElementById('inLabel').value,
-        date: document.getElementById('inDate').value,
-        hour: document.getElementById('inHour').value,
-        upc: document.getElementById('inUPC').value || "AUTO",
-        catNum: document.getElementById('inCatNum').value,
-        status: status,
-        owner: editingId ? fullCatalogData[editingId].owner : currentUser,
-        numTracks: tracks.length,
-        tracks: tracks,
-        territories: territoryList,
-        rejectReason: reason
-    };
-
-    const method = editingId ? 'PATCH' : 'POST';
-    const url = editingId ? `${FB_URL}/${editingId}.json` : `${FB_URL}.json`;
-    await fetch(url, { method, body: JSON.stringify(release) });
     await fetchCatalog(); closeModal(); toggleView('list');
   }
 
@@ -394,15 +371,10 @@
     currentArtworkBase64 = item.artwork || "";
     document.getElementById('artworkPreview').src = currentArtworkBase64;
     document.getElementById('artworkPreview').style.display = currentArtworkBase64 ? 'block' : 'none';
-    
     document.getElementById('displayStatusText').innerText = item.status;
     document.getElementById('displayRejectReason').innerText = item.rejectReason || "";
     
-    if (isAdmin && item.status === 'Draft') {
-        document.getElementById('btnDeleteRelease').classList.remove('hidden');
-    } else {
-        document.getElementById('btnDeleteRelease').classList.add('hidden');
-    }
+    document.getElementById('btnDeleteRelease').classList.toggle('hidden', !(isAdmin && item.status === 'Draft'));
 
     if (isAdmin) {
         document.getElementById('adminStatusZone').classList.remove('hidden');
@@ -412,8 +384,7 @@
         enableForm(true);
     } else {
         document.getElementById('adminStatusZone').classList.add('hidden');
-        const canEdit = (item.status === 'Draft' || item.status === 'Rejected');
-        enableForm(canEdit);
+        enableForm(item.status === 'Draft' || item.status === 'Rejected');
     }
 
     document.getElementById('tracks-container').innerHTML = '';
@@ -422,8 +393,9 @@
   }
 
   function enableForm(status) {
-    const fields = document.querySelectorAll('#releaseFormFields input, #releaseFormFields select, #releaseFormFields textarea');
-    fields.forEach(f => { if (!f.closest('#adminStatusZone')) f.disabled = !status; });
+    document.querySelectorAll('#releaseFormFields input, #releaseFormFields select, #releaseFormFields textarea').forEach(f => {
+        if (!f.closest('#adminStatusZone')) f.disabled = !status;
+    });
     document.getElementById('btnSaveDraft').style.display = status ? 'block' : 'none';
     document.getElementById('btnSubmitRelease').style.display = status ? 'block' : 'none';
     document.getElementById('addTrackBtn').style.display = status ? 'block' : 'none';
@@ -437,8 +409,7 @@
     document.getElementById('displayStatusText').innerText = "Draft";
     document.getElementById('adminStatusZone').classList.add('hidden');
     document.getElementById('btnDeleteRelease').classList.add('hidden');
-    enableForm(true);
-    addTrackRow(); toggleView('add');
+    enableForm(true); addTrackRow(); toggleView('add');
   }
 
   function toggleView(v) { document.getElementById('view-list').classList.toggle('hidden', v==='add'); document.getElementById('view-add').classList.toggle('hidden', v==='list'); }
