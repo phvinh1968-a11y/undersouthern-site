@@ -76,7 +76,7 @@
   .release-artist { font-size: 12px; color: #666; }
   .upc-code { font-family: monospace; color: #888; font-size: 11px; }
 
-  /* --- MODAL TAKEDOWN / ACTION --- */
+  /* --- MODAL --- */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(4px); }
   .modal-box { background: white; padding: 32px; border-radius: 20px; width: 450px; text-align: left; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
   .modal-box h2 { font-size: 20px; font-weight: 800; margin: 0 0 15px 0; color: #000; }
@@ -87,8 +87,8 @@
   .takedown-confirm-box label { font-size: 13px; font-weight: 500; color: #000; line-height: 1.4; margin: 0; cursor: pointer; }
 
   .btn-modal-cancel { border: 1px solid #ddd; padding: 12px 24px; border-radius: 8px; cursor: pointer; background: white; font-weight: 600; font-size: 14px; flex: 1; }
-  .btn-modal-takedown { background: #000; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; flex: 1; opacity: 0.3; pointer-events: none; transition: 0.3s; }
-  .btn-modal-takedown.active { opacity: 1; pointer-events: auto; }
+  .btn-modal-takedown { background: #000; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; flex: 1; transition: 0.3s; }
+  .btn-modal-takedown:disabled { opacity: 0.3; pointer-events: none; }
 
   /* --- TAGS --- */
   .tag-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
@@ -110,9 +110,8 @@
   tbody tr.loaded { opacity: 1; transform: translateY(0); }
   .btn-icon { border: 1px solid var(--border-color); background: #fff; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
   .btn-icon:hover { background: var(--hover-bg); }
-
-  /* Thêm màu cho lý do Reject */
-  .reject-text { font-size: 11px; color: #ef4444; margin-top: 4px; font-weight: 500; }
+  
+  .reject-reason { font-size: 11px; color: #dc2626; margin-top: 4px; font-style: italic; }
 </style>
 </head>
 <body>
@@ -130,11 +129,11 @@
           </label>
         </div>
         <p id="takedownWarning" style="font-size: 12px; background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 8px; border: 1px solid #ffedd5;">
-          This action will update the status of the release across the system.
+          Note: This action will be synchronized with the system immediately.
         </p>
         <div style="display:flex; gap:12px; margin-top: 25px;">
           <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
-          <button class="btn-modal-takedown" id="takedownBtn" onclick="executeAction()">Confirm</button>
+          <button class="btn-modal-takedown" id="takedownBtn" onclick="executeAction()" disabled>Confirm</button>
         </div>
       </div>
     </div>
@@ -191,18 +190,15 @@
         <div class="form-container">
           <div class="card">
             <h3>Release Info</h3>
-            <label>Type</label>
             <select id="inType" onchange="toggleTracklist()">
               <option value="Single">Single</option>
               <option value="EP">EP</option>
               <option value="Album">Album</option>
             </select>
             <label>Title</label><input type="text" id="inTitle" placeholder="Moonlight">
-            
             <label>Primary Artist(s)</label>
             <div id="main-artist-tags" class="tag-container"></div>
             <input type="text" id="inMainArtist" placeholder="Add artist and Enter">
-
             <label>Label</label><input type="text" id="inLabel" placeholder="UNDERSOUTHERN">
           </div>
           <div class="card">
@@ -219,7 +215,6 @@
             <label>Delivered Territories</label>
             <div id="territory-tags" class="tag-container"></div>
             <input type="text" id="territoryInput" placeholder="Add country and Enter">
-            
             <div id="statusWrapper" class="hidden">
               <label>Status</label>
               <select id="inStatus">
@@ -230,7 +225,6 @@
               </select>
             </div>
           </div>
-
           <div class="card tracklist-card">
             <h3>Tracklist Configuration</h3>
             <div id="track-header" class="track-row" style="background:none; border:none; font-weight:700; font-size:9px; color:#666; text-transform:uppercase;">
@@ -241,44 +235,41 @@
           </div>
         </div>
         <div class="footer-actions">
-          <button id="submitBtn" class="save-btn" onclick="handleSave()">Save Release</button>
+          <button id="submitBtn" class="save-btn" onclick="openSaveModal()">Submitted</button>
         </div>
       </div>
     </div>
 </div>
 
 <script>
-  const DB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog";
+  const FB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog";
   const currentUser = localStorage.getItem('activeUser');
-  const isAdmin = (currentUser === 'UNDERSOUTHERN');
+  const isAdmin = currentUser === 'UNDERSOUTHERN';
 
-  let editingKey = null;
-  let pendingActionKey = null;
+  let editingId = null;
+  let pendingActionId = null;
   let currentAction = ''; 
   let territoryList = [];
   let mainArtists = [];
-  let firebaseCatalog = {};
+  let fullCatalogData = {};
 
   window.onload = async () => {
     if (localStorage.getItem('isLoggedIn') === 'true') {
         document.getElementById('auth-guard').style.display = 'block';
         syncAvatar(); 
         setupTagInputs();
-        await syncFromCloud();
+        await fetchCatalog(); 
         slowLoadView();
     }
   };
 
-  async function syncFromCloud() {
+  async function fetchCatalog() {
     try {
-        const res = await fetch(`${DB_URL}.json`);
-        firebaseCatalog = await res.json() || {};
+        const res = await fetch(`${FB_URL}.json`);
+        fullCatalogData = await res.json() || {};
         renderCatalog();
-    } catch (e) { console.error("Cloud Error"); }
+    } catch (e) { console.error("Firebase Error", e); }
   }
-
-  function generateUPC() { return "840" + Math.floor(100000000 + Math.random() * 900000000); }
-  function generateISRC() { return "US-S12-" + new Date().getFullYear().toString().slice(-2) + "-" + Math.floor(10000 + Math.random() * 90000); }
 
   function setupTagInputs() {
     const tInp = document.getElementById('territoryInput');
@@ -335,46 +326,69 @@
   function handleAudioSelect(id) { const f = document.getElementById(`audio-input-${id}`).files[0]; if(f) document.getElementById(`audio-btn-${id}`).innerText = f.name; }
   function removeTrackRow(id) { if (document.querySelectorAll('.track-row').length > 1) document.getElementById(`track-row-${id}`).remove(); }
 
-  async function handleSave() {
+  // --- LOGIC MỞ MODAL KHI BẤM SUBMITTED ---
+  function openSaveModal() {
     const title = document.getElementById('inTitle').value;
     if (!title || mainArtists.length === 0) return alert("Title and Artists required.");
+
+    currentAction = 'save';
+    document.getElementById('modalTitle').innerText = "Submit Release";
+    document.getElementById('modalDesc').innerText = "Are you sure you want to submit this release for distribution?";
+    document.getElementById('confirmBox').style.display = 'flex';
+    document.getElementById('takedownWarning').style.display = 'none';
+    document.getElementById('takedownReason').style.display = 'none';
+    document.getElementById('confirmTakedownCheck').checked = false;
+    validateTakedown();
+    document.getElementById('takedownModal').style.display = 'flex';
+  }
+
+  async function handleSave() {
     const tracks = Array.from(document.querySelectorAll('.track-row')).map(row => ({
         title: row.querySelector('.t-title').value,
         version: row.querySelector('.t-version').value,
         artists: row.artists,
         feats: row.feats,
-        isrc: row.querySelector('.t-isrc').value || generateISRC(),
+        isrc: row.querySelector('.t-isrc').value || "US-S12-" + new Date().getFullYear().toString().slice(-2) + "-" + Math.floor(10000 + Math.random() * 90000),
         audioName: row.querySelector('.audio-upload-btn').innerText
     }));
+
     const release = {
-        title, artists: mainArtists, upc: document.getElementById('inUPC').value || generateUPC(),
-        type: document.getElementById('inType').value, label: document.getElementById('inLabel').value,
-        catNum: document.getElementById('inCatNum').value, date: document.getElementById('inDate').value || '-',
-        hour: document.getElementById('inHour').value, status: editingKey ? document.getElementById('inStatus').value : 'Pending',
-        tracks: tracks, numTracks: tracks.length, territories: territoryList, owner: currentUser
+        title: document.getElementById('inTitle').value,
+        artists: mainArtists,
+        upc: document.getElementById('inUPC').value || "840" + Math.floor(100000000 + Math.random() * 900000000),
+        type: document.getElementById('inType').value,
+        label: document.getElementById('inLabel').value,
+        catNum: document.getElementById('inCatNum').value,
+        date: document.getElementById('inDate').value || '-',
+        hour: document.getElementById('inHour').value,
+        status: editingId ? document.getElementById('inStatus').value : 'Pending',
+        tracks: tracks,
+        numTracks: tracks.length,
+        territories: territoryList,
+        owner: currentUser
     };
 
     try {
-        const method = editingKey ? 'PATCH' : 'POST';
-        const url = editingKey ? `${DB_URL}/${editingKey}.json` : `${DB_URL}.json`;
+        const method = editingId ? 'PATCH' : 'POST';
+        const url = editingId ? `${FB_URL}/${editingId}.json` : `${FB_URL}.json`;
         await fetch(url, { method, body: JSON.stringify(release) });
-        await syncFromCloud(); toggleView('list');
+        await fetchCatalog(); 
+        closeModal();
+        toggleView('list');
     } catch(e) { alert("Save Error"); }
   }
 
   function renderCatalog() {
     const container = document.getElementById('catalogTableBody');
-    const catalogArr = Object.keys(firebaseCatalog).map(key => ({ key, ...firebaseCatalog[key] }));
+    const catalogArray = Object.keys(fullCatalogData).map(key => ({ id: key, ...fullCatalogData[key] }));
+    const filtered = isAdmin ? catalogArray : catalogArray.filter(item => item.owner === currentUser);
     
-    // Logic: Admin xem tất cả, User chỉ xem của mình
-    const filtered = isAdmin ? catalogArr : catalogArr.filter(item => item.owner === currentUser);
-
     container.innerHTML = filtered.map((item) => `
         <tr>
           <td><b>${item.type}</b></td>
           <td>
             <span class="status-badge st-${item.status.toLowerCase()}">${item.status}</span>
-            ${item.rejectReason ? `<div class="reject-text">Reject Reason: ${item.rejectReason}</div>` : ''}
+            ${item.rejectReason ? `<div class="reject-reason">Reason: ${item.rejectReason}</div>` : ''}
           </td>
           <td><span class="release-title">${item.title}</span><span class="release-artist">${item.artists.join(', ')}</span></td>
           <td>${item.label || '-'}</td>
@@ -382,11 +396,11 @@
           <td style="text-align:center;">${item.numTracks}</td>
           <td><div class="upc-code">UPC: ${item.upc}<br>CAT: ${item.catNum || '-'}</div></td>
           <td style="display:flex; gap:8px">
-            <button class="btn-icon" onclick="editRelease('${item.key}')"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn-icon" onclick="openActionModal('${item.key}', '${item.status}')"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn-icon" onclick="editRelease('${item.id}')"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn-icon" onclick="openActionModal('${item.id}', '${item.status}')"><i class="fa-solid fa-trash"></i></button>
             ${isAdmin && item.status === 'Pending' ? `
-              <button class="btn-icon" style="color:#16a34a" onclick="adminApprove('${item.key}')" title="Approve"><i class="fa-solid fa-check"></i></button>
-              <button class="btn-icon" style="color:#dc2626" onclick="openRejectModal('${item.key}')" title="Reject"><i class="fa-solid fa-xmark"></i></button>
+                <button class="btn-icon" style="color:green" onclick="adminApprove('${item.id}')" title="Approve"><i class="fa-solid fa-check"></i></button>
+                <button class="btn-icon" style="color:red" onclick="openRejectModal('${item.id}')" title="Reject"><i class="fa-solid fa-xmark"></i></button>
             ` : ''}
           </td>
         </tr>
@@ -394,16 +408,16 @@
     container.querySelectorAll('tr').forEach((row, index) => setTimeout(() => row.classList.add('loaded'), index * 100));
   }
 
-  function openActionModal(key, status) {
-    pendingActionKey = key;
+  function openActionModal(id, status) {
+    pendingActionId = id;
     if (status === 'Draft' || isAdmin) {
       currentAction = 'delete';
       document.getElementById('modalTitle').innerText = "Delete Release";
-      document.getElementById('modalDesc').innerText = "Are you sure you want to permanently delete this release from the system?";
+      document.getElementById('modalDesc').innerText = "Are you sure you want to permanently delete this from the database?";
       document.getElementById('confirmBox').style.display = 'none';
       document.getElementById('takedownWarning').style.display = 'none';
       document.getElementById('takedownReason').style.display = 'none';
-      document.getElementById('takedownBtn').className = "btn-modal-takedown active";
+      document.getElementById('takedownBtn').disabled = false;
     } else {
       currentAction = 'takedown';
       document.getElementById('modalTitle').innerText = "Takedown Release";
@@ -411,46 +425,51 @@
       document.getElementById('confirmBox').style.display = 'flex';
       document.getElementById('takedownWarning').style.display = 'block';
       document.getElementById('takedownReason').style.display = 'block';
+      document.getElementById('confirmTakedownCheck').checked = false;
       validateTakedown();
     }
     document.getElementById('takedownModal').style.display = 'flex';
   }
 
-  function openRejectModal(key) {
-    pendingActionKey = key;
+  function openRejectModal(id) {
+    pendingActionId = id;
     currentAction = 'reject';
     document.getElementById('modalTitle').innerText = "Reject Release";
     document.getElementById('modalDesc').innerText = "Please provide the reason for rejection:";
     document.getElementById('confirmBox').style.display = 'flex';
     document.getElementById('takedownWarning').style.display = 'none';
     document.getElementById('takedownReason').style.display = 'block';
+    document.getElementById('confirmTakedownCheck').checked = false;
     validateTakedown();
     document.getElementById('takedownModal').style.display = 'flex';
   }
 
-  async function adminApprove(key) {
-    if(confirm("Duyệt phát hành bản ghi này?")) {
-        await fetch(`${DB_URL}/${key}.json`, { method: 'PATCH', body: JSON.stringify({ status: 'Released', rejectReason: null }) });
-        await syncFromCloud();
+  async function adminApprove(id) {
+    if(confirm("Approve this release?")) {
+        await fetch(`${FB_URL}/${id}.json`, { method: 'PATCH', body: JSON.stringify({ status: 'Released', rejectReason: null }) });
+        fetchCatalog();
     }
   }
 
   async function executeAction() {
     try {
         if (currentAction === 'delete') {
-            await fetch(`${DB_URL}/${pendingActionKey}.json`, { method: 'DELETE' });
+            await fetch(`${FB_URL}/${pendingActionId}.json`, { method: 'DELETE' });
         } else if (currentAction === 'takedown') {
-            await fetch(`${DB_URL}/${pendingActionKey}.json`, { method: 'PATCH', body: JSON.stringify({ status: 'Draft' }) });
+            await fetch(`${FB_URL}/${pendingActionId}.json`, { method: 'PATCH', body: JSON.stringify({ status: 'Draft' }) });
         } else if (currentAction === 'reject') {
             const reason = document.getElementById('takedownReason').value;
-            await fetch(`${DB_URL}/${pendingActionKey}.json`, { method: 'PATCH', body: JSON.stringify({ status: 'Rejected', rejectReason: reason }) });
+            await fetch(`${FB_URL}/${pendingActionId}.json`, { method: 'PATCH', body: JSON.stringify({ status: 'Rejected', rejectReason: reason }) });
+        } else if (currentAction === 'save') {
+            await handleSave();
+            return;
         }
-        await syncFromCloud(); closeModal();
+        await fetchCatalog(); closeModal();
     } catch(e) { alert("Action Error"); }
   }
 
   function openAddForm() {
-    editingKey = null; trackCount = 0; territoryList = []; mainArtists = [];
+    editingId = null; trackCount = 0; territoryList = []; mainArtists = [];
     document.getElementById('tracks-container').innerHTML = '';
     document.getElementById('statusWrapper').classList.add('hidden');
     document.getElementById('inTitle').value = '';
@@ -459,9 +478,9 @@
     toggleView('add');
   }
 
-  function editRelease(key) {
-    editingKey = key;
-    const item = firebaseCatalog[key];
+  function editRelease(id) {
+    editingId = id;
+    const item = fullCatalogData[id];
     document.getElementById('inTitle').value = item.title;
     document.getElementById('inType').value = item.type;
     document.getElementById('inLabel').value = item.label;
@@ -478,13 +497,12 @@
     renderTags(); renderMainArtistTags(); toggleView('add');
   }
 
-  // --- UI HELPERS ---
   function slowLoadView() { ['header-el', 'top-bar-el', 'table-el'].forEach((id, i) => setTimeout(() => document.getElementById(id)?.classList.add('show'), (i + 1) * 200)); }
   function toggleView(v) { document.getElementById('view-list').classList.toggle('hidden', v==='add'); document.getElementById('view-add').classList.toggle('hidden', v==='list'); }
   function syncAvatar() { const img = localStorage.getItem('userAvatar'); if (img) document.getElementById('userAvatar').innerHTML = `<img src="${img}">`; }
   function closeModal() { document.getElementById('takedownModal').style.display = 'none'; document.getElementById('confirmTakedownCheck').checked = false; }
   function toggleTakedownCheckbox() { const c = document.getElementById('confirmTakedownCheck'); c.checked = !c.checked; validateTakedown(); }
-  function validateTakedown() { const isChecked = document.getElementById('confirmTakedownCheck').checked; const btn = document.getElementById('takedownBtn'); btn.className = isChecked ? "btn-modal-takedown active" : "btn-modal-takedown"; }
+  function validateTakedown() { const isChecked = document.getElementById('confirmTakedownCheck').checked; const btn = document.getElementById('takedownBtn'); btn.disabled = !isChecked; }
   function toggleTracklist() { const type = document.getElementById('inType').value; document.getElementById('addTrackBtn').style.display = (type === 'Single') ? 'none' : 'block'; }
 </script>
 
