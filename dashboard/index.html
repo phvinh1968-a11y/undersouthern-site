@@ -8,7 +8,7 @@
     <title>Portal Dashboard - UNDERSOUTHERN</title>
 
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -18,7 +18,7 @@
             --sidebar-navy: #1a2b3c;
             --border-light: #dce4ec;
             --text-main: #4a5568;
-            --accent-green: #00a651;
+            --accent-gray: #334155; /* Màu xám đậm chuyên nghiệp */
         }
 
         body { 
@@ -31,7 +31,7 @@
             height: 100vh;
         }
 
-        /* SIDEBAR CHUYÊN NGHIỆP */
+        /* --- SIDEBAR --- */
         .sidebar {
             width: 260px;
             background: #ffffff;
@@ -40,6 +40,7 @@
             flex-direction: column;
             height: 100%;
             flex-shrink: 0;
+            z-index: 100;
         }
 
         .sidebar-header {
@@ -58,90 +59,90 @@
             text-transform: uppercase;
         }
 
-        /* NAVIGATION MENU */
         .nav-menu {
             flex: 1;
-            padding: 24px 12px;
+            padding: 24px 0;
             overflow-y: auto;
         }
 
+        /* --- ITEM THANH CÔNG CỤ --- */
         .nav-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 16px;
-            margin-bottom: 4px;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 12px 24px;
+            margin-bottom: 2px;
+            font-size: 13px;
             font-weight: 600;
             color: #5a6a85;
-            transition: all 0.2s ease;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            user-select: none;
+            border-left: 4px solid transparent; /* Thanh mặc định ẩn */
         }
 
         .nav-item i {
             width: 20px;
             text-align: center;
-            font-size: 16px;
+            font-size: 15px;
             opacity: 0.7;
         }
 
+        /* Hover effect */
         .nav-item:hover {
-            background: #f0f4f8;
+            background: #f8fafc;
             color: var(--sidebar-navy);
         }
 
+        /* Active State (Khi click) - Đã đổi thành MÀU XÁM ĐẬM */
         .nav-item.active {
-            background: #f0f4f8;
+            background: #f1f5f9;
             color: var(--sidebar-navy);
-            border-left: 4px solid var(--accent-green);
-            border-radius: 0 8px 8px 0;
+            border-left: 4px solid var(--accent-gray); /* Thanh dọc màu xám đậm */
         }
 
-        /* LOGOUT BUTTON - CỐ ĐỊNH PHÍA DƯỚI */
-        .sidebar-footer {
-            padding: 16px;
-            border-top: 1px solid var(--border-soft);
-            background: #fff;
+        /* Hiệu ứng click nén nhẹ */
+        .nav-item:active {
+            transform: scale(0.98);
         }
 
-        .btn-logout {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            color: #e53e3e;
-            background: #fff5f5;
-            transition: 0.2s;
-        }
-
-        .btn-logout:hover {
-            background: #feb2b2;
-            color: #c53030;
-        }
-
-        /* CONTENT AREA */
+        /* --- VÙNG NỘI DUNG CHÍNH (TRỐNG) --- */
         .main-content {
             flex: 1;
             overflow-y: auto;
             background: var(--bg-audiosalad);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header nội dung */
+        .content-header {
+            height: 72px;
+            background: #fff;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            flex-shrink: 0;
+        }
+
+        .view-container {
             padding: 40px;
+            flex: 1;
         }
 
-        /* METRIC CARDS */
-        .metric-card {
-            background: #ffffff;
+        /* Khung placeholder trống */
+        .empty-placeholder {
+            border: 2px dashed #cbd5e1;
             border-radius: 12px;
-            border: 1px solid var(--border-light);
-            padding: 24px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            height: 100%;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #cbd5e1;
         }
-
-        .metric-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #95a5a6; letter-spacing: 0.05em; margin-bottom: 8px; }
-        .metric-value { font-size: 32px; font-weight: 800; color: var(--sidebar-navy); }
 
         .hidden { display: none !important; }
     </style>
@@ -153,115 +154,71 @@
             <span class="brand-name">UNDERSOUTHERN</span>
         </div>
 
-        <nav class="nav-menu">
-            <a href="#" class="nav-item active">
+        <nav class="nav-menu" id="sidebar-nav">
+            <div class="nav-item active" onclick="activateItem(this)">
                 <i class="fa-solid fa-grip"></i> Dashboard
-            </a>
-            <a href="https://undersouthern.asia/catalog" class="nav-item">
+            </div>
+            <div class="nav-item" onclick="activateItem(this)">
                 <i class="fa-solid fa-list-ul"></i> Catalog
-            </a>
-            <a href="#" class="nav-item">
+            </div>
+            <div class="nav-item" onclick="activateItem(this)">
                 <i class="fa-solid fa-folder-plus"></i> Ingestion
-            </a>
-            <a href="#" class="nav-item">
+            </div>
+            <div class="nav-item" onclick="activateItem(this)">
                 <i class="fa-solid fa-paper-plane"></i> Delivery
-            </a>
-            <a href="https://undersouthern.asia/analytics" class="nav-item">
+            </div>
+            <div class="nav-item" onclick="activateItem(this)">
                 <i class="fa-solid fa-chart-line"></i> Analytics
-            </a>
-            <a href="https://undersouthern.asia/finance" class="nav-item">
+            </div>
+            <div class="nav-item" onclick="activateItem(this)">
+                <i class="fa-solid fa-chart-pie"></i> Reporting
+            </div>
+            <div class="nav-item" onclick="activateItem(this)">
                 <i class="fa-solid fa-wallet"></i> Finance
-            </a>
-            <a href="https://undersouthern.asia/user-access" id="adm-nav" class="nav-item hidden">
+            </div>
+            <div class="nav-item" onclick="activateItem(this)">
+                <i class="fa-solid fa-wrench"></i> Tools
+            </div>
+            <div class="nav-item" onclick="activateItem(this)">
                 <i class="fa-solid fa-user-shield"></i> Master Access
-            </a>
+            </div>
         </nav>
-
-        <div class="sidebar-footer">
-            <button onclick="handleLogout()" class="btn-logout">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Logout</span>
-            </button>
-        </div>
     </aside>
 
     <main class="main-content">
-        <div class="max-w-6xl mx-auto">
-            <div class="mb-10 border-b border-slate-200 pb-6">
-                <h1 class="text-3xl font-black text-slate-800 tracking-tighter">Portal Overview</h1>
-                <p class="text-sm text-slate-500 mt-1 font-medium italic">Music Distribution Control Center</p>
-            </div>
+        <header class="content-header">
+            <h2 id="current-view-title" class="text-lg font-bold text-slate-800 tracking-tight">Dashboard</h2>
+        </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="metric-card">
-                    <div class="metric-label">Total Assets</div>
-                    <div id="stat-all" class="metric-value">--</div>
+        <div class="view-container">
+            <div class="empty-placeholder">
+                <div class="text-center">
+                    <i class="fa-solid fa-cube text-4xl mb-4 opacity-10"></i>
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] opacity-20">Secure Environment / No Content</p>
                 </div>
-                <div class="metric-card">
-                    <div class="metric-label">Reviewing</div>
-                    <div id="stat-pending" class="metric-value text-amber-500">--</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">Live Nodes</div>
-                    <div id="stat-live" class="metric-value text-emerald-600">--</div>
-                </div>
-            </div>
-
-            <div class="bg-white border border-slate-200 rounded-xl p-10 text-center min-h-[350px] flex flex-col items-center justify-center">
-                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-                    <i class="fa-solid fa-inbox text-slate-200 text-4xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-slate-800 mb-2">Metadata Stream Clear</h3>
-                <p class="text-sm text-slate-400 max-w-sm leading-relaxed">
-                    Hệ thống đang vận hành ổn định. Các bản ghi mới nộp sẽ xuất hiện tại mục Catalog.
-                </p>
             </div>
         </div>
     </main>
 
     <script>
-        const API_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog.json";
-        const currentUser = localStorage.getItem('activeUser') || 'Guest';
-
-        window.onload = async () => {
-            // Xác thực
-            if (localStorage.getItem('isLoggedIn') !== 'true') {
-                window.location.href = "https://undersouthern.asia/login";
+        /**
+         * Logic xử lý việc click vào thanh công cụ
+         * Hiển thị thanh xám đậm và highlight
+         */
+        function activateItem(element) {
+            const currentActive = document.querySelector('.nav-item.active');
+            if (currentActive) {
+                currentActive.classList.remove('active');
             }
 
-            // Kiểm tra quyền Admin để hiện menu ẩn
-            if (currentUser === 'UNDERSOUTHERN') {
-                document.getElementById('adm-nav').classList.remove('hidden');
-            }
+            element.classList.add('active');
 
-            await loadStats();
-        };
-
-        async function loadStats() {
-            try {
-                const response = await fetch(API_URL);
-                const data = await response.json() || {};
-                const list = Object.values(data);
-                
-                // Phân quyền dữ liệu
-                const myData = (currentUser === 'UNDERSOUTHERN') ? list : list.filter(item => item.owner === currentUser);
-
-                document.getElementById('stat-all').innerText = myData.length;
-                document.getElementById('stat-pending').innerText = myData.filter(i => i.status === 'Pending').length;
-                document.getElementById('stat-live').innerText = myData.filter(i => i.status === 'Released').length;
-
-            } catch (e) {
-                console.error("Dashboard Node Error");
-            }
+            const title = element.innerText.trim();
+            document.getElementById('current-view-title').innerText = title;
         }
 
-        function handleLogout() {
-            if(confirm("Xác nhận đăng xuất khỏi hệ thống?")) {
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('activeUser');
-                window.location.href = "https://undersouthern.asia/login";
-            }
-        }
+        // Chống copy & chuột phải để giao diện trông giống ứng dụng Desktop
+        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
 </html>
