@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
     <title>Portal Dashboard - UNDERSOUTHERN</title>
 
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
@@ -14,186 +16,252 @@
         :root {
             --bg-audiosalad: #f4f7f9;
             --sidebar-navy: #1a2b3c;
-            --accent-blue: #007bff;
-            --text-heading: #2c3e50;
             --border-light: #dce4ec;
-            --admin-dark: #0f172a;
+            --text-main: #4a5568;
+            --accent-green: #00a651;
         }
 
         body { 
             font-family: 'Inter', sans-serif; 
             background: var(--bg-audiosalad); 
-            color: #4a5568; 
+            color: var(--text-main); 
             margin: 0; 
-            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+            display: flex;
+            height: 100vh;
         }
 
-        /* HEADER & BRANDING */
-        .master-header {
-            height: 64px; background: #ffffff;
+        /* SIDEBAR CHUYÊN NGHIỆP */
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            height: 72px;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
             border-bottom: 1px solid var(--border-light);
-            position: sticky; top: 0; z-index: 1000; 
-            display: flex; align-items: center; justify-content: space-between; padding: 0 32px;
         }
 
-        .brand-node { display: flex; flex-direction: column; align-items: center; line-height: 1; }
-        .brand-node .main-title { font-weight: 900; font-size: 18px; color: var(--sidebar-navy); letter-spacing: -0.02em; }
-        .brand-node .sub-node { font-size: 9px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-top: 2px; }
+        .brand-name {
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+            color: var(--sidebar-navy);
+            text-transform: uppercase;
+        }
 
-        /* SIDEBAR STYLE NAVIGATION (AUDIOSALAD) */
-        .nav-sidebar { width: 240px; background: #ffffff; border-right: 1px solid var(--border-light); height: calc(100vh - 64px); padding: 24px 16px; }
+        /* NAVIGATION MENU */
+        .nav-menu {
+            flex: 1;
+            padding: 24px 12px;
+            overflow-y: auto;
+        }
+
         .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            font-size: 13px; font-weight: 600; color: #5a6a85;
-            transition: 0.2s; padding: 10px 12px; border-radius: 6px; margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #5a6a85;
+            transition: all 0.2s ease;
         }
-        .nav-item:hover, .nav-item.active { color: var(--sidebar-navy); background: #f0f4f8; }
-        .nav-item.active { border-left: 4px solid #00a651; border-radius: 0 6px 6px 0; }
 
-        /* ADMIN OVERRIDE PANEL (DARK) */
-        .authority-panel {
-            background: var(--admin-dark); border-radius: 12px; padding: 24px;
-            color: #ffffff; border: 1px solid #1e293b;
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+            opacity: 0.7;
         }
-        .authority-panel label { font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 8px; }
-        .authority-panel select, .authority-panel textarea {
-            width: 100%; background: #1e293b; border: 1px solid #334155; color: white;
-            border-radius: 8px; padding: 10px 14px; font-size: 13px; outline: none;
+
+        .nav-item:hover {
+            background: #f0f4f8;
+            color: var(--sidebar-navy);
+        }
+
+        .nav-item.active {
+            background: #f0f4f8;
+            color: var(--sidebar-navy);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* LOGOUT BUTTON - CỐ ĐỊNH PHÍA DƯỚI */
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border-soft);
+            background: #fff;
+        }
+
+        .btn-logout {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #e53e3e;
+            background: #fff5f5;
+            transition: 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: #feb2b2;
+            color: #c53030;
+        }
+
+        /* CONTENT AREA */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--bg-audiosalad);
+            padding: 40px;
         }
 
         /* METRIC CARDS */
         .metric-card {
-            background: #ffffff; border-radius: 8px; border: 1px solid var(--border-light);
-            padding: 24px; display: flex; flex-direction: column; justify-content: space-between;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            padding: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        .metric-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #95a5a6; letter-spacing: 0.05em; }
-        .metric-value { font-size: 32px; font-weight: 800; color: var(--sidebar-navy); }
 
-        .admin-badge {
-            background: #000; color: #fff; padding: 4px 12px; border-radius: 100px;
-            font-size: 9px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 6px;
-        }
+        .metric-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #95a5a6; letter-spacing: 0.05em; margin-bottom: 8px; }
+        .metric-value { font-size: 32px; font-weight: 800; color: var(--sidebar-navy); }
 
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<header class="master-header">
-    <div class="flex items-center gap-6">
-        <div id="adm-access" class="hidden admin-badge">
-            <i class="fa-solid fa-crown text-[8px]"></i> Admin Access
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="brand-name">UNDERSOUTHERN</span>
         </div>
-        <div class="brand-node">
-            <span class="main-title">UNDERSOUTHERN</span>
-            <span class="sub-node">Verified Node</span>
-        </div>
-    </div>
-    <div class="flex items-center gap-4">
-        <div class="w-8 h-8 rounded-full bg-black flex items-center justify-center text-[10px] font-black text-white">US</div>
-    </div>
-</header>
 
-<div class="flex">
-    <aside class="nav-sidebar">
-        <nav>
-            <a href="#" class="nav-item active"><i class="fa-solid fa-grip"></i> Dashboard</a>
-            <a href="https://undersouthern.asia/catalog" class="nav-item"><i class="fa-solid fa-list-ul"></i> Catalog</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-folder-plus"></i> Catalog Ingestion</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-paper-plane"></i> Delivery</a>
-            <a href="https://undersouthern.asia/analytics" class="nav-item"><i class="fa-solid fa-chart-line"></i> Analytics</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Reporting</a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-wrench"></i> Tools</a>
-            <a href="https://undersouthern.asia/user-access" class="nav-item"><i class="fa-solid fa-user"></i> Users</a>
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active">
+                <i class="fa-solid fa-grip"></i> Dashboard
+            </a>
+            <a href="https://undersouthern.asia/catalog" class="nav-item">
+                <i class="fa-solid fa-list-ul"></i> Catalog
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-folder-plus"></i> Ingestion
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-paper-plane"></i> Delivery
+            </a>
+            <a href="https://undersouthern.asia/analytics" class="nav-item">
+                <i class="fa-solid fa-chart-line"></i> Analytics
+            </a>
+            <a href="https://undersouthern.asia/finance" class="nav-item">
+                <i class="fa-solid fa-wallet"></i> Finance
+            </a>
+            <a href="https://undersouthern.asia/user-access" id="adm-nav" class="nav-item hidden">
+                <i class="fa-solid fa-user-shield"></i> Master Access
+            </a>
         </nav>
+
+        <div class="sidebar-footer">
+            <button onclick="handleLogout()" class="btn-logout">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </button>
+        </div>
     </aside>
 
-    <main class="flex-1 p-10 overflow-y-auto">
+    <main class="main-content">
         <div class="max-w-6xl mx-auto">
-            <div class="mb-10 flex justify-between items-end border-b border-slate-200 pb-6">
-                <div>
-                    <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Portal Overview</h1>
-                    <p class="text-sm text-slate-500 mt-1">Hệ thống phân phối âm nhạc tập trung.</p>
-                </div>
+            <div class="mb-10 border-b border-slate-200 pb-6">
+                <h1 class="text-3xl font-black text-slate-800 tracking-tighter">Portal Overview</h1>
+                <p class="text-sm text-slate-500 mt-1 font-medium italic">Music Distribution Control Center</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                 <div class="metric-card">
-                    <div class="metric-label">Tổng bài hát</div>
-                    <div id="m-total" class="metric-value">--</div>
+                    <div class="metric-label">Total Assets</div>
+                    <div id="stat-all" class="metric-value">--</div>
                 </div>
                 <div class="metric-card">
-                    <div class="metric-label">Đang chờ xử lý</div>
-                    <div id="m-pending" class="metric-value text-amber-500">--</div>
+                    <div class="metric-label">Reviewing</div>
+                    <div id="stat-pending" class="metric-value text-amber-500">--</div>
                 </div>
-                <div class="metric-card border-l-4 border-l-green-500">
-                    <div class="metric-label">Đã phát hành</div>
-                    <div id="m-live" class="metric-value text-green-600">--</div>
+                <div class="metric-card">
+                    <div class="metric-label">Live Nodes</div>
+                    <div id="stat-live" class="metric-value text-emerald-600">--</div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="bg-white border border-slate-200 rounded-lg p-8 min-h-[300px] flex flex-col items-center justify-center text-center">
-                    <i class="fa-solid fa-inbox text-slate-200 text-5xl mb-6"></i>
-                    <h3 class="text-lg font-bold text-slate-800">Không có thông báo mới</h3>
-                    <p class="text-sm text-slate-400 mt-2 max-w-sm">Dữ liệu phân phối ổn định. Các bản ghi mới nhất sẽ được cập nhật tại đây.</p>
+            <div class="bg-white border border-slate-200 rounded-xl p-10 text-center min-h-[350px] flex flex-col items-center justify-center">
+                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-inbox text-slate-200 text-4xl"></i>
                 </div>
-
-                <div id="adm-panel" class="hidden authority-panel">
-                    <h3 class="text-[11px] font-black uppercase tracking-widest text-slate-500 mb-6">Authority Override</h3>
-                    <div class="space-y-6">
-                        <div>
-                            <label>Lifecycle Status</label>
-                            <select>
-                                <option value="Pending">Pending Review</option>
-                                <option value="Released">Released</option>
-                                <option value="Rejected" selected>Rejected</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>Official QC Log</label>
-                            <textarea rows="4" placeholder="Enter quality control details..."></textarea>
-                        </div>
-                    </div>
-                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">Metadata Stream Clear</h3>
+                <p class="text-sm text-slate-400 max-w-sm leading-relaxed">
+                    Hệ thống đang vận hành ổn định. Các bản ghi mới nộp sẽ xuất hiện tại mục Catalog.
+                </p>
             </div>
         </div>
     </main>
-</div>
 
-<script>
-    const API = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog.json";
-    const user = localStorage.getItem('activeUser') || 'Guest';
-    const isMaster = (user === 'UNDERSOUTHERN');
+    <script>
+        const API_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog.json";
+        const currentUser = localStorage.getItem('activeUser') || 'Guest';
 
-    window.onload = async () => {
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
-            window.location.href = "https://undersouthern.asia/login";
+        window.onload = async () => {
+            // Xác thực
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.location.href = "https://undersouthern.asia/login";
+            }
+
+            // Kiểm tra quyền Admin để hiện menu ẩn
+            if (currentUser === 'UNDERSOUTHERN') {
+                document.getElementById('adm-nav').classList.remove('hidden');
+            }
+
+            await loadStats();
+        };
+
+        async function loadStats() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json() || {};
+                const list = Object.values(data);
+                
+                // Phân quyền dữ liệu
+                const myData = (currentUser === 'UNDERSOUTHERN') ? list : list.filter(item => item.owner === currentUser);
+
+                document.getElementById('stat-all').innerText = myData.length;
+                document.getElementById('stat-pending').innerText = myData.filter(i => i.status === 'Pending').length;
+                document.getElementById('stat-live').innerText = myData.filter(i => i.status === 'Released').length;
+
+            } catch (e) {
+                console.error("Dashboard Node Error");
+            }
         }
 
-        // Kích hoạt giao diện Admin nếu hợp lệ
-        if (isMaster) {
-            document.getElementById('adm-access').classList.remove('hidden');
-            document.getElementById('adm-panel').classList.remove('hidden');
+        function handleLogout() {
+            if(confirm("Xác nhận đăng xuất khỏi hệ thống?")) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('activeUser');
+                window.location.href = "https://undersouthern.asia/login";
+            }
         }
-
-        await fetchStats();
-    };
-
-    async function fetchStats() {
-        try {
-            const res = await fetch(API);
-            const data = await res.json() || {};
-            const assets = Object.values(data);
-            const myData = isMaster ? assets : assets.filter(i => i.owner === user);
-
-            document.getElementById('m-total').innerText = myData.length;
-            document.getElementById('m-pending').innerText = myData.filter(i => i.status === 'Pending').length;
-            document.getElementById('m-live').innerText = myData.filter(i => i.status === 'Released').length;
-        } catch (e) {
-            console.error("Master Node Error");
-        }
-    }
-</script>
+    </script>
 </body>
 </html>
