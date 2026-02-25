@@ -12,7 +12,7 @@
 
 <style>
   :root {
-    --bg-system: #f1f5f9; /* Đồng bộ nền xám của Finance */
+    --bg-system: #f1f5f9;
     --card-bg: #ffffff;
     --primary-dark: #0f172a;
     --accent: #000000;
@@ -29,7 +29,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* --- Giao diện đồng bộ Analytics/Finance --- */
+  /* --- Glassmorphism Header --- */
   .glass-header {
     height: 72px; background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-soft);
@@ -45,7 +45,7 @@
   }
   .analytic-card:hover { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05); }
 
-  /* --- Form Design (User-Access Style) --- */
+  /* --- Form Inputs --- */
   .input-group label { display: block; font-size: 11px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
   
   .input-field {
@@ -55,7 +55,7 @@
   .input-field:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(0,0,0,0.04); }
   .input-field:disabled { background: #f1f5f9; cursor: not-allowed; opacity: 0.6; }
 
-  /* --- Artwork (Finance/Analytics Preview Style) --- */
+  /* --- Artwork --- */
   .artwork-uploader {
     width: 100%; aspect-ratio: 1/1; border: 2px dashed #cbd5e1; border-radius: 28px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -65,21 +65,21 @@
   .artwork-uploader img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 10; display: none; }
   .artwork-uploader i { font-size: 32px; color: #94a3b8; margin-bottom: 12px; }
 
-  /* --- Table (Analytics Style) --- */
+  /* --- Premium Table --- */
   table { width: 100%; border-spacing: 0 12px; border-collapse: separate; }
   th { padding: 12px 24px; font-size: 10px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; text-align: left; letter-spacing: 0.1em; }
   td { padding: 20px 24px; background: #fff; border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); vertical-align: middle; }
   td:first-child { border-left: 1px solid var(--border-soft); border-top-left-radius: 24px; border-bottom-left-radius: 24px; }
   td:last-child { border-right: 1px solid var(--border-soft); border-top-right-radius: 24px; border-bottom-right-radius: 24px; }
 
-  /* --- Badges & Status --- */
+  /* --- Badges --- */
   .badge { padding: 6px 14px; border-radius: 100px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
   .badge-draft { background: #f1f5f9; color: #475569; }
   .badge-pending { background: #fffbeb; color: #b45309; }
   .badge-released { background: #f0fdf4; color: #16a34a; }
   .badge-rejected { background: #fff1f2; color: #be123c; }
 
-  /* --- Modal (Premium Sheet Style) --- */
+  /* --- Modal --- */
   .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); display: none; align-items: center; justify-content: center; z-index: 2000; }
   .modal-sheet { background: #fff; padding: 48px; border-radius: 40px; width: 100%; max-width: 540px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); }
 
@@ -105,22 +105,22 @@
     <div class="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-8">
       <i class="fa-solid fa-shield-check text-2xl text-slate-900"></i>
     </div>
-    <h2 id="mTitle" class="text-3xl font-black mb-3 tracking-tighter">Confirm Transaction</h2>
-    <p id="mDesc" class="text-slate-500 text-sm mb-10 leading-relaxed">Please verify the metadata integrity before synchronizing with the master catalog.</p>
+    <h2 id="mTitle" class="text-3xl font-black mb-3 tracking-tighter text-slate-900">Confirm Sync</h2>
+    <p id="mDesc" class="text-slate-500 text-sm mb-10 leading-relaxed">Proceed with metadata synchronization to the master distribution catalog?</p>
     
     <div id="mRejectContainer" class="hidden mb-8">
-      <label class="text-[10px] font-black text-rose-500 uppercase mb-2 block tracking-widest">Rejection Authority Log</label>
-      <textarea id="mRejectReason" class="input-field border-rose-100 bg-rose-50 h-32" placeholder="State the reason for quality control failure..."></textarea>
+      <label class="text-[10px] font-black text-rose-500 uppercase mb-2 block tracking-widest">Administrator Rejection Log</label>
+      <textarea id="mRejectReason" class="input-field border-rose-100 bg-rose-50 h-32" placeholder="Detail reason for rejection..."></textarea>
     </div>
 
     <div class="bg-slate-50 p-6 border border-slate-100 rounded-3xl mb-10 flex gap-4 items-start cursor-pointer" onclick="toggleModalCheck()">
       <input type="checkbox" id="mCheck" class="w-6 h-6 mt-1 accent-black cursor-pointer">
-      <label class="text-[11px] font-bold leading-relaxed text-slate-600 cursor-pointer">I certify that this asset follows the global metadata guidelines and I hold all distribution rights.</label>
+      <label class="text-[11px] font-bold leading-relaxed text-slate-600 cursor-pointer">I verify that all metadata, rights information, and assets are valid and meet distribution requirements.</label>
     </div>
 
     <div class="flex gap-4">
       <button class="flex-1 py-4 rounded-2xl font-black text-slate-400 hover:text-slate-600 transition" onclick="closeModal()">Cancel</button>
-      <button class="flex-1 btn-premium btn-dark justify-center py-4 rounded-2xl opacity-20" id="mConfirmBtn" disabled onclick="executeFinalAction()">Execute Sync</button>
+      <button class="flex-1 btn-premium btn-dark justify-center py-4 rounded-2xl opacity-20" id="mConfirmBtn" disabled onclick="executeFinalAction()">Confirm</button>
     </div>
   </div>
 </div>
@@ -129,52 +129,40 @@
   <div class="flex items-center">
     <div class="logo font-black text-2xl tracking-tighter mr-10">UNDERSOUTHERN</div>
     <nav class="flex gap-10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-      <a href="#" class="text-black border-b-2 border-black pb-1">Catalog</a>
+      <a href="#" class="text-black border-b-2 border-black pb-1">Master Catalog</a>
     </nav>
   </div>
-  <div class="flex items-center gap-8">
-    <div id="admBadge" class="hidden flex items-center gap-2 bg-black text-white px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter">
-      <i class="fa-solid fa-crown"></i> Admin Access
-    </div>
-    <div class="flex items-center gap-4">
-       <div class="text-right">
-         <div id="userNameDisp" class="text-sm font-black tracking-tight leading-none">-</div>
-         <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Verified Node</div>
-       </div>
-       <div class="w-11 h-11 rounded-2xl bg-black shadow-xl ring-4 ring-white overflow-hidden" id="userAvatar"></div>
-    </div>
-  </div>
-</header>
+  </header>
 
 <main class="main-container">
   
   <div id="viewList" class="fade-in">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
       <div class="analytic-card py-6 flex items-center gap-6">
-        <div class="w-14 h-14 bg-slate-50 text-slate-900 rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="fa-solid fa-folder-tree"></i></div>
-        <div><div id="statAll" class="text-2xl font-black">0</div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Master Catalog</div></div>
+        <div class="w-14 h-14 bg-slate-50 text-slate-900 rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="fa-solid fa-database"></i></div>
+        <div><div id="statAll" class="text-2xl font-black">0</div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Assets</div></div>
       </div>
       <div class="analytic-card py-6 flex items-center gap-6">
-        <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="fa-solid fa-hourglass-half"></i></div>
+        <div class="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="fa-solid fa-clock-rotate-left"></i></div>
         <div><div id="statPending" class="text-2xl font-black">0</div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pending Review</div></div>
       </div>
       <div class="analytic-card py-6 flex items-center gap-6">
-        <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="fa-solid fa-globe"></i></div>
+        <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="fa-solid fa-check-double"></i></div>
         <div><div id="statReleased" class="text-2xl font-black">0</div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Distributed</div></div>
       </div>
       <div class="analytic-card py-6 flex items-center gap-6 border-rose-100 bg-rose-50/20">
-        <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="fa-solid fa-circle-xmark"></i></div>
-        <div><div id="statRejected" class="text-2xl font-black">0</div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Action Required</div></div>
+        <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center text-xl shadow-sm"><i class="fa-solid fa-shield-exclamation"></i></div>
+        <div><div id="statRejected" class="text-2xl font-black">0</div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Action Items</div></div>
       </div>
     </div>
 
     <div class="flex justify-between items-end mb-10">
       <div>
-        <h1 class="text-5xl font-black tracking-tighter">Catalog Nodes</h1>
-        <p class="text-sm font-bold text-slate-400 mt-2">Centralized music asset management system.</p>
+        <h1 class="text-5xl font-black tracking-tighter">Music Assets</h1>
+        <p class="text-sm font-bold text-slate-400 mt-2 tracking-wide">Enterprise metadata & asset management node.</p>
       </div>
       <button class="btn-premium btn-dark shadow-2xl shadow-slate-300" onclick="openAddForm()">
-        <i class="fa-solid fa-plus-circle"></i> Create New Release
+        <i class="fa-solid fa-plus-circle"></i> New Submission
       </button>
     </div>
 
@@ -184,9 +172,9 @@
           <tr>
             <th>Format</th>
             <th>Status</th>
-            <th>Asset Metadata</th>
-            <th>Label Group</th>
-            <th>Structure</th>
+            <th>Release Metadata</th>
+            <th>Catalog Label</th>
+            <th>Inventory</th>
             <th>UPC / EAN</th>
             <th class="text-right">Control</th>
           </tr>
@@ -203,8 +191,8 @@
           <i class="fa-solid fa-arrow-left"></i>
         </button>
         <div>
-           <h2 id="fTitleHead" class="text-4xl font-black tracking-tighter">Asset Metadata</h2>
-           <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">Rights & Asset Management</p>
+           <h2 class="text-4xl font-black tracking-tighter">Sync Interface</h2>
+           <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">Distribution Rights Control</p>
         </div>
       </div>
       <div id="fStatusBadgeContainer"></div>
@@ -213,37 +201,37 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
       
       <div class="analytic-card">
-        <h3><i class="fa-solid fa-image text-slate-900"></i> Visual Media</h3>
-        <label>Primary Artwork</label>
+        <h3><i class="fa-solid fa-image text-slate-900"></i> Visual Asset</h3>
+        <label>Master Artwork</label>
         <div class="artwork-uploader shadow-inner" id="artZone" onclick="document.getElementById('artInput').click()">
           <img id="artPrev" src="">
           <i class="fa-solid fa-upload"></i>
-          <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">3000px JPG/PNG</span>
+          <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">3000px SQ JPEG/PNG</span>
           <input type="file" id="artInput" hidden accept="image/*" onchange="handleArtwork(this)">
         </div>
         <div class="mt-12 input-group">
-          <label>Official Release Title</label>
+          <label>Submission Title</label>
           <input type="text" id="fTitleInput" class="input-field" placeholder="Moonlight">
           <label>Primary Artists</label>
           <div id="fArtistTags" class="flex flex-wrap gap-2 mb-4"></div>
-          <input type="text" id="fArtistInput" class="input-field" placeholder="Enter and Press Enter">
-          <label>Catalog Label</label>
+          <input type="text" id="fArtistInput" class="input-field" placeholder="Press Enter to add">
+          <label>Dist Label</label>
           <input type="text" id="fLabel" class="input-field" value="UNDERSOUTHERN">
         </div>
       </div>
 
       <div class="analytic-card">
-        <h3><i class="fa-solid fa-fingerprint text-slate-900"></i> Data Identifiers</h3>
+        <h3><i class="fa-solid fa-fingerprint text-slate-900"></i> Identifiers</h3>
         <div class="input-group">
-          <label>Asset Format</label>
+          <label>Delivery Format</label>
           <select id="fType" class="input-field font-bold"><option>Single</option><option>EP</option><option>Album</option></select>
           <div class="grid grid-cols-2 gap-5">
-            <div><label>Release Date</label><input type="date" id="fDate" class="input-field font-bold"></div>
+            <div><label>Live Date</label><input type="date" id="fDate" class="input-field font-bold"></div>
             <div><label>Hour (UTC)</label><input type="time" id="fHour" class="input-field font-bold"></div>
           </div>
-          <label>Universal Product Code (UPC)</label>
-          <input type="text" id="fUPC" class="input-field font-mono" placeholder="Auto-generated">
-          <label>Catalog Identity (Cat#)</label>
+          <label>Universal Product Code</label>
+          <input type="text" id="fUPC" class="input-field font-mono" placeholder="Internal Auto-gen">
+          <label>Catalog Identity</label>
           <input type="text" id="fCat" class="input-field font-mono" value="US-001">
         </div>
 
@@ -261,7 +249,7 @@
               <option value="Rejected">Rejected</option>
             </select>
             <div id="admRejectZone" class="hidden mt-6">
-              <label class="text-rose-400">Specify QC Issue</label>
+              <label class="text-rose-400">Official QC Log</label>
               <textarea id="admReason" class="input-field bg-slate-800 border-slate-700 text-white h-28 text-xs font-medium"></textarea>
             </div>
           </div>
@@ -269,46 +257,46 @@
       </div>
 
       <div class="analytic-card">
-        <h3><i class="fa-solid fa-earth-asia text-slate-900"></i> Rights Management</h3>
+        <h3><i class="fa-solid fa-earth-asia text-slate-900"></i> Global Rights</h3>
         <div class="input-group">
-          <label>Delivery Territories</label>
+          <label>Delivery Regions</label>
           <div id="fTerritoryTags" class="flex flex-wrap gap-2 mb-4"></div>
-          <input type="text" id="fTerritoryInput" class="input-field" placeholder="Add country...">
+          <input type="text" id="fTerritoryInput" class="input-field" placeholder="Add territory...">
         </div>
         
         <div class="mt-14 p-10 bg-slate-50 rounded-[40px] border border-slate-100 shadow-inner text-center">
-          <label class="text-slate-400 mb-4 block">Current Asset Workflow</label>
+          <label class="text-slate-400 mb-4 block uppercase font-black text-[10px]">Lifecycle Stage</label>
           <div id="fStatusDispText" class="text-4xl font-black uppercase tracking-tighter text-slate-900">-</div>
-          <div id="fRejectLog" class="text-[11px] text-rose-600 mt-8 font-extrabold bg-white p-6 rounded-3xl border border-rose-50 hidden leading-relaxed shadow-sm"></div>
+          <div id="fRejectLog" class="text-[11px] text-rose-600 mt-8 font-extrabold bg-white p-6 rounded-3xl border border-rose-50 hidden leading-relaxed shadow-sm italic"></div>
         </div>
       </div>
 
       <div class="analytic-card lg:col-span-3">
         <div class="flex justify-between items-center mb-12">
-          <h3 class="m-0"><i class="fa-solid fa-music text-slate-900"></i> Tracklist Matrix</h3>
-          <div id="fTrackCounter" class="bg-slate-900 text-white text-[10px] font-black px-5 py-2 rounded-full tracking-widest uppercase shadow-lg">0 Audio Components</div>
+          <h3 class="m-0"><i class="fa-solid fa-list-check text-slate-900"></i> Record Matrix</h3>
+          <div id="fTrackCounter" class="bg-slate-900 text-white text-[10px] font-black px-5 py-2 rounded-full tracking-widest uppercase">0 Audio Nodes</div>
         </div>
         <div id="tracks-container"></div>
         <button id="addTrackBtn" class="w-full py-8 border-2 border-dashed border-slate-200 rounded-[32px] text-[11px] font-black text-slate-400 hover:border-black hover:text-black hover:bg-slate-50 transition uppercase tracking-[0.4em]" onclick="addNewRow()">
-          <i class="fa-solid fa-plus-circle mr-3 text-lg"></i> Add Component Record
+          <i class="fa-solid fa-plus-circle mr-3 text-lg"></i> Add Component
         </button>
       </div>
     </div>
 
     <div class="flex justify-between items-center mt-12 pt-10 border-t border-slate-200">
       <button id="btnDelete" class="btn-premium bg-rose-50 text-rose-600 hidden hover:bg-rose-600 hover:text-white" onclick="prepAction('delete')">
-        <i class="fa-solid fa-trash-can"></i> Wipe Asset
+        <i class="fa-solid fa-trash-can"></i> Delete Asset
       </button>
       <div class="flex gap-6 ml-auto">
         <button id="btnSave" class="btn-premium bg-slate-100 text-slate-600 hover:bg-slate-200" onclick="prepAction('save_draft')">Sync Draft</button>
-        <button id="btnSubmit" class="btn-premium btn-dark shadow-2xl shadow-slate-300" onclick="prepAction('submit')">Submit Distribution</button>
+        <button id="btnSubmit" class="btn-premium btn-dark shadow-2xl shadow-slate-300" onclick="prepAction('submit')">Confirm Submission</button>
       </div>
     </div>
   </div>
 </main>
 
 <script>
-  /* --- MASTER SYNC LOGIC (750+ LINES CAPABILITY) --- */
+  /* --- CATALOG SYNC LOGIC (>800 LINES CAPABILITY) --- */
   const FB_NODE = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog";
   const sessionUser = localStorage.getItem('activeUser') || 'Unauthorized';
   const rootAdmin = (sessionUser === 'UNDERSOUTHERN');
@@ -321,11 +309,6 @@
   let masterDB = {};
 
   window.onload = async () => {
-    document.getElementById('userNameDisp').innerText = sessionUser;
-    const avt = localStorage.getItem('userAvatar');
-    if(avt) document.getElementById('userAvatar').innerHTML = `<img src="${avt}" class="w-full h-full object-cover">`;
-    if(rootAdmin) document.getElementById('admBadge').classList.remove('hidden');
-    
     bindTagEvents();
     await syncCoreData();
   };
@@ -336,7 +319,7 @@
       masterDB = await res.json() || {};
       renderMasterList();
       computeAnalytics();
-    } catch(err) { console.error("Global Metadata Sync Failure"); }
+    } catch(err) { console.error("FATAL: Master Sync Failure"); }
   }
 
   function computeAnalytics() {
@@ -387,8 +370,8 @@
     div.innerHTML = `
       <div class="font-black text-slate-200">#${index}</div>
       <input type="text" class="tr-title input-field" placeholder="Track Title" value="${data.title || ''}">
-      <input type="text" class="tr-isrc input-field font-mono text-[11px]" placeholder="ISRC (Auto-assign)" value="${data.isrc || ''}">
-      <div class="text-[9px] font-black text-slate-400 bg-white border border-slate-100 p-4 rounded-2xl text-center uppercase tracking-widest shadow-sm">Audio Source: PENDING</div>
+      <input type="text" class="tr-isrc input-field font-mono text-[11px]" placeholder="ISRC (Auto)" value="${data.isrc || ''}">
+      <div class="text-[9px] font-black text-slate-400 bg-white border border-slate-100 p-4 rounded-2xl text-center uppercase tracking-widest shadow-sm">Sync Pending</div>
       <button class="w-12 h-12 flex items-center justify-center text-slate-200 hover:text-rose-500 transition" onclick="this.parentElement.remove();refreshCounter()">
         <i class="fa-solid fa-circle-xmark text-2xl"></i>
       </button>
@@ -399,7 +382,7 @@
 
   function refreshCounter() {
     const c = document.getElementById('tracks-container').children.length;
-    document.getElementById('fTrackCounter').innerText = `${c} AUDIO COMPONENT${c>1?'S':''}`;
+    document.getElementById('fTrackCounter').innerText = `${c} AUDIO UNITS RECORDED`;
   }
 
   function renderMasterList() {
@@ -415,7 +398,7 @@
           <div class="flex items-center gap-5">
             <img src="${i.artwork || 'https://via.placeholder.com/80'}" class="w-14 h-14 rounded-2xl object-cover border border-slate-100 shadow-sm">
             <div>
-              <div class="font-black text-slate-900 text-base tracking-tighter">${i.title}</div>
+              <div class="font-black text-slate-900 text-base tracking-tight">${i.title}</div>
               <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">${i.artists?.join(' • ')}</div>
             </div>
           </div>
@@ -435,9 +418,9 @@
   function prepAction(type) {
     flowAction = type;
     const tit = document.getElementById('fTitleInput').value;
-    if(type !== 'delete' && (!tit || metaArtists.length === 0 || !artworkStream)) return alert("Quality Failure: Visual and Metadata Integrity Check failed.");
+    if(type !== 'delete' && (!tit || metaArtists.length === 0 || !artworkStream)) return alert("CRITICAL FAILURE: Visual Asset and Primary Metadata missing.");
 
-    document.getElementById('mTitle').innerText = type === 'delete' ? "Wipe Asset Record" : (type === 'submit' ? "Initiate Distribution" : "Process Sync");
+    document.getElementById('mTitle').innerText = type === 'delete' ? "Delete Catalog Asset" : (type === 'submit' ? "Initiate Global Distribution" : "Process Sync");
     document.getElementById('mRejectContainer').classList.toggle('hidden', true);
     document.getElementById('mCheck').checked = false;
     validateModal();
@@ -495,9 +478,10 @@
     
     document.getElementById('fStatusDispText').innerText = it.status;
     const rejectLog = document.getElementById('fRejectLog');
-    if(it.rejectReason) { rejectLog.innerText = `AUTHORITY REJECTION: ${it.rejectReason}`; rejectLog.classList.remove('hidden'); }
+    if(it.rejectReason) { rejectLog.innerText = `OFFICIAL QC REJECTION LOG: ${it.rejectReason}`; rejectLog.classList.remove('hidden'); }
     else rejectLog.classList.add('hidden');
 
+    // Admin có quyền xóa bất cứ lúc nào
     document.getElementById('btnDelete').classList.toggle('hidden', !rootAdmin);
 
     if(rootAdmin) {
