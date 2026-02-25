@@ -45,13 +45,7 @@
         #mobile-toggle { display: none; font-size: 20px; color: var(--sidebar-navy); cursor: pointer; margin-right: 16px; width: 24px; text-align: center; }
         @media (max-width: 1024px) { #mobile-toggle { display: block; } .content-header { padding: 0 24px; } }
 
-        /* --- DASHBOARD LAYOUT --- */
-        .dashboard-layout { display: flex; gap: 48px; flex-wrap: wrap; }
-        .main-col { flex: 1; min-width: 300px; }
-        .side-col { width: 340px; }
-        @media (max-width: 1400px) { .side-col { width: 100%; } }
-
-        /* Catalog Overview Header */
+        /* Catalog Overview Box */
         .catalog-overview-container { margin-bottom: 48px; }
         .overview-title { font-size: 14px; font-weight: 700; color: var(--sidebar-navy); margin-bottom: 16px; }
         .overview-box { background: #fff; border: 1px solid var(--border-light); border-radius: 8px; display: flex; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
@@ -59,7 +53,6 @@
         .overview-item:last-child { border-right: none; }
         .item-label { font-size: 11px; font-weight: 600; color: #94a3b8; margin-bottom: 8px; }
         .item-value { font-size: 32px; font-weight: 800; color: var(--sidebar-navy); line-height: 1; }
-        .item-link { font-size: 11px; font-weight: 700; color: var(--link-blue); cursor: pointer; margin-top: 12px; display: inline-block; }
 
         /* Sections titles */
         .section-title { font-size: 15px; font-weight: 700; color: var(--sidebar-navy); margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; }
@@ -75,16 +68,6 @@
         th { text-align: left; padding: 16px 24px; background: #fafbfc; font-size: 10px; font-weight: 700; color: #94a3b8; border-bottom: 1px solid var(--border-light); }
         td { padding: 16px 24px; font-size: 12px; color: var(--sidebar-navy); border-bottom: 1px solid #f1f5f9; }
         .row-art { width: 36px; height: 36px; border-radius: 4px; object-fit: cover; margin-right: 12px; display: inline-block; vertical-align: middle; }
-
-        /* --- RECENTLY UPDATED (KHUNG TRỐNG) --- */
-        .side-title { font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 20px; }
-        .updates-table-wrapper { background: transparent; }
-        .updates-table { width: 100%; border-collapse: collapse; }
-        .updates-table th { text-align: left; font-size: 12px; font-weight: 700; color: #4a5568; padding-bottom: 12px; border-bottom: 1px solid #dce4ec; }
-        .updates-table th:last-child { text-align: right; }
-        
-        /* Hàng trống để giữ khung gạch ngang */
-        .updates-table td { padding: 24px 0; border-bottom: 1px solid #edf2f7; }
 
         .empty-view { display: none; width: 100%; height: 80vh; border: 2px dashed #cbd5e1; border-radius: 12px; align-items: center; justify-content: center; color: #cbd5e1; }
         #sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 999; }
@@ -120,61 +103,34 @@
 
         <div class="scroll-container">
             <div id="dashboard-content">
-                <div class="dashboard-layout">
-                    <div class="main-col">
-                        <div class="catalog-overview-container">
-                            <h3 class="overview-title">Catalog overview</h3>
-                            <div class="overview-box">
-                                <div class="overview-item">
-                                    <div><div class="item-label">Products</div><div id="count-total" class="item-value">--</div></div>
-                                    <span class="item-link">View more</span>
-                                </div>
-                                <div class="overview-item">
-                                    <div><div class="item-label">Incomplete products</div><div id="count-pending" class="item-value">--</div></div>
-                                    <span class="item-link">View more</span>
-                                </div>
-                            </div>
+                <div class="catalog-overview-container">
+                    <h3 class="overview-title">Catalog overview</h3>
+                    <div class="overview-box">
+                        <div class="overview-item">
+                            <div><div class="item-label">Products</div><div id="count-total" class="item-value">--</div></div>
                         </div>
-
-                        <h3 class="section-title">Recent releases</h3>
-                        <div class="catalog-grid" id="grid-render"></div>
-
-                        <h3 class="section-title">Recently created</h3>
-                        <div class="table-wrapper">
-                            <table>
-                                <thead><tr><th>Product</th><th>Artist</th><th>Label</th><th>UPC</th><th>Created</th></tr></thead>
-                                <tbody id="table-render"></tbody>
-                            </table>
+                        <div class="overview-item">
+                            <div><div class="item-label">Incomplete products</div><div id="count-pending" class="item-value">--</div></div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="side-col">
-                        <h3 class="side-title">Recently Updated</h3>
-                        <div class="updates-table-wrapper">
-                            <table class="updates-table">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Modified</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr><td></td><td></td></tr>
-                                    <tr><td></td><td></td></tr>
-                                    <tr><td></td><td></td></tr>
-                                    <tr><td></td><td></td></tr>
-                                    <tr><td></td><td></td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <h3 class="section-title">Recent releases</h3>
+                <div class="catalog-grid" id="grid-render"></div>
+
+                <h3 class="section-title">Recently created</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead><tr><th>Product</th><th>Artist</th><th>Label</th><th>UPC</th><th>Created</th></tr></thead>
+                        <tbody id="table-render"></tbody>
+                    </table>
                 </div>
             </div>
 
             <div id="empty-content" class="empty-view">
                 <div class="text-center">
                     <i class="fa-solid fa-cube text-4xl mb-4 opacity-10"></i>
-                    <p class="text-[10px] font-black opacity-20">Secure Environment / No Content</p>
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] opacity-20">Secure Environment / No Content</p>
                 </div>
             </div>
         </div>
@@ -241,7 +197,6 @@
             document.getElementById('mainSidebar').classList.toggle('open');
             document.getElementById('sidebar-overlay').classList.toggle('active');
         }
-        document.addEventListener('contextmenu', e => e.preventDefault());
     </script>
 </body>
 </html>
