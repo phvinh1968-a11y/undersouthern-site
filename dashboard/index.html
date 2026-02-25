@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* Màn hình loading tùy chỉnh */
         #initial-loader {
             position: fixed;
             inset: 0;
@@ -40,6 +41,7 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Khóa giao diện cho đến khi xác thực thành công */
         #main-content { display: none; }
 
         html, body { height: 100% !important; margin: 0; padding: 0; overflow: hidden; }
@@ -258,9 +260,9 @@
             const currentUser = localStorage.getItem('activeUser');
             const isSwitched = localStorage.getItem('isSwitchedMode');
             const navUsers = document.getElementById('nav-users');
+            const returnContainer = document.getElementById('admin-return-container');
 
             if (isSwitched === 'true') {
-                const returnContainer = document.getElementById('admin-return-container');
                 returnContainer.innerHTML = `
                     <button onclick="backToAdmin()" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-red-700 transition flex items-center gap-2 shadow-lg active:scale-95">
                         <i class="fa-solid fa-user-shield"></i> Return to Admin
@@ -268,6 +270,7 @@
                 `;
                 if (navUsers) navUsers.classList.add('hidden');
             } else {
+                returnContainer.innerHTML = ''; 
                 if (currentUser !== 'UNDERSOUTHERN') {
                     if (navUsers) navUsers.classList.add('hidden');
                 } else {
@@ -329,8 +332,6 @@
             }
         }
 
-        // --- LOGIC FIREBASE CHO USER MANAGEMENT ---
-
         async function renderUsers() {
             const tableBody = document.getElementById('userTableBody');
             tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-10 text-center text-slate-400 italic">Syncing with cloud database...</td></tr>`;
@@ -344,7 +345,6 @@
                     return;
                 }
 
-                // Chuyển Object Firebase thành mảng kèm ID (key)
                 const userList = Object.keys(cloudData).map(key => ({
                     firebaseId: key,
                     ...cloudData[key]
@@ -363,7 +363,7 @@
                         <td class="px-6 py-4"><span class="status-tag">${user.status || 'Active'}</span></td>
                         <td class="px-6 py-4 text-right">
                             <div class="flex justify-end space-x-1">
-                                <button onclick="switchUser('${user.login}')" class="btn-action hover:bg-black hover:text-white" title="Login as user">
+                                <button onclick="confirmSwitchUser('${user.login}')" class="btn-action hover:bg-black hover:text-white" title="Switch to user account">
                                     <i class="fa-solid fa-right-to-bracket text-[10px]"></i>
                                 </button>
                                 <button onclick="deleteUser('${user.firebaseId}')" class="btn-action hover:text-red-600 hover:border-red-100">
@@ -375,6 +375,15 @@
                 `).join('');
             } catch (error) {
                 tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-10 text-center text-red-500">Error connecting to Firebase.</td></tr>`;
+            }
+        }
+
+        // LOGIC HIỂN THỊ THÔNG BÁO XÁC NHẬN KHI SWITCH USER
+        function confirmSwitchUser(login) {
+            if (confirm(`Switch to user account: ${login}?`)) {
+                localStorage.setItem('activeUser', login);
+                localStorage.setItem('isSwitchedMode', 'true');
+                window.location.reload();
             }
         }
 
@@ -394,12 +403,6 @@
                     alert("Network error. Please try again.");
                 }
             }
-        }
-
-        function switchUser(login) {
-            localStorage.setItem('activeUser', login);
-            localStorage.setItem('isSwitchedMode', 'true');
-            window.location.reload();
         }
 
         function togglePass(id, icon) {
