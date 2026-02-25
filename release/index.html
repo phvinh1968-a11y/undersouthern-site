@@ -1,69 +1,314 @@
-<div id="view-add" class="hidden">
-    <div style="display:flex; align-items:center; gap:15px; margin-bottom:30px;">
-        <button class="btn-icon" onclick="toggleView('list')"><i class="fa-solid fa-arrow-left"></i></button>
-        <h2 id="formTitle" style="margin:0; font-weight:700">New Release</h2>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>New Release - UNDERSOUTHERN</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --bg-body: #ffffff;
+            --primary-black: #000000;
+            --border-color: #eeeeee;
+            --font-main: 'Inter', sans-serif;
+        }
+
+        body { 
+            font-family: var(--font-main); 
+            background-color: var(--bg-body); 
+            letter-spacing: -0.01em;
+            overflow-x: hidden;
+        }
+
+        .main-header {
+            height: 72px; border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; background: #fff;
+        }
+
+        .brand-name { font-weight: 900; font-size: 20px; text-transform: uppercase; }
+
+        .card { 
+            background: #fff; padding: 24px; border-radius: 12px; 
+            border: 1px solid var(--border-color); height: 100%;
+        }
+
+        h3 { font-size: 11px; text-transform: uppercase; margin-bottom: 20px; font-weight: 800; color: #000; letter-spacing: 0.05em; }
+        
+        label { display: block; font-size: 11px; font-weight: 600; margin-bottom: 8px; color: #666; }
+        
+        input, select { 
+            width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); 
+            border-radius: 8px; font-size: 13px; margin-bottom: 18px; transition: 0.2s;
+        }
+        
+        input:focus { border-color: #000; outline: none; background: #fafafa; }
+
+        .tag { 
+            background: #f3f4f6; color: #000; padding: 4px 10px; border-radius: 6px; 
+            font-size: 11px; display: flex; align-items: center; gap: 6px; font-weight: 500; margin-bottom: 8px;
+        }
+
+        .track-row-header { 
+            display: grid; grid-template-columns: 30px 1.5fr 1fr 1.5fr 1.5fr 1fr 1fr 40px; 
+            gap: 12px; font-weight: 700; font-size: 9px; color: #999; text-transform: uppercase; padding: 0 10px 10px;
+        }
+
+        .track-row { 
+            display: grid; grid-template-columns: 30px 1.5fr 1fr 1.5fr 1.5fr 1fr 1fr 40px; 
+            gap: 12px; align-items: center; background: #fff; padding: 12px; 
+            border-radius: 10px; margin-bottom: 12px; border: 1px solid var(--border-color);
+        }
+
+        .track-row input { margin-bottom: 0 !important; font-size: 12px; background: #fcfcfc; }
+
+        .btn-add-track { 
+            width: 100%; padding: 12px; border: 1.5px dashed #ccc; border-radius: 10px;
+            font-size: 12px; font-weight: 700; color: #000; transition: 0.3s;
+        }
+        .btn-add-track:hover { border-color: #000; background: #f9f9f9; }
+
+        .submitted-btn { 
+            background: #000; color: #fff; padding: 12px 48px; border-radius: 8px;
+            font-weight: 800; font-size: 14px; transition: 0.3s;
+        }
+        .submitted-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        /* Modal giống Takedown */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(4px); }
+        .modal-box { background: white; padding: 32px; border-radius: 20px; width: 450px; }
+        .btn-confirm-active { background: #000; color: #fff; padding: 12px; border-radius: 8px; width: 100%; font-weight: 700; }
+        .btn-confirm-active:disabled { opacity: 0.3; }
+    </style>
+</head>
+<body>
+
+    <div class="modal-overlay" id="submitModal">
+        <div class="modal-box">
+            <h2 class="text-xl font-black mb-2">Submit Release</h2>
+            <p class="text-sm text-gray-500 mb-6">Are you sure you want to submit this release for distribution?</p>
+            
+            <div class="bg-gray-50 p-4 border border-gray-200 rounded-xl mb-6 flex gap-3 cursor-pointer" onclick="toggleCheckbox()">
+                <input type="checkbox" id="confirmCheck" class="w-5 h-5 accent-black">
+                <label for="confirmCheck" class="text-xs font-bold leading-tight cursor-pointer m-0">
+                    Yes, I'm sure I want to proceed with this submission.
+                </label>
+            </div>
+
+            <div class="flex gap-3">
+                <button class="flex-1 border border-gray-200 py-3 rounded-lg font-bold" onclick="closeModal()">Cancel</button>
+                <button class="flex-1 btn-confirm-active" id="finalBtn" onclick="processSubmit()" disabled>Confirm</button>
+            </div>
+        </div>
     </div>
 
-    <div class="form-container">
-        <div class="card">
-            <h3>Release Info</h3>
-            <label>Type</label>
-            <select id="inType" onchange="toggleTracklist()">
-                <option value="Single">Single</option>
-                <option value="EP">EP</option>
-                <option value="Album">Album</option>
-            </select>
-            <label>Title</label>
-            <input type="text" id="inTitle" placeholder="Moonlight">
-            
-            <label>Primary Artist(s)</label>
-            <div id="main-artist-tags" class="tag-container"></div>
-            <input type="text" id="inMainArtist" placeholder="Add artist and Enter">
+    <header class="main-header">
+        <h1 class="brand-name">UNDERSOUTHERN</h1>
+        <div class="w-8 h-8 bg-black rounded-full overflow-hidden" id="userAvatar"></div>
+    </header>
 
-            <label>Label</label>
-            <input type="text" id="inLabel" placeholder="UNDERSOUTHERN">
+    <div class="max-w-[1400px] mx-auto p-10">
+        <div class="flex items-center gap-4 mb-10">
+            <button class="w-10 h-10 border border-gray-100 rounded-lg flex items-center justify-center hover:bg-gray-50" onclick="location.href='https://undersouthern.asia/catalog'">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 class="text-3xl font-black tracking-tighter">New Release</h2>
         </div>
 
-        <div class="card">
-            <h3>Schedule & ID</h3>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <div><label>Date</label><input type="date" id="inDate"></div>
-                <div><label>Hour</label><input type="time" id="inHour"></div>
-            </div>
-            <label>UPC Code</label>
-            <input type="text" id="inUPC" placeholder="Auto-gen if empty">
-            <label>Catalog Number</label>
-            <input type="text" id="inCatNum" placeholder="US-001">
-        </div>
-
-        <div class="card">
-            <h3>Distribution</h3>
-            <label>Delivered Territories</label>
-            <div id="territory-tags" class="tag-container"></div>
-            <input type="text" id="territoryInput" placeholder="Add country and Enter">
-            
-            <div id="statusWrapper" class="hidden">
-                <label>Status</label>
-                <select id="inStatus">
-                    <option value="Draft">Draft</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Released">Released</option>
-                    <option value="Rejected">Rejected</option>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div class="card">
+                <h3>Release Info</h3>
+                <label>Type</label>
+                <select id="inType" onchange="checkType()">
+                    <option value="Single">Single</option>
+                    <option value="EP">EP</option>
+                    <option value="Album">Album</option>
                 </select>
+                <label>Title</label>
+                <input type="text" id="inTitle" placeholder="Moonlight">
+                <label>Primary Artist(s)</label>
+                <div id="artist-tags" class="flex flex-wrap gap-2 mb-2"></div>
+                <input type="text" id="inArtist" placeholder="Add artist and Enter">
+                <label>Label</label>
+                <input type="text" id="inLabel" value="UNDERSOUTHERN">
+            </div>
+
+            <div class="card">
+                <h3>Schedule & ID</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label>Date</label>
+                        <input type="date" id="inDate">
+                    </div>
+                    <div>
+                        <label>Hour</label>
+                        <input type="time" id="inHour">
+                    </div>
+                </div>
+                <label>UPC Code</label>
+                <input type="text" id="inUPC" placeholder="Auto-gen if empty">
+                <label>Catalog Number</label>
+                <input type="text" id="inCatNum" placeholder="US-001">
+            </div>
+
+            <div class="card">
+                <h3>Distribution</h3>
+                <label>Delivered Territories</label>
+                <div id="territory-tags" class="flex flex-wrap gap-2 mb-2"></div>
+                <input type="text" id="inTerritory" placeholder="Add country and Enter">
             </div>
         </div>
 
-        <div class="card tracklist-card">
-            <h3>Tracklist Configuration</h3>
+        <div class="border border-gray-200 rounded-2xl p-8 bg-white shadow-sm">
+            <h3 class="mb-8">Tracklist Configuration</h3>
             <div class="track-row-header">
                 <div>#</div><div>Title</div><div>Version</div><div>Primary Artists</div><div>Feats</div><div>ISRC</div><div>Audio</div><div></div>
             </div>
-            <div id="tracks-container"></div>
-            <button class="btn-add-track" id="addTrackBtn" onclick="addTrackRow()">+ Add New Track</button>
+            <div id="track-container"></div>
+            <button class="btn-add-track" id="addBtn" onclick="addNewTrack()">+ Add New Track</button>
+        </div>
+
+        <div class="flex justify-end mt-12">
+            <button class="submitted-btn" onclick="openModal()">Submitted</button>
         </div>
     </div>
 
-    <div class="footer-actions">
-        <button id="submitBtn" class="save-btn" onclick="openSaveModal()">Submitted</button>
-    </div>
-</div>
+    <script>
+        const FB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog.json";
+        const currentUser = localStorage.getItem('activeUser') || 'Unknown';
+        
+        let artists = [];
+        let territories = [];
+        let trackCount = 0;
+
+        window.onload = () => {
+            const avatar = localStorage.getItem('userAvatar');
+            if(avatar) document.getElementById('userAvatar').innerHTML = `<img src="${avatar}" class="w-full h-full object-cover">`;
+            
+            // Xử lý Tags Artist
+            document.getElementById('inArtist').onkeydown = (e) => {
+                if(e.key === 'Enter' && e.target.value.trim()){
+                    artists.push(e.target.value.trim());
+                    e.target.value = ''; renderTags('artist');
+                }
+            };
+
+            // Xử lý Tags Territory
+            document.getElementById('inTerritory').onkeydown = (e) => {
+                if(e.key === 'Enter' && e.target.value.trim()){
+                    territories.push(e.target.value.trim());
+                    e.target.value = ''; renderTags('territory');
+                }
+            };
+
+            addNewTrack(); // Mặc định 1 track
+        };
+
+        function renderTags(type) {
+            const list = type === 'artist' ? artists : territories;
+            const container = type === 'artist' ? 'artist-tags' : 'territory-tags';
+            document.getElementById(container).innerHTML = list.map((item, i) => `
+                <div class="tag">${item} <i class="fa-solid fa-xmark cursor-pointer" onclick="removeTag('${type}', ${i})"></i></div>
+            `).join('');
+        }
+
+        function removeTag(type, i) {
+            if(type === 'artist') artists.splice(i, 1);
+            else territories.splice(i, 1);
+            renderTags(type);
+        }
+
+        function addNewTrack() {
+            trackCount++;
+            const container = document.getElementById('track-container');
+            const row = document.createElement('div');
+            row.className = 'track-row';
+            row.id = `row-${trackCount}`;
+            row.innerHTML = `
+                <div class="font-bold">${trackCount}</div>
+                <input type="text" class="tr-title" placeholder="Title">
+                <input type="text" class="tr-version" placeholder="Mix">
+                <input type="text" class="tr-artists" placeholder="+ Enter">
+                <input type="text" class="tr-feats" placeholder="+ Enter">
+                <input type="text" class="tr-isrc" placeholder="Auto">
+                <button class="text-[10px] font-bold border border-gray-200 py-1.5 rounded-lg bg-gray-50">Upload WAV</button>
+                <div class="text-center"><i class="fa-solid fa-trash text-red-100 hover:text-red-500 cursor-pointer transition" onclick="removeRow(${trackCount})"></i></div>
+            `;
+            container.appendChild(row);
+        }
+
+        function removeRow(id) {
+            if(document.querySelectorAll('.track-row').length > 1) document.getElementById(`row-${id}`).remove();
+        }
+
+        function checkType() {
+            const type = document.getElementById('inType').value;
+            document.getElementById('addBtn').style.display = (type === 'Single') ? 'none' : 'block';
+        }
+
+        // --- MODAL LOGIC ---
+        function openModal() {
+            if(!document.getElementById('inTitle').value || artists.length === 0){
+                alert("Please fill Title and add at least one Artist.");
+                return;
+            }
+            document.getElementById('submitModal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('submitModal').style.display = 'none'; }
+        
+        function toggleCheckbox() {
+            const chk = document.getElementById('confirmCheck');
+            chk.checked = !chk.checked;
+            document.getElementById('finalBtn').disabled = !chk.checked;
+        }
+
+        function validateTakedown() { // Cho đồng bộ với code cũ nếu cần gọi
+            const chk = document.getElementById('confirmCheck').checked;
+            document.getElementById('finalBtn').disabled = !chk;
+        }
+
+        async function processSubmit() {
+            const btn = document.getElementById('finalBtn');
+            btn.innerText = "Processing...";
+            btn.disabled = true;
+
+            const tracks = Array.from(document.querySelectorAll('.track-row')).map(row => ({
+                title: row.querySelector('.tr-title').value,
+                version: row.querySelector('.tr-version').value,
+                isrc: row.querySelector('.tr-isrc').value || "AUTO-GEN",
+                audio: "Pending Upload"
+            }));
+
+            const data = {
+                title: document.getElementById('inTitle').value,
+                artists: artists,
+                type: document.getElementById('inType').value,
+                label: document.getElementById('inLabel').value,
+                date: document.getElementById('inDate').value,
+                hour: document.getElementById('inHour').value,
+                upc: document.getElementById('inUPC').value || "AUTO-GEN",
+                catNum: document.getElementById('inCatNum').value,
+                territories: territories,
+                tracks: tracks,
+                status: "Pending",
+                owner: currentUser
+            };
+
+            try {
+                await fetch(FB_URL, { method: 'POST', body: JSON.stringify(data) });
+                alert("Release Submitted Successfully!");
+                window.location.href = "https://undersouthern.asia/catalog";
+            } catch (e) {
+                alert("Error connecting to server.");
+                btn.innerText = "Confirm";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
