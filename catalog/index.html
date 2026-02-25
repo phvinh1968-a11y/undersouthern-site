@@ -79,9 +79,13 @@
   .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; gap: 15px; }
   .save-btn { background: #64748b; color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; }
   .submit-btn { background: var(--primary-black); color: white; border: none; padding: 12px 40px; font-weight: 700; border-radius: 8px; cursor: pointer; }
+  .delete-btn { background: #dc2626; color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; }
 
   .artwork-uploader { width: 100%; aspect-ratio: 1/1; border: 2px dashed #ddd; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; background: #fafafa; }
   .artwork-uploader img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 5; display: none; }
+  
+  .btn-icon { border: 1px solid var(--border-color); background: #fff; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+  .btn-icon:hover { background: var(--hover-bg); }
 </style>
 </head>
 <body>
@@ -91,7 +95,7 @@
       <div class="modal-box">
         <h2 id="modalTitle" class="text-xl font-bold mb-4">Confirm Action</h2>
         <p id="modalDesc" class="mb-4">Are you sure you want to proceed?</p>
-        <textarea id="rejectReasonInput" class="hidden" rows="3" placeholder="Enter reason for rejection..."></textarea>
+        <textarea id="rejectReasonInput" class="hidden w-full border p-2 rounded mb-4" rows="3" placeholder="Enter reason for rejection..."></textarea>
         <div class="takedown-confirm-box" id="confirmBox" onclick="toggleTakedownCheckbox()" style="display:flex; gap:10px; background:#f8fafc; padding:15px; border-radius:12px; margin-bottom:15px; cursor:pointer;">
           <input type="checkbox" id="confirmTakedownCheck" onchange="validateTakedown()">
           <label class="text-xs font-bold">Yes, I'm sure I want to proceed.</label>
@@ -161,12 +165,16 @@
             <div id="adminStatusZone" class="hidden">
                 <h3 class="mt-6 text-red-600">Admin Control</h3>
                 <label>Change Status</label>
-                <select id="adminInStatus">
+                <select id="adminInStatus" onchange="checkRejectReasonField()">
                     <option value="Draft">Draft</option>
                     <option value="Pending">Pending</option>
                     <option value="Released">Released</option>
                     <option value="Rejected">Rejected</option>
                 </select>
+                <div id="adminRejectReasonContainer" class="hidden">
+                   <label>Reject Reason</label>
+                   <textarea id="adminRejectReasonText" placeholder="Why is this rejected?"></textarea>
+                </div>
             </div>
           </div>
           <div class="card">
@@ -175,8 +183,8 @@
             <div id="territory-tags" class="tag-container"></div>
             <input type="text" id="territoryInput" placeholder="Enter country">
             
-            <div id="userStatusDisplay" class="mt-10 p-4 border rounded-lg bg-gray-50">
-                <label class="text-gray-400">Current Status</label>
+            <div id="statusDisplay" class="mt-10 p-4 border rounded-lg bg-gray-50">
+                <label class="text-gray-400">Status Info</label>
                 <div id="displayStatusText" class="font-bold text-lg">-</div>
                 <div id="displayRejectReason" class="text-red-500 text-xs mt-2 italic"></div>
             </div>
@@ -188,6 +196,7 @@
           </div>
         </div>
         <div class="footer-actions">
+          <button id="btnDeleteRelease" class="delete-btn hidden" onclick="prepareAction('delete')">Delete</button>
           <button id="btnSaveDraft" class="save-btn" onclick="prepareAction('save_draft')">Save Draft</button>
           <button id="btnSubmitRelease" class="submit-btn" onclick="prepareAction('submit_pending')">Submitted</button>
         </div>
@@ -245,8 +254,8 @@
   function addTrackRow(data = {}) {
     const container = document.getElementById('tracks-container');
     const div = document.createElement('div');
-    div.className = 'track-row';
-    div.innerHTML = `<input type="text" class="t-title" placeholder="Track Title" value="${data.title || ''}"><div class="text-xs text-gray-400">ISRC: ${data.isrc || 'Auto'}</div><i class="fa-solid fa-trash text-red-300 cursor-pointer" onclick="this.parentElement.remove()"></i>`;
+    div.className = 'track-row flex items-center gap-4 mb-4 bg-gray-50 p-3 rounded';
+    div.innerHTML = `<input type="text" class="t-title flex-1" placeholder="Track Title" value="${data.title || ''}"><div class="text-xs text-gray-400">ISRC: ${data.isrc || 'Auto'}</div><i class="fa-solid fa-trash text-red-300 cursor-pointer" onclick="this.parentElement.remove()"></i>`;
     container.appendChild(div);
   }
 
@@ -263,25 +272,54 @@
           <td><button class="btn-icon" onclick="editRelease('${item.id}')"><i class="fa-solid fa-pen"></i></button></td></tr>`).join('');
   }
 
+  function checkRejectReasonField() {
+      const status = document.getElementById('adminInStatus').value;
+      document.getElementById('adminRejectReasonContainer').classList.toggle('hidden', status !== 'Rejected');
+  }
+
   function prepareAction(action) {
     currentAction = action;
     const title = document.getElementById('inTitle').value;
-    if (!title || mainArtists.length === 0 || !currentArtworkBase64) return alert("Please fill Artwork, Title and Artists.");
+    
+    if (action !== 'delete' && (!title || mainArtists.length === 0 || !currentArtworkBase64)) {
+        return alert("Please fill Artwork, Title and Artists.");
+    }
 
-    if (action === 'submit_pending') {
+    if (action === 'delete') {
+        document.getElementById('modalTitle').innerText = "Confirm Deletion";
+        document.getElementById('modalDesc').innerText = "Are you sure you want to permanently remove this release? This cannot be undone.";
+    } else if (action === 'submit_pending') {
         document.getElementById('modalTitle').innerText = "Submit to Admin";
         document.getElementById('modalDesc').innerText = "Send this release to Admin for review? You won't be able to edit until reviewed.";
     } else {
-        document.getElementById('modalTitle').innerText = "Save Draft";
-        document.getElementById('modalDesc').innerText = "Save your current work as a draft?";
+        document.getElementById('modalTitle').innerText = "Process Changes";
+        document.getElementById('modalDesc').innerText = "Save and synchronize these changes to the system?";
     }
+    
     document.getElementById('confirmTakedownCheck').checked = false;
     validateTakedown();
     document.getElementById('takedownModal').style.display = 'flex';
   }
 
   async function executeAction() {
-    const status = currentAction === 'submit_pending' ? 'Pending' : (isAdmin ? document.getElementById('adminInStatus').value : 'Draft');
+    if (currentAction === 'delete') {
+        await fetch(`${FB_URL}/${editingId}.json`, { method: 'DELETE' });
+        await fetchCatalog(); closeModal(); toggleView('list');
+        return;
+    }
+
+    // Logic status dựa trên vai trò
+    let status;
+    let reason = "";
+    
+    if (isAdmin) {
+        status = document.getElementById('adminInStatus').value;
+        reason = document.getElementById('adminRejectReasonText').value;
+    } else {
+        status = currentAction === 'submit_pending' ? 'Pending' : 'Draft';
+        reason = editingId ? (fullCatalogData[editingId].rejectReason || "") : "";
+    }
+
     const tracks = Array.from(document.querySelectorAll('.track-row')).map(row => ({ title: row.querySelector('.t-title').value }));
     
     const release = {
@@ -299,7 +337,7 @@
         numTracks: tracks.length,
         tracks: tracks,
         territories: territoryList,
-        rejectReason: (isAdmin && status === 'Rejected') ? prompt("Enter Reject Reason:") : (editingId ? fullCatalogData[editingId].rejectReason : "")
+        rejectReason: reason
     };
 
     const method = editingId ? 'PATCH' : 'POST';
@@ -312,7 +350,6 @@
     editingId = id;
     const item = fullCatalogData[id];
     
-    // Fill Form
     document.getElementById('inTitle').value = item.title;
     document.getElementById('inType').value = item.type;
     document.getElementById('inLabel').value = item.label;
@@ -326,18 +363,24 @@
     document.getElementById('artworkPreview').src = currentArtworkBase64;
     document.getElementById('artworkPreview').style.display = currentArtworkBase64 ? 'block' : 'none';
     
-    // Status Logic
     document.getElementById('displayStatusText').innerText = item.status;
     document.getElementById('displayRejectReason').innerText = item.rejectReason || "";
     
-    // Phân quyền hiển thị
+    // Logic nút Delete (Chỉ Admin mới có quyền xóa khi bài hát ở trạng thái Draft)
+    if (isAdmin && item.status === 'Draft') {
+        document.getElementById('btnDeleteRelease').classList.remove('hidden');
+    } else {
+        document.getElementById('btnDeleteRelease').classList.add('hidden');
+    }
+
     if (isAdmin) {
         document.getElementById('adminStatusZone').classList.remove('hidden');
         document.getElementById('adminInStatus').value = item.status;
+        document.getElementById('adminRejectReasonText').value = item.rejectReason || "";
+        checkRejectReasonField();
         enableForm(true);
     } else {
         document.getElementById('adminStatusZone').classList.add('hidden');
-        // Nếu là User: Chỉ được sửa nếu là Draft hoặc Rejected
         const canEdit = (item.status === 'Draft' || item.status === 'Rejected');
         enableForm(canEdit);
     }
@@ -348,8 +391,11 @@
   }
 
   function enableForm(status) {
-    const fields = document.querySelectorAll('#releaseFormFields input, #releaseFormFields select');
-    fields.forEach(f => f.disabled = !status);
+    const fields = document.querySelectorAll('#releaseFormFields input, #releaseFormFields select, #releaseFormFields textarea');
+    fields.forEach(f => {
+        // Tránh disable phần Admin Control nếu status là false cho user
+        if (!f.closest('#adminStatusZone')) f.disabled = !status;
+    });
     document.getElementById('btnSaveDraft').style.display = status ? 'block' : 'none';
     document.getElementById('btnSubmitRelease').style.display = status ? 'block' : 'none';
     document.getElementById('addTrackBtn').style.display = status ? 'block' : 'none';
@@ -362,6 +408,7 @@
     document.getElementById('tracks-container').innerHTML = '';
     document.getElementById('displayStatusText').innerText = "Draft";
     document.getElementById('adminStatusZone').classList.add('hidden');
+    document.getElementById('btnDeleteRelease').classList.add('hidden');
     enableForm(true);
     addTrackRow(); toggleView('add');
   }
