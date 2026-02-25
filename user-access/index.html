@@ -2,7 +2,10 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>User Management - UNDERSOUTHERN</title>
 
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
@@ -71,6 +74,7 @@
   .modal-box { background: white; padding: 30px; border-radius: 16px; width: 340px; text-align: center; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); }
   .btn-modal-cancel { flex: 1; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; cursor: pointer; background: white; font-weight: 600; }
   .btn-modal-delete { flex: 1; background: #ff3b30; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+  .btn-modal-confirm { flex: 1; background: #000; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 600; }
 
   /* --- TAG STYLES --- */
   .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
@@ -99,6 +103,17 @@
     <div class="modal-actions" style="display:flex; gap:10px;">
       <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
       <button class="btn-modal-delete" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="switchModal">
+  <div class="modal-box">
+    <h2>Switch Account?</h2>
+    <p id="switchText">Are you sure you want to switch to this user account?</p>
+    <div class="modal-actions" style="display:flex; gap:10px;">
+      <button class="btn-modal-cancel" onclick="closeSwitchModal()">Cancel</button>
+      <button class="btn-modal-confirm" id="confirmSwitchBtn">Confirm</button>
     </div>
   </div>
 </div>
@@ -206,13 +221,13 @@
 </div>
 
 <script>
-  let editingIndex = -1; 
+  let editingIndex = -1; 
   let pendingDeleteIndex = -1;
+  let pendingSwitchIndex = -1;
   let artistList = [];
   let labelList = [];
-  // LOGIC FIREBASE CLOUD
   const DB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/users";
-  let firebaseUsersData = {}; 
+  let firebaseUsersData = {}; 
 
   (function checkAuth() {
     if (localStorage.getItem('isLoggedIn') !== 'true') {
@@ -301,7 +316,6 @@
   }
 
   function editUser(index) {
-    // Logic dùng mảng users đồng bộ từ Firebase
     const users = Object.keys(firebaseUsersData).map(key => ({...firebaseUsersData[key], firebaseKey: key}));
     const user = users[index];
     editingIndex = index;
@@ -353,7 +367,6 @@
 
     try {
         if (editingIndex === -1) {
-            // Kiểm tra trùng lặp trên Cloud (toàn cục)
             const checkRes = await fetch(`${DB_URL}.json`);
             const currentData = await checkRes.json() || {};
             const isExist = Object.values(currentData).some(u => u.login === login || u.email === email);
@@ -363,16 +376,14 @@
                 submitBtn.disabled = false;
                 return;
             }
-            // Đẩy mới lên Firebase
             await fetch(`${DB_URL}.json`, { method: 'POST', body: JSON.stringify(userData) });
         } else {
-            // Cập nhật lên Firebase theo Key
             const usersKeys = Object.keys(firebaseUsersData);
             const keyToUpdate = usersKeys[editingIndex];
             await fetch(`${DB_URL}/${keyToUpdate}.json`, { method: 'PATCH', body: JSON.stringify(userData) });
         }
         
-        await syncFromCloud(); // Tải lại dữ liệu mới nhất
+        await syncFromCloud();
         toggleView('list');
     } catch (e) {
         alert("Cloud Sync Error. Please try again.");
@@ -382,13 +393,11 @@
     }
   }
 
-  // HÀM TẢI DỮ LIỆU TỪ CLOUD
   async function syncFromCloud() {
     try {
         const res = await fetch(`${DB_URL}.json`);
         firebaseUsersData = await res.json() || {};
         
-        // Luôn đảm bảo tài khoản mặc định tồn tại trên Cloud
         const hasAdmin = Object.values(firebaseUsersData).some(u => u.login === 'hongphong2347');
         if (!hasAdmin) {
             const adminUser = {
@@ -401,29 +410,37 @@
         }
 
         renderUsers();
-        // Đồng bộ ngược lại LocalStorage cho các mục đích offline
         localStorage.setItem('undersouthern_users', JSON.stringify(Object.values(firebaseUsersData)));
     } catch (e) {
         console.error("Cloud Fetch Error");
     }
   }
 
-  // LOGIC CHUYỂN ACCOUNT TRỰC TIẾP
-  function switchAccount(index) {
+  // --- LOGIC SWITCH MODAL ---
+  function openSwitchModal(index) {
     const users = Object.values(firebaseUsersData);
     const user = users[index];
-    
-    if (!user) return;
-    
-    if (confirm(`Switch to user account: ${user.login}?`)) {
-      // 1. Cập nhật chìa khóa session
+    pendingSwitchIndex = index;
+    document.getElementById('switchText').innerText = `Are you sure you want to switch to user account: ${user.login}?`;
+    document.getElementById('switchModal').style.display = 'flex';
+  }
+
+  function closeSwitchModal() {
+    document.getElementById('switchModal').style.display = 'none';
+    pendingSwitchIndex = -1;
+  }
+
+  function executeSwitch() {
+    if (pendingSwitchIndex !== -1) {
+      const users = Object.values(firebaseUsersData);
+      const user = users[pendingSwitchIndex];
       localStorage.setItem('isLoggedIn', 'true');
-      // 2. Lưu tên người dùng đang hoạt động
       localStorage.setItem('activeUser', user.login);
-      // 3. Tự động chuyển hướng về trang chủ/dashboard
+      localStorage.setItem('isSwitchedMode', 'true'); // Lưu trạng thái đã switch để hiện nút quay lại
       window.location.href = "https://undersouthern.asia/dashboard";
     }
   }
+  document.getElementById('confirmSwitchBtn').onclick = executeSwitch;
 
   function renderUsers() {
     const container = document.getElementById('userTableBody');
@@ -453,7 +470,7 @@
           <td style="display:flex; gap:8px">
             <button class="btn-icon" onclick="editUser(${i})"><i class="fa-solid fa-pen" style="font-size:11px"></i></button>
             <button class="btn-icon" onclick="openModal(${i})"><i class="fa-solid fa-trash" style="font-size:11px"></i></button>
-            <button class="btn-icon" onclick="switchAccount(${i})" title="Switch to this account"><i class="fa-solid fa-arrows-rotate" style="font-size:11px"></i></button>
+            <button class="btn-icon" onclick="openSwitchModal(${i})" title="Switch to this account"><i class="fa-solid fa-arrows-rotate" style="font-size:11px"></i></button>
           </td>
         </tr>
       `;
@@ -508,7 +525,7 @@
     syncAvatar();
     setupTagInput('artistInput', 'artist');
     setupTagInput('labelInput', 'label');
-    syncFromCloud(); // Tự động load từ Cloud ngay khi mở trang
+    syncFromCloud();
     slowLoadView();
   };
 </script>
