@@ -61,13 +61,6 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
 
-        #main-avatar-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 9999px;
-        }
-
         .status-tag { color: #16a34a; font-weight: 600; font-size: 12px; }
         .btn-action { border: 1px solid #eeeeee; background: #ffffff; padding: 6px 10px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
         .btn-action:hover { background: #f5f5f5; }
@@ -154,9 +147,6 @@
                                 <span>Report a Problem</span>
                                 <i class="fa-solid fa-shield-halved text-[12px] opacity-70"></i>
                             </a>
-                            <a href="https://undersouthern.asia/profile" class="flex items-center px-4 py-2.5 text-slate-200 hover:bg-slate-700/50 transition text-[13px]">
-                                <span>Your Profile</span>
-                            </a>
                         </div>
                     </div>
                 </header>
@@ -235,14 +225,6 @@
         const DB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/users.json";
 
         function syncSystemData() {
-            const savedImg = localStorage.getItem('userAvatar');
-            const holder = document.getElementById('top-avatar-holder');
-            const text = document.getElementById('us-text');
-            if (savedImg && holder) {
-                if (text) text.style.display = 'none';
-                holder.innerHTML = `<img src="${savedImg}" id="main-avatar-img" alt="Avatar">`;
-            }
-
             const catalog = JSON.parse(localStorage.getItem('undersouthern_catalog') || '[]');
             const catalogBody = document.getElementById('catalogListBody');
             if (catalog.length > 0) {
@@ -378,7 +360,6 @@
             }
         }
 
-        // LOGIC HIỂN THỊ THÔNG BÁO XÁC NHẬN KHI SWITCH USER
         function confirmSwitchUser(login) {
             if (confirm(`Switch to user account: ${login}?`)) {
                 localStorage.setItem('activeUser', login);
