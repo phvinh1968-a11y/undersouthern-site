@@ -55,7 +55,6 @@
             color: #1e293b;
         }
 
-        /* Avatar Styles */
         .avatar-container {
             width: 150px;
             height: 150px;
@@ -80,7 +79,6 @@
             padding: 10px;
         }
 
-        /* Toggle Switch Style */
         .switch {
             position: relative;
             display: inline-block;
@@ -122,13 +120,13 @@
             <p class="text-slate-400 text-sm mt-2 font-medium">Manage your account settings.</p>
         </div>
 
-        <form id="profileForm" class="space-y-8">
+        <form id="profileForm" class="space-y-8" onsubmit="event.preventDefault();">
             <div>
                 <h3 class="section-title">Preferences</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                     <label class="label-text">Message Language</label>
                     <div class="md:col-span-2">
-                        <select class="input-field cursor-pointer">
+                        <select id="userLang" class="input-field cursor-pointer">
                             <option value="English" selected>English</option>
                             <option value="Vietnamese">Vietnamese</option>
                         </select>
@@ -166,28 +164,28 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <label class="label-text">Company Name</label>
                         <div class="md:col-span-2">
-                            <input type="text" value="UNDERSOUTHERN" class="input-field">
+                            <input type="text" id="companyName" value="" class="input-field" placeholder="Loading...">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <label class="label-text">E-mail Address</label>
                         <div class="md:col-span-2">
-                            <input type="email" value="phvinh1968@gmail.com" class="input-field">
+                            <input type="email" id="userEmail" value="" class="input-field" placeholder="Loading...">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <label class="label-text">Full Address</label>
                         <div class="md:col-span-2">
-                            <input type="text" value="87, An Khánh, Phước Hiệp, Mỏ Cày Nam, Bến Tre" class="input-field">
+                            <input type="text" id="userAddress" value="" class="input-field" placeholder="No address set">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <label class="label-text">General Phone</label>
                         <div class="md:col-span-2">
-                            <input type="text" value="0824444511" class="input-field">
+                            <input type="text" id="userPhone" value="" class="input-field" placeholder="No phone set">
                         </div>
                     </div>
                 </div>
@@ -204,7 +202,7 @@
                             <p class="text-[13px] text-slate-400 mt-1">Notify me about changes to my accounts, new members, and other related updates.</p>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" id="notifAccount" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -214,7 +212,7 @@
                             <p class="text-[13px] text-slate-400 mt-1">Notify me about activity related to assets marked for distribution.</p>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" id="notifDist" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -224,7 +222,7 @@
                             <p class="text-[13px] text-slate-400 mt-1">Notify me when new statements are ready to review.</p>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" id="notifStat" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -270,22 +268,12 @@
                                 <p class="text-slate-400 mt-0.5">162.158.88.80, Last Active 1 hour ago</p>
                             </div>
                         </div>
-
-                        <div class="flex items-start space-x-4 opacity-80">
-                            <div class="mt-1 text-slate-900">
-                                <i class="fa-solid fa-desktop text-xl"></i>
-                            </div>
-                            <div class="text-[13px]">
-                                <p class="font-semibold text-slate-900">Safari</p>
-                                <p class="text-slate-400 mt-0.5">162.158.163.246, Last Active 3 hours ago</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="pt-12 pb-20">
-                <button type="button" onclick="handleUpdate()" class="w-full md:w-auto min-w-[220px] py-4 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg shadow-slate-200">
+                <button type="button" id="updateBtn" onclick="handleUpdate()" class="w-full md:w-auto min-w-[220px] py-4 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] rounded-lg hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg shadow-slate-200">
                     Update Profile
                 </button>
             </div>
@@ -293,15 +281,36 @@
     </main>
 
     <script>
-        window.onload = function() {
-            // Load avatar
-            const savedAvatar = localStorage.getItem('userAvatar');
-            if (savedAvatar) {
-                const preview = document.getElementById('preview');
-                const placeholder = document.getElementById('placeholder');
-                preview.src = savedAvatar;
-                preview.style.display = 'block';
-                placeholder.style.display = 'none';
+        const DB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/users.json";
+        let userFirebaseKey = null;
+        let currentUserData = null;
+
+        window.onload = async function() {
+            const activeUserLogin = localStorage.getItem('activeUser');
+            
+            if (!activeUserLogin) {
+                console.warn("No active user found in localStorage.");
+                return;
+            }
+
+            try {
+                const response = await fetch(DB_URL);
+                const users = await response.json();
+                
+                // Tìm đúng user trong Firebase dựa trên login name
+                for (let key in users) {
+                    if (users[key].login === activeUserLogin) {
+                        userFirebaseKey = key;
+                        currentUserData = users[key];
+                        break;
+                    }
+                }
+
+                if (currentUserData) {
+                    fillFormData(currentUserData);
+                }
+            } catch (error) {
+                console.error("Firebase fetch error:", error);
             }
 
             // Tự động cập nhật thông tin trình duyệt đang dùng
@@ -315,6 +324,24 @@
             document.getElementById('current-browser').innerText = browserName;
         };
 
+        function fillFormData(data) {
+            // Fill thông tin cơ bản
+            document.getElementById('userEmail').value = data.email || "";
+            document.getElementById('companyName').value = data.company || "UNDERSOUTHERN";
+            document.getElementById('userAddress').value = data.address || "";
+            document.getElementById('userPhone').value = data.phone || "";
+            
+            // Avatar
+            const preview = document.getElementById('preview');
+            const placeholder = document.getElementById('placeholder');
+            if (data.avatar) {
+                preview.src = data.avatar;
+                preview.style.display = 'block';
+                placeholder.style.display = 'none';
+                localStorage.setItem('userAvatar', data.avatar);
+            }
+        }
+
         function previewImage(input) {
             const preview = document.getElementById('preview');
             const placeholder = document.getElementById('placeholder');
@@ -325,20 +352,55 @@
                     preview.src = imageData;
                     preview.style.display = 'block';
                     placeholder.style.display = 'none';
+                    // Tạm thời lưu preview vào localStorage
                     localStorage.setItem('userAvatar', imageData);
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        function handleUpdate() {
-            const btn = document.querySelector('button[onclick="handleUpdate()"]');
-            btn.innerText = "Redirecting...";
+        async function handleUpdate() {
+            if (!userFirebaseKey) {
+                alert("User session not found. Please re-login.");
+                return;
+            }
+
+            const btn = document.getElementById('updateBtn');
+            const originalText = btn.innerText;
+            btn.innerText = "Syncing with Cloud...";
             btn.disabled = true;
             btn.style.opacity = "0.7";
-            setTimeout(() => {
-                window.location.href = "https://undersouthern.asia/dashboard";
-            }, 500);
+
+            // Thu thập dữ liệu từ form
+            const updatedData = {
+                ...currentUserData, // Giữ lại thông tin cũ (như login, pass, access)
+                email: document.getElementById('userEmail').value,
+                company: document.getElementById('companyName').value,
+                address: document.getElementById('userAddress').value,
+                phone: document.getElementById('userPhone').value,
+                avatar: localStorage.getItem('userAvatar') || "" // Lấy avatar mới nhất từ localStorage (base64)
+            };
+
+            try {
+                // Gửi dữ liệu cập nhật lên đúng node của User trên Firebase
+                const updateUrl = `https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/users/${userFirebaseKey}.json`;
+                await fetch(updateUrl, {
+                    method: 'PATCH',
+                    body: JSON.stringify(updatedData)
+                });
+
+                btn.innerText = "Updated! Redirecting...";
+                setTimeout(() => {
+                    window.location.href = "https://undersouthern.asia/dashboard";
+                }, 800);
+
+            } catch (error) {
+                console.error("Update failed:", error);
+                alert("Failed to update profile. Please try again.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+                btn.style.opacity = "1";
+            }
         }
     </script>
 </body>
