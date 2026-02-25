@@ -65,7 +65,7 @@
   .st-draft { background: #f1f5f9; color: #64748b; }
   .st-rejected { background: #fef2f2; color: #dc2626; }
 
-  /* MODAL STYLE (TAKEDOWN STYLE) */
+  /* MODAL STYLE */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(4px); }
   .modal-box { background: white; padding: 32px; border-radius: 20px; width: 450px; text-align: left; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
   .modal-box h2 { font-size: 20px; font-weight: 800; margin: 0 0 15px 0; color: #000; }
@@ -87,11 +87,8 @@
   .form-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
   .footer-actions { display: flex; justify-content: flex-end; margin-top: 40px; gap: 15px; }
   .save-btn { background: #64748b; color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-  .save-btn:hover { background: #475569; }
   .submit-btn { background: var(--primary-black); color: white; border: none; padding: 12px 40px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-  .submit-btn:hover { opacity: 0.85; }
   .delete-btn { background: #dc2626; color: white; border: none; padding: 12px 30px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-  .delete-btn:hover { background: #b91c1c; }
 
   .artwork-uploader { width: 100%; aspect-ratio: 1/1; border: 2px dashed #ddd; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative; background: #fafafa; }
   .artwork-uploader img { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: 5; display: none; }
@@ -106,17 +103,12 @@
     <div class="modal-overlay" id="actionModal">
       <div class="modal-box">
         <h2 id="modalTitle">Process Changes</h2>
-        <p id="modalDesc">Are you sure you want to synchronize these changes to the system?</p>
-        
+        <p id="modalDesc">Are you sure you want to proceed?</p>
         <div class="confirm-check-box" id="confirmBox" onclick="toggleConfirmCheckbox()">
           <input type="checkbox" id="actionCheck" onchange="validateAction()">
           <label id="checkLabel">Yes, I'm sure I want to proceed with this action.</label>
         </div>
-
-        <p id="actionNotice" style="font-size: 12px; background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 8px; border: 1px solid #ffedd5; display: none;">
-          Note: This action cannot be undone once confirmed.
-        </p>
-
+        <p id="actionNotice" style="font-size: 12px; background: #fff7ed; color: #9a3412; padding: 12px; border-radius: 8px; border: 1px solid #ffedd5; display: none;">Note: This action cannot be undone once confirmed.</p>
         <div style="display:flex; gap:12px; margin-top: 25px;">
           <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
           <button class="btn-modal-confirm" id="confirmBtn" onclick="executeAction()" disabled>Confirm</button>
@@ -200,16 +192,16 @@
             <div id="territory-tags" class="tag-container"></div>
             <input type="text" id="territoryInput" placeholder="Enter country">
             
-            <div id="statusDisplay" class="mt-10 p-4 border rounded-lg bg-gray-50">
-                <label class="text-gray-400">Status Info</label>
+            <div id="statusDisplayZone" class="mt-10 p-4 border rounded-lg bg-gray-50">
+                <label class="text-gray-400">Current Status</label>
                 <div id="displayStatusText" class="font-bold text-lg">-</div>
                 <div id="displayRejectReason" class="text-red-500 text-xs mt-2 italic"></div>
             </div>
           </div>
-          <div class="card tracklist-card">
+          <div class="card tracklist-card" style="grid-column: span 3; margin-top: 10px; border-top: 2px solid #000; padding-top: 20px;">
             <h3>Tracks</h3>
             <div id="tracks-container"></div>
-            <button class="btn-add-track" id="addTrackBtn" onclick="addTrackRow()" style="width:100%; border:1px dashed #ccc; padding:10px; border-radius:8px;">+ Add Track</button>
+            <button class="btn-add-track" id="addTrackBtn" style="width:100%; border:1px dashed #ccc; padding:10px; border-radius:8px;" onclick="addTrackRow()">+ Add Track</button>
           </div>
         </div>
         <div class="footer-actions">
@@ -297,32 +289,15 @@
   function prepareAction(action) {
     currentAction = action;
     const title = document.getElementById('inTitle').value;
-    
-    if (action !== 'delete' && (!title || mainArtists.length === 0 || !currentArtworkBase64)) {
-        return alert("Please fill Artwork, Title and Artists.");
-    }
+    if (action !== 'delete' && (!title || mainArtists.length === 0 || !currentArtworkBase64)) return alert("Please fill Artwork, Title and Artists.");
 
     const titleEl = document.getElementById('modalTitle');
-    const descEl = document.getElementById('modalDesc');
     const labelEl = document.getElementById('checkLabel');
     const noticeEl = document.getElementById('actionNotice');
 
-    if (action === 'delete') {
-        titleEl.innerText = "Delete Release";
-        descEl.innerText = "Are you sure you want to permanently remove this release from the system?";
-        labelEl.innerText = "Yes, I'm sure I want to delete this release.";
-        noticeEl.style.display = 'block';
-    } else if (action === 'submit_pending') {
-        titleEl.innerText = "Submit Release";
-        descEl.innerText = "Are you sure you want to submit this release for distribution?";
-        labelEl.innerText = "Yes, I'm sure I want to proceed with this submission.";
-        noticeEl.style.display = 'block';
-    } else {
-        titleEl.innerText = "Process Changes";
-        descEl.innerText = "Do you want to save the current changes for this release?";
-        labelEl.innerText = "Yes, I'm sure I want to synchronize these changes.";
-        noticeEl.style.display = 'none';
-    }
+    if (action === 'delete') { titleEl.innerText = "Delete Release"; labelEl.innerText = "Yes, I want to delete this release."; noticeEl.style.display = 'block'; }
+    else if (action === 'submit_pending') { titleEl.innerText = "Submit Release"; labelEl.innerText = "Yes, I want to submit for review."; noticeEl.style.display = 'block'; }
+    else { titleEl.innerText = "Process Changes"; labelEl.innerText = "Yes, I want to synchronize changes."; noticeEl.style.display = 'none'; }
     
     document.getElementById('actionCheck').checked = false;
     validateAction();
@@ -337,7 +312,7 @@
     if (currentAction === 'delete') {
         await fetch(`${FB_URL}/${editingId}.json`, { method: 'DELETE' });
     } else {
-        let status = isAdmin ? document.getElementById('adminInStatus').value : (currentAction === 'submit_pending' ? 'Pending' : 'Draft');
+        const status = isAdmin ? document.getElementById('adminInStatus').value : (currentAction === 'submit_pending' ? 'Pending' : 'Draft');
         const tracks = Array.from(document.querySelectorAll('.track-row')).map(row => ({ title: row.querySelector('.t-title').value }));
         const release = {
             title: document.getElementById('inTitle').value,
@@ -346,7 +321,7 @@
             hour: document.getElementById('inHour').value, upc: document.getElementById('inUPC').value || "AUTO",
             catNum: document.getElementById('inCatNum').value, status: status, territories: territoryList,
             owner: editingId ? fullCatalogData[editingId].owner : currentUser, numTracks: tracks.length, tracks: tracks,
-            rejectReason: isAdmin && status === 'Rejected' ? document.getElementById('adminRejectReasonText').value : (editingId ? (fullCatalogData[editingId].rejectReason || "") : "")
+            rejectReason: isAdmin && status === 'Rejected' ? document.getElementById('adminRejectReasonText').value : (editingId ? fullCatalogData[editingId].rejectReason : "")
         };
         const method = editingId ? 'PATCH' : 'POST';
         const url = editingId ? `${FB_URL}/${editingId}.json` : `${FB_URL}.json`;
@@ -358,7 +333,6 @@
   function editRelease(id) {
     editingId = id;
     const item = fullCatalogData[id];
-    
     document.getElementById('inTitle').value = item.title;
     document.getElementById('inType').value = item.type;
     document.getElementById('inLabel').value = item.label;
@@ -374,7 +348,8 @@
     document.getElementById('displayStatusText').innerText = item.status;
     document.getElementById('displayRejectReason').innerText = item.rejectReason || "";
     
-    document.getElementById('btnDeleteRelease').classList.toggle('hidden', !(isAdmin && item.status === 'Draft'));
+    // Nút Delete chỉ dành cho Admin
+    document.getElementById('btnDeleteRelease').classList.toggle('hidden', !isAdmin);
 
     if (isAdmin) {
         document.getElementById('adminStatusZone').classList.remove('hidden');
@@ -393,9 +368,7 @@
   }
 
   function enableForm(status) {
-    document.querySelectorAll('#releaseFormFields input, #releaseFormFields select, #releaseFormFields textarea').forEach(f => {
-        if (!f.closest('#adminStatusZone')) f.disabled = !status;
-    });
+    document.querySelectorAll('#releaseFormFields input, #releaseFormFields select').forEach(f => { if (!f.closest('#adminStatusZone')) f.disabled = !status; });
     document.getElementById('btnSaveDraft').style.display = status ? 'block' : 'none';
     document.getElementById('btnSubmitRelease').style.display = status ? 'block' : 'none';
     document.getElementById('addTrackBtn').style.display = status ? 'block' : 'none';
