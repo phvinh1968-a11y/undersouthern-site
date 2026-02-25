@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* Màn hình loading tùy chỉnh */
         #initial-loader {
             position: fixed;
             inset: 0;
@@ -41,7 +40,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Khóa giao diện cho đến khi xác thực thành công */
         #main-content { display: none; }
 
         html, body { height: 100% !important; margin: 0; padding: 0; overflow: hidden; }
@@ -87,7 +85,6 @@
     </style>
 
     <script>
-        // KIỂM TRA ĐĂNG NHẬP NGAY LẬP TỨC
         if (localStorage.getItem('isLoggedIn') !== 'true') {
             window.location.href = "https://undersouthern.asia/login";
         }
@@ -233,6 +230,8 @@
     </div>
 
     <script>
+        const DB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/users.json";
+
         function syncSystemData() {
             const savedImg = localStorage.getItem('userAvatar');
             const holder = document.getElementById('top-avatar-holder');
@@ -263,7 +262,7 @@
             if (isSwitched === 'true') {
                 const returnContainer = document.getElementById('admin-return-container');
                 returnContainer.innerHTML = `
-                    <button onclick="backToAdmin()" class="bg-red-600 text-white px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider hover:bg-red-700 transition flex items-center gap-2">
+                    <button onclick="backToAdmin()" class="bg-red-600 text-white px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider hover:bg-red-700 transition flex items-center gap-2 shadow-lg active:scale-95">
                         <i class="fa-solid fa-user-shield"></i> Return to Admin
                     </button>
                 `;
@@ -330,28 +329,77 @@
             }
         }
 
-        function renderUsers() {
+        // --- LOGIC FIREBASE CHO USER MANAGEMENT ---
+
+        async function renderUsers() {
             const tableBody = document.getElementById('userTableBody');
-            const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-            tableBody.innerHTML = users.map((user, index) => `
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="px-6 py-4 font-semibold text-black">${user.email}</td>
-                    <td class="px-6 py-4 text-slate-500">${user.login}</td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center space-x-2">
-                            <input type="password" value="${user.pass}" id="pass-${index}" readonly class="password-field">
-                            <i class="fa-solid fa-eye cursor-pointer opacity-30 hover:opacity-100 transition text-[10px]" onclick="togglePass('pass-${index}', this)"></i>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4"><span class="status-tag">${user.status || 'Active'}</span></td>
-                    <td class="px-6 py-4 text-right">
-                        <div class="flex justify-end space-x-1">
-                            <button class="btn-action"><i class="fa-solid fa-pen text-[10px]"></i></button>
-                            <button onclick="deleteUser(${index})" class="btn-action hover:text-red-600 hover:border-red-100"><i class="fa-solid fa-trash text-[10px]"></i></button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+            tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-10 text-center text-slate-400 italic">Syncing with cloud database...</td></tr>`;
+
+            try {
+                const response = await fetch(DB_URL);
+                const cloudData = await response.json();
+                
+                if (!cloudData) {
+                    tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-10 text-center text-slate-400">No users found in database.</td></tr>`;
+                    return;
+                }
+
+                // Chuyển Object Firebase thành mảng kèm ID (key)
+                const userList = Object.keys(cloudData).map(key => ({
+                    firebaseId: key,
+                    ...cloudData[key]
+                }));
+
+                tableBody.innerHTML = userList.map((user, index) => `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="px-6 py-4 font-semibold text-black">${user.email || '---'}</td>
+                        <td class="px-6 py-4 text-slate-500">${user.login}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center space-x-2">
+                                <input type="password" value="${user.pass}" id="pass-${index}" readonly class="password-field">
+                                <i class="fa-solid fa-eye cursor-pointer opacity-30 hover:opacity-100 transition text-[10px]" onclick="togglePass('pass-${index}', this)"></i>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4"><span class="status-tag">${user.status || 'Active'}</span></td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end space-x-1">
+                                <button onclick="switchUser('${user.login}')" class="btn-action hover:bg-black hover:text-white" title="Login as user">
+                                    <i class="fa-solid fa-right-to-bracket text-[10px]"></i>
+                                </button>
+                                <button onclick="deleteUser('${user.firebaseId}')" class="btn-action hover:text-red-600 hover:border-red-100">
+                                    <i class="fa-solid fa-trash text-[10px]"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                tableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-10 text-center text-red-500">Error connecting to Firebase.</td></tr>`;
+            }
+        }
+
+        async function deleteUser(firebaseId) {
+            if (confirm("Permanently delete this user from database?")) {
+                try {
+                    const deleteUrl = `https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/users/${firebaseId}.json`;
+                    const response = await fetch(deleteUrl, { method: 'DELETE' });
+                    
+                    if (response.ok) {
+                        alert("User deleted successfully.");
+                        renderUsers();
+                    } else {
+                        alert("Failed to delete user.");
+                    }
+                } catch (error) {
+                    alert("Network error. Please try again.");
+                }
+            }
+        }
+
+        function switchUser(login) {
+            localStorage.setItem('activeUser', login);
+            localStorage.setItem('isSwitchedMode', 'true');
+            window.location.reload();
         }
 
         function togglePass(id, icon) {
@@ -365,17 +413,7 @@
             }
         }
 
-        function deleteUser(index) {
-            if (confirm("Delete this user?")) {
-                const users = JSON.parse(localStorage.getItem('undersouthern_users') || '[]');
-                users.splice(index, 1);
-                localStorage.setItem('undersouthern_users', JSON.stringify(users));
-                renderUsers();
-            }
-        }
-
         window.onload = () => {
-            // Đã tăng thời gian chờ lên 3000ms (3 giây)
             setTimeout(() => {
                 if (localStorage.getItem('isLoggedIn') === 'true') {
                     document.getElementById('initial-loader').style.display = 'none';
