@@ -8,145 +8,196 @@
     <title>Portal Dashboard - UNDERSOUTHERN</title>
 
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         :root {
-            --bg-system: #f8fafc;
-            --primary-dark: #0f172a;
-            --border-soft: #f1f5f9;
+            --bg-audiosalad: #f4f7f9;
+            --sidebar-navy: #1a2b3c;
+            --accent-blue: #007bff;
+            --text-heading: #2c3e50;
+            --border-light: #dce4ec;
         }
 
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: var(--bg-system); 
-            color: #1e293b; 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg-audiosalad); 
+            color: #4a5568; 
             margin: 0; 
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Header Tối Giản --- */
-        .glass-header {
-            height: 72px; background: #ffffff;
-            border-bottom: 1px solid var(--border-soft);
-            position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
+        /* --- Header: Phong cách thanh lịch, phẳng --- */
+        .master-header {
+            height: 64px; background: #ffffff;
+            border-bottom: 1px solid var(--border-light);
+            position: sticky; top: 0; z-index: 1000; 
+            display: flex; align-items: center; justify-content: space-between; padding: 0 32px;
         }
 
-        .main-container { max-width: 1200px; margin: 0 auto; padding: 60px 40px; }
+        .main-content-wrapper { max-width: 1280px; margin: 0 auto; padding: 40px 32px; }
 
-        /* --- Analytic Card tối giản --- */
-        .stat-card {
-            background: #ffffff; border-radius: 24px; border: 1px solid #f1f5f9;
-            padding: 32px; transition: 0.3s;
+        /* --- AudioSalad Style Cards --- */
+        .info-card {
+            background: #ffffff; border-radius: 8px; border: 1px solid var(--border-light);
+            padding: 24px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            display: flex; flex-direction: column; justify-content: space-between;
+            min-height: 140px;
         }
-        .stat-card:hover { border-color: #e2e8f0; transform: translateY(-2px); }
 
-        .nav-link {
-            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
-            color: #94a3b8; transition: 0.2s;
+        .nav-item {
+            font-size: 13px; font-weight: 600; color: #7f8c8d;
+            transition: 0.2s; padding: 8px 12px; border-radius: 6px;
         }
-        .nav-link:hover, .nav-link.active { color: #000; }
+        .nav-item:hover, .nav-item.active { color: var(--sidebar-navy); background: #f0f4f8; }
 
         /* --- Typography --- */
-        .section-title { font-size: 32px; font-weight: 900; letter-spacing: -0.04em; color: var(--primary-dark); }
-        .stat-value { font-size: 48px; font-weight: 900; letter-spacing: -0.05em; line-height: 1; }
+        .page-title { font-size: 28px; font-weight: 700; color: var(--text-heading); letter-spacing: -0.02em; }
+        .metric-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #95a5a6; letter-spacing: 0.05em; }
+        .metric-value { font-size: 36px; font-weight: 700; color: var(--sidebar-navy); line-height: 1.2; }
+
+        /* --- Global Status Bar --- */
+        .status-pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 4px 12px; border-radius: 4px; font-size: 11px; font-weight: 700;
+            background: #eef2f7; color: #5a6a85; border: 1px solid #d1d9e6;
+        }
 
         .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<header class="glass-header">
-    <div class="flex items-center">
-        <div class="logo font-black text-xl tracking-tighter mr-12">UNDERSOUTHERN</div>
-        <nav class="flex gap-8">
-            <a href="#" class="nav-link active">Portal</a>
-            <a href="https://undersouthern.asia/catalog" class="nav-link">Catalog</a>
-            <a href="https://undersouthern.asia/analytics" class="nav-link">Analytics</a>
-            <a href="https://undersouthern.asia/finance" class="nav-link">Finance</a>
-            <a href="https://undersouthern.asia/user-access" id="master-nav" class="nav-link hidden">Admin</a>
+<header class="master-header">
+    <div class="flex items-center gap-8">
+        <div class="logo font-extrabold text-lg tracking-tight text-[#1a2b3c]">
+            UNDERSOUTHERN <span class="font-light text-slate-300">| Portal</span>
+        </div>
+        <nav class="flex gap-2">
+            <a href="#" class="nav-item active">Dashboard</a>
+            <a href="https://undersouthern.asia/catalog" class="nav-item">Catalog</a>
+            <a href="https://undersouthern.asia/analytics" class="nav-item">Analytics</a>
+            <a href="https://undersouthern.asia/finance" class="nav-item">Finance</a>
+            <a href="https://undersouthern.asia/user-access" id="adm-link" class="nav-item hidden">Master Access</a>
         </nav>
     </div>
-    <div class="flex items-center gap-2 bg-slate-100 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-slate-500">
-        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Node Active
+    <div class="status-pill">
+        <span class="w-2 h-2 bg-green-500 rounded-full"></span> SYSTEM ONLINE
     </div>
 </header>
 
-<main class="main-container">
+<main class="main-content-wrapper">
     <div class="fade-in">
-        <div class="mb-12 text-center">
-            <h1 class="section-title">Portal Dashboard</h1>
-            <p class="text-slate-400 font-medium mt-2">Tổng quan trạng thái hệ thống và dữ liệu phân phối.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="stat-card text-center">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Tổng tài sản</div>
-                <div id="stat-total" class="stat-value text-slate-900">--</div>
+        <div class="mb-10 flex justify-between items-end border-b border-slate-200 pb-8">
+            <div>
+                <h1 class="page-title">Portal Overview</h1>
+                <p class="text-sm text-slate-500 mt-1 font-medium">Chào mừng trở lại. Đây là tóm tắt dữ liệu phân phối âm nhạc của bạn.</p>
             </div>
-
-            <div class="stat-card text-center">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Đang chờ duyệt</div>
-                <div id="stat-pending" class="stat-value text-amber-500">--</div>
-            </div>
-
-            <div class="stat-card text-center">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Đã phát hành</div>
-                <div id="stat-live" class="stat-value text-emerald-500">--</div>
+            <div class="text-right">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Phiên làm việc</p>
+                <p id="user-display" class="text-sm font-bold text-slate-700">--</p>
             </div>
         </div>
 
-        <div class="max-w-2xl mx-auto">
-            <div class="bg-white border border-slate-100 rounded-[32px] p-10 text-center">
-                <div class="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <i class="fa-solid fa-bell-slash text-slate-300 text-sm"></i>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="info-card">
+                <div class="metric-label">Tổng số bài hát</div>
+                <div id="m-total" class="metric-value">0</div>
+                <div class="text-[10px] text-slate-400 font-medium">Bản ghi đã đăng ký trên Catalog</div>
+            </div>
+
+            <div class="info-card">
+                <div class="metric-label">Đang chờ xử lý</div>
+                <div id="m-pending" class="metric-value text-amber-500">0</div>
+                <div class="text-[10px] text-slate-400 font-medium">Bản ghi đang đợi Admin phê duyệt</div>
+            </div>
+
+            <div class="info-card">
+                <div class="metric-label">Đã phát hành</div>
+                <div id="m-live" class="metric-value text-blue-600">0</div>
+                <div class="text-[10px] text-slate-400 font-medium">Đã phân phối tới các nền tảng (DSPs)</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2">
+                <div class="bg-white border border-slate-200 rounded-lg p-8 h-full min-h-[300px] flex flex-col items-center justify-center text-center">
+                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-6">
+                        <i class="fa-solid fa-inbox text-slate-300 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800">Không có thông báo mới</h3>
+                    <p class="text-sm text-slate-400 mt-2 max-w-sm">Mọi hoạt động phân phối đang diễn ra bình thường. Các tin nhắn từ hệ thống sẽ xuất hiện tại đây.</p>
                 </div>
-                <h3 class="text-lg font-bold text-slate-900 mb-1">Hệ thống ổn định</h3>
-                <p class="text-sm text-slate-400">Hiện tại không có thông báo mới từ ban quản trị.</p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-[#1a2b3c] rounded-lg p-6 text-white shadow-lg">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Master Node Status</h3>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm font-medium">Metadata Sync</span>
+                        <span class="text-[10px] font-bold bg-green-500/20 text-green-400 px-2 py-1 rounded">HEALTHY</span>
+                    </div>
+                    <div class="w-full h-1 bg-slate-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-blue-500 w-full"></div>
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-4 leading-relaxed">Hệ thống Catalog được đồng bộ hóa thời gian thực với cơ sở dữ liệu gốc.</p>
+                </div>
+                
+                <div class="border border-blue-100 bg-blue-50 rounded-lg p-6">
+                    <div class="flex gap-3">
+                        <i class="fa-solid fa-circle-info text-blue-500 mt-1"></i>
+                        <div>
+                            <h4 class="text-sm font-bold text-blue-900">Hướng dẫn</h4>
+                            <p class="text-xs text-blue-700 mt-1 leading-relaxed">Sử dụng mục Catalog để bắt đầu quy trình nộp nhạc mới cho hệ thống phân phối.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </main>
 
 <script>
-    const FIREBASE_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog.json";
-    const sessionUser = localStorage.getItem('activeUser') || 'Unauthorized';
-    const isRootAdmin = (sessionUser === 'UNDERSOUTHERN');
+    const API_ENDPOINT = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog.json";
+    const sessionUser = localStorage.getItem('activeUser') || 'Guest';
+    const isMaster = (sessionUser === 'UNDERSOUTHERN');
 
     window.onload = async () => {
-        // Kiểm tra đăng nhập
+        // Kiểm tra phiên làm việc
         if (localStorage.getItem('isLoggedIn') !== 'true') {
             window.location.href = "https://undersouthern.asia/login";
         }
 
-        // Quyền Admin
-        if (isRootAdmin) {
-            document.getElementById('master-nav').classList.remove('hidden');
+        document.getElementById('user-display').innerText = sessionUser;
+
+        // Quyền Master Access
+        if (isMaster) {
+            document.getElementById('adm-link').classList.remove('hidden');
         }
 
-        await fetchDashboardStats();
+        await fetchMetrics();
     };
 
-    async function fetchDashboardStats() {
+    async function fetchMetrics() {
         try {
-            const response = await fetch(FIREBASE_URL);
+            const response = await fetch(API_ENDPOINT);
             const data = await response.json() || {};
-            const assets = Object.values(data);
+            const catalog = Object.values(data);
             
-            // Phân loại dữ liệu
-            const filtered = isRootAdmin ? assets : assets.filter(i => i.owner === sessionUser);
+            // Lọc dữ liệu theo người dùng hoặc hiển thị tất cả nếu là Admin
+            const myData = isMaster ? catalog : catalog.filter(i => i.owner === sessionUser);
 
-            // Gán giá trị
-            document.getElementById('stat-total').innerText = filtered.length;
-            document.getElementById('stat-pending').innerText = filtered.filter(i => i.status === 'Pending').length;
-            document.getElementById('stat-live').innerText = filtered.filter(i => i.status === 'Released').length;
+            // Hiển thị số liệu
+            document.getElementById('m-total').innerText = myData.length;
+            document.getElementById('m-pending').innerText = myData.filter(i => i.status === 'Pending').length;
+            document.getElementById('m-live').innerText = myData.filter(i => i.status === 'Released').length;
 
         } catch (e) {
-            console.error("Portal Error");
+            console.error("Master Node Sync Error");
         }
     }
 </script>
