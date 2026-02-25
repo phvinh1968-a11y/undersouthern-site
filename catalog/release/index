@@ -1,1 +1,69 @@
+<div id="view-add" class="hidden">
+    <div style="display:flex; align-items:center; gap:15px; margin-bottom:30px;">
+        <button class="btn-icon" onclick="toggleView('list')"><i class="fa-solid fa-arrow-left"></i></button>
+        <h2 id="formTitle" style="margin:0; font-weight:700">New Release</h2>
+    </div>
 
+    <div class="form-container">
+        <div class="card">
+            <h3>Release Info</h3>
+            <label>Type</label>
+            <select id="inType" onchange="toggleTracklist()">
+                <option value="Single">Single</option>
+                <option value="EP">EP</option>
+                <option value="Album">Album</option>
+            </select>
+            <label>Title</label>
+            <input type="text" id="inTitle" placeholder="Moonlight">
+            
+            <label>Primary Artist(s)</label>
+            <div id="main-artist-tags" class="tag-container"></div>
+            <input type="text" id="inMainArtist" placeholder="Add artist and Enter">
+
+            <label>Label</label>
+            <input type="text" id="inLabel" placeholder="UNDERSOUTHERN">
+        </div>
+
+        <div class="card">
+            <h3>Schedule & ID</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <div><label>Date</label><input type="date" id="inDate"></div>
+                <div><label>Hour</label><input type="time" id="inHour"></div>
+            </div>
+            <label>UPC Code</label>
+            <input type="text" id="inUPC" placeholder="Auto-gen if empty">
+            <label>Catalog Number</label>
+            <input type="text" id="inCatNum" placeholder="US-001">
+        </div>
+
+        <div class="card">
+            <h3>Distribution</h3>
+            <label>Delivered Territories</label>
+            <div id="territory-tags" class="tag-container"></div>
+            <input type="text" id="territoryInput" placeholder="Add country and Enter">
+            
+            <div id="statusWrapper" class="hidden">
+                <label>Status</label>
+                <select id="inStatus">
+                    <option value="Draft">Draft</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Released">Released</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="card tracklist-card">
+            <h3>Tracklist Configuration</h3>
+            <div class="track-row-header">
+                <div>#</div><div>Title</div><div>Version</div><div>Primary Artists</div><div>Feats</div><div>ISRC</div><div>Audio</div><div></div>
+            </div>
+            <div id="tracks-container"></div>
+            <button class="btn-add-track" id="addTrackBtn" onclick="addTrackRow()">+ Add New Track</button>
+        </div>
+    </div>
+
+    <div class="footer-actions">
+        <button id="submitBtn" class="save-btn" onclick="openSaveModal()">Submitted</button>
+    </div>
+</div>
