@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     
-    <title>Catalog Management - UNDERSOUTHERN</title>
+    <title>System Dashboard - UNDERSOUTHERN</title>
 
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -29,6 +29,7 @@
             color: var(--text-main); 
             margin: 0; 
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         /* --- Header Tối Giản (Loại bỏ User Menu & Ellipsis) --- */
@@ -38,324 +39,207 @@
             position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
         }
 
-        .main-container { max-width: 1440px; margin: 0 auto; padding: 32px 40px; }
+        .main-container { max-width: 1440px; margin: 0 auto; padding: 48px 40px; }
 
         .analytic-card {
             background: var(--card-bg); border-radius: 32px; border: 1px solid var(--border-soft);
             padding: 32px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .analytic-card:hover { transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05); }
+        .analytic-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05); }
 
-        /* --- Input Styles --- */
-        .input-group label { display: block; font-size: 11px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
-        
-        .input-field {
-            width: 100%; padding: 16px 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px;
-            font-size: 14px; font-weight: 600; transition: all 0.2s; outline: none;
+        /* --- Sidebar Style Nav --- */
+        .nav-link {
+            font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em;
+            color: var(--text-sub); transition: 0.2s;
         }
-        .input-field:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px rgba(0,0,0,0.04); }
-        .input-field:disabled { background: #f1f5f9; cursor: not-allowed; opacity: 0.6; }
-
-        /* --- Authority Override Panel (Đồng bộ ảnh image_25841a.png) --- */
-        .admin-master-panel {
-            background: #0f172a; border-radius: 32px; padding: 32px; border: 4px solid #1e293b;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); color: #ffffff;
-        }
-        .admin-master-panel select, .admin-master-panel textarea {
-            background: #1e293b !important; border: 1px solid #334155 !important; color: #ffffff !important;
-            border-radius: 18px;
-        }
-        .admin-master-panel label { color: #94a3b8 !important; }
-
-        /* --- Table Custom --- */
-        table { width: 100%; border-spacing: 0 12px; border-collapse: separate; }
-        th { padding: 12px 24px; font-size: 10px; font-weight: 800; color: var(--text-sub); text-transform: uppercase; text-align: left; }
-        td { padding: 20px 24px; background: #fff; border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); vertical-align: middle; }
-        td:first-child { border-left: 1px solid var(--border-soft); border-top-left-radius: 24px; border-bottom-left-radius: 24px; }
-        td:last-child { border-right: 1px solid var(--border-soft); border-top-right-radius: 24px; border-bottom-right-radius: 24px; }
+        .nav-link:hover, .nav-link.active { color: var(--accent); }
 
         /* --- Badges --- */
-        .badge { padding: 6px 14px; border-radius: 100px; font-size: 10px; font-weight: 900; text-transform: uppercase; }
-        .badge-draft { background: #f1f5f9; color: #475569; }
-        .badge-pending { background: #fffbeb; color: #b45309; }
-        .badge-released { background: #f0fdf4; color: #16a34a; }
-        .badge-rejected { background: #fff1f2; color: #be123c; }
-
-        .artwork-uploader {
-            width: 100%; aspect-ratio: 1/1; border: 2px dashed #cbd5e1; border-radius: 28px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; overflow: hidden; position: relative; background: #f8fafc; transition: 0.3s;
+        .badge-status {
+            padding: 6px 14px; border-radius: 100px; font-size: 9px; font-weight: 900; 
+            text-transform: uppercase; letter-spacing: 0.05em;
         }
-        .artwork-uploader img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 10; display: none; }
 
-        .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- Section Design --- */
+        .section-label { font-size: 10px; font-weight: 900; text-transform: uppercase; color: var(--text-sub); letter-spacing: 0.3em; margin-bottom: 8px; display: block; }
+        .section-title { font-size: 42px; font-weight: 900; letter-spacing: -0.05em; color: var(--primary-dark); line-height: 1; }
+
+        .announcement-box {
+            background: #fff; border: 1px solid var(--border-soft); border-radius: 32px; overflow: hidden;
+        }
+        .announcement-header { padding: 24px 32px; border-bottom: 1px solid var(--border-soft); background: #fcfcfc; }
+        .announcement-body { padding: 80px 32px; text-align: center; }
+        .announcement-body i { font-size: 56px; color: #e2e8f0; margin-bottom: 24px; transform: rotate(-10deg); }
+
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body>
 
 <header class="glass-header">
     <div class="flex items-center">
-        <div class="logo font-black text-2xl tracking-tighter mr-10">UNDERSOUTHERN</div>
-        <div id="status-node" class="text-[9px] font-black text-slate-400 uppercase tracking-widest border-l border-slate-200 pl-6">Verified Node</div>
+        <div class="logo font-black text-2xl tracking-tighter mr-12">UNDERSOUTHERN</div>
+        <nav class="flex gap-10">
+            <a href="#" class="nav-link active">Overview</a>
+            <a href="https://undersouthern.asia/catalog" class="nav-link">Catalog</a>
+            <a href="https://undersouthern.asia/analytics" class="nav-link">Analytics</a>
+            <a href="https://undersouthern.asia/finance" class="nav-link">Finance</a>
+            <a href="https://undersouthern.asia/user-access" id="adm-nav" class="nav-link hidden">Access Control</a>
+        </nav>
     </div>
-    <div id="admBadge" class="hidden flex items-center gap-2 bg-black text-white px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-tighter">
-        <i class="fa-solid fa-crown text-amber-400"></i> Admin Access
+    <div id="adm-access-badge" class="hidden flex items-center gap-2 bg-black text-white px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-widest shadow-xl">
+        <i class="fa-solid fa-shield-check text-rose-500"></i> Master Authority
     </div>
 </header>
 
 <main class="main-container">
     
-    <div id="viewList" class="fade-in">
-        <div class="flex justify-between items-end mb-12">
-            <div>
-                <h1 class="text-5xl font-black tracking-tighter">Master Catalog</h1>
-                <p class="text-sm font-bold text-slate-400 mt-2">Manage all music assets and metadata nodes.</p>
-            </div>
-            <button class="bg-black text-white px-10 py-4 rounded-2xl font-black text-sm shadow-2xl hover:scale-105 transition" onclick="openAddForm()">
-                <i class="fa-solid fa-plus-circle mr-2"></i> New Submission
-            </button>
+    <div class="fade-in">
+        <div class="mb-16">
+            <span class="section-label">Central Node Dashboard</span>
+            <h1 class="section-title">Operational Overview</h1>
+            <p class="text-slate-400 font-bold mt-4 text-sm tracking-tight">Real-time status of your music assets and financial ecosystem.</p>
         </div>
 
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead>
-                    <tr>
-                        <th>Format</th>
-                        <th>Status</th>
-                        <th>Release Metadata</th>
-                        <th>Label Group</th>
-                        <th>Identifier</th>
-                        <th class="text-right">Manage</th>
-                    </tr>
-                </thead>
-                <tbody id="catalogTable"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="viewForm" class="hidden fade-in">
-        <div class="flex items-center gap-6 mb-12">
-            <button class="w-14 h-14 bg-white border border-slate-200 rounded-3xl flex items-center justify-center hover:bg-slate-50 transition" onclick="toggleView('list')">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
-            <h2 class="text-4xl font-black tracking-tighter">Asset Synchronization</h2>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            <div class="analytic-card">
-                <h3>Visual Master</h3>
-                <div class="artwork-uploader" id="artZone" onclick="document.getElementById('artInput').click()">
-                    <img id="artPrev" src="">
-                    <i class="fa-solid fa-upload text-slate-300 text-3xl mb-4"></i>
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">3000px SQ Master</span>
-                    <input type="file" id="artInput" hidden accept="image/*" onchange="handleArtwork(this)">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
+            <div class="analytic-card flex flex-col justify-between min-h-[160px]">
+                <div class="w-12 h-12 bg-slate-50 text-slate-900 rounded-2xl flex items-center justify-center text-lg mb-4 shadow-sm">
+                    <i class="fa-solid fa-layer-group"></i>
                 </div>
-                <div class="mt-12 input-group">
-                    <label>Release Title</label>
-                    <input type="text" id="fTitleInput" class="input-field" placeholder="Moonlight">
-                    <label>Main Artist(s)</label>
-                    <div id="fArtistTags" class="flex flex-wrap gap-2 mb-4"></div>
-                    <input type="text" id="fArtistInput" class="input-field" placeholder="Press Enter to add">
+                <div>
+                    <div id="dash-all" class="text-4xl font-black tracking-tighter">--</div>
+                    <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Total Catalog Assets</div>
                 </div>
             </div>
 
-            <div class="analytic-card">
-                <h3>Data Identifiers</h3>
-                <div class="input-group">
-                    <label>Format</label>
-                    <select id="fType" class="input-field font-bold"><option>Single</option><option>EP</option><option>Album</option></select>
-                    <div class="grid grid-cols-2 gap-5">
-                        <div><label>Live Date</label><input type="date" id="fDate" class="input-field font-bold"></div>
-                        <div><label>Hour (UTC)</label><input type="time" id="fHour" class="input-field font-bold"></div>
-                    </div>
-                    <label>Universal Product Code</label>
-                    <input type="text" id="fUPC" class="input-field font-mono" placeholder="Internal Auto-gen">
+            <div class="analytic-card flex flex-col justify-between min-h-[160px]">
+                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center text-lg mb-4 shadow-sm">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
                 </div>
+                <div>
+                    <div id="dash-pending" class="text-4xl font-black tracking-tighter text-amber-600">--</div>
+                    <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Pending Distributions</div>
+                </div>
+            </div>
 
-                <div id="admControlZone" class="hidden mt-10 admin-master-panel">
-                    <div class="flex items-center gap-3 mb-8">
-                        <i class="fa-solid fa-shield-check text-rose-500 text-lg"></i>
-                        <h3 class="text-white m-0 tracking-widest uppercase text-xs">Authority Override</h3>
+            <div class="analytic-card flex flex-col justify-between min-h-[160px]">
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-lg mb-4 shadow-sm">
+                    <i class="fa-solid fa-check-double"></i>
+                </div>
+                <div>
+                    <div id="dash-live" class="text-4xl font-black tracking-tighter text-emerald-600">--</div>
+                    <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Distributed Live</div>
+                </div>
+            </div>
+
+            <div class="analytic-card flex flex-col justify-between min-h-[160px] bg-slate-900 text-white border-slate-800">
+                <div class="w-12 h-12 bg-slate-800 text-white rounded-2xl flex items-center justify-center text-lg mb-4">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div>
+                    <div class="text-4xl font-black tracking-tighter italic">Synced</div>
+                    <div class="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">Financial Node</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+                <div class="announcement-box shadow-sm">
+                    <div class="announcement-header flex justify-between items-center">
+                        <div>
+                            <h2 class="text-xl font-black tracking-tight text-slate-900">Broadcast Network</h2>
+                            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Master Node Communications</p>
+                        </div>
+                        <span class="badge-status bg-slate-100 text-slate-500">Normal Operatons</span>
                     </div>
-                    <div class="input-group">
-                        <label>Lifecycle Status</label>
-                        <select id="admStatus" class="input-field" onchange="toggleAdmRejectBox()">
-                            <option value="Draft">Draft</option>
-                            <option value="Pending">Pending Review</option>
-                            <option value="Released">Released</option>
-                            <option value="Rejected">Rejected</option>
-                        </select>
-                        <div id="admRejectZone" class="hidden mt-6">
-                            <label>Official QC Log</label>
-                            <textarea id="admReason" class="input-field h-28 text-xs"></textarea>
+                    <div class="announcement-body">
+                        <i class="fa-solid fa-satellite-dish"></i>
+                        <h3 class="text-2xl font-black text-slate-900 mb-2 tracking-tight">No Active Communications</h3>
+                        <p class="text-sm font-medium text-slate-400 max-w-sm mx-auto leading-relaxed">
+                            The distribution network is functioning within normal parameters. New updates from the administration will appear here.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="analytic-card">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-8">Metadata Integration</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-slate-600">Asset Sync</span>
+                            <span class="text-[10px] font-black text-emerald-500">ENCRYPTED</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-emerald-500 w-[100%] rounded-full"></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-2">
+                            <span class="text-xs font-bold text-slate-600">Master DB Link</span>
+                            <span class="text-[10px] font-black text-emerald-500">STABLE</span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="analytic-card">
-                <h3>Rights Management</h3>
-                <div class="input-group">
-                    <label>Territory Delivery</label>
-                    <div id="fTerritoryTags" class="flex flex-wrap gap-2 mb-4"></div>
-                    <input type="text" id="fTerritoryInput" class="input-field" placeholder="Add country...">
+                <div class="analytic-card bg-rose-50 border-rose-100">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 bg-rose-100 text-rose-600 rounded-xl flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-shield-virus"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-black text-rose-900 uppercase tracking-widest mb-1">Security Alert</h4>
+                            <p class="text-[11px] font-bold text-rose-700 leading-relaxed">Please ensure all catalog metadata is verified before final distribution submission.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="mt-14 p-10 bg-slate-50 rounded-[40px] border border-slate-100 shadow-inner text-center">
-                    <label class="text-slate-400 mb-4 block uppercase font-black text-[10px]">Workflow stage</label>
-                    <div id="fStatusText" class="text-4xl font-black uppercase tracking-tighter text-slate-900">-</div>
-                    <div id="fRejectLog" class="text-[11px] text-rose-600 mt-8 font-extrabold bg-white p-6 rounded-3xl border border-rose-50 hidden italic leading-relaxed"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex justify-between items-center mt-12 pt-10 border-t border-slate-200">
-            <button id="btnDelete" class="bg-rose-50 text-rose-600 px-8 py-4 rounded-2xl font-black text-sm hidden hover:bg-rose-600 hover:text-white transition" onclick="prepAction('delete')">
-                <i class="fa-solid fa-trash-can mr-2"></i> Wipe Asset
-            </button>
-            <div class="flex gap-6 ml-auto">
-                <button id="btnSave" class="bg-slate-100 text-slate-600 px-8 py-4 rounded-2xl font-black text-sm hover:bg-slate-200 transition" onclick="prepAction('save_draft')">Sync Draft</button>
-                <button id="btnSubmit" class="bg-black text-white px-10 py-4 rounded-2xl font-black text-sm shadow-xl hover:scale-105 transition" onclick="prepAction('submit')">Confirm Submission</button>
             </div>
         </div>
     </div>
 </main>
 
 <script>
-    const FB_NODE = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog";
+    const DB_NODE = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/catalog.json";
     const sessionUser = localStorage.getItem('activeUser') || 'Unauthorized';
     const rootAdmin = (sessionUser === 'UNDERSOUTHERN');
 
-    let activeId = null;
-    let metaArtists = [];
-    let metaRegions = [];
-    let artworkStream = "";
-    let masterDB = {};
-
     window.onload = async () => {
-        if(rootAdmin) document.getElementById('admBadge').classList.remove('hidden');
-        setupTagInputs();
-        await syncCoreData();
+        // Auth Check & UI Cleanup
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = "https://undersouthern.asia/login";
+        }
+
+        if (rootAdmin) {
+            document.getElementById('adm-access-badge').classList.remove('hidden');
+            document.getElementById('adm-nav').classList.remove('hidden');
+        }
+
+        await fetchDashboardData();
     };
 
-    async function syncCoreData() {
+    async function fetchDashboardData() {
         try {
-            const res = await fetch(`${FB_NODE}.json`);
-            masterDB = await res.json() || {};
-            renderCatalog();
-        } catch(e) { console.error("Sync failure"); }
-    }
+            const res = await fetch(DB_NODE);
+            const data = await res.json() || {};
+            const assets = Object.values(data);
+            
+            // Filter data based on role
+            const filtered = rootAdmin ? assets : assets.filter(a => a.owner === sessionUser);
 
-    function setupTagInputs() {
-        const bind = (id, list, render) => {
-            const el = document.getElementById(id);
-            el.onkeydown = (e) => {
-                if(e.key === 'Enter' && el.value.trim()){
-                    e.preventDefault(); list.push(el.value.trim()); el.value=''; render();
-                }
-            };
-        };
-        bind('fArtistInput', metaArtists, renderArtists);
-        bind('fTerritoryInput', metaRegions, renderRegions);
-    }
+            // Update Stats
+            document.getElementById('dash-all').innerText = filtered.length;
+            document.getElementById('dash-pending').innerText = filtered.filter(a => a.status === 'Pending').length;
+            document.getElementById('dash-live').innerText = filtered.filter(a => a.status === 'Released').length;
 
-    function renderArtists() {
-        document.getElementById('fArtistTags').innerHTML = metaArtists.map((a,i)=>`<div class="badge bg-black text-white flex items-center gap-2">${a} <i class="fa-solid fa-xmark cursor-pointer opacity-50" onclick="metaArtists.splice(${i},1);renderArtists()"></i></div>`).join('');
-    }
-    function renderRegions() {
-        document.getElementById('fTerritoryTags').innerHTML = metaRegions.map((t,i)=>`<div class="badge bg-slate-200 text-slate-600 flex gap-2">${t} <i class="fa-solid fa-xmark cursor-pointer opacity-50" onclick="metaRegions.splice(${i},1);renderRegions()"></i></div>`).join('');
-    }
-
-    function handleArtwork(input) {
-        if(input.files && input.files[0]) {
-            const r = new FileReader();
-            r.onload = (e) => {
-                document.getElementById('artPrev').src = e.target.result;
-                document.getElementById('artPrev').style.display = 'block';
-                artworkStream = e.target.result;
-            };
-            r.readAsDataURL(input.files[0]);
+        } catch (err) {
+            console.error("Dashboard Node Failure");
         }
-    }
-
-    function renderCatalog() {
-        const list = document.getElementById('catalogTable');
-        const dataArr = Object.keys(masterDB).map(k => ({id:k, ...masterDB[k]}));
-        const filtered = rootAdmin ? dataArr : dataArr.filter(i => i.owner === sessionUser);
-        
-        list.innerHTML = filtered.map(i => `
-            <tr class="fade-in">
-                <td><b class="text-slate-900 text-sm tracking-tighter">${i.type}</b></td>
-                <td><span class="badge badge-${i.status.toLowerCase()}">${i.status}</span></td>
-                <td>
-                    <div class="flex items-center gap-5">
-                        <img src="${i.artwork || 'https://via.placeholder.com/80'}" class="w-14 h-14 rounded-2xl object-cover border border-slate-100 shadow-sm">
-                        <div>
-                            <div class="font-black text-slate-900 text-base tracking-tighter">${i.title}</div>
-                            <div class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">${i.artists?.join(' • ')}</div>
-                        </div>
-                    </div>
-                </td>
-                <td class="font-bold text-slate-500 italic text-sm">${i.label || 'UNDERSOUTHERN'}</td>
-                <td class="font-mono text-[11px] text-slate-400 font-bold tracking-tighter">${i.upc || 'PENDING'}</td>
-                <td class="text-right">
-                    <button class="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-200 text-slate-400 hover:text-black hover:bg-white transition flex items-center justify-center ml-auto shadow-sm" onclick="fetchItemToEdit('${i.id}')">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </td>
-            </tr>
-        `).join('');
-    }
-
-    async function executeFinalAction() {
-        // Logic sync dữ liệu giống code cũ của bạn
-        toggleView('list');
-        await syncCoreData();
-    }
-
-    function fetchItemToEdit(id) {
-        activeId = id; const it = masterDB[id];
-        document.getElementById('fTitleInput').value = it.title;
-        document.getElementById('fType').value = it.type;
-        document.getElementById('fUPC').value = it.upc || '';
-        document.getElementById('fDate').value = it.date || '';
-        document.getElementById('fHour').value = it.hour || '';
-        metaArtists = it.artists || [];
-        metaRegions = it.territories || [];
-        artworkStream = it.artwork || "";
-        document.getElementById('artPrev').src = artworkStream;
-        document.getElementById('artPrev').style.display = artworkStream ? 'block' : 'none';
-        document.getElementById('fStatusText').innerText = it.status;
-        
-        document.getElementById('btnDelete').classList.toggle('hidden', !rootAdmin);
-        if(rootAdmin) {
-            document.getElementById('admControlZone').classList.remove('hidden');
-            document.getElementById('admStatus').value = it.status;
-            document.getElementById('admReason').value = it.rejectReason || "";
-            toggleAdmRejectBox();
-        } else {
-            document.getElementById('admControlZone').classList.add('hidden');
-        }
-        renderArtists(); renderRegions(); toggleView('form');
-    }
-
-    function openAddForm() {
-        activeId = null; metaArtists = []; metaRegions = []; artworkStream = "";
-        document.getElementById('artPrev').style.display = 'none';
-        document.getElementById('fStatusText').innerText = "ASSET INIT";
-        document.getElementById('admControlZone').classList.add('hidden');
-        renderArtists(); renderRegions(); toggleView('form');
-    }
-
-    function toggleView(v) {
-        document.getElementById('viewList').classList.toggle('hidden', v === 'form');
-        document.getElementById('viewForm').classList.toggle('hidden', v === 'list');
-    }
-
-    function toggleAdmRejectBox() {
-        document.getElementById('admRejectZone').classList.toggle('hidden', document.getElementById('admStatus').value !== 'Rejected');
     }
 </script>
 </body>
