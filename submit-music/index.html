@@ -50,7 +50,6 @@
             z-index: 1;
         }
 
-        /* --- Header Tinh Chỉnh Khoảng Cách --- */
         header { 
             text-align: center; 
             margin-bottom: 35px; 
@@ -58,7 +57,7 @@
         
         .header-logo { 
             width: 100px; 
-            margin: 0 auto 8px auto; /* Tăng nhẹ để cân bằng với khoảng cách bên dưới */
+            margin: 0 auto 8px auto; 
             display: block; 
             filter: grayscale(1) contrast(1.1); 
         }
@@ -66,7 +65,7 @@
         header h1 { 
             font-size: 2.2rem; 
             font-weight: 600; 
-            margin: 0 0 8px 0; /* Đặt khoảng cách 8px đồng bộ với logo */
+            margin: 0 0 8px 0; 
             line-height: 1; 
             letter-spacing: -0.02em; 
         }
@@ -189,15 +188,15 @@
 <div class="submit-wrapper">
     <header>
         <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="logo" class="header-logo">
-        <h1>submit music</h1>
-        <p>phân phối đến hơn 45 dsp khác nhau và toàn thế giới</p>
+        <h1>submit for distribution</h1>
+        <p>distribute your music to 45+ digital streaming platforms worldwide</p>
     </header>
 
     <form id="submit-form" onsubmit="handleFinalSubmit(event)">
         <div class="form-grid">
             <div class="form-group full-width">
                 <label>contact email</label>
-                <input type="email" placeholder="client@address.com" required style="text-transform: none;">
+                <input type="email" placeholder="your@example.com" required style="text-transform: none;">
             </div>
 
             <div class="form-group">
@@ -293,11 +292,11 @@
             </div>
         </div>
 
-        <button type="submit" class="btn-submit">submit content to hq</button>
+        <button type="submit" class="btn-submit">submit for distribution</button>
     </form>
 
     <footer>
-        <span>&copy; 2026 undersouthern.</span>
+        <span>&copy; 2026 undersouthern</span>
     </footer>
 </div>
 
@@ -307,7 +306,7 @@
         <p>Your content has been prepared for upload. Please send a notification to <span class="email-highlight">support@undersouthern.asia</span> to finalize your release.</p>
         <div class="modal-btns">
             <button class="btn-modal" onclick="closeModal()">close</button>
-            <button class="btn-modal primary" onclick="window.location.href='mailto:support@undersouthern.asia?subject=Music Submission Notification'">open mail</button>
+            <button class="btn-modal primary" onclick="window.location.href='mailto:support@undersouthern.asia?subject=Release Submission for Review'">open mail</button>
         </div>
     </div>
 </div>
