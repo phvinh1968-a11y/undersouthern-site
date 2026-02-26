@@ -3,178 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Release - UNDERSOUTHERN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>premium music distribution</title>
     <style>
         :root {
-            --bg-gray: #f0f2f5;
-            --sidebar-navy: #1a2b3c;
-            --border-light: #dce4ec;
-            --link-blue: #007bff;
+            --bg: #ffffff;
+            --text-main: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #000000;
+            --line: #e5e5e7;
+            --input-focus: #000000;
         }
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-gray); margin: 0; overflow: hidden; }
-
-        /* --- NỀN XÁM VÀ HIỆU ỨNG SÓNG BIỂN --- */
-        .ocean-background {
-            position: fixed;
-            inset: 0;
-            background: #e5e7eb; /* Nền xám chính */
-            z-index: 1;
-            overflow: hidden;
+        body {
+            font-family: -apple-system, blinkmacsystemfont, "segoe ui", roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 80px 20px;
+            display: flex;
+            justify-content: center;
+            text-transform: lowercase;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .wave {
+        .distro-wrapper {
+            width: 100%;
+            max-width: 700px;
+            position: relative;
+        }
+
+        /* --- thanh nối thông minh --- */
+        .timeline-bar {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 100%;
-            background: url('https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/wave-gray.png'); /* Cần file ảnh wave trắng/xám mờ */
-            background-repeat: repeat-x;
-            background-position: bottom;
-            opacity: 0.3;
+            left: 17px;
+            top: 20px;
+            bottom: 20px;
+            width: 1px;
+            background-color: var(--line);
+            z-index: 0;
         }
 
-        /* Hiệu ứng sóng biển chuyển động */
-        .wave1 { animation: move_wave 20s linear infinite; z-index: 2; height: 150px; opacity: 0.2; }
-        .wave2 { animation: move_wave 15s linear infinite; z-index: 3; height: 100px; opacity: 0.1; bottom: 10px; }
-        
-        @keyframes move_wave {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        /* --- step container --- */
+        .step-container {
+            position: relative;
+            margin-bottom: 12px;
+            z-index: 1;
         }
 
-        /* --- RELEASE MODAL CONTAINER --- */
-        .modal-container {
-            position: fixed;
-            inset: 0;
-            z-index: 100;
+        .step-header {
+            padding: 20px 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            color: var(--text-secondary);
+            transition: color 0.4s ease;
+        }
+
+        .step-number {
+            width: 34px;
+            height: 34px;
+            background: var(--bg);
+            border: 1px solid var(--line);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.05); /* Phủ nhẹ lên lớp sóng */
+            font-size: 0.85rem;
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .release-card {
-            background: white;
-            width: 100%;
-            max-width: 1100px;
-            height: 90vh;
-            border-radius: 20px;
-            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.15);
-            border: 1px solid var(--border-light);
+        /* trạng thái active */
+        .step-container.active .step-title {
+            color: var(--text-main);
+        }
+
+        .step-container.active .step-number {
+            background: var(--accent);
+            color: var(--white);
+            border-color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        /* --- nội dung chi tiết --- */
+        .step-content {
+            display: none;
+            padding: 0 0 60px 64px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+
+        .step-container.active .step-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- metadata layout --- */
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .artwork-zone {
+            width: 200px;
+            height: 200px;
+            background: #fbfbfd;
+            border: 1px solid var(--line);
             display: flex;
             flex-direction: column;
-            position: relative;
-            backdrop-filter: blur(10px); /* Làm mờ nhẹ phần sóng lọt vào trong card */
-        }
-
-        /* Nút mũi tên trở về */
-        .back-link {
-            position: absolute;
-            top: 24px;
-            left: 24px;
-            width: 44px;
-            height: 44px;
-            background: #f8fafc;
-            border: 1px solid var(--border-light);
-            border-radius: 50%;
-            display: flex;
             align-items: center;
             justify-content: center;
-            color: #64748b;
-            text-decoration: none;
-            transition: 0.2s;
-            z-index: 50;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: border 0.3s ease;
         }
-        .back-link:hover { background: var(--sidebar-navy); color: white; transform: translateX(-4px); }
 
-        .modal-content { flex: 1; overflow-y: auto; padding: 40px 60px; }
-        .label-style { font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; display: block; }
-        .input-style { width: 100%; padding: 12px; border: 1px solid var(--border-light); border-radius: 8px; font-size: 13px; outline: none; background: #fafbfc; }
-        
-        /* Artwork Upload Zone */
-        .art-upload-zone { width: 100%; aspect-ratio: 1/1; border: 2px dashed #cbd5e1; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8fafc; }
+        .artwork-zone:hover {
+            border-color: var(--text-secondary);
+        }
 
-        /* Sóng biển giả lập bằng CSS nếu không có ảnh */
-        .ocean { height: 5%; width: 100%; position: absolute; bottom: 0; left: 0; background: #cbd5e1; opacity: 0.5; filter: blur(30px); }
+        .artwork-zone span {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        #img-preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        /* --- form inputs --- */
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--line);
+            color: var(--text-main);
+            outline: none;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-bottom-color: var(--input-focus);
+        }
+
+        input::placeholder {
+            color: #d2d2d7;
+        }
+
+        /* --- list & buttons --- */
+        .store-list {
+            max-width: 450px;
+        }
+
+        .store-item {
+            padding: 16px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f5f5f7;
+            font-size: 0.9rem;
+        }
+
+        .action-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 40px;
+        }
+
+        .btn-premium {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 14px 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-premium:hover {
+            opacity: 0.8;
+        }
+
+        .btn-secondary {
+            background: none;
+            border: 1px solid var(--text-main);
+            padding: 10px 25px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            accent-color: var(--accent);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        /* animation bổ trợ */
+        @keyframes fadein {
+            from { opacity: 0; } to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="ocean-background">
-        <div class="wave wave1"></div>
-        <div class="wave wave2"></div>
-        <div class="ocean"></div>
-    </div>
+<div class="distro-wrapper">
+    <div class="timeline-bar"></div>
 
-    <div class="modal-container">
-        <div class="release-card">
-            
-            <a href="https://undersouthern.asia/dashboard" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i>
-            </a>
-
-            <div class="modal-content">
-                <div class="mb-12 pl-14">
-                    <h2 class="text-3xl font-900 text-slate-900 tracking-tighter">Create Release</h2>
-                    <p class="text-slate-400 text-sm mt-1">International Metadata Standards</p>
+    <div class="step-container active" id="step1">
+        <div class="step-header" onclick="toggle_step('step1')">
+            <div class="step-title">
+                <div class="step-number">1</div>
+                <span>release metadata</span>
+            </div>
+        </div>
+        <div class="step-content">
+            <div class="metadata-grid">
+                <div class="artwork-zone" onclick="document.getElementById('file-upload').click()">
+                    <span>tải ảnh lên</span>
+                    <img id="img-preview" src="" style="display:none;">
+                    <input type="file" id="file-upload" hidden accept="image/*" onchange="preview_img(this)">
                 </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                    <div class="lg:col-span-4 space-y-6">
-                        <div>
-                            <span class="label-style">Release Artwork</span>
-                            <div class="art-upload-zone">
-                                <i class="fa-solid fa-cloud-arrow-up text-3xl text-slate-300 mb-2"></i>
-                                <span class="text-[11px] font-800 text-slate-500">Upload Cover Art</span>
-                            </div>
-                        </div>
-                        <div>
-                            <span class="label-style">Release Format</span>
-                            <select class="input-style">
-                                <option>Single</option>
-                                <option>EP</option>
-                                <option>Album</option>
-                            </select>
-                        </div>
+                <div class="form-fields">
+                    <div class="form-group">
+                        <label>tên sản phẩm</label>
+                        <input type="text" placeholder="tên album hoặc đĩa đơn">
                     </div>
-
-                    <div class="lg:col-span-8 space-y-8">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><span class="label-style">Release Title</span><input type="text" class="input-style" placeholder="Title"></div>
-                            <div><span class="label-style">Main Artist</span><input type="text" class="input-style" placeholder="Artist name"></div>
-                            <div><span class="label-style">Label</span><input type="text" class="input-style" value="UNDERSOUTHERN"></div>
-                            <div><span class="label-style">Primary Genre</span>
-                                <select class="input-style">
-                                    <option>Hip Hop/Rap</option>
-                                    <option>Pop</option>
-                                    <option>Electronic</option>
-                                </select>
-                            </div>
-                            <div><span class="label-style">Release Date</span><input type="date" class="input-style"></div>
-                            <div><span class="label-style">UPC / EAN</span><input type="text" class="input-style" placeholder="Optional"></div>
-                        </div>
-
-                        <hr class="border-slate-100">
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div><span class="label-style">P Line (℗)</span><input type="text" class="input-style" placeholder="℗ 2026 UNDERSOUTHERN"></div>
-                            <div><span class="label-style">C Line (©)</span><input type="text" class="input-style" placeholder="© 2026 UNDERSOUTHERN"></div>
-                        </div>
-
-                        <button class="w-full bg-[#00a651] text-white py-4 rounded-xl font-800 text-sm shadow-xl shadow-green-100 hover:brightness-110 transition-all">
-                            Distribute Release
-                        </button>
+                    <div class="form-group">
+                        <label>nghệ sĩ</label>
+                        <input type="text" placeholder="tên nghệ sĩ xuất hiện">
+                    </div>
+                    <div class="action-footer">
+                        <button class="btn-premium" onclick="toggle_step('step2')">tiếp tục</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="step-container" id="step2">
+        <div class="step-header" onclick="toggle_step('step2')">
+            <div class="step-title">
+                <div class="step-number">2</div>
+                <span>track list</span>
+            </div>
+        </div>
+        <div class="step-content">
+            <div style="padding: 40px; border: 1px solid #f5f5f7; text-align: center;">
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 25px;">tải lên tệp âm thanh wav hoặc flac</p>
+                <button class="btn-secondary" onclick="alert('chọn file...')">+ thêm âm thanh</button>
+            </div>
+            <div class="action-footer">
+                <button class="btn-premium" onclick="toggle_step('step3')">tiếp tục</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="step-container" id="step3">
+        <div class="step-header" onclick="toggle_step('step3')">
+            <div class="step-title">
+                <div class="step-number">3</div>
+                <span>stores</span>
+            </div>
+        </div>
+        <div class="step-content">
+            <div class="store-list">
+                <div class="store-item">spotify <input type="checkbox" checked></div>
+                <div class="store-item">apple music <input type="checkbox" checked></div>
+                <div class="store-item">tiktok <input type="checkbox" checked></div>
+                <div class="store-item">youtube <input type="checkbox" checked></div>
+            </div>
+            <div class="action-footer">
+                <button class="btn-premium" onclick="toggle_step('step4')">tiếp tục</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="step-container" id="step4">
+        <div class="step-header" onclick="toggle_step('step4')">
+            <div class="step-title">
+                <div class="step-number">4</div>
+                <span>review</span>
+            </div>
+        </div>
+        <div class="step-content">
+            <div style="background: #fbfbfd; padding: 30px; line-height: 1.7; font-size: 0.9rem; color: var(--text-secondary);">
+                vui lòng kiểm tra lại toàn bộ dữ liệu. sau khi xác nhận, âm nhạc của bạn sẽ được gửi tới các nền tảng toàn cầu. quá trình này không thể hoàn tác ngay lập tức.
+            </div>
+            <div class="action-footer">
+                <button class="btn-premium" style="width: 100%;">xác nhận phát hành</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggle_step(step_id) {
+        const all_steps = document.querySelectorAll('.step-container');
+        
+        all_steps.forEach(step => {
+            if (step.id === step_id) {
+                // nếu click vào cái đang mở thì không đóng hoàn toàn (giữ ít nhất 1 cái mở)
+                step.classList.add('active');
+            } else {
+                step.classList.remove('active');
+            }
+        });
+    }
+
+    function preview_img(input) {
+        const preview = document.getElementById('img-preview');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 
 </body>
 </html>
