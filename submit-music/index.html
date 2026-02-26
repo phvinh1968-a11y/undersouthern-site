@@ -50,10 +50,32 @@
             z-index: 1;
         }
 
-        header { text-align: center; margin-bottom: 35px; }
-        .header-logo { width: 100px; margin: 0 auto 5px auto; display: block; filter: grayscale(1) contrast(1.1); }
-        header h1 { font-size: 2.2rem; font-weight: 600; margin: 0; line-height: 1; letter-spacing: -0.02em; }
-        header p { font-size: 0.85rem; color: var(--text-secondary); margin: 2px 0 0 0; }
+        /* --- Header Tinh Chỉnh Khoảng Cách --- */
+        header { 
+            text-align: center; 
+            margin-bottom: 35px; 
+        }
+        
+        .header-logo { 
+            width: 100px; 
+            margin: 0 auto 8px auto; /* Tăng nhẹ để cân bằng với khoảng cách bên dưới */
+            display: block; 
+            filter: grayscale(1) contrast(1.1); 
+        }
+
+        header h1 { 
+            font-size: 2.2rem; 
+            font-weight: 600; 
+            margin: 0 0 8px 0; /* Đặt khoảng cách 8px đồng bộ với logo */
+            line-height: 1; 
+            letter-spacing: -0.02em; 
+        }
+
+        header p { 
+            font-size: 0.85rem; 
+            color: var(--text-secondary); 
+            margin: 0; 
+        }
 
         .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px 40px; }
         .full-width { grid-column: span 2; }
@@ -130,7 +152,6 @@
         .btn-submit { background: var(--accent); color: #fff; border: none; padding: 18px; font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-top: 40px; width: 100%; transition: opacity 0.2s; letter-spacing: 0.1em; }
         .btn-submit:hover { opacity: 0.8; }
 
-        /* --- Modal Styles --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
@@ -153,7 +174,14 @@
         .btn-modal:hover { opacity: 0.7; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        footer { margin-top: 60px; display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-secondary); }
+        
+        footer { 
+            margin-top: 60px; 
+            display: flex; 
+            justify-content: center; 
+            font-size: 0.65rem; 
+            color: var(--text-secondary); 
+        }
     </style>
 </head>
 <body>
@@ -162,7 +190,7 @@
     <header>
         <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="logo" class="header-logo">
         <h1>submit music</h1>
-        <p>encrypted submission terminal — v2.6.04</p>
+        <p>phân phối đến hơn 45 dsp khác nhau và toàn thế giới</p>
     </header>
 
     <form id="submit-form" onsubmit="handleFinalSubmit(event)">
@@ -269,8 +297,7 @@
     </form>
 
     <footer>
-        <span>&copy; 2026 global record label.</span>
-        <span>secure terminal v2.6.04</span>
+        <span>&copy; 2026 undersouthern.</span>
     </footer>
 </div>
 
