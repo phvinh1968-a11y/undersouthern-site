@@ -45,43 +45,38 @@
 
         .submit-wrapper {
             width: 100%;
-            max-width: 950px; /* Tăng nhẹ chiều rộng để hàng ngang track thoải mái hơn */
+            max-width: 950px;
             position: relative;
             z-index: 1;
         }
 
-        header { 
-            text-align: center; 
-            margin-bottom: 35px; 
-        }
-        
-        .header-logo { 
-            width: 100px; 
-            margin: 0 auto 5px auto; 
-            display: block; 
-            filter: grayscale(1) contrast(1.1); 
-        }
-
-        header h1 { 
-            font-size: 2.2rem; 
-            font-weight: 600; 
-            margin: 0; 
-            line-height: 1; 
-            letter-spacing: -0.02em; 
-        }
-
-        header p { 
-            font-size: 0.85rem; 
-            color: var(--text-secondary); 
-            margin: 2px 0 0 0; 
-        }
+        header { text-align: center; margin-bottom: 35px; }
+        .header-logo { width: 100px; margin: 0 auto 5px auto; display: block; filter: grayscale(1) contrast(1.1); }
+        header h1 { font-size: 2.2rem; font-weight: 600; margin: 0; line-height: 1; letter-spacing: -0.02em; }
+        header p { font-size: 0.85rem; color: var(--text-secondary); margin: 2px 0 0 0; }
 
         .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px 40px; }
         .full-width { grid-column: span 2; }
 
         .form-group { position: relative; }
-        .form-group label { display: block; font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600; letter-spacing: 0.05em; }
+        .form-group label { display: flex; align-items: center; font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600; letter-spacing: 0.05em; height: 14px; }
         
+        .help-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 14px; height: 14px; border: 1px solid var(--text-secondary);
+            border-radius: 50%; font-size: 9px; margin-left: 6px; cursor: pointer; transition: 0.2s;
+        }
+        .help-icon:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+        .artwork-tooltip {
+            position: absolute; top: 25px; left: 0; width: 280px; background: #1a1a1a; color: #fff;
+            padding: 15px; font-size: 0.7rem; line-height: 1.5; z-index: 100; display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-transform: none;
+        }
+        .artwork-tooltip b { color: #fff; display: block; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.1em; }
+        .artwork-tooltip ul { margin: 0; padding-left: 15px; }
+        .artwork-tooltip li { margin-bottom: 5px; }
+
         .form-group input, .form-group select {
             width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--line);
             padding: 8px 0; outline: none; font-size: 1rem; text-transform: lowercase; transition: border-bottom 0.3s;
@@ -91,36 +86,16 @@
         .form-group input:focus, .form-group select:focus { border-bottom-color: var(--accent); }
         .select-wrapper::after { content: '▼'; font-size: 0.5rem; position: absolute; right: 0; bottom: 12px; color: var(--text-secondary); pointer-events: none; }
 
-        /* --- Multi-Tag Styles --- */
         .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            border-bottom: 1px solid var(--line);
-            padding-bottom: 5px;
-            min-height: 38px;
-            align-items: center;
-            cursor: text;
+            display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--line);
+            padding-bottom: 5px; min-height: 38px; align-items: center; cursor: text;
         }
         .tag {
-            background: var(--accent);
-            color: #fff;
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border-radius: 2px;
+            background: var(--accent); color: #fff; font-size: 0.75rem; padding: 3px 8px;
+            display: flex; align-items: center; gap: 6px; border-radius: 2px;
         }
         .tag span { cursor: pointer; font-weight: bold; font-size: 10px; opacity: 0.7; }
-        .tag span:hover { opacity: 1; }
-        .tags-container input {
-            border: none !important;
-            width: auto !important;
-            flex: 1;
-            min-width: 60px;
-            padding: 5px 0 !important;
-        }
+        .tags-container input { border: none !important; width: auto !important; flex: 1; min-width: 60px; padding: 5px 0 !important; }
 
         .artwork-upload-box {
             width: 160px; height: 160px; background: var(--card-bg); border: 1px solid var(--line);
@@ -130,60 +105,32 @@
         .artwork-upload-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; display: none; }
         .remove-art-btn { position: absolute; top: 5px; right: 5px; width: 20px; height: 20px; background: rgba(0,0,0,0.7); color: #fff; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; z-index: 10; }
 
-        /* --- Track Management Styles --- */
-        .tracks-section {
-            margin-top: 40px;
-            border-top: 1px solid var(--line);
-            padding-top: 20px;
-        }
-
+        .tracks-section { margin-top: 40px; border-top: 1px solid var(--line); padding-top: 20px; }
+        
         .track-row {
             display: grid;
             grid-template-columns: 1.2fr 1fr 1fr 1fr 80px 30px;
             gap: 15px;
-            align-items: end;
+            align-items: flex-start;
             margin-bottom: 25px;
             padding-bottom: 10px;
             animation: fadeIn 0.3s ease;
         }
-
-        .track-row .form-group { margin-bottom: 0; }
-        .track-row label { font-size: 0.6rem; margin-bottom: 4px; color: var(--text-secondary); }
-        .track-row input { font-size: 0.85rem; padding: 5px 0; }
-
-        .audio-mini-btn {
-            cursor: pointer;
-            border-bottom: 1px solid var(--line);
-            padding: 5px 0;
-            text-align: center;
-        }
+        .track-row .form-group label { font-size: 0.6rem; margin-bottom: 8px; color: var(--text-secondary); display: block; height: 14px; }
+        .track-row input { font-size: 0.85rem; padding: 10px 0; }
+        
+        .audio-mini-btn { cursor: pointer; border-bottom: 1px solid var(--line); padding: 10px 0; text-align: center; margin-top: 22px; }
         .audio-mini-btn span { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); }
-
-        .remove-track-btn {
-            cursor: pointer;
-            color: #b3261e;
-            font-size: 0.8rem;
-            text-align: center;
-            padding-bottom: 8px;
-        }
-
-        .btn-add-track {
-            background: transparent;
-            border: 1px dashed var(--line);
-            color: var(--text-secondary);
-            width: 100%;
-            padding: 12px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+        
+        .remove-track-btn { cursor: pointer; color: #b3261e; font-size: 0.8rem; text-align: center; margin-top: 25px; }
+        
+        .btn-add-track { background: transparent; border: 1px dashed var(--line); color: var(--text-secondary); width: 100%; padding: 12px; font-size: 0.75rem; cursor: pointer; margin-top: 10px; }
         .btn-add-track:hover { border-color: var(--accent); color: var(--accent); }
-
+        
         .btn-submit { background: var(--accent); color: #fff; border: none; padding: 18px; font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-top: 40px; width: 100%; transition: opacity 0.2s; letter-spacing: 0.1em; }
         .btn-submit:hover { opacity: 0.8; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
         footer { margin-top: 60px; display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-secondary); }
     </style>
 </head>
@@ -204,9 +151,19 @@
             </div>
 
             <div class="form-group">
-                <label>artwork (3000x3000px)</label>
+                <label>cover artwork <div class="help-icon" id="help-trigger" onclick="toggleTooltip(event)">?</div></label>
+                <div class="artwork-tooltip" id="artwork-tooltip">
+                    <b>Artwork Requirements:</b>
+                    <ul>
+                        <li>File Formats: JPG, PNG</li>
+                        <li>Resolution: 1000x1000 to 4000x4000</li>
+                        <li>Must be a perfect square</li>
+                        <li>No logos or brand references</li>
+                        <li>You must own the rights</li>
+                    </ul>
+                </div>
                 <div class="artwork-upload-box" id="art-box" onclick="document.getElementById('artwork-file').click()">
-                    <span id="art-txt">upload<br>artwork</span>
+                    <span id="art-txt">upload artwork</span>
                     <img id="preview-img">
                     <div id="remove-btn" class="remove-art-btn" onclick="removeArt(event)">✕</div>
                     <input type="file" id="artwork-file" hidden accept="image/*" onchange="previewArt(this)">
@@ -232,60 +189,46 @@
             </div>
 
             <div class="form-group">
-                <label>primary artist (press enter)</label>
+                <label>primary artist</label>
                 <div class="tags-container" onclick="this.querySelector('input').focus()">
-                    <input type="text" class="tag-input" placeholder="add artist...">
+                    <input type="text" class="tag-input" placeholder="add artist + press enter">
                 </div>
             </div>
 
             <div class="form-group">
-                <label>featured artist (press enter)</label>
+                <label>featured artist</label>
                 <div class="tags-container" onclick="this.querySelector('input').focus()">
-                    <input type="text" class="tag-input" placeholder="add guest...">
+                    <input type="text" class="tag-input" placeholder="add artist + press enter">
                 </div>
             </div>
 
             <div class="form-group select-wrapper">
                 <label>primary genre</label>
-                <select required>
-                    <option value="" disabled selected>select genre</option>
-                    <option>pop</option>
-                    <option>hip-hop / rap</option>
-                    <option>electronic</option>
-                </select>
+                <select id="primary-genre" required><option value="" disabled selected>select genre</option></select>
             </div>
             <div class="form-group select-wrapper">
                 <label>secondary genre</label>
-                <select>
-                    <option value="" selected>optional</option>
-                    <option>r&b / soul</option>
-                    <option>lo-fi</option>
-                </select>
+                <select id="secondary-genre"><option value="" selected>optional</option></select>
             </div>
 
             <div class="form-group">
-                <label>producer (press enter)</label>
+                <label>producer</label>
                 <div class="tags-container" onclick="this.querySelector('input').focus()">
-                    <input type="text" class="tag-input" placeholder="add credits...">
+                    <input type="text" class="tag-input" placeholder="add producer + press enter">
                 </div>
             </div>
 
             <div class="form-group select-wrapper">
                 <label>language</label>
-                <select required>
+                <select id="language-select" required>
                     <option value="" disabled selected>select language</option>
-                    <option>vietnamese</option>
-                    <option>english</option>
-                    <option>instrumental</option>
                 </select>
             </div>
 
             <div class="form-group select-wrapper">
                 <label>explicit content</label>
                 <select required>
-                    <option value="no" selected>no</option>
-                    <option value="yes">yes</option>
-                    <option value="cleaned">cleaned</option>
+                    <option value="no" selected>no</option><option value="yes">yes</option><option value="cleaned">cleaned</option>
                 </select>
             </div>
             <div class="form-group">
@@ -310,12 +253,42 @@
 </div>
 
 <script>
+    const genres = ["Alternative", "Alternative Rock", "Alternativo & Rock Latino", "Anime", "Baladas y Boleros", "Big Band", "Blues", "Brazilian", "C-Pop", "Cantopop/HK-Pop", "Children's", "Chinese", "Christian", "Classical", "Comedy", "Contemporary Latin", "Country", "Dance", "Easy Listening", "Educational", "Electronic", "Enka", "Experimental", "Fitness & Workout", "Folk", "French Pop", "German Folk", "German Pop", "Hip-Hop/Rap", "Holiday", "Indo Pop", "Inspirational", "Instrumental", "J-Pop", "Jazz", "K-Pop", "Karaoke", "Kayokyoku", "Latin", "Latin Jazz", "Metal", "New Age", "Opera", "Original Pilipino Music", "Pop", "Pop Latino", "Punk", "R&B", "Raices", "Reggae", "Reggaeton y Hip-Hop", "Regional Mexicano", "Rock", "Salsa y Tropical", "Singer/Songwriter", "Soul", "Soundtrack", "Spoken Word", "Tai-Pop", "Thai Pop", "Trot", "Vocal/Nostalgia", "World"];
+
+    const languages = ["Vietnamese (VI)", "English (EN)", "Korean (KO)", "Japanese (JA)", "Chinese (ZH)", "French (FR)", "Spanish (ES)", "German (DE)", "Italian (IT)", "Portuguese (PT)", "Russian (RU)", "Arabic (AR)", "Hindi (HI)", "Thai (TH)", "Indonesian (ID)", "Bengali (BN)", "Turkish (TR)", "Malay (MS)", "Urdu (UR)", "Persian (FA)", "Swahili (SW)", "Tamil (TA)", "Telugu (TE)", "Marathi (MR)", "Gujarati (GU)", "Kannada (KN)", "Punjabi (PA)", "Filipino (TL)", "Malayalam (ML)", "Sinhala (SI)", "Burmese (MY)", "Khmer (KM)", "Lao (LO)", "Nepali (NE)", "Pashto (PS)", "Hebrew (HE)", "Greek (EL)", "Dutch (NL)", "Swedish (SV)", "Norwegian (NO)", "Danish (DA)", "Finnish (FI)", "Polish (PL)", "Czech (CS)", "Hungarian (HU)", "Romanian (RO)", "Bulgarian (BG)", "Serbian (SR)", "Croatian (HR)", "Slovak (SK)"];
+
+    function populateDropdowns() {
+        const pGenre = document.getElementById('primary-genre');
+        const sGenre = document.getElementById('secondary-genre');
+        genres.forEach(g => {
+            pGenre.add(new Option(g, g));
+            sGenre.add(new Option(g, g));
+        });
+
+        const langSelect = document.getElementById('language-select');
+        languages.forEach(l => {
+            langSelect.add(new Option(l, l));
+        });
+    }
+
     let trackCount = 0;
 
-    // --- Hệ thống Tag cho phép Enter nhiều tên ---
+    function toggleTooltip(e) {
+        e.stopPropagation();
+        const tooltip = document.getElementById('artwork-tooltip');
+        tooltip.style.display = (tooltip.style.display === 'block') ? 'none' : 'block';
+    }
+
+    document.addEventListener('click', function(e) {
+        const tooltip = document.getElementById('artwork-tooltip');
+        const trigger = document.getElementById('help-trigger');
+        if (tooltip && e.target !== tooltip && e.target !== trigger && !tooltip.contains(e.target)) {
+            tooltip.style.display = 'none';
+        }
+    });
+
     function initTagSystem(container) {
         const input = container.querySelector('input');
-        
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -341,10 +314,8 @@
         const audioLabel = document.getElementById('audio-label');
         const titleInput = document.getElementById('main-title-input');
         const container = document.getElementById('tracks-container');
-
         container.innerHTML = "";
         trackCount = 0;
-
         if (type === 'single') {
             titleLabel.innerText = 'single title';
             audioLabel.innerText = 'audio access (single file)';
@@ -355,8 +326,7 @@
             audioLabel.innerText = isEP ? 'ep tracks management' : 'album tracks management';
             titleInput.placeholder = isEP ? 'eg. your ep name' : 'eg. your album name';
         }
-
-        addTrackRow(true);
+        addTrackRow();
     }
 
     function addTrackRow() {
@@ -365,48 +335,21 @@
         const row = document.createElement('div');
         row.className = 'track-row';
         row.id = `track-row-${trackCount}`;
-
         row.innerHTML = `
-            <div class="form-group">
-                <label>song title</label>
-                <input type="text" placeholder="track name" required>
-            </div>
-            <div class="form-group">
-                <label>primary artist (press enter)</label>
-                <div class="tags-container" onclick="this.querySelector('input').focus()">
-                    <input type="text" class="tag-input" placeholder="...">
-                </div>
-            </div>
-            <div class="form-group">
-                <label>featured artist (press enter)</label>
-                <div class="tags-container" onclick="this.querySelector('input').focus()">
-                    <input type="text" class="tag-input" placeholder="...">
-                </div>
-            </div>
-            <div class="form-group">
-                <label>producer (press enter)</label>
-                <div class="tags-container" onclick="this.querySelector('input').focus()">
-                    <input type="text" class="tag-input" placeholder="...">
-                </div>
-            </div>
-            <div class="audio-mini-btn" onclick="document.getElementById('file-${trackCount}').click()">
-                <span id="file-status-${trackCount}">audio</span>
-                <input type="file" id="file-${trackCount}" hidden accept="audio/*" onchange="updateTrackStatus(${trackCount})">
-            </div>
+            <div class="form-group"><label>song title</label><input type="text" placeholder="track name" required></div>
+            <div class="form-group"><label>primary artist</label><div class="tags-container" onclick="this.querySelector('input').focus()"><input type="text" class="tag-input" placeholder="press enter"></div></div>
+            <div class="form-group"><label>featured artist</label><div class="tags-container" onclick="this.querySelector('input').focus()"><input type="text" class="tag-input" placeholder="press enter"></div></div>
+            <div class="form-group"><label>producer</label><div class="tags-container" onclick="this.querySelector('input').focus()"><input type="text" class="tag-input" placeholder="press enter"></div></div>
+            <div class="audio-mini-btn" onclick="document.getElementById('file-${trackCount}').click()"><span id="file-status-${trackCount}">audio</span><input type="file" id="file-${trackCount}" hidden accept="audio/*" onchange="updateTrackStatus(${trackCount})"></div>
             <div class="remove-track-btn" onclick="removeRow(${trackCount})">✕</div>
         `;
         container.appendChild(row);
-
-        // Khởi tạo logic tag cho hàng mới vừa thêm
         row.querySelectorAll('.tags-container').forEach(initTagSystem);
     }
 
     function removeRow(id) {
         const container = document.getElementById('tracks-container');
-        if (container.children.length > 1) {
-            const row = document.getElementById(`track-row-${id}`);
-            if (row) row.remove();
-        }
+        if (container.children.length > 1) document.getElementById(`track-row-${id}`).remove();
     }
 
     function updateTrackStatus(id) {
@@ -414,7 +357,6 @@
         const status = document.getElementById(`file-status-${id}`);
         if (input.files && input.files.length > 0) {
             status.innerText = "ready";
-            status.parentElement.style.borderBottomColor = "var(--accent)";
             status.style.color = "var(--accent)";
             status.style.fontWeight = "700";
         }
@@ -442,15 +384,12 @@
         const preview = document.getElementById('preview-img');
         const txt = document.getElementById('art-txt');
         const removeBtn = document.getElementById('remove-btn');
-        input.value = "";
-        preview.src = "";
-        preview.style.display = 'none';
-        txt.style.display = 'block';
-        removeBtn.style.display = 'none';
+        input.value = ""; preview.src = ""; preview.style.display = 'none';
+        txt.style.display = 'block'; removeBtn.style.display = 'none';
     }
 
     window.onload = () => {
-        // Khởi tạo tag cho Metadata
+        populateDropdowns();
         document.querySelectorAll('.tags-container').forEach(initTagSystem);
         handleTypeLogic();
     };
