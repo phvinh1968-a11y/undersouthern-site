@@ -1,1 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>create release — global record label</title>
+    
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
 
+    <style>
+        :root {
+            --bg: #f4f4f2; 
+            --sidebar-bg: #ecece9;
+            --text-main: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --line: #dcdcdc;
+            --accent: #000000;
+            --sidebar-width: 280px;
+            --footer-height: 60px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: -apple-system, blinkmacsystemfont, "inter", sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            text-transform: lowercase;
+            letter-spacing: -0.01em;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* grainy texture */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        aside {
+            width: var(--sidebar-width);
+            border-right: 1px solid var(--line);
+            display: flex;
+            flex-direction: column;
+            padding: 60px 0;
+            background: var(--sidebar-bg);
+            height: 100vh;
+            z-index: 10;
+        }
+
+        .brand-logo {
+            width: 140px;
+            margin: 0 auto 80px auto;
+            opacity: 0.9;
+            cursor: pointer;
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: auto;
+            filter: grayscale(1) contrast(1.1);
+            display: block;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            width: 100%;
+            padding: 0 45px;
+        }
+
+        nav a, .logout-btn {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            position: relative;
+        }
+
+        nav a::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            left: -15px;
+            opacity: 0;
+            transform: scale(0);
+            transition: var(--transition);
+        }
+
+        /* active state cho trang create release */
+        nav a.active {
+            color: var(--accent);
+            transform: translatex(6px);
+        }
+
+        nav a.active::before {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .logout-container {
+            margin-top: auto;
+            padding: 0 45px;
+            width: 100%;
+        }
+
+        .logout-btn {
+            color: #b3261e;
+            opacity: 0.9;
+        }
+
+        .wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 60px 80px 100px 80px; 
+            overflow-y: auto;
+        }
+
+        /* --- wizard header --- */
+        header {
+            margin-bottom: 80px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.02em;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* --- timeline layout --- */
+        .wizard-container {
+            position: relative;
+            max-width: 900px;
+        }
+
+        .timeline-bar {
+            position: absolute;
+            left: 17px;
+            top: 20px;
+            bottom: 20px;
+            width: 1px;
+            background-color: var(--line);
+        }
+
+        .step-container {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .step-header {
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .step-number {
+            width: 34px;
+            height: 34px;
+            background: var(--bg);
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border-radius: 50%;
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .step-title {
+            margin-left: 30px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .step-container.active .step-number {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .step-container.active .step-title {
+            color: var(--text-main);
+        }
+
+        .step-content {
+            display: none;
+            padding: 20px 0 60px 64px;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .step-container.active .step-content {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- form styles --- */
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .artwork-zone {
+            width: 220px;
+            height: 220px;
+            background: var(--sidebar-bg);
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-group {
+            margin-bottom: 40px;
+            max-width: 450px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--line);
+            padding: 10px 0;
+            outline: none;
+            font-size: 1.1rem;
+            text-transform: lowercase;
+            transition: border-bottom 0.3s;
+        }
+
+        .form-group input:focus {
+            border-bottom-color: var(--accent);
+        }
+
+        .btn-continue {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 14px 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--footer-height);
+            background: var(--sidebar-bg);
+            border-top: 1px solid var(--line);
+            padding: 0 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="brand-logo" onclick="window.location.href='dashboard.html'">
+            <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="label-logo">
+        </div>
+        
+        <nav id="sidebar-nav">
+            <a href="dashboard.html">dashboard</a>
+            <a href="release.html" class="active">create release</a>
+            <a href="catalog.html">catalog access</a>
+            <a href="analytics.html">analytics</a>
+            <a href="royalties.html">royalty reports</a>
+            <a href="useraccess.html">user access</a>
+        </nav>
+
+        <div class="logout-container">
+            <button class="logout-btn" onclick="window.location.reload()">logout</button>
+        </div>
+    </aside>
+
+    <div class="wrapper">
+        <main id="scroll-area">
+            <header>
+                <h1>create release</h1>
+                <p>distribute new music global</p>
+            </header>
+
+            <div class="wizard-container">
+                <div class="timeline-bar"></div>
+
+                <div class="step-container active" id="step1">
+                    <div class="step-header" onclick="switchStep('step1')">
+                        <div class="step-number">1</div>
+                        <div class="step-title">release metadata</div>
+                    </div>
+                    <div class="step-content">
+                        <div class="metadata-grid">
+                            <div class="artwork-zone" onclick="document.getElementById('art-upload').click()">
+                                <span>upload artwork</span>
+                                <img id="preview-img" style="display:none; width:100%; height:100%; object-fit:cover; position:absolute;">
+                                <input type="file" id="art-upload" hidden accept="image/*" onchange="previewImage(this)">
+                            </div>
+                            <div class="form-fields">
+                                <div class="form-group">
+                                    <label>release title</label>
+                                    <input type="text" placeholder="album name">
+                                </div>
+                                <div class="form-group">
+                                    <label>main artist</label>
+                                    <input type="text" placeholder="artist name">
+                                </div>
+                                <button class="btn-continue" onclick="switchStep('step2')">continue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-container" id="step2">
+                    <div class="step-header" onclick="switchStep('step2')">
+                        <div class="step-number">2</div>
+                        <div class="step-title">track list</div>
+                    </div>
+                    <div class="step-content">
+                        <button class="btn-continue" onclick="switchStep('step3')">continue</button>
+                    </div>
+                </div>
+
+                <div class="step-container" id="step3">
+                    <div class="step-header" onclick="switchStep('step3')">
+                        <div class="step-number">3</div>
+                        <div class="step-title">digital stores</div>
+                    </div>
+                    <div class="step-content">
+                        <button class="btn-continue" onclick="switchStep('step4')">continue</button>
+                    </div>
+                </div>
+
+                <div class="step-container" id="step4">
+                    <div class="step-header" onclick="switchStep('step4')">
+                        <div class="step-number">4</div>
+                        <div class="step-title">final review</div>
+                    </div>
+                    <div class="step-content">
+                        <button class="btn-continue" style="width: 100%;">confirm & distribute</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <span>&copy; 2026 global record label. all rights reserved.</span>
+            <span>secure hq terminal v2.6.04</span>
+        </footer>
+    </div>
+
+    <script>
+        function switchStep(stepId) {
+            document.querySelectorAll('.step-container').forEach(s => s.classList.remove('active'));
+            document.getElementById(stepId).classList.add('active');
+        }
+
+        function previewImage(input) {
+            const preview = document.getElementById('preview-img');
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
