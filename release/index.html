@@ -11,6 +11,7 @@
         :root {
             --bg: #f4f4f2; 
             --sidebar-bg: #ecece9;
+            --card-bg: #ecece9;
             --text-main: #1a1a1a;
             --text-secondary: #6b6b6b;
             --line: #dcdcdc;
@@ -35,6 +36,7 @@
             position: relative;
         }
 
+        /* grainy texture */
         body::before {
             content: "";
             position: fixed;
@@ -66,79 +68,98 @@
             display: flex; align-items: center; gap: 12px; cursor: pointer;
             border: none; background: none; padding: 0; position: relative;
         }
-
         nav a.active { color: var(--accent); transform: translatex(6px); }
 
-        .wrapper { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; position: relative; }
+        .logout-container { margin-top: auto; padding: 0 45px; width: 100%; }
+        .logout-btn { color: #b3261e; opacity: 0.9; }
 
+        .wrapper { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; position: relative; min-width: 0; }
         main { flex-grow: 1; padding: 60px 80px 100px 80px; overflow-y: auto; }
 
-        header { margin-bottom: 80px; }
-        header h1 { font-size: 2.2rem; font-weight: 600; margin: 0 0 10px 0; letter-spacing: -0.02em; }
-        header p { font-size: 0.9rem; color: var(--text-secondary); }
-
-        .wizard-container { position: relative; max-width: 900px; }
-        .timeline-bar { position: absolute; left: 17px; top: 20px; bottom: 20px; width: 1px; background-color: var(--line); }
-
-        .step-container { position: relative; margin-bottom: 24px; }
-        .step-header { padding: 15px 0; display: flex; align-items: center; cursor: pointer; }
-        .step-number { 
-            width: 34px; height: 34px; background: var(--bg); border: 1px solid var(--line);
-            display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
-            border-radius: 50%; z-index: 1; transition: var(--transition);
+        /* HEADER GIỐNG HỆT DASHBOARD */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 100px; /* Khớp với Dashboard */
         }
 
-        .step-title { margin-left: 30px; font-size: 0.9rem; color: var(--text-secondary); font-weight: 500; }
-        .step-container.active .step-number { background: var(--accent); color: #fff; border-color: var(--accent); }
-        .step-container.active .step-content { display: block; }
-        .step-content { display: none; padding: 20px 0 60px 64px; animation: fadeIn 0.4s ease forwards; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .metadata-grid { display: grid; grid-template-columns: 220px 1fr; gap: 60px; align-items: start; }
-        .artwork-zone {
-            width: 220px; height: 220px; background: var(--sidebar-bg); border: 1px solid var(--line);
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            font-size: 0.7rem; color: var(--text-secondary); position: relative; overflow: hidden;
+        .header-title h1 {
+            font-size: 1.2rem; /* Cỡ chữ khớp Dashboard */
+            font-weight: 500;
+            margin: 0 0 8px 0;
         }
 
-        .form-fields { max-width: 600px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .form-group { margin-bottom: 35px; position: relative; }
-        .form-group label { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 12px; }
+        .header-title span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Form Logic Area */
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px 40px; max-width: 950px; }
+        .full-width { grid-column: span 2; }
+
+        .form-group { position: relative; }
+        .form-group label { display: flex; align-items: center; font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600; letter-spacing: 0.05em; height: 14px; }
         
-        .form-group input:not([type="radio"]), .form-group select {
+        .help-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 14px; height: 14px; border: 1px solid var(--text-secondary);
+            border-radius: 50%; font-size: 9px; margin-left: 6px; cursor: pointer;
+        }
+
+        .artwork-tooltip {
+            position: absolute; top: 25px; left: 0; width: 280px; background: #1a1a1a; color: #fff;
+            padding: 15px; font-size: 0.7rem; line-height: 1.5; z-index: 100; display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-transform: none;
+        }
+
+        .form-group input:not([type="file"]), .form-group select {
             width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--line);
-            padding: 10px 0; outline: none; font-size: 1.1rem; text-transform: lowercase; transition: border-bottom 0.3s;
-            appearance: none; -webkit-appearance: none;
+            padding: 8px 0; outline: none; font-size: 1rem; text-transform: lowercase; transition: border-bottom 0.3s;
+            appearance: none; border-radius: 0;
         }
 
-        .select-wrapper::after {
-            content: '▼'; font-size: 0.6rem; position: absolute; right: 0; bottom: 15px;
-            color: var(--text-secondary); pointer-events: none;
+        .form-group input:focus, .form-group select:focus { border-bottom-color: var(--accent); }
+        .select-wrapper::after { content: '▼'; font-size: 0.5rem; position: absolute; right: 0; bottom: 12px; color: var(--text-secondary); pointer-events: none; }
+
+        .tags-container {
+            display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--line);
+            padding-bottom: 5px; min-height: 38px; align-items: center; cursor: text;
         }
-
-        /* --- Artist Tags CSS --- */
-        .input-with-icon { display: flex; align-items: center; gap: 10px; }
-        .add-btn { cursor: pointer; font-size: 1.2rem; color: var(--text-secondary); transition: 0.2s; padding-bottom: 5px; }
-        .add-btn:hover { color: var(--accent); }
-
-        .artist-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        .artist-tag {
-            background: #e8e8e5; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem;
-            display: flex; align-items: center; gap: 8px; color: var(--text-main);
-            border: 1px solid var(--line);
+        .tag {
+            background: var(--accent); color: #fff; font-size: 0.75rem; padding: 3px 8px;
+            display: flex; align-items: center; gap: 6px; border-radius: 2px;
         }
-        .remove-tag { cursor: pointer; font-weight: bold; opacity: 0.5; }
-        .remove-tag:hover { opacity: 1; color: #b3261e; }
+        .tag span { cursor: pointer; font-weight: bold; font-size: 10px; opacity: 0.7; }
+        .tags-container input { border: none !important; width: auto !important; flex: 1; min-width: 60px; padding: 5px 0 !important; }
 
-        .radio-group { display: flex; gap: 20px; align-items: center; padding: 10px 0; }
-        .radio-group label { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--text-main); cursor: pointer; }
-        .radio-group input[type="radio"] { width: 16px; height: 16px; accent-color: var(--accent); appearance: auto; }
+        .artwork-upload-box {
+            width: 160px; height: 160px; background: var(--card-bg); border: 1px solid var(--line);
+            display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; overflow: hidden; text-align: center;
+        }
+        .artwork-upload-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; display: none; }
+        .remove-art-btn { position: absolute; top: 5px; right: 5px; width: 20px; height: 20px; background: rgba(0,0,0,0.7); color: #fff; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; z-index: 10; }
 
-        .btn-continue {
-            background: var(--accent); color: #fff; border: none; padding: 14px 50px;
-            font-size: 0.85rem; font-weight: 500; cursor: pointer; margin-top: 10px;
+        .tracks-section { margin-top: 40px; border-top: 1px solid var(--line); padding-top: 40px; }
+        .track-row {
+            display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr 80px 30px;
+            gap: 15px; align-items: flex-start; margin-bottom: 25px; padding-bottom: 10px; border-bottom: 1px dashed var(--line);
+        }
+        .audio-mini-btn { cursor: pointer; border-bottom: 1px solid var(--line); padding: 10px 0; text-align: center; margin-top: 22px; }
+        .audio-mini-btn span { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--text-secondary); }
+        .btn-add-track { background: transparent; border: 1px dashed var(--line); color: var(--text-secondary); width: 100%; padding: 12px; font-size: 0.75rem; cursor: pointer; margin-top: 10px; }
+        
+        .btn-submit { background: var(--accent); color: #fff; border: none; padding: 18px; font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-top: 40px; width: 100%; letter-spacing: 0.1em; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+            z-index: 1000; display: none; align-items: center; justify-content: center;
+        }
+        .modal-box {
+            background: var(--bg); border: 1px solid var(--accent);
+            width: 90%; max-width: 450px; padding: 40px; text-align: center;
         }
 
         .footer {
@@ -157,132 +178,207 @@
         <nav id="sidebar-nav">
             <a href="https://undersouthern.asia/dashboard">dashboard</a>
             <a href="https://undersouthern.asia/release" class="active">create release</a>
-            <a href="catalog.html">catalog access</a>
-            <a href="analytics.html">analytics</a>
-            <a href="royalties.html">royalty reports</a>
-            <a href="useraccess.html">user access</a>
+            <a href="#">catalog access</a>
+            <a href="#">analytics</a>
+            <a href="#">royalty reports</a>
+            <a href="#">user access</a>
         </nav>
+        <div class="logout-container">
+            <button class="logout-btn" onclick="handleLogout()">logout</button>
+        </div>
     </aside>
 
     <div class="wrapper">
-        <main>
+        <main id="scroll-area">
             <header>
-                <h1>create release</h1>
-                <p>distribute new music global</p>
+                <div class="header-title">
+                    <h1>create release</h1>
+                    <span id="sub-header-text">distribute your music global</span>
+                </div>
             </header>
 
-            <div class="wizard-container">
-                <div class="timeline-bar"></div>
-
-                <div class="step-container active" id="step1">
-                    <div class="step-header">
-                        <div class="step-number">1</div>
-                        <div class="step-title">release metadata</div>
-                    </div>
-                    <div class="step-content">
-                        <div class="metadata-grid">
-                            <div class="artwork-zone" onclick="document.getElementById('art-upload').click()">
-                                <span>upload artwork</span>
-                                <img id="preview-img" style="display:none; width:100%; height:100%; object-fit:cover; position:absolute;">
-                                <input type="file" id="art-upload" hidden accept="image/*" onchange="previewImage(this)">
-                            </div>
-                            <div class="form-fields">
-                                <div class="form-row">
-                                    <div class="form-group"><label>release title</label><input type="text" placeholder="album name"></div>
-                                    <div class="form-group"><label>title version</label><input type="text" placeholder="e.g. deluxe"></div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>primary artist</label>
-                                    <div class="input-with-icon">
-                                        <input type="text" id="primary-input" placeholder="artist name" onkeypress="handleEnter(event, 'primary')">
-                                        <span class="add-btn" onclick="addArtist('primary')">+</span>
-                                    </div>
-                                    <div id="primary-list" class="artist-list"></div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>featured artist</label>
-                                    <div class="input-with-icon">
-                                        <input type="text" id="featured-input" placeholder="optional" onkeypress="handleEnter(event, 'featured')">
-                                        <span class="add-btn" onclick="addArtist('featured')">+</span>
-                                    </div>
-                                    <div id="featured-list" class="artist-list"></div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group select-wrapper">
-                                        <label>primary genre</label>
-                                        <select><option disabled selected>select genre</option><option>pop</option><option>hip hop</option><option>electronic</option></select>
-                                    </div>
-                                    <div class="form-group select-wrapper">
-                                        <label>secondary genre</label>
-                                        <select><option disabled selected>optional</option><option>r&b</option><option>lo-fi</option></select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group"><label>label</label><input type="text" placeholder="record label name"></div>
-                                
-                                <div class="form-group">
-                                    <label>previously released?</label>
-                                    <div class="radio-group">
-                                        <label><input type="radio" name="hist" onclick="toggleDate(false)" checked> no</label>
-                                        <label><input type="radio" name="hist" onclick="toggleDate(true)"> yes</label>
-                                        <input type="date" id="rel-date" style="display:none; width:160px; margin-left:20px;">
-                                    </div>
-                                </div>
-
-                                <div class="form-group"><label>UPC / EAN / JAN</label><input type="text" placeholder="leave blank to assign new"></div>
-                                <div class="form-row">
-                                    <div class="form-group"><label>© copyright year & holder</label><input type="text" placeholder="2026 label name"></div>
-                                    <div class="form-group"><label>℗ copyright year & holder</label><input type="text" placeholder="2026 label name"></div>
-                                </div>
-
-                                <button class="btn-continue">continue</button>
-                            </div>
+            <form id="submit-form" onsubmit="handleFinalSubmit(event)">
+                <div class="form-grid">
+                    
+                    <div class="form-group">
+                        <label>cover artwork <div class="help-icon" id="help-trigger" onclick="toggleTooltip(event)">?</div></label>
+                        <div class="artwork-tooltip" id="artwork-tooltip">
+                            <b>requirements:</b><br>• jpg/png (1000px-4000px)<br>• perfect square<br>• no logos/brands
+                        </div>
+                        <div class="artwork-upload-box" id="art-box" onclick="document.getElementById('artwork-file').click()">
+                            <span id="art-txt">upload artwork</span>
+                            <img id="preview-img">
+                            <div id="remove-btn" class="remove-art-btn" onclick="removeArt(event)">✕</div>
+                            <input type="file" id="artwork-file" hidden accept="image/*" onchange="previewArt(this)">
                         </div>
                     </div>
+
+                    <div class="form-group select-wrapper" style="align-self: flex-start;">
+                        <label>release type</label>
+                        <select id="release-type" onchange="handleTypeLogic()" required>
+                            <option value="single" selected>single</option>
+                            <option value="ep">ep</option>
+                            <option value="album">album</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="title-label">single title</label>
+                        <input type="text" id="main-title-input" placeholder="eg. your song name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>title version</label>
+                        <input type="text" placeholder="eg. Radio Edit, Remix">
+                    </div>
+
+                    <div class="form-group">
+                        <label>primary artist</label>
+                        <div class="tags-container" onclick="this.querySelector('input').focus()">
+                            <input type="text" class="tag-input" placeholder="add artist + press enter">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>featured artist</label>
+                        <div class="tags-container" onclick="this.querySelector('input').focus()">
+                            <input type="text" class="tag-input" placeholder="add artist + press enter">
+                        </div>
+                    </div>
+
+                    <div class="form-group select-wrapper">
+                        <label>primary genre</label>
+                        <select id="primary-genre" required><option value="" disabled selected>select genre</option></select>
+                    </div>
+                    <div class="form-group select-wrapper">
+                        <label>secondary genre</label>
+                        <select id="secondary-genre"><option value="" selected>optional</option></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>producer</label>
+                        <div class="tags-container" onclick="this.querySelector('input').focus()">
+                            <input type="text" class="tag-input" placeholder="add producer + press enter">
+                        </div>
+                    </div>
+
+                    <div class="form-group select-wrapper">
+                        <label>language</label>
+                        <select id="language-select" required><option value="" disabled selected>select language</option></select>
+                    </div>
+
+                    <div class="form-group select-wrapper">
+                        <label>explicit content</label>
+                        <select required><option value="no" selected>no</option><option value="yes">yes</option><option value="cleaned">cleaned</option></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>release date</label>
+                        <input type="date" required style="color: var(--text-secondary);">
+                    </div>
+
+                    <div class="form-group"><label>© copyright year & holder</label><input type="text" placeholder="2026 undersouthern"></div>
+                    <div class="form-group"><label>℗ copyright year & holder</label><input type="text" placeholder="2026 undersouthern"></div>
+
+                    <div class="form-group full-width tracks-section">
+                        <label id="audio-label">audio tracks management</label>
+                        <div id="tracks-container"></div>
+                        <button type="button" id="add-track-btn" class="btn-add-track" onclick="addTrackRow()">+ add track</button>
+                    </div>
                 </div>
-            </div>
+
+                <button type="submit" class="btn-submit">submit for distribution</button>
+            </form>
         </main>
 
         <footer class="footer">
-            <span>&copy; 2026 global record label. all rights reserved.</span>
+            <span>&copy; 2026 undersouthern. all rights reserved.</span>
             <span>secure hq terminal v2.6.04</span>
         </footer>
     </div>
 
+    <div class="modal-overlay" id="success-modal">
+        <div class="modal-box">
+            <h2 style="margin-top:0">submission successful</h2>
+            <p style="font-size:0.9rem; color:var(--text-secondary); line-height:1.6; margin:20px 0; text-transform:none;">Your content has been prepared. Please notify support@undersouthern.asia to finalize.</p>
+            <button class="btn-submit" style="margin-top:0; padding:10px;" onclick="location.reload()">close</button>
+        </div>
+    </div>
+
     <script>
-        function addArtist(type) {
-            const input = document.getElementById(type + '-input');
-            const list = document.getElementById(type + '-list');
-            const val = input.value.trim();
-            if (val === '') return;
+        const genres = ["Alternative", "Anime", "Electronic", "Hip-Hop/Rap", "Pop", "R&B", "Rock", "Lofi", "World"];
+        const languages = ["Vietnamese (VI)", "English (EN)", "Korean (KO)", "Japanese (JA)", "Chinese (ZH)"];
 
-            const tag = document.createElement('div');
-            tag.className = 'artist-tag';
-            tag.innerHTML = `${val} <span class="remove-tag" onclick="this.parentElement.remove()">x</span>`;
-            
-            list.appendChild(tag);
-            input.value = '';
+        function populateDropdowns() {
+            const pGenre = document.getElementById('primary-genre');
+            const sGenre = document.getElementById('secondary-genre');
+            const langSelect = document.getElementById('language-select');
+            genres.forEach(g => { pGenre.add(new Option(g, g)); sGenre.add(new Option(g, g)); });
+            languages.forEach(l => { langSelect.add(new Option(l, l)); });
         }
 
-        function handleEnter(e, type) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addArtist(type);
-            }
+        function initTagSystem(container) {
+            const input = container.querySelector('input');
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const val = input.value.trim();
+                    if (val) {
+                        const tag = document.createElement('div');
+                        tag.className = 'tag';
+                        tag.innerHTML = `${val} <span onclick="this.parentElement.remove()">✕</span>`;
+                        container.insertBefore(tag, input);
+                        input.value = '';
+                    }
+                }
+            });
         }
 
-        function previewImage(input) {
+        let trackCount = 0;
+        function addTrackRow() {
+            trackCount++;
+            const container = document.getElementById('tracks-container');
+            const row = document.createElement('div');
+            row.className = 'track-row';
+            row.id = `track-row-${trackCount}`;
+            row.innerHTML = `
+                <div class="form-group"><label>song title</label><input type="text" placeholder="name" required></div>
+                <div class="form-group"><label>primary artist</label><div class="tags-container" onclick="this.querySelector('input').focus()"><input type="text" class="tag-input" placeholder="enter"></div></div>
+                <div class="form-group"><label>featured artist</label><div class="tags-container" onclick="this.querySelector('input').focus()"><input type="text" placeholder="enter"></div></div>
+                <div class="form-group"><label>producer</label><div class="tags-container" onclick="this.querySelector('input').focus()"><input type="text" placeholder="enter"></div></div>
+                <div class="audio-mini-btn" onclick="document.getElementById('file-${trackCount}').click()"><span id="file-status-${trackCount}">audio</span><input type="file" id="file-${trackCount}" hidden accept="audio/*" onchange="updateTrackStatus(${trackCount})"></div>
+                <div style="margin-top:25px; cursor:pointer; color:#b3261e;" onclick="this.parentElement.remove()">✕</div>
+            `;
+            container.appendChild(row);
+            row.querySelectorAll('.tags-container').forEach(initTagSystem);
+        }
+
+        function updateTrackStatus(id) { document.getElementById(`file-status-${id}`).innerText = "ready"; document.getElementById(`file-status-${id}`).style.color = "var(--accent)"; }
+
+        function handleTypeLogic() {
+            const type = document.getElementById('release-type').value;
+            document.getElementById('tracks-container').innerHTML = "";
+            trackCount = 0;
+            addTrackRow();
+            document.getElementById('title-label').innerText = type + ' title';
+            document.getElementById('sub-header-text').innerText = 'distribute your ' + type + ' global';
+            document.getElementById('add-track-btn').style.display = (type === 'single') ? 'none' : 'block';
+        }
+
+        function previewArt(input) {
             const preview = document.getElementById('preview-img');
+            const txt = document.getElementById('art-txt');
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = (e) => { preview.src = e.target.result; preview.style.display = 'block'; }
+                reader.onload = (e) => { preview.src = e.target.result; preview.style.display = 'block'; txt.style.display = 'none'; }
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        function toggleDate(show) { document.getElementById('rel-date').style.display = show ? 'inline-block' : 'none'; }
+
+        function removeArt(event) { event.stopPropagation(); document.getElementById('artwork-file').value = ""; document.getElementById('preview-img').style.display = 'none'; document.getElementById('art-txt').style.display = 'block'; }
+        function toggleTooltip(e) { e.stopPropagation(); const tip = document.getElementById('artwork-tooltip'); tip.style.display = (tip.style.display === 'block') ? 'none' : 'block'; }
+        function handleFinalSubmit(e) { e.preventDefault(); document.getElementById('success-modal').style.display = 'flex'; }
+        function handleLogout() { window.location.href = 'https://undersouthern.asia/login'; }
+
+        window.onload = () => { populateDropdowns(); document.querySelectorAll('.tags-container').forEach(initTagSystem); handleTypeLogic(); };
     </script>
 </body>
 </html>
