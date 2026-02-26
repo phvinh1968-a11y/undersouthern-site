@@ -38,7 +38,7 @@
             position: relative;
         }
 
-        /* hiệu ứng grain cổ điển */
+        /* grainy texture */
         body::before {
             content: "";
             position: fixed;
@@ -49,7 +49,6 @@
             z-index: 999;
         }
 
-        /* --- sidebar cố định bên trái --- */
         aside {
             width: var(--sidebar-width);
             border-right: 1px solid var(--line);
@@ -58,19 +57,21 @@
             padding: 60px 0;
             background: var(--sidebar-bg);
             height: 100vh;
-            position: relative;
+            z-index: 10;
         }
 
         .brand-logo {
             width: 140px;
             margin: 0 auto 80px auto;
             opacity: 0.9;
+            cursor: pointer;
         }
 
         .brand-logo img {
             width: 100%;
             height: auto;
             filter: grayscale(1) contrast(1.1);
+            display: block;
         }
 
         nav {
@@ -91,11 +92,13 @@
             align-items: center;
             gap: 12px;
             cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
             position: relative;
         }
 
-        /* dấu chấm tròn active cho trang hiện tại */
-        nav a.active::before {
+        nav a::before {
             content: "";
             width: 6px;
             height: 6px;
@@ -103,11 +106,20 @@
             border-radius: 50%;
             position: absolute;
             left: -15px;
+            opacity: 0;
+            transform: scale(0);
+            transition: var(--transition);
         }
 
+        /* active state cho trang create release */
         nav a.active {
             color: var(--accent);
             transform: translatex(6px);
+        }
+
+        nav a.active::before {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .logout-container {
@@ -119,11 +131,8 @@
         .logout-btn {
             color: #b3261e;
             opacity: 0.9;
-            background: none;
-            border: none;
         }
 
-        /* --- nội dung chính bên phải --- */
         .wrapper {
             flex-grow: 1;
             display: flex;
@@ -138,6 +147,7 @@
             overflow-y: auto;
         }
 
+        /* --- wizard header --- */
         header {
             margin-bottom: 80px;
         }
@@ -146,18 +156,18 @@
             font-size: 2.2rem;
             font-weight: 600;
             margin: 0 0 10px 0;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.02em;
         }
 
         header p {
-            color: var(--text-secondary);
             font-size: 0.9rem;
+            color: var(--text-secondary);
         }
 
-        /* --- wizard timeline --- */
+        /* --- timeline layout --- */
         .wizard-container {
             position: relative;
-            max-width: 800px;
+            max-width: 900px;
         }
 
         .timeline-bar {
@@ -171,7 +181,7 @@
 
         .step-container {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .step-header {
@@ -202,7 +212,6 @@
             font-weight: 500;
         }
 
-        /* active step */
         .step-container.active .step-number {
             background: var(--accent);
             color: #fff;
@@ -213,11 +222,10 @@
             color: var(--text-main);
         }
 
-        /* nội dung bên trong mỗi bước */
         .step-content {
             display: none;
             padding: 20px 0 60px 64px;
-            animation: fadeIn 0.5s ease forwards;
+            animation: fadeIn 0.4s ease forwards;
         }
 
         .step-container.active .step-content {
@@ -229,17 +237,17 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- metadata layout --- */
+        /* --- form styles --- */
         .metadata-grid {
             display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 50px;
+            grid-template-columns: 220px 1fr;
+            gap: 60px;
             align-items: start;
         }
 
         .artwork-zone {
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             background: var(--sidebar-bg);
             border: 1px solid var(--line);
             display: flex;
@@ -249,19 +257,12 @@
             font-size: 0.7rem;
             color: var(--text-secondary);
             position: relative;
-        }
-
-        #img-preview {
-            width: 100%; height: 100%; object-fit: cover;
-            position: absolute; display: none;
-        }
-
-        .form-fields {
-            max-width: 400px;
+            overflow: hidden;
         }
 
         .form-group {
             margin-bottom: 40px;
+            max-width: 450px;
         }
 
         .form-group label {
@@ -276,10 +277,11 @@
             background: transparent;
             border: none;
             border-bottom: 1px solid var(--line);
-            padding: 8px 0;
+            padding: 10px 0;
             outline: none;
             font-size: 1.1rem;
             text-transform: lowercase;
+            transition: border-bottom 0.3s;
         }
 
         .form-group input:focus {
@@ -290,18 +292,20 @@
             background: var(--accent);
             color: #fff;
             border: none;
-            padding: 12px 60px;
+            padding: 14px 50px;
             font-size: 0.85rem;
-            cursor: pointer;
             font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
-        /* --- fixed footer --- */
         .footer {
             position: absolute;
-            bottom: 0; left: 0; right: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
             height: var(--footer-height);
-            background: var(--bg);
+            background: var(--sidebar-bg);
             border-top: 1px solid var(--line);
             padding: 0 80px;
             display: flex;
@@ -309,29 +313,33 @@
             align-items: center;
             font-size: 0.7rem;
             color: var(--text-secondary);
+            z-index: 10;
         }
     </style>
 </head>
 <body>
 
     <aside>
-        <div class="brand-logo">
+        <div class="brand-logo" onclick="window.location.href='dashboard.html'">
             <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="label-logo">
         </div>
-        <nav>
-            <a href="dashboard.html">dashboard</a> <a href="release.html" class="active">create release</a>
+        
+        <nav id="sidebar-nav">
+            <a href="dashboard.html">dashboard</a>
+            <a href="release.html" class="active">create release</a>
             <a href="catalog.html">catalog access</a>
             <a href="analytics.html">analytics</a>
             <a href="royalties.html">royalty reports</a>
             <a href="useraccess.html">user access</a>
         </nav>
+
         <div class="logout-container">
-            <button class="logout-btn" onclick="alert('logging out...')">logout</button>
+            <button class="logout-btn" onclick="window.location.reload()">logout</button>
         </div>
     </aside>
 
     <div class="wrapper">
-        <main>
+        <main id="scroll-area">
             <header>
                 <h1>create release</h1>
                 <p>distribute new music global</p>
@@ -341,16 +349,16 @@
                 <div class="timeline-bar"></div>
 
                 <div class="step-container active" id="step1">
-                    <div class="step-header" onclick="goToStep('step1')">
+                    <div class="step-header" onclick="switchStep('step1')">
                         <div class="step-number">1</div>
                         <div class="step-title">release metadata</div>
                     </div>
                     <div class="step-content">
                         <div class="metadata-grid">
-                            <div class="artwork-zone" onclick="document.getElementById('file-in').click()">
+                            <div class="artwork-zone" onclick="document.getElementById('art-upload').click()">
                                 <span>upload artwork</span>
-                                <img id="img-preview">
-                                <input type="file" id="file-in" hidden onchange="preview(this)">
+                                <img id="preview-img" style="display:none; width:100%; height:100%; object-fit:cover; position:absolute;">
+                                <input type="file" id="art-upload" hidden accept="image/*" onchange="previewImage(this)">
                             </div>
                             <div class="form-fields">
                                 <div class="form-group">
@@ -361,34 +369,34 @@
                                     <label>main artist</label>
                                     <input type="text" placeholder="artist name">
                                 </div>
-                                <button class="btn-continue" onclick="goToStep('step2')">continue</button>
+                                <button class="btn-continue" onclick="switchStep('step2')">continue</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="step-container" id="step2">
-                    <div class="step-header" onclick="goToStep('step2')">
+                    <div class="step-header" onclick="switchStep('step2')">
                         <div class="step-number">2</div>
                         <div class="step-title">track list</div>
                     </div>
                     <div class="step-content">
-                        <button class="btn-continue" onclick="goToStep('step3')">continue</button>
+                        <button class="btn-continue" onclick="switchStep('step3')">continue</button>
                     </div>
                 </div>
 
                 <div class="step-container" id="step3">
-                    <div class="step-header" onclick="goToStep('step3')">
+                    <div class="step-header" onclick="switchStep('step3')">
                         <div class="step-number">3</div>
                         <div class="step-title">digital stores</div>
                     </div>
                     <div class="step-content">
-                        <button class="btn-continue" onclick="goToStep('step4')">continue</button>
+                        <button class="btn-continue" onclick="switchStep('step4')">continue</button>
                     </div>
                 </div>
 
                 <div class="step-container" id="step4">
-                    <div class="step-header" onclick="goToStep('step4')">
+                    <div class="step-header" onclick="switchStep('step4')">
                         <div class="step-number">4</div>
                         <div class="step-title">final review</div>
                     </div>
@@ -406,20 +414,18 @@
     </div>
 
     <script>
-        // hàm chuyển bước trong trang release
-        function goToStep(id) {
+        function switchStep(stepId) {
             document.querySelectorAll('.step-container').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            document.getElementById(stepId).classList.add('active');
         }
 
-        // hàm xem trước ảnh
-        function preview(input) {
+        function previewImage(input) {
+            const preview = document.getElementById('preview-img');
             if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.getElementById('img-preview');
-                    img.src = e.target.result;
-                    img.style.display = 'block';
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
                 }
                 reader.readAsDataURL(input.files[0]);
             }
