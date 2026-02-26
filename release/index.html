@@ -119,28 +119,31 @@
         .form-group { margin-bottom: 35px; position: relative; }
         .form-group label { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 12px; }
         
-        .form-group input, .form-group select {
+        /* Input & Select Style */
+        .form-group input:not([type="radio"]), .form-group select {
             width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--line);
             padding: 10px 0; outline: none; font-size: 1.1rem; text-transform: lowercase; transition: border-bottom 0.3s;
             appearance: none; -webkit-appearance: none;
         }
 
-        /* biểu tượng mũi tên cho select */
         .select-wrapper::after {
-            content: '▼';
-            font-size: 0.6rem;
-            position: absolute;
-            right: 0;
-            bottom: 15px;
-            color: var(--text-secondary);
-            pointer-events: none;
+            content: '▼'; font-size: 0.6rem; position: absolute; right: 0; bottom: 15px;
+            color: var(--text-secondary); pointer-events: none;
         }
 
         .form-group input:focus, .form-group select:focus { border-bottom-color: var(--accent); }
         
+        /* Radio Button Fix */
         .radio-group { display: flex; gap: 20px; align-items: center; padding: 10px 0; }
-        .radio-group label { display: inline; font-size: 0.9rem; color: var(--text-main); cursor: pointer; margin: 0; }
-        .radio-group input[type="radio"] { width: auto; margin-right: 8px; accent-color: var(--accent); }
+        .radio-group label { 
+            display: flex; align-items: center; gap: 8px; font-size: 0.9rem; 
+            color: var(--text-main); cursor: pointer; margin: 0; 
+            text-transform: lowercase;
+        }
+        .radio-group input[type="radio"] { 
+            width: 16px; height: 16px; margin: 0; cursor: pointer; accent-color: var(--accent);
+            appearance: auto; -webkit-appearance: radio;
+        }
 
         .btn-continue {
             background: var(--accent); color: #fff; border: none; padding: 14px 50px;
@@ -161,7 +164,6 @@
         <div class="brand-logo" onclick="window.location.href='https://undersouthern.asia/dashboard'">
             <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="label-logo">
         </div>
-        
         <nav id="sidebar-nav">
             <a href="https://undersouthern.asia/dashboard">dashboard</a>
             <a href="https://undersouthern.asia/release" class="active">create release</a>
@@ -170,10 +172,7 @@
             <a href="royalties.html">royalty reports</a>
             <a href="useraccess.html">user access</a>
         </nav>
-
-        <div class="logout-container">
-            <button class="logout-btn" onclick="window.location.reload()">logout</button>
-        </div>
+        <div class="logout-container"><button class="logout-btn" onclick="window.location.reload()">logout</button></div>
     </aside>
 
     <div class="wrapper">
@@ -215,8 +214,6 @@
                                             <option value="pop">pop</option>
                                             <option value="hiphop">hip hop</option>
                                             <option value="electronic">electronic</option>
-                                            <option value="rock">rock</option>
-                                            <option value="jazz">jazz</option>
                                         </select>
                                     </div>
                                     <div class="form-group select-wrapper">
@@ -224,20 +221,19 @@
                                         <select>
                                             <option value="" disabled selected>optional</option>
                                             <option value="rnb">r&b</option>
-                                            <option value="soul">soul</option>
-                                            <option value="lofi">lo-fi</option>
                                             <option value="ambient">ambient</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="form-group"><label>label</label><input type="text" placeholder="record label name"></div>
+                                
                                 <div class="form-group">
                                     <label>previously released?</label>
                                     <div class="radio-group">
                                         <label><input type="radio" name="hist" onclick="toggleDate(false)" checked> no</label>
                                         <label><input type="radio" name="hist" onclick="toggleDate(true)"> yes</label>
-                                        <input type="date" id="rel-date" style="display:none; width:160px; margin-left:20px;">
+                                        <input type="date" id="rel-date" style="display:none; width:160px; margin-left:20px; border-bottom:1px solid var(--line);">
                                     </div>
                                 </div>
 
@@ -257,15 +253,7 @@
                     <div class="step-header" onclick="switchStep('step2')"><div class="step-number">2</div><div class="step-title">track list</div></div>
                     <div class="step-content"><button class="btn-continue" onclick="switchStep('step3')">continue</button></div>
                 </div>
-                <div class="step-container" id="step3">
-                    <div class="step-header" onclick="switchStep('step3')"><div class="step-number">3</div><div class="step-title">digital stores</div></div>
-                    <div class="step-content"><button class="btn-continue" onclick="switchStep('step4')">continue</button></div>
                 </div>
-                <div class="step-container" id="step4">
-                    <div class="step-header" onclick="switchStep('step4')"><div class="step-number">4</div><div class="step-title">final review</div></div>
-                    <div class="step-content"><button class="btn-premium" style="width:100%;">confirm distribution</button></div>
-                </div>
-            </div>
         </main>
 
         <footer class="footer">
