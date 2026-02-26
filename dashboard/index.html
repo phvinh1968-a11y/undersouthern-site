@@ -58,6 +58,7 @@
             background: var(--sidebar-bg);
             height: 100vh;
             z-index: 10;
+            flex-shrink: 0;
         }
 
         .brand-logo {
@@ -97,6 +98,7 @@
             background: none;
             padding: 0;
             position: relative;
+            white-space: nowrap;
         }
 
         nav a::before {
@@ -139,6 +141,7 @@
             flex-direction: column;
             height: 100vh;
             position: relative;
+            min-width: 0;
         }
 
         main {
@@ -223,6 +226,61 @@
             color: var(--text-secondary);
             z-index: 10;
         }
+
+        /* --- BỔ SUNG TÍNH CO GIÃN (RESPONSIVE) --- */
+
+        @media (max-width: 1024px) {
+            :root { --sidebar-width: 240px; }
+            main { padding: 60px 40px 100px 40px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .stat-group:nth-child(odd) { border-left: none; padding-left: 0; }
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow-y: auto; height: auto; }
+            
+            aside { 
+                width: 100%; 
+                height: auto; 
+                padding: 20px 0 0 0; 
+                border-right: none; 
+                border-bottom: 1px solid var(--line);
+                position: sticky;
+                top: 0;
+                background: var(--sidebar-bg);
+            }
+
+            .brand-logo { margin: 0 auto 15px auto; width: 100px; }
+
+            nav { 
+                flex-direction: row; 
+                overflow-x: auto; 
+                padding: 10px 20px 20px 20px; 
+                gap: 25px;
+                scrollbar-width: none; /* Ẩn scrollbar Firefox */
+            }
+            nav::-webkit-scrollbar { display: none; } /* Ẩn scrollbar Chrome/Safari */
+            
+            nav a::before { display: none; }
+            
+            .logout-container { display: none; }
+
+            .wrapper { height: auto; min-height: 100vh; }
+            main { padding: 40px 20px 120px 20px; overflow: visible; }
+            header { margin-bottom: 50px; }
+
+            .stats-row { grid-template-columns: 1fr; gap: 30px; }
+            .stat-group { border-left: none; padding-left: 0; }
+
+            .footer { 
+                position: relative; 
+                flex-direction: column; 
+                height: auto; 
+                padding: 20px; 
+                gap: 10px; 
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -290,7 +348,9 @@
                 document.querySelectorAll('#sidebar-nav a').forEach(link => link.classList.remove('active'));
                 clickedElement.classList.add('active');
             }
+            // Cuộn lên đầu trang khi đổi mục (tiện cho mobile)
             document.getElementById('scroll-area').scrollTop = 0;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function handleLogout() {
