@@ -45,7 +45,7 @@
 
         .submit-wrapper {
             width: 100%;
-            max-width: 850px;
+            max-width: 950px; /* Tăng nhẹ chiều rộng để hàng ngang track thoải mái hơn */
             position: relative;
             z-index: 1;
         }
@@ -91,6 +91,37 @@
         .form-group input:focus, .form-group select:focus { border-bottom-color: var(--accent); }
         .select-wrapper::after { content: '▼'; font-size: 0.5rem; position: absolute; right: 0; bottom: 12px; color: var(--text-secondary); pointer-events: none; }
 
+        /* --- Multi-Tag Styles --- */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 5px;
+            min-height: 38px;
+            align-items: center;
+            cursor: text;
+        }
+        .tag {
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 2px;
+        }
+        .tag span { cursor: pointer; font-weight: bold; font-size: 10px; opacity: 0.7; }
+        .tag span:hover { opacity: 1; }
+        .tags-container input {
+            border: none !important;
+            width: auto !important;
+            flex: 1;
+            min-width: 60px;
+            padding: 5px 0 !important;
+        }
+
         .artwork-upload-box {
             width: 160px; height: 160px; background: var(--card-bg); border: 1px solid var(--line);
             display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; overflow: hidden; text-align: center;
@@ -108,10 +139,10 @@
 
         .track-row {
             display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr 80px 30px;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr 80px 30px;
             gap: 15px;
             align-items: end;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             padding-bottom: 10px;
             animation: fadeIn 0.3s ease;
         }
@@ -201,12 +232,17 @@
             </div>
 
             <div class="form-group">
-                <label>primary artist</label>
-                <input type="text" placeholder="main performer" required>
+                <label>primary artist (press enter)</label>
+                <div class="tags-container" onclick="this.querySelector('input').focus()">
+                    <input type="text" class="tag-input" placeholder="add artist...">
+                </div>
             </div>
+
             <div class="form-group">
-                <label>featured artist</label>
-                <input type="text" placeholder="optional guest">
+                <label>featured artist (press enter)</label>
+                <div class="tags-container" onclick="this.querySelector('input').focus()">
+                    <input type="text" class="tag-input" placeholder="add guest...">
+                </div>
             </div>
 
             <div class="form-group select-wrapper">
@@ -228,8 +264,10 @@
             </div>
 
             <div class="form-group">
-                <label>producer</label>
-                <input type="text" placeholder="production credits">
+                <label>producer (press enter)</label>
+                <div class="tags-container" onclick="this.querySelector('input').focus()">
+                    <input type="text" class="tag-input" placeholder="add credits...">
+                </div>
             </div>
 
             <div class="form-group select-wrapper">
@@ -257,8 +295,7 @@
 
             <div class="form-group full-width tracks-section">
                 <label id="audio-label">audio tracks management</label>
-                <div id="tracks-container">
-                    </div>
+                <div id="tracks-container"></div>
                 <button type="button" id="add-track-btn" class="btn-add-track" onclick="addTrackRow()">+ add track</button>
             </div>
         </div>
@@ -275,6 +312,29 @@
 <script>
     let trackCount = 0;
 
+    // --- Hệ thống Tag cho phép Enter nhiều tên ---
+    function initTagSystem(container) {
+        const input = container.querySelector('input');
+        
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const val = input.value.trim();
+                if (val) {
+                    const tag = document.createElement('div');
+                    tag.className = 'tag';
+                    tag.innerHTML = `${val} <span onclick="this.parentElement.remove()">✕</span>`;
+                    container.insertBefore(tag, input);
+                    input.value = '';
+                }
+            }
+            if (e.key === 'Backspace' && !input.value) {
+                const tags = container.querySelectorAll('.tag');
+                if (tags.length > 0) tags[tags.length - 1].remove();
+            }
+        });
+    }
+
     function handleTypeLogic() {
         const type = document.getElementById('release-type').value;
         const titleLabel = document.getElementById('title-label');
@@ -282,7 +342,6 @@
         const titleInput = document.getElementById('main-title-input');
         const container = document.getElementById('tracks-container');
 
-        // Reset container nhưng luôn tạo sẵn 1 track mới
         container.innerHTML = "";
         trackCount = 0;
 
@@ -297,11 +356,10 @@
             titleInput.placeholder = isEP ? 'eg. your ep name' : 'eg. your album name';
         }
 
-        // Luôn tự động thêm 1 track đầu tiên cho bất kỳ loại release nào
         addTrackRow(true);
     }
 
-    function addTrackRow(isFirst = false) {
+    function addTrackRow() {
         trackCount++;
         const container = document.getElementById('tracks-container');
         const row = document.createElement('div');
@@ -314,16 +372,22 @@
                 <input type="text" placeholder="track name" required>
             </div>
             <div class="form-group">
-                <label>primary artist</label>
-                <input type="text" placeholder="artist">
+                <label>primary artist (press enter)</label>
+                <div class="tags-container" onclick="this.querySelector('input').focus()">
+                    <input type="text" class="tag-input" placeholder="...">
+                </div>
             </div>
             <div class="form-group">
-                <label>featured artist</label>
-                <input type="text" placeholder="guest">
+                <label>featured artist (press enter)</label>
+                <div class="tags-container" onclick="this.querySelector('input').focus()">
+                    <input type="text" class="tag-input" placeholder="...">
+                </div>
             </div>
             <div class="form-group">
-                <label>producer</label>
-                <input type="text" placeholder="credits">
+                <label>producer (press enter)</label>
+                <div class="tags-container" onclick="this.querySelector('input').focus()">
+                    <input type="text" class="tag-input" placeholder="...">
+                </div>
             </div>
             <div class="audio-mini-btn" onclick="document.getElementById('file-${trackCount}').click()">
                 <span id="file-status-${trackCount}">audio</span>
@@ -332,16 +396,16 @@
             <div class="remove-track-btn" onclick="removeRow(${trackCount})">✕</div>
         `;
         container.appendChild(row);
+
+        // Khởi tạo logic tag cho hàng mới vừa thêm
+        row.querySelectorAll('.tags-container').forEach(initTagSystem);
     }
 
     function removeRow(id) {
         const container = document.getElementById('tracks-container');
-        // Không cho phép xóa nếu chỉ còn 1 track duy nhất
         if (container.children.length > 1) {
             const row = document.getElementById(`track-row-${id}`);
             if (row) row.remove();
-        } else {
-            alert("at least one track is required.");
         }
     }
 
@@ -385,8 +449,11 @@
         removeBtn.style.display = 'none';
     }
 
-    // Load mặc định
-    window.onload = handleTypeLogic;
+    window.onload = () => {
+        // Khởi tạo tag cho Metadata
+        document.querySelectorAll('.tags-container').forEach(initTagSystem);
+        handleTypeLogic();
+    };
 </script>
 
 </body>
