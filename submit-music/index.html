@@ -3,42 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>create release — global record label</title>
+    <title>submit music — internal terminal</title>
     
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
 
     <style>
         :root {
             --bg: #f4f4f2; 
-            --sidebar-bg: #ecece9;
+            --card-bg: #ecece9;
             --text-main: #1a1a1a;
             --text-secondary: #6b6b6b;
             --line: #dcdcdc;
             --accent: #000000;
-            --sidebar-width: 280px;
-            --footer-height: 60px;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * {
-            box-sizing: border-box;
-            -webkit-font-smoothing: antialiased;
-        }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
 
         body {
             font-family: -apple-system, blinkmacsystemfont, "inter", sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
             margin: 0;
+            padding: 40px 40px; 
             display: flex;
-            height: 100vh;
+            justify-content: center;
             text-transform: lowercase;
             letter-spacing: -0.01em;
-            overflow: hidden;
+            min-height: 100vh;
             position: relative;
         }
 
-        /* grainy texture */
         body::before {
             content: "";
             position: fixed;
@@ -49,387 +43,282 @@
             z-index: 999;
         }
 
-        aside {
-            width: var(--sidebar-width);
-            border-right: 1px solid var(--line);
-            display: flex;
-            flex-direction: column;
-            padding: 60px 0;
-            background: var(--sidebar-bg);
-            height: 100vh;
-            z-index: 10;
-        }
-
-        .brand-logo {
-            width: 140px;
-            margin: 0 auto 80px auto;
-            opacity: 0.9;
-            cursor: pointer;
-        }
-
-        .brand-logo img {
+        .submit-wrapper {
             width: 100%;
-            height: auto;
-            filter: grayscale(1) contrast(1.1);
-            display: block;
-        }
-
-        nav {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            width: 100%;
-            padding: 0 45px;
-        }
-
-        nav a, .logout-btn {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            padding: 0;
+            max-width: 800px;
             position: relative;
-        }
-
-        nav a::before {
-            content: "";
-            width: 6px;
-            height: 6px;
-            background-color: var(--accent);
-            border-radius: 50%;
-            position: absolute;
-            left: -15px;
-            opacity: 0;
-            transform: scale(0);
-            transition: var(--transition);
-        }
-
-        /* active state cho trang create release */
-        nav a.active {
-            color: var(--accent);
-            transform: translatex(6px);
-        }
-
-        nav a.active::before {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .logout-container {
-            margin-top: auto;
-            padding: 0 45px;
-            width: 100%;
-        }
-
-        .logout-btn {
-            color: #b3261e;
-            opacity: 0.9;
-        }
-
-        .wrapper {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            position: relative;
-        }
-
-        main {
-            flex-grow: 1;
-            padding: 60px 80px 100px 80px; 
-            overflow-y: auto;
-        }
-
-        /* --- wizard header --- */
-        header {
-            margin-bottom: 80px;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            font-weight: 600;
-            margin: 0 0 10px 0;
-            letter-spacing: -0.02em;
-        }
-
-        header p {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        /* --- timeline layout --- */
-        .wizard-container {
-            position: relative;
-            max-width: 900px;
-        }
-
-        .timeline-bar {
-            position: absolute;
-            left: 17px;
-            top: 20px;
-            bottom: 20px;
-            width: 1px;
-            background-color: var(--line);
-        }
-
-        .step-container {
-            position: relative;
-            margin-bottom: 24px;
-        }
-
-        .step-header {
-            padding: 15px 0;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .step-number {
-            width: 34px;
-            height: 34px;
-            background: var(--bg);
-            border: 1px solid var(--line);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            border-radius: 50%;
             z-index: 1;
-            transition: var(--transition);
         }
 
-        .step-title {
-            margin-left: 30px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+        header { 
+            text-align: center; 
+            margin-bottom: 35px; 
+        }
+        
+        .header-logo { 
+            width: 100px; 
+            margin: 0 auto 5px auto; 
+            display: block; 
+            filter: grayscale(1) contrast(1.1); 
         }
 
-        .step-container.active .step-number {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
+        header h1 { 
+            font-size: 2.2rem; 
+            font-weight: 600; 
+            margin: 0; 
+            line-height: 1; 
+            letter-spacing: -0.02em; 
         }
 
-        .step-container.active .step-title {
-            color: var(--text-main);
+        header p { 
+            font-size: 0.85rem; 
+            color: var(--text-secondary); 
+            margin: 2px 0 0 0; 
         }
 
-        .step-content {
-            display: none;
-            padding: 20px 0 60px 64px;
-            animation: fadeIn 0.4s ease forwards;
+        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px 40px; }
+        .full-width { grid-column: span 2; }
+
+        .form-group { position: relative; }
+        .form-group label { display: block; font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600; letter-spacing: 0.05em; }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--line);
+            padding: 8px 0; outline: none; font-size: 1rem; text-transform: lowercase; transition: border-bottom 0.3s;
+            appearance: none; border-radius: 0;
         }
 
-        .step-container.active .step-content {
-            display: block;
+        .form-group textarea {
+            border: 1px solid var(--line);
+            background: rgba(236, 236, 233, 0.4);
+            padding: 15px;
+            height: 180px;
+            resize: vertical;
+            line-height: 1.6;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
+        
+        .select-wrapper::after { content: '▼'; font-size: 0.5rem; position: absolute; right: 0; bottom: 12px; color: var(--text-secondary); pointer-events: none; }
 
-        /* --- form styles --- */
-        .metadata-grid {
-            display: grid;
-            grid-template-columns: 220px 1fr;
-            gap: 60px;
-            align-items: start;
-        }
-
-        .artwork-zone {
-            width: 220px;
-            height: 220px;
-            background: var(--sidebar-bg);
+        .artwork-upload-box {
+            width: 160px;
+            height: 160px;
+            background: var(--card-bg);
             border: 1px solid var(--line);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
 
-        .form-group {
-            margin-bottom: 40px;
-            max-width: 450px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
+        .artwork-upload-box span {
+            font-size: 0.65rem;
             color: var(--text-secondary);
-            margin-bottom: 12px;
+            padding: 10px;
         }
 
-        .form-group input {
+        .artwork-upload-box img {
             width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid var(--line);
-            padding: 10px 0;
-            outline: none;
-            font-size: 1.1rem;
-            text-transform: lowercase;
-            transition: border-bottom 0.3s;
-        }
-
-        .form-group input:focus {
-            border-bottom-color: var(--accent);
-        }
-
-        .btn-continue {
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 14px 50px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .footer {
+            height: 100%;
+            object-fit: cover;
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: var(--footer-height);
-            background: var(--sidebar-bg);
-            border-top: 1px solid var(--line);
-            padding: 0 80px;
+            display: none;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            cursor: pointer;
+            border-bottom: 1px solid var(--line);
+            padding: 8px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-            z-index: 10;
         }
+        .file-name-display { font-size: 0.9rem; color: var(--text-secondary); font-style: italic; }
+        .upload-btn-text { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; }
+
+        .btn-submit { background: var(--accent); color: #fff; border: none; padding: 18px; font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-top: 40px; width: 100%; transition: opacity 0.2s; letter-spacing: 0.1em; }
+        .btn-submit:hover { opacity: 0.8; }
+
+        footer { margin-top: 60px; display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-secondary); }
     </style>
 </head>
 <body>
 
-    <aside>
-        <div class="brand-logo" onclick="window.location.href='dashboard.html'">
-            <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="label-logo">
-        </div>
-        
-        <nav id="sidebar-nav">
-            <a href="dashboard.html">dashboard</a>
-            <a href="release.html" class="active">create release</a>
-            <a href="catalog.html">catalog access</a>
-            <a href="analytics.html">analytics</a>
-            <a href="royalties.html">royalty reports</a>
-            <a href="useraccess.html">user access</a>
-        </nav>
+<div class="submit-wrapper">
+    <header>
+        <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="logo" class="header-logo">
+        <h1>submit music</h1>
+        <p>encrypted submission terminal — v2.6.04</p>
+    </header>
 
-        <div class="logout-container">
-            <button class="logout-btn" onclick="window.location.reload()">logout</button>
-        </div>
-    </aside>
+    <form id="submit-form">
+        <div class="form-grid">
+            <div class="form-group full-width">
+                <label>contact email</label>
+                <input type="email" placeholder="client@address.com" required style="text-transform: none;">
+            </div>
 
-    <div class="wrapper">
-        <main id="scroll-area">
-            <header>
-                <h1>create release</h1>
-                <p>distribute new music global</p>
-            </header>
-
-            <div class="wizard-container">
-                <div class="timeline-bar"></div>
-
-                <div class="step-container active" id="step1">
-                    <div class="step-header" onclick="switchStep('step1')">
-                        <div class="step-number">1</div>
-                        <div class="step-title">release metadata</div>
-                    </div>
-                    <div class="step-content">
-                        <div class="metadata-grid">
-                            <div class="artwork-zone" onclick="document.getElementById('art-upload').click()">
-                                <span>upload artwork</span>
-                                <img id="preview-img" style="display:none; width:100%; height:100%; object-fit:cover; position:absolute;">
-                                <input type="file" id="art-upload" hidden accept="image/*" onchange="previewImage(this)">
-                            </div>
-                            <div class="form-fields">
-                                <div class="form-group">
-                                    <label>release title</label>
-                                    <input type="text" placeholder="album name">
-                                </div>
-                                <div class="form-group">
-                                    <label>main artist</label>
-                                    <input type="text" placeholder="artist name">
-                                </div>
-                                <button class="btn-continue" onclick="switchStep('step2')">continue</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="step-container" id="step2">
-                    <div class="step-header" onclick="switchStep('step2')">
-                        <div class="step-number">2</div>
-                        <div class="step-title">track list</div>
-                    </div>
-                    <div class="step-content">
-                        <button class="btn-continue" onclick="switchStep('step3')">continue</button>
-                    </div>
-                </div>
-
-                <div class="step-container" id="step3">
-                    <div class="step-header" onclick="switchStep('step3')">
-                        <div class="step-number">3</div>
-                        <div class="step-title">digital stores</div>
-                    </div>
-                    <div class="step-content">
-                        <button class="btn-continue" onclick="switchStep('step4')">continue</button>
-                    </div>
-                </div>
-
-                <div class="step-container" id="step4">
-                    <div class="step-header" onclick="switchStep('step4')">
-                        <div class="step-number">4</div>
-                        <div class="step-title">final review</div>
-                    </div>
-                    <div class="step-content">
-                        <button class="btn-continue" style="width: 100%;">confirm & distribute</button>
-                    </div>
+            <div class="form-group">
+                <label>artwork (3000x3000px)</label>
+                <div class="artwork-upload-box" onclick="document.getElementById('artwork-file').click()">
+                    <span id="art-txt">upload<br>artwork</span>
+                    <img id="preview-img">
+                    <input type="file" id="artwork-file" hidden accept="image/*" onchange="previewArt(this)">
                 </div>
             </div>
-        </main>
 
-        <footer class="footer">
-            <span>&copy; 2026 global record label. all rights reserved.</span>
-            <span>secure hq terminal v2.6.04</span>
-        </footer>
-    </div>
+            <div class="form-group select-wrapper" style="align-self: flex-start;">
+                <label>release type</label>
+                <select id="release-type" onchange="handleTypeLogic()" required>
+                    <option value="single" selected>single</option>
+                    <option value="ep">ep</option>
+                    <option value="album">album</option>
+                </select>
+            </div>
 
-    <script>
-        function switchStep(stepId) {
-            document.querySelectorAll('.step-container').forEach(s => s.classList.remove('active'));
-            document.getElementById(stepId).classList.add('active');
+            <div class="form-group">
+                <label id="title-label">single title</label>
+                <input type="text" placeholder="main name" required>
+            </div>
+            <div class="form-group">
+                <label>title version</label>
+                <input type="text" placeholder="e.g. deluxe / remix">
+            </div>
+
+            <div class="form-group">
+                <label>primary artist</label>
+                <input type="text" placeholder="main performer" required>
+            </div>
+            <div class="form-group">
+                <label>featured artist</label>
+                <input type="text" placeholder="optional guest">
+            </div>
+
+            <div class="form-group select-wrapper">
+                <label>primary genre</label>
+                <select required>
+                    <option value="" disabled selected>select genre</option>
+                    <option>pop</option>
+                    <option>hip-hop / rap</option>
+                    <option>electronic</option>
+                </select>
+            </div>
+            <div class="form-group select-wrapper">
+                <label>secondary genre</label>
+                <select>
+                    <option value="" selected>optional</option>
+                    <option>r&b / soul</option>
+                    <option>lo-fi</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>composer / lyricist</label>
+                <input type="text" placeholder="full legal names" required>
+            </div>
+            <div class="form-group">
+                <label>producer</label>
+                <input type="text" placeholder="production credits">
+            </div>
+
+            <div class="form-group select-wrapper">
+                <label>language</label>
+                <select required>
+                    <option value="" disabled selected>select language</option>
+                    <option>vietnamese</option>
+                    <option>english</option>
+                    <option>instrumental</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>release date</label>
+                <input type="date" required style="color: var(--text-secondary);">
+            </div>
+
+            <div class="form-group select-wrapper full-width">
+                <label>explicit content</label>
+                <select required>
+                    <option value="no" selected>no</option>
+                    <option value="yes">yes (contains profanity)</option>
+                    <option value="cleaned">cleaned (censored version)</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width" style="margin-top: 15px;">
+                <label>lyrics</label>
+                <textarea id="lyrics-area" placeholder="enter song lyrics here..."></textarea>
+            </div>
+
+            <div class="form-group full-width">
+                <label id="audio-label">audio access (single file)</label>
+                <div class="file-upload-wrapper" onclick="document.getElementById('audio-file').click()">
+                    <span id="audio-name" class="file-name-display">no audio selected</span>
+                    <span class="upload-btn-text">choose file</span>
+                    <input type="file" id="audio-file" hidden accept="audio/*,.zip,.rar" onchange="updateFileName('audio-file', 'audio-name')">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">submit content to hq</button>
+    </form>
+
+    <footer>
+        <span>&copy; 2026 global record label.</span>
+        <span>secure terminal v2.6.04</span>
+    </footer>
+</div>
+
+<script>
+    function handleTypeLogic() {
+        const type = document.getElementById('release-type').value;
+        const titleLabel = document.getElementById('title-label');
+        const audioLabel = document.getElementById('audio-label');
+        const lyricsArea = document.getElementById('lyrics-area');
+
+        if (type === 'single') {
+            titleLabel.innerText = 'single title';
+            audioLabel.innerText = 'audio access (single file)';
+            lyricsArea.placeholder = 'enter song lyrics here...';
+        } else if (type === 'ep') {
+            titleLabel.innerText = 'ep title';
+            audioLabel.innerText = 'audio access (zip/rar for all tracks)';
+            lyricsArea.placeholder = 'enter lyrics for ep tracks (please label each song clearly)...';
+        } else {
+            titleLabel.innerText = 'album title';
+            audioLabel.innerText = 'audio access (zip/rar for all tracks)';
+            lyricsArea.placeholder = 'enter lyrics for all album tracks...';
         }
+    }
 
-        function previewImage(input) {
-            const preview = document.getElementById('preview-img');
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                }
-                reader.readAsDataURL(input.files[0]);
+    function previewArt(input) {
+        const preview = document.getElementById('preview-img');
+        const txt = document.getElementById('art-txt');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                txt.style.display = 'none';
             }
+            reader.readAsDataURL(input.files[0]);
         }
-    </script>
+    }
+
+    function updateFileName(inputId, displayId) {
+        const input = document.getElementById(inputId);
+        const display = document.getElementById(displayId);
+        if (input.files && input.files.length > 0) {
+            display.innerText = "ready: " + input.files[0].name;
+            display.style.color = "var(--accent)";
+            display.style.fontWeight = "500";
+        }
+    }
+</script>
+
 </body>
 </html>
