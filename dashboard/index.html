@@ -227,8 +227,7 @@
             z-index: 10;
         }
 
-        /* --- BỔ SUNG TÍNH CO GIÃN (RESPONSIVE) --- */
-
+        /* --- TÍNH CO GIÃN (RESPONSIVE) --- */
         @media (max-width: 1024px) {
             :root { --sidebar-width: 240px; }
             main { padding: 60px 40px 100px 40px; }
@@ -238,47 +237,28 @@
 
         @media (max-width: 768px) {
             body { flex-direction: column; overflow-y: auto; height: auto; }
-            
             aside { 
-                width: 100%; 
-                height: auto; 
-                padding: 20px 0 0 0; 
-                border-right: none; 
-                border-bottom: 1px solid var(--line);
-                position: sticky;
-                top: 0;
-                background: var(--sidebar-bg);
+                width: 100%; height: auto; padding: 20px 0 0 0; 
+                border-right: none; border-bottom: 1px solid var(--line);
+                position: sticky; top: 0; background: var(--sidebar-bg);
             }
-
             .brand-logo { margin: 0 auto 15px auto; width: 100px; }
-
             nav { 
-                flex-direction: row; 
-                overflow-x: auto; 
-                padding: 10px 20px 20px 20px; 
-                gap: 25px;
-                scrollbar-width: none; /* Ẩn scrollbar Firefox */
+                flex-direction: row; overflow-x: auto; 
+                padding: 10px 20px 20px 20px; gap: 25px;
+                scrollbar-width: none; 
             }
-            nav::-webkit-scrollbar { display: none; } /* Ẩn scrollbar Chrome/Safari */
-            
+            nav::-webkit-scrollbar { display: none; }
             nav a::before { display: none; }
-            
             .logout-container { display: none; }
-
             .wrapper { height: auto; min-height: 100vh; }
             main { padding: 40px 20px 120px 20px; overflow: visible; }
             header { margin-bottom: 50px; }
-
             .stats-row { grid-template-columns: 1fr; gap: 30px; }
             .stat-group { border-left: none; padding-left: 0; }
-
             .footer { 
-                position: relative; 
-                flex-direction: column; 
-                height: auto; 
-                padding: 20px; 
-                gap: 10px; 
-                text-align: center;
+                position: relative; flex-direction: column; 
+                height: auto; padding: 20px; gap: 10px; text-align: center;
             }
         }
     </style>
@@ -333,8 +313,8 @@
         </main>
 
         <footer class="footer">
-            <span>&copy; 2026 global record label. all rights reserved.</span>
-            <span>secure hq terminal v2.6.04</span>
+            <span>&copy; 2026 undersouthern. all rights reserved.</span>
+            <span>label portal system v1.0</span>
         </footer>
     </div>
 
@@ -348,15 +328,13 @@
                 document.querySelectorAll('#sidebar-nav a').forEach(link => link.classList.remove('active'));
                 clickedElement.classList.add('active');
             }
-            // Cuộn lên đầu trang khi đổi mục (tiện cho mobile)
             document.getElementById('scroll-area').scrollTop = 0;
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function handleLogout() {
-            if(confirm('confirm logout session?')) {
-                window.location.reload(); 
-            }
+            // Chuyển hướng ngay lập tức không cần thông báo
+            window.location.href = 'https://undersouthern.asia/login';
         }
     </script>
 </body>
