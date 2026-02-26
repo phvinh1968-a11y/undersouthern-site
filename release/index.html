@@ -30,7 +30,7 @@
             margin: 0;
             display: flex;
             height: 100vh;
-            text-transform: lowercase; /* Đảm bảo toàn bộ chữ thường */
+            text-transform: lowercase;
             letter-spacing: -0.01em;
             overflow: hidden;
             position: relative;
@@ -96,11 +96,11 @@
         .help-icon { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border: 1px solid var(--text-secondary); border-radius: 50%; font-size: 9px; margin-left: 6px; cursor: pointer; transition: 0.2s; }
         .help-icon:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
         
-        /* BẢNG YÊU CẦU ARTWORK (TOOLTIP) */
+        /* BẢNG HƯỚNG DẪN (TOOLTIP) */
         .artwork-tooltip { 
             position: absolute; top: 25px; left: 0; width: 280px; background: #1a1a1a; color: #fff; 
             padding: 20px; font-size: 0.75rem; line-height: 1.6; z-index: 100; display: none; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-transform: lowercase; /* lowercase theo yêu cầu */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-transform: lowercase; 
         }
         .artwork-tooltip b { display: block; margin-bottom: 10px; font-weight: 700; letter-spacing: 0.05em; }
         .artwork-tooltip ul { margin: 0; padding-left: 15px; list-style-type: disc; }
@@ -220,7 +220,7 @@
             <form id="submit-form" onsubmit="handleFinalSubmit(event)">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>cover artwork <div class="help-icon" id="help-trigger" onclick="toggleTooltip(event)">?</div></label>
+                        <label>cover artwork <div class="help-icon" onclick="toggleTooltip(event, 'artwork-tooltip')">?</div></label>
                         <div class="artwork-tooltip" id="artwork-tooltip">
                             <b>artwork requirements:</b>
                             <ul>
@@ -263,7 +263,23 @@
                     <div class="form-group"><label>producer</label><div class="tags-container" onclick="this.querySelector('input').focus()"><input type="text" class="tag-input"></div></div>
                     <div class="form-group select-wrapper"><label>language</label><select id="language-select" required><option value="" disabled selected>select language</option></select></div>
 
-                    <div class="form-group select-wrapper"><label>explicit content</label><select required><option value="no" selected>no</option><option value="yes">yes</option><option value="cleaned">cleaned</option></select></div>
+                    <div class="form-group select-wrapper">
+                        <label>explicit content <div class="help-icon" onclick="toggleTooltip(event, 'explicit-tooltip')">?</div></label>
+                        <div class="artwork-tooltip" id="explicit-tooltip">
+                            <b>explicit content guidelines:</b>
+                            <ul>
+                                <li>yes: contains profanity or adult themes</li>
+                                <li>no: clean lyrics suitable for all ages</li>
+                                <li>cleaned: original was explicit, but this version is censored</li>
+                            </ul>
+                        </div>
+                        <select required>
+                            <option value="no" selected>no</option>
+                            <option value="yes">yes</option>
+                            <option value="cleaned">cleaned</option>
+                        </select>
+                    </div>
+
                     <div class="form-group"><label>release date</label><input type="date" required style="color: var(--text-secondary);"></div>
 
                     <div class="form-group"><label>© copyright year & holder</label><input type="text" placeholder="2026 undersouthern"></div>
@@ -281,7 +297,7 @@
                 </div>
             </form>
         </main>
-        <footer class="footer"><span>&copy; 2026 undersouthern. all rights reserved.</span><span>label portal system v1.0</span></footer>
+        <footer class="footer"><span>&copy; 2026 undersouthern. all rights reserved.</span><span>secure hq terminal v2.6.04</span></footer>
     </div>
 
     <div class="lyrics-modal-overlay" id="lyrics-modal" onclick="closeLyricsModal(event)">
@@ -370,8 +386,25 @@
         function handleTypeLogic() { const type = document.getElementById('release-type').value; document.getElementById('tracks-container').innerHTML = ""; trackCount = 0; addTrackRow(); document.getElementById('title-label').innerText = type + ' title'; document.getElementById('sub-header-text').innerText = 'distribute your ' + type + ' global'; }
         function previewArt(input) { const p = document.getElementById('preview-img'); const t = document.getElementById('art-txt'); if (input.files && input.files[0]) { const r = new FileReader(); r.onload = (e) => { p.src = e.target.result; p.style.display = 'block'; t.style.display = 'none'; }; r.readAsDataURL(input.files[0]); } }
         function removeArt(e) { e.stopPropagation(); document.getElementById('artwork-file').value = ""; document.getElementById('preview-img').style.display = 'none'; document.getElementById('art-txt').style.display = 'block'; }
-        function toggleTooltip(e) { e.stopPropagation(); const tip = document.getElementById('artwork-tooltip'); tip.style.display = (tip.style.display === 'block') ? 'none' : 'block'; }
-        document.addEventListener('click', (e) => { const tip = document.getElementById('artwork-tooltip'); if (tip && !tip.contains(e.target) && e.target.id !== 'help-trigger') tip.style.display = 'none'; });
+        
+        // HÀM TOGGLE TOOLTIP CẬP NHẬT ĐỂ DÙNG CHUNG CHO NHIỀU Ô
+        function toggleTooltip(e, id) { 
+            e.stopPropagation(); 
+            // Ẩn tất cả tooltips đang hiện trước
+            document.querySelectorAll('.artwork-tooltip').forEach(tip => {
+                if(tip.id !== id) tip.style.display = 'none';
+            });
+            const tip = document.getElementById(id); 
+            tip.style.display = (tip.style.display === 'block') ? 'none' : 'block'; 
+        }
+
+        document.addEventListener('click', (e) => { 
+            document.querySelectorAll('.artwork-tooltip').forEach(tip => {
+                if (!tip.contains(e.target) && !e.target.classList.contains('help-icon')) {
+                    tip.style.display = 'none';
+                }
+            });
+        });
         
         function handleFinalSubmit(e) { 
             e.preventDefault(); 
