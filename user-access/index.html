@@ -1,1 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user access | undersouthern</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
 
+    <style>
+        :root {
+            --bg: #f4f4f2; 
+            --sidebar-bg: #ecece9;
+            --card-bg: #ecece9;
+            --text-main: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --line: #dcdcdc;
+            --accent: #000000;
+            --sidebar-width: 280px;
+            --footer-height: 60px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+        body {
+            font-family: -apple-system, blinkmacsystemfont, "inter", sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            text-transform: lowercase;
+            letter-spacing: -0.01em;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+            opacity: 0.03; pointer-events: none; z-index: 999;
+        }
+
+        aside {
+            width: var(--sidebar-width); border-right: 1px solid var(--line);
+            display: flex; flex-direction: column; padding: 60px 0;
+            background: var(--sidebar-bg); height: 100vh; z-index: 10; flex-shrink: 0;
+        }
+
+        .brand-logo { width: 140px; margin: 0 auto 80px auto; opacity: 0.9; cursor: pointer; }
+        .brand-logo img { width: 100%; height: auto; display: block; }
+
+        nav { display: flex; flex-direction: column; gap: 32px; width: 100%; padding: 0 45px; }
+        nav a {
+            text-decoration: none; color: var(--text-secondary);
+            font-size: 0.85rem; font-weight: 500; transition: var(--transition);
+            display: flex; align-items: center; gap: 12px; position: relative;
+        }
+        nav a::before {
+            content: ""; width: 6px; height: 6px; background-color: var(--accent);
+            border-radius: 50%; position: absolute; left: -15px; opacity: 0;
+            transform: scale(0); transition: var(--transition);
+        }
+        nav a.active::before { opacity: 1; transform: scale(1); }
+        nav a.active { color: var(--accent); transform: translatex(6px); }
+
+        .logout-container { margin-top: auto; padding: 0 45px; width: 100%; }
+        .logout-btn { color: #b3261e; opacity: 0.9; background: none; border: none; cursor: pointer; font-size: 0.85rem; text-transform: lowercase; }
+
+        .wrapper { flex-grow: 1; display: flex; flex-direction: column; height: 100vh; position: relative; min-width: 0; }
+        main { 
+            flex-grow: 1; padding: 60px 80px; overflow-y: auto; 
+            padding-bottom: calc(var(--footer-height) + 40px); 
+        }
+
+        header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+        .header-title h1 { font-size: 1.2rem; font-weight: 500; margin: 0 0 8px 0; }
+        .header-title span { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .btn-invite {
+            background: var(--accent); color: #fff; border: none; padding: 10px 25px;
+            font-size: 0.75rem; font-weight: 600; cursor: pointer; text-transform: lowercase;
+            transition: var(--transition);
+        }
+
+        .access-container { background: var(--sidebar-bg); border: 1px solid var(--line); width: 100%; }
+        
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { 
+            text-align: left; color: var(--text-secondary); font-weight: 600; 
+            padding: 20px 30px; border-bottom: 1px solid var(--line);
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        td { padding: 20px 30px; border-bottom: 1px solid rgba(0,0,0,0.05); vertical-align: middle; position: relative; }
+
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .user-avatar { 
+            width: 35px; height: 35px; background: var(--line); 
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 600; font-size: 0.75rem; color: var(--text-secondary);
+        }
+        .user-details { display: flex; flex-direction: column; }
+        .user-name { font-weight: 500; }
+        
+        .role-tag {
+            font-size: 0.65rem; padding: 4px 8px; border: 1px solid var(--line);
+            display: inline-block; color: var(--text-main); font-weight: 500;
+            margin-right: 4px; margin-bottom: 4px;
+        }
+
+        .status-dot {
+            display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-active { background: #2e7d32; }
+        .status-suspended { background: #b3261e; }
+
+        .action-trigger { cursor: pointer; color: var(--text-secondary); font-size: 0.75rem; font-weight: 600; padding: 5px; }
+        .action-trigger:hover { color: var(--accent); }
+
+        .dropdown-menu {
+            position: absolute; right: 30px; top: 50px; background: #1a1a1a; 
+            color: #fff; z-index: 100; min-width: 200px; padding: 10px 0;
+            display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .dropdown-menu.show { display: block; }
+        .dropdown-item { 
+            padding: 10px 20px; font-size: 0.75rem; cursor: pointer; 
+            transition: 0.2s; text-align: left; display: block;
+        }
+        .dropdown-item:hover { background: rgba(255,255,255,0.1); }
+        .dropdown-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 5px 0; }
+        .dropdown-header { font-size: 0.6rem; color: #6b6b6b; padding: 5px 20px; text-transform: uppercase; font-weight: 700; }
+
+        /* Toast Notification */
+        #toast {
+            position: fixed; bottom: 80px; right: 40px; background: #1a1a1a;
+            color: #fff; padding: 12px 25px; font-size: 0.75rem; z-index: 2000;
+            display: none; transform: translateY(20px); transition: 0.3s;
+        }
+
+        .bottom-bar {
+            position: fixed; bottom: 0; left: var(--sidebar-width); right: 0;
+            height: var(--footer-height); background: var(--sidebar-bg); border-top: 1px solid var(--line);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 80px; z-index: 100;
+        } 
+        .bottom-bar span { font-size: 0.7rem; color: var(--text-secondary); }
+
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="brand-logo" onclick="window.location.href='https://undersouthern.asia/dashboard'">
+            <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="label-logo">
+        </div>
+        <nav id="sidebar-nav">
+            <a href="https://undersouthern.asia/dashboard">dashboard</a>
+            <a href="https://undersouthern.asia/release">create release</a>
+            <a href="https://undersouthern.asia/catalog">catalog access</a>
+            <a href="#">analytics</a>
+            <a href="#">royalty reports</a>
+            <a href="#" class="active">user access</a>
+        </nav>
+        <div class="logout-container">
+            <button class="logout-btn" onclick="window.location.href='https://undersouthern.asia/login'">logout</button>
+        </div>
+    </aside>
+
+    <div class="wrapper">
+        <main id="scroll-area">
+            <header>
+                <div class="header-title">
+                    <h1>user access</h1>
+                    <span>manage team permissions and status</span>
+                </div>
+                <button class="btn-invite">+ invite user</button>
+            </header>
+
+            <div class="access-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>user</th>
+                            <th>permissions</th>
+                            <th>status</th>
+                            <th>last active</th>
+                            <th style="text-align: right;">actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="user-1">
+                            <td>
+                                <div class="user-info">
+                                    <div class="user-avatar">VP</div>
+                                    <div class="user-details"><span class="user-name">vinh phan</span></div>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="perm-tags-1">
+                                    <span class="role-tag">release</span>
+                                    <span class="role-tag">analytics</span>
+                                    <span class="role-tag">catalog</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span id="status-1"><span class="status-dot status-active"></span> active</span>
+                            </td>
+                            <td>today</td>
+                            <td style="text-align: right;">
+                                <span class="action-trigger" onclick="toggleDropdown(event, 1)">manage ▾</span>
+                                <div class="dropdown-menu" id="dropdown-1">
+                                    <div class="dropdown-header">access areas</div>
+                                    <div class="dropdown-item" onclick="togglePerm(1, 'release')">toggle create release</div>
+                                    <div class="dropdown-item" onclick="togglePerm(1, 'analytics')">toggle analytics</div>
+                                    <div class="dropdown-item" onclick="togglePerm(1, 'catalog')">toggle catalog access</div>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-header">account status</div>
+                                    <div class="dropdown-item" onclick="setStatus(1, 'active')">set active</div>
+                                    <div class="dropdown-item" onclick="setStatus(1, 'suspended')">suspend</div>
+                                    <div class="dropdown-divider"></div>
+                                    <div class="dropdown-item" style="color:#b3261e">remove user</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer class="bottom-bar">
+            <span>© 2026 undersouthern. all rights reserved.</span>
+            <span>label portal system v1.0</span>
+        </footer>
+    </div>
+
+    <div id="toast">permissions updated successfully</div>
+
+    <script>
+        function toggleDropdown(event, id) {
+            event.stopPropagation();
+            document.querySelectorAll('.dropdown-menu').forEach(m => {
+                if(m.id !== `dropdown-${id}`) m.classList.remove('show');
+            });
+            document.getElementById(`dropdown-${id}`).classList.toggle('show');
+        }
+
+        window.onclick = () => document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.display = 'block';
+            setTimeout(() => { t.style.display = 'none'; }, 2000);
+        }
+
+        function togglePerm(userId, permName) {
+            const container = document.getElementById(`perm-tags-${userId}`);
+            const existing = Array.from(container.querySelectorAll('.role-tag')).find(tag => tag.innerText === permName);
+            
+            if (existing) {
+                existing.remove();
+                showToast(`removed ${permName} access`);
+            } else {
+                const span = document.createElement('span');
+                span.className = 'role-tag';
+                span.innerText = permName;
+                container.appendChild(span);
+                showToast(`granted ${permName} access`);
+            }
+        }
+
+        function setStatus(userId, state) {
+            const s = document.getElementById(`status-${userId}`);
+            const dotClass = state === 'active' ? 'status-active' : 'status-suspended';
+            s.innerHTML = `<span class="status-dot ${dotClass}"></span> ${state}`;
+            showToast(`account is now ${state}`);
+        }
+    </script>
+</body>
+</html>
