@@ -27,9 +27,13 @@
             text-transform: lowercase;
             letter-spacing: -0.01em;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* Thêm để định vị footer con */
         }
 
-        /* grainy texture đồng bộ với dashboard */
         body::before {
             content: "";
             position: fixed;
@@ -43,6 +47,9 @@
         .login-card {
             background-color: var(--card-bg);
             border: 1px solid var(--line);
+            width: 100%;
+            max-width: 360px;
+            margin-bottom: 60px; /* Tạo khoảng trống để không bị footer đè lên */
         }
         
         .login-input { 
@@ -51,7 +58,7 @@
             border-bottom: 1px solid var(--line);
             border-radius: 0;
             padding: 12px 0;
-            transition: var(--transition);
+            transition: 0.3s;
         }
         
         .login-input:focus { 
@@ -80,16 +87,32 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Footer luôn nằm dưới cùng */
+        .footer-fixed {
+            position: fixed;
+            bottom: 2rem;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Ẩn footer nếu màn hình quá thấp để tránh đè form */
+        @media (max-height: 500px) {
+            .footer-fixed { position: static; margin-top: 2rem; padding-bottom: 2rem; }
+            body { align-items: flex-start; padding-top: 2rem; overflow-y: auto; }
+        }
     </style>
 </head>
-<body class="text-black overflow-hidden h-screen flex items-center justify-center">
+<body class="text-black overflow-x-hidden">
 
     <div id="loader-screen" class="fixed inset-0 flex items-center justify-center bg-[#f4f4f2] z-[100]">
         <div class="loader"></div>
     </div>
 
-    <div id="content-screen" class="hidden w-full flex items-center justify-center p-4">
-        <div class="login-card w-full max-w-[360px] p-10 shadow-sm relative fade-in">
+    <div id="content-screen" class="hidden w-full flex flex-col items-center justify-center p-4 min-h-screen">
+        <div class="login-card p-10 shadow-sm relative fade-in">
             
             <div id="login-form-content">
                 <div class="mb-12"> 
@@ -158,12 +181,13 @@
             </div>
         </div>
         
-        <div class="fixed bottom-8 text-center w-full">
+        <div class="footer-fixed">
             <p class="text-[9px] text-zinc-400 uppercase tracking-widest">label portal system v1.0</p>
         </div>
     </div>
 
     <script>
+        // Giữ nguyên toàn bộ logic script của bạn
         const MASTER_USER = "UNDERSOUTHERN";
         const MASTER_PASS = "UNDERSOUTHERN2026//";
         const DB_URL = "https://undersouthern-system-default-rtdb.asia-southeast1.firebasedatabase.app/users.json";
