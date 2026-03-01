@@ -33,7 +33,7 @@ html { scroll-behavior: smooth; height: 100%; font-size: 16px; }
   justify-content: center;
   align-items: center;
   z-index: 20000;
-  transition: opacity 0.8s ease, visibility 0.8s;
+  transition: opacity 0.6s ease, visibility 0.6s;
 }
 .loader-logo {
   width: 80px;
@@ -183,7 +183,6 @@ main {
   color: #ffffff; 
 }
 
-/* STYLE CHO CHỮ APPLY (ĐÃ THÊM IN NGHIÊNG) */
 .apply-link {
   display: inline-block;
   margin-top: 1.5rem;
@@ -191,14 +190,13 @@ main {
   color: #ffffff;
   text-decoration: underline;
   font-weight: 500;
-  font-style: italic; /* Chữ nghiêng */
+  font-style: italic; 
   transition: var(--transition);
 }
 .apply-link:hover {
   text-decoration: none;
 }
 
-/* STYLE CHO LIST NỘI DUNG */
 .content-list {
   list-style: none;
   margin-top: 2rem;
@@ -217,7 +215,6 @@ main {
   left: 0;
 }
 
-/* STYLE CHO NÚT SUBMIT DEMO */
 .demo-btn {
   display: inline-block;
   background: #ffffff;
@@ -235,7 +232,6 @@ main {
   opacity: 0.9;
 }
 
-/* FOOTER */
 .hero-footer {
   width: 100%;
   padding: 3rem 5%;
@@ -366,17 +362,51 @@ main {
 </main>
 
 <script>
-// XỬ LÝ MÀN HÌNH CHỜ (LOADER)
-window.addEventListener('load', () => {
-  const loader = document.getElementById('loader');
-  setTimeout(() => {
-    loader.classList.add('loader-hidden');
-  }, 1500); 
-});
-
+const loader = document.getElementById('loader');
 const cursor = document.getElementById('custom-cursor');
 let firstMove = true;
 
+// XỬ LÝ KHI LOAD TRANG LẦN ĐẦU
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    loader.classList.add('loader-hidden');
+  }, 1200); 
+});
+
+// HÀM CHUYỂN TRANG CÓ LOADING CHỜ
+function switchContent(targetId) {
+  // Hiện loader lên trước
+  loader.classList.remove('loader-hidden');
+  
+  // Đợi một chút để người dùng thấy logo pulse
+  setTimeout(() => {
+    // Ẩn tất cả trang
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    
+    // Hiện trang đích
+    const target = document.getElementById(targetId);
+    if(target) {
+      target.style.display = 'flex';
+    }
+    
+    // Cuộn lên đầu trang nếu nội dung dài
+    const container = target.closest('.page');
+    if(container) container.scrollTop = 0;
+
+    // Tắt loader đi
+    loader.classList.add('loader-hidden');
+  }, 800); // 800ms là thời gian lý tưởng để không gây khó chịu
+}
+
+function showPage(id) {
+  switchContent(id);
+}
+
+function goHome() {
+  switchContent('home');
+}
+
+// XỬ LÝ CURSOR
 document.addEventListener('mousemove', (e) => {
   if (window.innerWidth > 768) {
     if (firstMove) {
@@ -389,21 +419,6 @@ document.addEventListener('mousemove', (e) => {
     });
   }
 });
-
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-  const target = document.getElementById(id);
-  if(target) {
-    target.style.display = 'flex';
-  }
-}
-
-function goHome() {
-  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-  document.getElementById('home').style.display = 'flex';
-}
-
-goHome();
 </script>
 
 </body>
