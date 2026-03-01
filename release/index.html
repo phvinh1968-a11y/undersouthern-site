@@ -55,6 +55,7 @@
             text-decoration: none; color: var(--text-secondary);
             font-size: 0.85rem; font-weight: 500; transition: var(--transition);
             display: flex; align-items: center; gap: 12px; position: relative;
+            cursor: pointer;
         }
         nav a::before {
             content: ""; width: 6px; height: 6px; background-color: var(--accent);
@@ -181,16 +182,16 @@
 <body>
 
     <aside>
-        <div class="brand-logo" onclick="window.location.href='https://undersouthern.asia/dashboard'">
+        <div class="brand-logo" onclick="navigateTo('https://undersouthern.asia/dashboard', this)">
             <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="label-logo">
         </div>
         <nav id="sidebar-nav">
-            <a href="https://undersouthern.asia/dashboard">dashboard</a>
-            <a href="https://undersouthern.asia/release" class="active">create release</a>
-            <a href="https://undersouthern.asia/catalog">catalog access</a>
-            <a href="https://undersouthern.asia/analytic">analytics</a>
-            <a href="https://undersouthern.asia/royalty-reports">royalty reports</a>
-            <a href="https://undersouthern.asia/user-access">user access</a>
+            <a onclick="navigateTo('https://undersouthern.asia/dashboard', this)">dashboard</a>
+            <a onclick="navigateTo('https://undersouthern.asia/release', this)" class="active">create release</a>
+            <a onclick="navigateTo('https://undersouthern.asia/catalog', this)">catalog access</a>
+            <a onclick="navigateTo('https://undersouthern.asia/analytic', this)">analytics</a>
+            <a onclick="navigateTo('https://undersouthern.asia/royalty-reports', this)">royalty reports</a>
+            <a onclick="navigateTo('https://undersouthern.asia/user-access', this)">user access</a>
         </nav>
         <div class="logout-container"><button class="logout-btn" onclick="window.location.href='https://undersouthern.asia/login'">logout</button></div>
     </aside>
@@ -311,6 +312,15 @@
     <script>
         const genres = ["Alternative", "Alternative Rock", "Alternativo & Rock Latino", "Anime", "Baladas y Boleros", "Big Band", "Blues", "Brazilian", "C-Pop", "Cantopop/HK-Pop", "Children's", "Chinese", "Christian", "Classical", "Comedy", "Contemporary Latin", "Country", "Dance", "Easy Listening", "Educational", "Electronic", "Enka", "Experimental", "Fitness & Workout", "Folk", "French Pop", "German Folk", "German Pop", "Hip-Hop/Rap", "Holiday", "Indo Pop", "Inspirational", "Instrumental", "J-Pop", "Jazz", "K-Pop", "Karaoke", "Kayokyoku", "Latin", "Latin Jazz", "Metal", "New Age", "Opera", "Original Pilipino Music", "Pop", "Pop Latino", "Punk", "R&B", "Raices", "Reggae", "Reggaeton y Hip-Hop", "Regional Mexicano", "Rock", "Salsa y Tropical", "Singer/Songwriter", "Soul", "Soundtrack", "Spoken Word", "Tai-Pop", "Thai Pop", "Trot", "Vocal/Nostalgia", "World"];
         const languages = ["Vietnamese (VI)", "English (EN)", "Korean (KO)", "Japanese (JA)", "Chinese (ZH)", "French (FR)", "Spanish (ES)", "German (DE)", "Italian (IT)", "Portuguese (PT)", "Russian (RU)", "Arabic (AR)", "Hindi (HI)", "Thai (TH)", "Indonesian (ID)", "Bengali (BN)", "Turkish (TR)", "Malay (MS)", "Urdu (UR)", "Persian (FA)", "Swahili (SW)", "Tamil (TA)", "Telugu (TE)", "Marathi (MR)", "Gujarati (GU)", "Kannada (KN)", "Punjabi (PA)", "Filipino (TL)", "Malayalam (ML)", "Sinhala (SI)", "Burmese (MY)", "Khmer (KM)", "Lao (LO)", "Nepali (NE)", "Pashto (PS)", "Hebrew (HE)", "Greek (EL)", "Dutch (NL)", "Swedish (SV)", "Norwegian (NO)", "Danish (DA)", "Finnish (FI)", "Polish (PL)", "Czech (CS)", "Hungarian (HU)", "Romanian (RO)", "Bulgarian (BG)", "Serbian (SR)", "Croatian (HR)", "Slovak (SK)"];
+
+        // Hàm xử lý xuất hiện dấu chấm mượt mà trước khi chuyển trang
+        function navigateTo(url, clickedElement) {
+            document.querySelectorAll('#sidebar-nav a').forEach(link => link.classList.remove('active'));
+            if (clickedElement && clickedElement.tagName === 'A') {
+                clickedElement.classList.add('active');
+            }
+            window.location.href = url;
+        }
 
         function populateDropdowns() {
             const pG = document.getElementById('primary-genre');
