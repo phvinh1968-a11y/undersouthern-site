@@ -7,7 +7,6 @@
 
 <title>UNDERSOUTHERN – Independent Record Label & Global Distribution</title>
 <meta name="description" content="UNDERSOUTHERN is an independent record label and global distribution partner based in Vietnam. We focus on long-term development and worldwide monetization for artists across 45+ platforms.">
-<meta name="keywords" content="UNDERSOUTHERN, Undersouthern, undersouthernrecords, undersouthernrecordlabel, Undersouthern Record Label, UNDERSOUTHERN Vietnam, independent record label Vietnam, music distribution Vietnam, Vietnam music distributor, Southeast Asia music distribution, SEA music distribution, digital music distribution Asia, global music distribution, international music distribution, global music distribution network, whitelabel, whitelabel music distribution, whitelabel distribution for record labels, record label services, record label distribution services, artist music distribution services, music distributor for labels, label services Asia, professional music distribution, enterprise music distribution, music rights management, metadata management music, catalog management music, royalty reporting music, content delivery network music, Spotify distribution, Apple Music distribution, YouTube Music distribution, TikTok music distribution, ADA distribution, ADA music distribution, Warner Music distribution network, major label distribution partner, global label distribution infrastructure">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -24,7 +23,7 @@ html { scroll-behavior: smooth; height: 100%; font-size: 16px; }
   --sidebar-width: 100px;
 }
 
-/* HIỆU ỨNG NHẤP NHÁY LOGO MỚI KHI VÀO WEB */
+/* PRELOADER */
 #preloader {
   position: fixed;
   top: 0; left: 0;
@@ -36,13 +35,11 @@ html { scroll-behavior: smooth; height: 100%; font-size: 16px; }
   z-index: 20000;
   transition: opacity 0.8s ease;
 }
-
 #preloader img {
-  width: 200px; /* Tăng kích thước logo nhấp nháy cho ấn tượng */
+  width: 200px;
   height: auto;
   animation: pulse-logo 1.5s infinite ease-in-out;
 }
-
 @keyframes pulse-logo {
   0% { transform: scale(0.9); opacity: 0.3; }
   50% { transform: scale(1.1); opacity: 1; }
@@ -60,7 +57,7 @@ body {
   cursor: none !important; 
 }
 
-a, button, [onclick], .work-link {
+a, button, [onclick] {
   cursor: none !important;
 }
 
@@ -84,7 +81,6 @@ a, button, [onclick], .work-link {
   opacity: 0; 
   transition: opacity 0.3s ease;
 }
-
 #custom-cursor::before, #custom-cursor::after {
   content: ''; position: absolute; background-color: #ffffff;
 }
@@ -105,8 +101,9 @@ a, button, [onclick], .work-link {
   border-left: var(--line-thin-white); 
   display: flex;
   flex-direction: column;
-  justify-content: center; 
+  justify-content: space-between;
   align-items: center;
+  padding: 4vh 0; 
   background: transparent; 
   z-index: 99;
 }
@@ -114,11 +111,21 @@ a, button, [onclick], .work-link {
 .side-nav {
   display: flex;
   flex-direction: column;
-  gap: 3rem; 
+  gap: 5vh; 
   align-items: center;
 }
 
-.est-text, .side-nav a {
+.est-text {
+  writing-mode: vertical-rl;
+  text-transform: capitalize;
+  font-weight: 500;
+  font-size: clamp(1rem, 2vh, 1.5rem); 
+  color: #ffffff; 
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+
+.side-nav a {
   writing-mode: vertical-rl;
   text-transform: capitalize;
   font-weight: 500;
@@ -129,8 +136,6 @@ a, button, [onclick], .work-link {
   text-decoration: none;
   transition: var(--transition);
 }
-
-.est-text { margin-bottom: 4rem; }
 .side-nav a:hover { font-style: italic; }
 
 main { 
@@ -176,18 +181,9 @@ main {
   font-weight: 400;
   line-height: 1.6;
   color: #ffffff; 
-  margin-bottom: 3rem;
 }
 
-.work-link {
-  display: inline-block;
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  font-weight: 700;
-  font-style: italic;
-  text-decoration: underline;
-  color: #ffffff;
-}
-
+/* FOOTER */
 .hero-footer {
   width: 100%;
   padding: 3rem 5%;
@@ -195,41 +191,48 @@ main {
   justify-content: flex-start; 
   border-top: var(--line-thin-white); 
 }
-
-.footer-nav {
-  display: flex;
-  gap: 3.5rem; 
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer-nav a {
-  text-decoration: none;
-  color: #ffffff; 
-  font-size: 1.5rem; 
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
+.footer-nav { display: flex; gap: 3.5rem; align-items: center; flex-wrap: wrap; }
+.footer-nav a { text-decoration: none; color: #ffffff; font-size: 1.5rem; font-weight: 500; transition: var(--transition); }
 .footer-nav a:hover { font-style: italic; }
 
-.social-icons {
-  display: flex;
-  gap: 2rem;
-  margin-left: 1.5rem;
-}
-.social-icons i { font-size: 1.6rem; color: #ffffff; }
+.social-icons { display: flex; gap: 2rem; margin-left: 1.5rem; align-items: center; }
+.social-icons a { text-decoration: none; display: flex; align-items: center; }
+.social-icons i { font-size: 1.6rem; color: #ffffff; transition: var(--transition); }
+.social-icons i:hover { transform: scale(1.2); opacity: 0.8; }
 
 @media (max-width: 768px) {
   #custom-cursor { display: none; }
   body { overflow-y: auto; cursor: auto !important; }
-  .right-sidebar { position: relative; height: auto; width: 100%; border-left: none; border-bottom: var(--line-thin-white); padding: 1.5rem; flex-direction: row; justify-content: space-between; }
-  .side-nav { flex-direction: row; gap: 1.5rem; }
-  .est-text, .side-nav a { writing-mode: horizontal-tb; font-size: 1.125rem; }
+  
+  /* CẬP NHẬT KHOẢNG CÁCH ĐỀU NHAU TRÊN MOBILE */
+  .right-sidebar { 
+    position: relative; 
+    height: auto; 
+    width: 100%; 
+    border-left: none; 
+    border-bottom: var(--line-thin-white); 
+    padding: 1.2rem 1rem; 
+    flex-direction: row; 
+    justify-content: center; /* Căn giữa toàn bộ cụm menu */
+    gap: 1.2rem; /* Đây là khoảng cách chung cho tất cả các mục */
+  }
+  
+  .side-nav { 
+    flex-direction: row; 
+    gap: 1.2rem; /* Phải khớp với gap ở trên để đều nhau */
+  }
+  
+  .est-text, .side-nav a { 
+    writing-mode: horizontal-tb; 
+    font-size: clamp(0.85rem, 3.2vw, 1rem); 
+  }
+  
   .est-text { margin-bottom: 0; }
+  
   main { margin-right: 0; height: auto; }
   .page { padding: 4rem 1.5rem; height: auto; min-height: 60vh; }
   .hero-footer { padding: 2.5rem 1.5rem; flex-direction: column; gap: 2rem; }
-  .footer-nav { gap: 1.5rem; justify-content: center; }
+  .footer-nav { gap: 1rem; justify-content: center; }
   .footer-nav a { font-size: 1.25rem; }
   .social-icons { margin-left: 0; }
 }
@@ -252,7 +255,7 @@ main {
   <span class="est-text">Est. 2024</span>
   <nav class="side-nav">
     <a onclick="showPage('distribution')">Distribution</a>
-    <a onclick="showPage('contact')">Contact</a>
+    <a onclick="showPage('promotion')">Promotion</a>
     <a onclick="goHome()">Home</a>
   </nav>
 </aside>
@@ -265,9 +268,6 @@ main {
         <p class="description">
           UNDERSOUTHERN is an independent record label and global distribution partner for artists and rights owners. We focus on long-term development, strategic distribution, and worldwide monetization across 45+ digital streaming platforms.
         </p>
-        <div class="work-link-container">
-            <a class="work-link" onclick="window.location.href='https://undersouthern.asia/signup'">Work With Us</a>
-        </div>
       </div>
     </section>
 
@@ -278,10 +278,10 @@ main {
         </div>
     </section>
 
-    <section id="contact" class="page">
+    <section id="promotion" class="page">
         <div class="info-card">
-            <h2 style="font-size: 2.5rem; font-style: italic; margin-bottom: 2rem;">Contact</h2>
-            <p class="description">support@undersouthern.asia</p>
+            <h2 style="font-size: 2.5rem; font-style: italic; margin-bottom: 2rem;">Promotion</h2>
+            <p class="description">Elevating independent music through global reach.</p>
         </div>
     </section>
   </div>
@@ -289,25 +289,24 @@ main {
   <div class="hero-footer">
     <nav class="footer-nav">
       <a href="#">Login</a>
-      <a href="#">Support</a>
-      <a href="#">Shop</a>
-      <a href="#">Advance</a>
+      <a href="https://undersouthern.asia/support">Support</a>
       <div class="social-icons">
-        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.facebook.com/undersouthern" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/undersouthern" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@undersouthern" target="_blank" rel="noopener"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://open.spotify.com/user/undersouthern" target="_blank" rel="noopener"><i class="fa-brands fa-spotify"></i></a>
       </div>
     </nav>
   </div>
 </main>
 
 <script>
-// XỬ LÝ ẨN MÀN HÌNH CHỜ
 window.addEventListener('load', () => {
   const preloader = document.getElementById('preloader');
   setTimeout(() => {
     preloader.style.opacity = '0';
     setTimeout(() => { preloader.style.display = 'none'; }, 800);
-  }, 2500); // Hiển thị logo nhấp nháy trong 2.5 giây
+  }, 2500);
 });
 
 const cursor = document.getElementById('custom-cursor');
