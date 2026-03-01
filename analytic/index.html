@@ -56,6 +56,7 @@
             text-decoration: none; color: var(--text-secondary);
             font-size: 0.85rem; font-weight: 500; transition: var(--transition);
             display: flex; align-items: center; gap: 12px; position: relative;
+            cursor: pointer;
         }
         nav a::before {
             content: ""; width: 6px; height: 6px; background-color: var(--accent);
@@ -117,16 +118,16 @@
 <body>
 
     <aside>
-        <div class="brand-logo" onclick="window.location.href='https://undersouthern.asia/dashboard'">
+        <div class="brand-logo" onclick="navigateTo('https://undersouthern.asia/dashboard', this)">
             <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="label-logo">
         </div>
         <nav id="sidebar-nav">
-            <a href="https://undersouthern.asia/dashboard">dashboard</a>
-            <a href="https://undersouthern.asia/release" class="active">create release</a>
-            <a href="https://undersouthern.asia/catalog">catalog access</a>
-            <a href="https://undersouthern.asia/analytic">analytics</a>
-            <a href="https://undersouthern.asia/royalty-reports">royalty reports</a>
-            <a href="https://undersouthern.asia/user-access">user access</a>
+            <a onclick="navigateTo('https://undersouthern.asia/dashboard', this)">dashboard</a>
+            <a onclick="navigateTo('https://undersouthern.asia/release', this)">create release</a>
+            <a onclick="navigateTo('https://undersouthern.asia/catalog', this)">catalog access</a>
+            <a onclick="navigateTo('https://undersouthern.asia/analytic', this)" class="active">analytics</a>
+            <a onclick="navigateTo('https://undersouthern.asia/royalty-reports', this)">royalty reports</a>
+            <a onclick="navigateTo('https://undersouthern.asia/user-access', this)">user access</a>
         </nav>
         <div class="logout-container">
             <button class="logout-btn" onclick="window.location.href='https://undersouthern.asia/login'">logout</button>
@@ -250,6 +251,15 @@
     </div>
 
     <script>
+        // Hàm xử lý xuất hiện dấu chấm mượt mà trước khi chuyển trang
+        function navigateTo(url, clickedElement) {
+            document.querySelectorAll('#sidebar-nav a').forEach(link => link.classList.remove('active'));
+            if (clickedElement && clickedElement.tagName === 'A') {
+                clickedElement.classList.add('active');
+            }
+            window.location.href = url;
+        }
+
         // Cấu hình Biểu đồ Line Chart
         const ctx = document.getElementById('streamsChart').getContext('2d');
         new Chart(ctx, {
