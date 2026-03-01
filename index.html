@@ -23,8 +23,6 @@ html { scroll-behavior: smooth; height: 100%; font-size: 16px; }
   --sidebar-width: 100px;
 }
 
-/* ĐÃ LOẠI BỎ CSS PRELOADER */
-
 body {
   font-family: 'Inter', sans-serif;
   background: var(--overlay-bg); 
@@ -162,6 +160,24 @@ main {
   color: #ffffff; 
 }
 
+/* STYLE CHO LIST NỘI DUNG MỚI */
+.content-list {
+  list-style: none;
+  margin-top: 2rem;
+}
+.content-list li {
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  position: relative;
+  opacity: 0.9;
+}
+.content-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+}
+
 /* FOOTER */
 .hero-footer {
   width: 100%;
@@ -228,7 +244,7 @@ main {
 <aside class="right-sidebar">
   <span class="est-text">Est. 2024</span>
   <nav class="side-nav">
-    <a onclick="showPage('distribution')">Distribution+</a>
+    <a onclick="showPage('distribution')">Distribution</a>
     <a onclick="showPage('promotion')">Promotion</a>
     <a onclick="goHome()">Home</a>
   </nav>
@@ -247,15 +263,27 @@ main {
 
     <section id="distribution" class="page">
         <div class="info-card">
-            <h2 style="font-size: 2.5rem; font-style: italic; margin-bottom: 2rem;">Distribution</h2>
-            <p class="description">Strategic partnerships across global digital streaming platforms.</p>
+            <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-style: italic; margin-bottom: 2rem;">Distribution</h2>
+            <p class="description">Global Music Infrastructure. We provide direct delivery to all major Digital Service Providers (DSPs) worldwide, ensuring your music reaches every corner of the globe with precision and speed.</p>
+            <ul class="content-list">
+                <li>Direct delivery to Spotify, Apple Music, YouTube Music, and TikTok.</li>
+                <li>Comprehensive metadata management and ISRC/UPC assignment.</li>
+                <li>Transparent royalty reporting and monthly automated payouts.</li>
+                <li>Content ID and Rights Management for video platforms.</li>
+            </ul>
         </div>
     </section>
 
     <section id="promotion" class="page">
         <div class="info-card">
-            <h2 style="font-size: 2.5rem; font-style: italic; margin-bottom: 2rem;">Promotion</h2>
-            <p class="description">Elevating independent music through global reach.</p>
+            <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-style: italic; margin-bottom: 2rem;">Promotion</h2>
+            <p class="description">Elevating independent music through global reach. Our promotion strategies focus on genuine audience growth and building a sustainable presence in the digital ecosystem.</p>
+            <ul class="content-list">
+                <li>Editorial playlist pitching across all major streaming services.</li>
+                <li>Strategic digital marketing and social media positioning.</li>
+                <li>Data-driven audience analysis and engagement growth.</li>
+                <li>Representation for curators and platform partnership opportunities.</li>
+            </ul>
         </div>
     </section>
   </div>
@@ -275,8 +303,6 @@ main {
 </main>
 
 <script>
-/* ĐÃ LOẠI BỎ LOGIC XỬ LÝ PRELOADER TRONG WINDOW LOAD */
-
 const cursor = document.getElementById('custom-cursor');
 let firstMove = true;
 
