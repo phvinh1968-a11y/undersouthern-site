@@ -136,16 +136,16 @@
 <body>
 
     <aside>
-        <div class="brand-logo" onclick="window.location.href='https://undersouthern.asia/dashboard'">
+        <div class="brand-logo" onclick="navigateTo('https://undersouthern.asia/dashboard', this)">
             <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="label-logo">
         </div>
         <nav id="sidebar-nav">
-            <a href="https://undersouthern.asia/dashboard">dashboard</a>
-            <a href="https://undersouthern.asia/release" class="active">create release</a>
-            <a href="https://undersouthern.asia/catalog">catalog access</a>
-            <a href="https://undersouthern.asia/analytic">analytics</a>
-            <a href="https://undersouthern.asia/royalty-reports">royalty reports</a>
-            <a href="https://undersouthern.asia/user-access">user access</a>
+            <a onclick="navigateTo('https://undersouthern.asia/dashboard', this)">dashboard</a>
+            <a onclick="navigateTo('https://undersouthern.asia/release', this)">create release</a>
+            <a onclick="navigateTo('https://undersouthern.asia/catalog', this)" class="active">catalog access</a>
+            <a onclick="navigateTo('https://undersouthern.asia/analytic', this)">analytics</a>
+            <a onclick="navigateTo('https://undersouthern.asia/royalty-reports', this)">royalty reports</a>
+            <a onclick="navigateTo('https://undersouthern.asia/user-access', this)">user access</a>
         </nav>
         <div class="logout-container"><button class="logout-btn" onclick="window.location.href='https://undersouthern.asia/login'">logout</button></div>
     </aside>
@@ -204,6 +204,15 @@
 
     <script>
         let currentManageId = null;
+
+        // Hàm xử lý dấu chấm và chuyển trang
+        function navigateTo(url, clickedElement) {
+            document.querySelectorAll('#sidebar-nav a').forEach(link => link.classList.remove('active'));
+            if (clickedElement && clickedElement.tagName === 'A') {
+                clickedElement.classList.add('active');
+            }
+            window.location.href = url;
+        }
 
         // DỮ LIỆU THỬ NGHIỆM ĐA DẠNG NGHỆ SĨ VÀ COMPOSER
         const mockData = [
