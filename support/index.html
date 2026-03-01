@@ -30,11 +30,9 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  /* Ẩn con trỏ mặc định */
   cursor: none !important;
 }
 
-/* CUSTOM CURSOR (DẤU CỘNG) */
 #custom-cursor {
   position: fixed;
   width: 30px; height: 30px;
@@ -44,7 +42,7 @@ body {
   justify-content: center;
   align-items: center;
   opacity: 0; 
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.2s ease;
 }
 #custom-cursor::before, #custom-cursor::after {
   content: ''; position: absolute; background-color: #000000;
@@ -58,11 +56,14 @@ body {
   clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%, 0 60%, 100% 60%, 100% 100%, 0 100%);
 }
 
+#custom-cursor.active {
+  transform: scale(1.5);
+}
+
 a, button, [onclick] {
   cursor: none !important;
 }
 
-/* SIDEBARS */
 .left-support-bar {
   position: fixed;
   left: 0; top: 0;
@@ -76,7 +77,16 @@ a, button, [onclick] {
   z-index: 100;
   background: #ffffff;
 }
-.close-btn { font-size: 32px; text-decoration: none; color: #000000; }
+
+.close-btn { 
+  font-size: 32px; 
+  text-decoration: none; 
+  color: #000000; 
+  transition: transform 0.2s ease; 
+  display: inline-block;
+}
+.close-btn:hover { transform: scale(1.2); }
+
 .brand-title {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -102,7 +112,6 @@ a, button, [onclick] {
 }
 .est-text { writing-mode: vertical-rl; font-weight: 500; font-size: 1.5rem; letter-spacing: 1.5px; }
 
-/* MAIN CONTENT */
 main { 
   margin-left: 80px; 
   margin-right: var(--sidebar-width); 
@@ -130,7 +139,6 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
 .accordion-content { display: none; padding: 25px 0; font-size: 16px; line-height: 2.8; }
 .accordion-content a { color: #000000; text-decoration: underline; font-weight: 700; }
 
-/* FOOTER */
 .hero-footer { width: 100%; padding: 3rem 8%; display: flex; border-top: var(--line-thin-black); margin-top: auto; }
 .footer-nav { display: flex; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; flex-wrap: wrap; }
 .footer-nav a { text-decoration: none; color: #000000; font-size: 1.5rem; font-weight: 500; transition: var(--transition); }
@@ -139,13 +147,15 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
 .social-icons { display: flex; gap: 1.5rem; align-items: center; }
 .social-icons i { font-size: 1.6rem; color: #000000; transition: var(--transition); }
 
-/* MODAL CẬP NHẬT KHOẢNG CÁCH */
+/* MODAL BOX */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
 .modal-box { background: #ffffff; padding: clamp(30px, 5vw, 50px) clamp(20px, 5vw, 40px); max-width: 500px; width: 90%; border: 2px solid #000000; text-align: center; position: relative; }
-.modal-close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #000000; font-weight: bold; line-height: 1; }
-/* TĂNG KHOẢNG CÁCH XUỐNG NÚT */
-.modal-text { font-size: clamp(16px, 1.2vw, 18px); line-height: 1.6; margin-bottom: 30px; color: #000000; }
-.modal-btn { background: #000000; color: #ffffff; padding: 12px 30px; font-size: 16px; font-weight: 700; border: none; text-transform: uppercase; }
+.modal-close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #000000; font-weight: bold; line-height: 1; transition: transform 0.2s ease; display: inline-block; }
+.modal-close-x:hover { transform: scale(1.3); }
+
+/* GIẢM KHOẢNG CÁCH XUỐNG NÚT (MARGIN-BOTTOM: 30PX) */
+.modal-text { font-size: clamp(16px, 1.2vw, 18px); line-height: 1.6; margin-bottom: 30px; color: #000000; text-align: center; }
+.modal-btn { background: #000000; color: #ffffff; padding: 12px 30px; font-size: 16px; font-weight: 700; border: none; text-transform: uppercase; display: block; margin: 0 auto; }
 
 @media (max-width: 768px) {
   #custom-cursor { display: none; }
@@ -165,7 +175,7 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
     <div id="custom-cursor"></div>
 
     <aside class="left-support-bar">
-        <a href="https://undersouthern.asia/" class="close-btn">X</a>
+        <a href="https://undersouthern.asia/" class="close-btn hover-target">X</a>
         <div class="brand-title">UNDERSOUTHERN</div>
     </aside>
 
@@ -181,7 +191,7 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
             <h2>Pitch your next release</h2>
             <p class="desc">Help us pitch your releases to playlist editors. For optimal results, please complete the form at least three weeks before release date.</p>
             
-            <a onclick="openPitchModal()" class="pitch-link">Send us your pitch</a>
+            <a onclick="openPitchModal('pitch')" class="pitch-link">Send us your pitch</a>
 
             <div class="bottom-nav-list">
                 <div class="nav-row">
@@ -190,10 +200,11 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
                         <i class="fa-solid fa-chevron-down"></i>
                     </a>
                     <div id="faq-content" class="accordion-content">
-                        • How to verify your <a href="https://artists.spotify.com/" target="_blank">Spotify</a> profile<br>
-                        • How to claim your <a href="https://artists.apple.com/" target="_blank">Apple Music</a> profile<br>
-                        • How to get verified on <a href="https://www.tiktok.com/" target="_blank">TikTok</a><br>
-                        • How to apply for a <a href="https://support.google.com/youtube/answer/7336634" target="_blank">YouTube</a> Official Artist Channel (OAC)
+                        • How to verify your <a href="https://support.spotify.com/vn-vi/artists/article/getting-access-to-spotify-for-artists/" target="_blank">Spotify</a> profile<br>
+                        • How to claim your <a href="https://artists.apple.com/support/1101-claim-your-account" target="_blank">Apple Music</a> profile<br>
+                        • How to get verified on <a href="https://www.tiktok.com/m-c/music_artist_certification_h5/index.html?enter_from=newsroom" target="_blank">TikTok</a><br>
+                        • My track is on the wrong <a href="https://artists.spotify.com/c/vi/content-mismatch" target="_blank">Spotify</a> profile<br>
+                        • How to apply for a <a onclick="openPitchModal('youtube')" style="cursor: pointer;">YouTube</a> Official Artist Channel (OAC)
                     </div>
                 </div>
 
@@ -231,11 +242,10 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
 
     <div id="pitchModal" class="modal-overlay">
         <div class="modal-box">
-            <span class="modal-close-x" onclick="closePitchModal()">×</span>
-            <p class="modal-text">
-                Please submit your pitches well in advance. We appreciate hearing about your priorities here 6-8 weeks in advance for each new release.
-            </p>
-            <button class="modal-btn" onclick="confirmPitch()">I Understand</button>
+            <span class="modal-close-x hover-target" onclick="closePitchModal()">×</span>
+            <div id="modalText" class="modal-text">
+                </div>
+            <button class="modal-btn" id="confirmBtn" onclick="confirmAction()"></button>
         </div>
     </div>
 
@@ -243,18 +253,22 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
 // CURSOR LOGIC
 const cursor = document.getElementById('custom-cursor');
 let firstMove = true;
+let currentMode = 'pitch';
 
 document.addEventListener('mousemove', (e) => {
   if (window.innerWidth > 768) {
-    if (firstMove) {
-      cursor.style.opacity = '1';
-      firstMove = false;
-    }
+    if (firstMove) { cursor.style.opacity = '1'; firstMove = false; }
     requestAnimationFrame(() => {
       cursor.style.left = (e.clientX - 15) + 'px';
       cursor.style.top = (e.clientY - 15) + 'px';
     });
   }
+});
+
+const hoverTargets = document.querySelectorAll('.hover-target');
+hoverTargets.forEach(target => {
+  target.addEventListener('mouseenter', () => cursor.classList.add('active'));
+  target.addEventListener('mouseleave', () => cursor.classList.remove('active'));
 });
 
 function toggleAccordion(contentId, triggerElement) {
@@ -268,12 +282,30 @@ function toggleAccordion(contentId, triggerElement) {
     }
 }
 
-function openPitchModal() { document.getElementById('pitchModal').style.display = 'flex'; }
-function closePitchModal() { document.getElementById('pitchModal').style.display = 'none'; }
-function confirmPitch() {
-    document.getElementById('pitchModal').style.display = 'none';
-    window.location.href = "mailto:support@undersouthern.asia?subject=Pitch Submission Request";
+function openPitchModal(mode) {
+    currentMode = mode;
+    const modalText = document.getElementById('modalText');
+    const confirmBtn = document.getElementById('confirmBtn');
+    
+    if (mode === 'youtube') {
+        modalText.innerHTML = `To apply for a YouTube Official Artist Channel (OAC), please submit your Primary Artist Channel URL and Topic Channel URL.`;
+        confirmBtn.innerText = "REQUEST";
+    } else {
+        modalText.innerHTML = `Please submit your pitches well in advance. We appreciate hearing about your priorities here 6-8 weeks in advance for each new release.`;
+        confirmBtn.innerText = "I Understand";
+    }
+    
+    document.getElementById('pitchModal').style.display = 'flex';
 }
+
+function closePitchModal() { document.getElementById('pitchModal').style.display = 'none'; }
+
+function confirmAction() {
+    document.getElementById('pitchModal').style.display = 'none';
+    let subject = (currentMode === 'youtube') ? "Official Artist Channel (OAC)" : "Pitch your next release";
+    window.location.href = "mailto:support@undersouthern.asia?subject=" + encodeURIComponent(subject);
+}
+
 window.onclick = function(e) { if (e.target.id === 'pitchModal') closePitchModal(); }
 </script>
 
