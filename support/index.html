@@ -22,6 +22,29 @@ html { scroll-behavior: smooth; height: 100%; font-size: 16px; }
   --active-yellow: #fff9c4; 
 }
 
+/* LOADING SCREEN */
+#loader {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20000;
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+.loader-logo {
+  width: 80px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.5; }
+}
+.loader-hidden { opacity: 0; visibility: hidden; }
+
 body {
   font-family: 'Inter', sans-serif;
   background: #ffffff; 
@@ -42,7 +65,7 @@ body {
   justify-content: center;
   align-items: center;
   opacity: 0; 
-  transition: opacity 0.3s ease, transform 0.2s ease;
+  transition: opacity 0.3s ease;
 }
 #custom-cursor::before, #custom-cursor::after {
   content: ''; position: absolute; background-color: #000000;
@@ -54,10 +77,6 @@ body {
 #custom-cursor::after {
   width: 6px; height: 100%; left: 12px; top: 0;
   clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%, 0 60%, 100% 60%, 100% 100%, 0 100%);
-}
-
-#custom-cursor.active {
-  transform: scale(1.5);
 }
 
 a, button, [onclick] {
@@ -144,8 +163,19 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
 .footer-nav a { text-decoration: none; color: #000000; font-size: 1.5rem; font-weight: 500; transition: var(--transition); }
 .footer-nav a:hover { font-style: italic; }
 .footer-nav a.active-page { font-style: italic; background-color: var(--active-yellow); padding: 5px 15px; border-radius: 4px; }
+
+/* HIỆU ỨNG NỔI LÊN CHO SOCIAL ICONS */
 .social-icons { display: flex; gap: 1.5rem; align-items: center; }
-.social-icons i { font-size: 1.6rem; color: #000000; transition: var(--transition); }
+.social-icons a { text-decoration: none; display: flex; align-items: center; }
+.social-icons i { 
+  font-size: 1.6rem; 
+  color: #000000; 
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease; 
+}
+.social-icons i:hover { 
+  transform: scale(1.2); 
+  opacity: 0.8; 
+}
 
 /* MODAL BOX */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
@@ -153,7 +183,6 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
 .modal-close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #000000; font-weight: bold; line-height: 1; transition: transform 0.2s ease; display: inline-block; }
 .modal-close-x:hover { transform: scale(1.3); }
 
-/* GIẢM KHOẢNG CÁCH XUỐNG NÚT (MARGIN-BOTTOM: 30PX) */
 .modal-text { font-size: clamp(16px, 1.2vw, 18px); line-height: 1.6; margin-bottom: 30px; color: #000000; text-align: center; }
 .modal-btn { background: #000000; color: #ffffff; padding: 12px 30px; font-size: 16px; font-weight: 700; border: none; text-transform: uppercase; display: block; margin: 0 auto; }
 
@@ -172,10 +201,14 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
 
 <body>
 
+    <div id="loader">
+      <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="Logo" class="loader-logo">
+    </div>
+
     <div id="custom-cursor"></div>
 
     <aside class="left-support-bar">
-        <a href="https://undersouthern.asia/" class="close-btn hover-target">X</a>
+        <a onclick="goBackHome()" style="cursor: pointer;" class="close-btn">X</a>
         <div class="brand-title">UNDERSOUTHERN</div>
     </aside>
 
@@ -242,7 +275,7 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
 
     <div id="pitchModal" class="modal-overlay">
         <div class="modal-box">
-            <span class="modal-close-x hover-target" onclick="closePitchModal()">×</span>
+            <span class="modal-close-x" onclick="closePitchModal()">×</span>
             <div id="modalText" class="modal-text">
                 </div>
             <button class="modal-btn" id="confirmBtn" onclick="confirmAction()"></button>
@@ -252,8 +285,24 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
 <script>
 // CURSOR LOGIC
 const cursor = document.getElementById('custom-cursor');
+const loader = document.getElementById('loader');
 let firstMove = true;
 let currentMode = 'pitch';
+
+// LOADER ON LOAD
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    loader.classList.add('loader-hidden');
+  }, 1000); 
+});
+
+// BACK HOME WITH LOADING
+function goBackHome() {
+  loader.classList.remove('loader-hidden');
+  setTimeout(() => {
+    window.location.href = "https://undersouthern.asia/";
+  }, 800);
+}
 
 document.addEventListener('mousemove', (e) => {
   if (window.innerWidth > 768) {
@@ -265,12 +314,7 @@ document.addEventListener('mousemove', (e) => {
   }
 });
 
-const hoverTargets = document.querySelectorAll('.hover-target');
-hoverTargets.forEach(target => {
-  target.addEventListener('mouseenter', () => cursor.classList.add('active'));
-  target.addEventListener('mouseleave', () => cursor.classList.remove('active'));
-});
-
+// ACCORDION
 function toggleAccordion(contentId, triggerElement) {
     const content = document.getElementById(contentId);
     if (content.style.display === 'block') {
@@ -282,6 +326,7 @@ function toggleAccordion(contentId, triggerElement) {
     }
 }
 
+// MODAL LOGIC
 function openPitchModal(mode) {
     currentMode = mode;
     const modalText = document.getElementById('modalText');
@@ -294,7 +339,6 @@ function openPitchModal(mode) {
         modalText.innerHTML = `Please submit your pitches well in advance. We appreciate hearing about your priorities here 6-8 weeks in advance for each new release.`;
         confirmBtn.innerText = "I Understand";
     }
-    
     document.getElementById('pitchModal').style.display = 'flex';
 }
 
