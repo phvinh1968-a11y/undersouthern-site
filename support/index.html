@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
 
-<title>Support</title>
+<title>Support – UNDERSOUTHERN</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -26,13 +26,13 @@ body {
   font-family: 'Inter', sans-serif;
   background: #ffffff; 
   color: #000000; 
-  overflow: hidden;
-  height: 100vh;
+  overflow-x: hidden;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* SIDEBARS */
+/* SIDEBARS RESPONSIVE */
 .left-support-bar {
   position: fixed;
   left: 0; top: 0;
@@ -50,9 +50,8 @@ body {
 .brand-title {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: clamp(28px, 4.5vh, 38px);
+  font-size: clamp(24px, 4vh, 38px);
   font-weight: 700;
-  font-style: normal; 
   text-decoration: none;
   white-space: nowrap;
   letter-spacing: 2px;
@@ -71,80 +70,59 @@ body {
   padding: 4vh 0;
   z-index: 99;
 }
-.est-text { writing-mode: vertical-rl; text-transform: capitalize; font-weight: 500; font-size: 1.5rem; color: #000000; letter-spacing: 1.5px; white-space: nowrap; }
+.est-text { writing-mode: vertical-rl; font-weight: 500; font-size: 1.5rem; letter-spacing: 1.5px; }
 
-/* MAIN CONTENT */
-main { margin-left: 80px; margin-right: var(--sidebar-width); flex: 1; display: flex; flex-direction: column; height: 100vh; }
-.support-content { flex: 1; padding: 60px 5%; overflow-y: auto; }
-h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 500; margin-bottom: 20px; }
-.sub-txt { font-size: 24px; margin-bottom: 60px; }
-h2 { font-size: clamp(28px, 5vw, 52px); font-weight: 500; margin-bottom: 25px; }
-.desc { font-size: 22px; line-height: 1.4; max-width: 850px; margin-bottom: 30px; }
+/* MAIN CONTENT CO GIÃN */
+main { 
+  margin-left: 80px; 
+  margin-right: var(--sidebar-width); 
+  flex: 1; 
+  display: flex; 
+  flex-direction: column; 
+  min-height: 100vh; 
+}
+.support-content { flex: 1; padding: 60px 8%; overflow-y: auto; }
+h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 500; margin-bottom: 20px; line-height: 1.1; }
+.sub-txt { font-size: clamp(18px, 2vw, 24px); margin-bottom: 60px; }
+h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; line-height: 1.2; }
+.desc { font-size: clamp(16px, 1.5vw, 22px); line-height: 1.5; max-width: 850px; margin-bottom: 30px; }
 
-/* LINKS */
-.pitch-link { font-size: 32px; text-decoration: underline; color: #000000; font-weight: 400; transition: text-decoration var(--transition); cursor: pointer; }
+/* LINKS & NAVIGATION */
+.pitch-link { font-size: clamp(24px, 3vw, 32px); text-decoration: underline; color: #000000; cursor: pointer; transition: var(--transition); }
 .pitch-link:hover { text-decoration: none; }
-.bottom-nav-list { border-top: var(--line-thin-black); margin-top: 80px; }
+
+.bottom-nav-list { border-top: var(--line-thin-black); margin-top: 80px; width: 100%; }
 .nav-row { border-bottom: var(--line-thin-black); padding: 25px 0; }
-.nav-row a { font-size: 14px; font-weight: 700; text-transform: uppercase; color: #000000; text-decoration: underline; transition: text-decoration var(--transition); }
+.nav-row a { font-size: 14px; font-weight: 700; text-transform: uppercase; text-decoration: underline; transition: var(--transition); color: #000000; }
 .nav-row a:hover { text-decoration: none; }
 
-/* FOOTER */
-.hero-footer { width: 100%; padding: 3rem 5%; display: flex; justify-content: flex-start; border-top: var(--line-thin-black); }
-.footer-nav { display: flex; gap: 3.5rem; align-items: center; flex-wrap: wrap; }
+/* FOOTER RESPONSIVE */
+.hero-footer { width: 100%; padding: 3rem 8%; display: flex; border-top: var(--line-thin-black); margin-top: auto; }
+.footer-nav { display: flex; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; flex-wrap: wrap; }
 .footer-nav a { text-decoration: none; color: #000000; font-size: 1.5rem; font-weight: 500; transition: var(--transition); }
 .footer-nav a:hover { font-style: italic; }
 .footer-nav a.active-page { font-style: italic; background-color: var(--active-yellow); padding: 5px 15px; border-radius: 4px; }
-.social-icons { display: flex; gap: 2rem; margin-left: 1.5rem; align-items: center; }
-.social-icons a { text-decoration: none; }
+
+.social-icons { display: flex; gap: 1.5rem; align-items: center; }
 .social-icons i { font-size: 1.6rem; color: #000000; transition: var(--transition); }
 .social-icons i:hover { transform: scale(1.2); }
 
-/* CUSTOM MODAL (BẢNG THÔNG BÁO GIỮA MÀN HÌNH) */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  display: none; /* Ẩn mặc định */
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(4px);
-}
-.modal-box {
-  background: #ffffff;
-  padding: 40px;
-  max-width: 500px;
-  width: 90%;
-  border: 2px solid #000000;
-  text-align: center;
-}
-.modal-text {
-  font-size: 18px;
-  line-height: 1.6;
-  margin-bottom: 30px;
-  color: #000000;
-}
-.modal-btn {
-  background: #000000;
-  color: #ffffff;
-  padding: 12px 30px;
-  font-size: 16px;
-  font-weight: 700;
-  border: none;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-.modal-btn:hover { opacity: 0.8; }
+/* MODAL RESPONSIVE */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
+.modal-box { background: #ffffff; padding: clamp(20px, 5vw, 40px); max-width: 500px; width: 90%; border: 2px solid #000000; text-align: center; }
+.modal-text { font-size: clamp(16px, 1.2vw, 18px); line-height: 1.6; margin-bottom: 30px; }
+.modal-btn { background: #000000; color: #ffffff; padding: 12px 30px; font-size: 16px; font-weight: 700; border: none; cursor: pointer; }
 
+/* MOBILE BREAKPOINT */
 @media (max-width: 768px) {
+  body { overflow-y: auto; }
   .left-support-bar { width: 60px; padding: 20px 0; }
-  .right-sidebar { position: relative; height: auto; width: 100%; border-left: none; border-bottom: var(--line-thin-black); flex-direction: row; padding: 1.2rem 1.5rem; justify-content: center; }
+  .right-sidebar { position: relative; height: auto; width: 100%; border-left: none; border-bottom: var(--line-thin-black); flex-direction: row; padding: 1.2rem; justify-content: center; }
   .est-text { writing-mode: horizontal-tb; font-size: 1rem; }
-  main { margin-left: 60px; margin-right: 0; }
-  .support-content { padding: 40px 1.5rem; }
+  main { margin-left: 60px; margin-right: 0; height: auto; }
+  .support-content { padding: 40px 20px; }
+  .hero-footer { padding: 2rem 20px; flex-direction: column; gap: 2rem; }
+  .footer-nav { justify-content: center; }
 }
 </style>
 </head>
@@ -206,13 +184,10 @@ function openPitchModal() {
 }
 
 function confirmPitch() {
-    // Ẩn bảng thông báo
     document.getElementById('pitchModal').style.display = 'none';
-    // Mở trình soạn thảo email
     window.location.href = "mailto:support@undersouthern.asia?subject=Pitch Submission Request";
 }
 
-// Đóng modal khi nhấn ra ngoài vùng thông báo
 window.onclick = function(event) {
     let modal = document.getElementById('pitchModal');
     if (event.target == modal) {
