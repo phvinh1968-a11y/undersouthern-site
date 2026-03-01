@@ -15,7 +15,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
 
 *{margin:0;padding:0;box-sizing:border-box;}
-html { scroll-behavior: smooth; height: 100%; }
+html { scroll-behavior: smooth; height: 100%; font-size: 16px; }
 
 :root {
   --line-thin-white: 1.5px solid #ffffff; 
@@ -29,7 +29,7 @@ body {
   background: var(--overlay-bg); 
   color: #ffffff; 
   overflow: hidden;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   cursor: none !important; 
@@ -72,6 +72,7 @@ a, button, [onclick], .work-link {
   clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%, 0 60%, 100% 60%, 100% 100%, 0 100%);
 }
 
+/* SIDEBAR PHẢI - TĂNG KÍCH THƯỚC CHỮ */
 .right-sidebar {
   position: fixed;
   right: 0; top: 0;
@@ -89,25 +90,23 @@ a, button, [onclick], .work-link {
 .side-nav {
   display: flex;
   flex-direction: column;
-  gap: 40px; 
+  gap: 3rem; 
   align-items: center;
 }
 
 .est-text, .side-nav a {
   writing-mode: vertical-rl;
   text-transform: capitalize;
-  font-family: 'Inter', sans-serif;
   font-weight: 500;
-  font-size: 20px; 
+  font-size: 1.5rem; /* TĂNG TO HƠN */
   color: #ffffff; 
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   white-space: nowrap;
-  opacity: 1; 
   text-decoration: none;
   transition: var(--transition);
 }
 
-.est-text { margin-bottom: 60px; }
+.est-text { margin-bottom: 4rem; }
 .side-nav a:hover { font-style: italic; }
 
 main { 
@@ -115,59 +114,60 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
 }
 
 #content-container {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  overflow: hidden;
 }
 
 .page {
   flex: 1;
   display: none;
-  padding: 60px 80px;
+  padding: 5% 8%;
   overflow-y: auto;
   align-items: center;
+  justify-content: flex-start;
 }
 
-#home { display: flex; align-items: center; }
+#home { display: flex; }
 
-.info-card { max-width: 800px; width: 100%; position: relative; }
+.info-card { width: 100%; max-width: 50rem; }
 
 .tagline {
   background: #ffffff;
   color: #000000; 
   display: inline-block;
-  padding: 8px 20px;
-  font-size: 42px;
+  padding: 0.5rem 1.5rem;
+  font-size: clamp(1.5rem, 5vw, 2.625rem);
   font-weight: 700;
   font-style: italic;
-  margin-bottom: 30px;
+  margin-bottom: 2rem;
 }
 
 .description {
-  font-size: 24px;
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
   font-weight: 400;
   line-height: 1.6;
   color: #ffffff; 
-  margin-bottom: 40px;
+  margin-bottom: 3rem;
 }
 
 .work-link {
   display: inline-block;
-  font-size: 32px;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   font-weight: 700;
   font-style: italic;
   text-decoration: underline;
   color: #ffffff;
 }
-.work-link:hover { text-decoration: none; }
 
+/* FOOTER - TĂNG KÍCH THƯỚC CHỮ */
 .hero-footer {
   width: 100%;
-  padding: 40px;
+  padding: 3rem 5%;
   display: flex;
   justify-content: flex-start; 
   border-top: var(--line-thin-white); 
@@ -175,32 +175,47 @@ main {
 
 .footer-nav {
   display: flex;
-  gap: 40px; 
+  gap: 3.5rem; 
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .footer-nav a {
   text-decoration: none;
   color: #ffffff; 
-  font-family: 'Inter', sans-serif;
-  font-size: 20px; 
+  font-size: 1.5rem; /* TĂNG TO HƠN */
   font-weight: 500;
+  letter-spacing: 0.5px;
 }
 .footer-nav a:hover { font-style: italic; }
 
 .social-icons {
   display: flex;
-  gap: 25px;
-  margin-left: 20px;
+  gap: 2rem;
+  margin-left: 1.5rem;
 }
-.social-icons i { font-size: 22px; color: #ffffff; }
+.social-icons i { font-size: 1.6rem; color: #ffffff; }
 
+/* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
-  .right-sidebar { height: auto; width: 100%; top: auto; bottom: 0; flex-direction: row; border-left: none; border-top: var(--line-thin-white); padding: 20px; }
-  .side-nav { flex-direction: row; gap: 20px; }
-  .est-text { margin-bottom: 0; margin-right: 20px; writing-mode: horizontal-tb; }
-  .side-nav a { writing-mode: horizontal-tb; }
-  main { margin-right: 0; margin-bottom: 80px; }
+  #custom-cursor { display: none; }
+  body { overflow-y: auto; cursor: auto !important; }
+  
+  .right-sidebar { 
+    position: relative; height: auto; width: 100%; 
+    border-left: none; border-bottom: var(--line-thin-white);
+    padding: 1.5rem; flex-direction: row; justify-content: space-between;
+  }
+  .side-nav { flex-direction: row; gap: 1.5rem; }
+  .est-text, .side-nav a { writing-mode: horizontal-tb; font-size: 1.125rem; }
+  .est-text { margin-bottom: 0; }
+  
+  main { margin-right: 0; height: auto; }
+  .page { padding: 4rem 1.5rem; height: auto; min-height: 60vh; }
+  .hero-footer { padding: 2.5rem 1.5rem; flex-direction: column; gap: 2rem; }
+  .footer-nav { gap: 1.5rem; justify-content: center; }
+  .footer-nav a { font-size: 1.25rem; }
+  .social-icons { margin-left: 0; }
 }
 </style>
 </head>
@@ -238,14 +253,14 @@ main {
 
     <section id="distribution" class="page">
         <div class="info-card">
-            <h2 style="font-size: 32px; font-style: italic; margin-bottom: 25px;">Distribution</h2>
+            <h2 style="font-size: 2.5rem; font-style: italic; margin-bottom: 2rem;">Distribution</h2>
             <p class="description">Strategic partnerships across global digital streaming platforms.</p>
         </div>
     </section>
 
     <section id="contact" class="page">
         <div class="info-card">
-            <h2 style="font-size: 32px; font-style: italic; margin-bottom: 25px;">Contact</h2>
+            <h2 style="font-size: 2.5rem; font-style: italic; margin-bottom: 2rem;">Contact</h2>
             <p class="description">support@undersouthern.asia</p>
         </div>
     </section>
@@ -270,14 +285,16 @@ const cursor = document.getElementById('custom-cursor');
 let firstMove = true;
 
 document.addEventListener('mousemove', (e) => {
-  if (firstMove) {
-    cursor.style.opacity = '1';
-    firstMove = false;
+  if (window.innerWidth > 768) {
+    if (firstMove) {
+      cursor.style.opacity = '1';
+      firstMove = false;
+    }
+    requestAnimationFrame(() => {
+      cursor.style.left = (e.clientX - 15) + 'px';
+      cursor.style.top = (e.clientY - 15) + 'px';
+    });
   }
-  requestAnimationFrame(() => {
-    cursor.style.left = (e.clientX - 15) + 'px';
-    cursor.style.top = (e.clientY - 15) + 'px';
-  });
 });
 
 function showPage(id) {
