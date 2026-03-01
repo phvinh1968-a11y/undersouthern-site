@@ -183,6 +183,21 @@ main {
   color: #ffffff; 
 }
 
+/* STYLE CHO CHỮ APPLY (ĐÃ THÊM IN NGHIÊNG) */
+.apply-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
+  color: #ffffff;
+  text-decoration: underline;
+  font-weight: 500;
+  font-style: italic; /* Chữ nghiêng */
+  transition: var(--transition);
+}
+.apply-link:hover {
+  text-decoration: none;
+}
+
 /* STYLE CHO LIST NỘI DUNG */
 .content-list {
   list-style: none;
@@ -304,6 +319,7 @@ main {
         <p class="description">
           UNDERSOUTHERN is an independent record label and global distribution partner for artists and rights owners. We focus on long-term development, strategic distribution, and worldwide monetization across 45+ digital streaming platforms.
         </p>
+        <a href="https://undersouthern.asia/support" class="apply-link">Apply</a>
       </div>
     </section>
 
@@ -353,7 +369,6 @@ main {
 // XỬ LÝ MÀN HÌNH CHỜ (LOADER)
 window.addEventListener('load', () => {
   const loader = document.getElementById('loader');
-  // Chờ 1.5 giây để hiệu ứng pulse chạy rồi mới ẩn (tùy chỉnh thời gian ở đây)
   setTimeout(() => {
     loader.classList.add('loader-hidden');
   }, 1500); 
