@@ -30,9 +30,39 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  /* Ẩn con trỏ mặc định */
+  cursor: none !important;
 }
 
-/* SIDEBARS RESPONSIVE */
+/* CUSTOM CURSOR (DẤU CỘNG) */
+#custom-cursor {
+  position: fixed;
+  width: 30px; height: 30px;
+  pointer-events: none;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0; 
+  transition: opacity 0.3s ease;
+}
+#custom-cursor::before, #custom-cursor::after {
+  content: ''; position: absolute; background-color: #000000;
+}
+#custom-cursor::before {
+  width: 100%; height: 6px; top: 12px; left: 0;
+  clip-path: polygon(0 0, 40% 0, 40% 100%, 0 100%, 0 0, 60% 0, 60% 100%, 100% 100%, 100% 0);
+}
+#custom-cursor::after {
+  width: 6px; height: 100%; left: 12px; top: 0;
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%, 0 60%, 100% 60%, 100% 100%, 0 100%);
+}
+
+a, button, [onclick] {
+  cursor: none !important;
+}
+
+/* SIDEBARS */
 .left-support-bar {
   position: fixed;
   left: 0; top: 0;
@@ -72,7 +102,7 @@ body {
 }
 .est-text { writing-mode: vertical-rl; font-weight: 500; font-size: 1.5rem; letter-spacing: 1.5px; }
 
-/* MAIN CONTENT CO GIÃN */
+/* MAIN CONTENT */
 main { 
   margin-left: 80px; 
   margin-right: var(--sidebar-width); 
@@ -87,47 +117,52 @@ h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 500; margin-bottom: 20px; l
 h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; line-height: 1.2; }
 .desc { font-size: clamp(16px, 1.5vw, 22px); line-height: 1.5; max-width: 850px; margin-bottom: 30px; }
 
-/* LINKS & NAVIGATION */
-.pitch-link { font-size: clamp(24px, 3vw, 32px); text-decoration: underline; color: #000000; cursor: pointer; transition: var(--transition); }
+.pitch-link { font-size: clamp(24px, 3vw, 32px); text-decoration: underline; color: #000000; transition: var(--transition); }
 .pitch-link:hover { text-decoration: none; }
 
 .bottom-nav-list { border-top: var(--line-thin-black); margin-top: 80px; width: 100%; }
 .nav-row { border-bottom: var(--line-thin-black); padding: 25px 0; }
-.nav-row a { font-size: 14px; font-weight: 700; text-transform: uppercase; text-decoration: underline; transition: var(--transition); color: #000000; }
-.nav-row a:hover { text-decoration: none; }
+.nav-row a { font-size: 14px; font-weight: 700; text-transform: uppercase; text-decoration: none; transition: var(--transition); color: #000000; }
 
-/* FOOTER RESPONSIVE */
+.accordion-trigger { display: flex; align-items: center; justify-content: space-between; }
+.accordion-trigger i { transition: transform 0.3s ease; }
+.accordion-trigger.active i { transform: rotate(180deg); }
+.accordion-content { display: none; padding: 25px 0; font-size: 16px; line-height: 2.8; }
+.accordion-content a { color: #000000; text-decoration: underline; font-weight: 700; }
+
+/* FOOTER */
 .hero-footer { width: 100%; padding: 3rem 8%; display: flex; border-top: var(--line-thin-black); margin-top: auto; }
 .footer-nav { display: flex; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; flex-wrap: wrap; }
 .footer-nav a { text-decoration: none; color: #000000; font-size: 1.5rem; font-weight: 500; transition: var(--transition); }
 .footer-nav a:hover { font-style: italic; }
 .footer-nav a.active-page { font-style: italic; background-color: var(--active-yellow); padding: 5px 15px; border-radius: 4px; }
-
 .social-icons { display: flex; gap: 1.5rem; align-items: center; }
 .social-icons i { font-size: 1.6rem; color: #000000; transition: var(--transition); }
-.social-icons i:hover { transform: scale(1.2); }
 
-/* MODAL RESPONSIVE */
+/* MODAL CẬP NHẬT KHOẢNG CÁCH */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 2000; backdrop-filter: blur(5px); }
-.modal-box { background: #ffffff; padding: clamp(20px, 5vw, 40px); max-width: 500px; width: 90%; border: 2px solid #000000; text-align: center; }
-.modal-text { font-size: clamp(16px, 1.2vw, 18px); line-height: 1.6; margin-bottom: 30px; }
-.modal-btn { background: #000000; color: #ffffff; padding: 12px 30px; font-size: 16px; font-weight: 700; border: none; cursor: pointer; }
+.modal-box { background: #ffffff; padding: clamp(30px, 5vw, 50px) clamp(20px, 5vw, 40px); max-width: 500px; width: 90%; border: 2px solid #000000; text-align: center; position: relative; }
+.modal-close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #000000; font-weight: bold; line-height: 1; }
+/* TĂNG KHOẢNG CÁCH XUỐNG NÚT */
+.modal-text { font-size: clamp(16px, 1.2vw, 18px); line-height: 1.6; margin-bottom: 30px; color: #000000; }
+.modal-btn { background: #000000; color: #ffffff; padding: 12px 30px; font-size: 16px; font-weight: 700; border: none; text-transform: uppercase; }
 
-/* MOBILE BREAKPOINT */
 @media (max-width: 768px) {
-  body { overflow-y: auto; }
+  #custom-cursor { display: none; }
+  body { cursor: auto !important; overflow-y: auto; }
   .left-support-bar { width: 60px; padding: 20px 0; }
   .right-sidebar { position: relative; height: auto; width: 100%; border-left: none; border-bottom: var(--line-thin-black); flex-direction: row; padding: 1.2rem; justify-content: center; }
   .est-text { writing-mode: horizontal-tb; font-size: 1rem; }
   main { margin-left: 60px; margin-right: 0; height: auto; }
   .support-content { padding: 40px 20px; }
   .hero-footer { padding: 2rem 20px; flex-direction: column; gap: 2rem; }
-  .footer-nav { justify-content: center; }
 }
 </style>
 </head>
 
 <body>
+
+    <div id="custom-cursor"></div>
 
     <aside class="left-support-bar">
         <a href="https://undersouthern.asia/" class="close-btn">X</a>
@@ -149,8 +184,33 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
             <a onclick="openPitchModal()" class="pitch-link">Send us your pitch</a>
 
             <div class="bottom-nav-list">
-                <div class="nav-row"><a href="#">FAQ</a></div>
-                <div class="nav-row"><a href="#">Pricing & Delivery</a></div>
+                <div class="nav-row">
+                    <a onclick="toggleAccordion('faq-content', this)" class="accordion-trigger">
+                        <span>FAQ</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+                    <div id="faq-content" class="accordion-content">
+                        • How to verify your <a href="https://artists.spotify.com/" target="_blank">Spotify</a> profile<br>
+                        • How to claim your <a href="https://artists.apple.com/" target="_blank">Apple Music</a> profile<br>
+                        • How to get verified on <a href="https://www.tiktok.com/" target="_blank">TikTok</a><br>
+                        • How to apply for a <a href="https://support.google.com/youtube/answer/7336634" target="_blank">YouTube</a> Official Artist Channel (OAC)
+                    </div>
+                </div>
+
+                <div class="nav-row">
+                    <a onclick="toggleAccordion('pricing-content', this)" class="accordion-trigger">
+                        <span>Pricing & Delivery</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+                    <div id="pricing-content" class="accordion-content">
+                        • Distribution Fee: Performance-based or custom boutique plans.<br>
+                        • Revenue Share: Standard artist-friendly splits with 80% ownership retention.<br>
+                        • Delivery Timeline: Standard ingestion within 3-5 business days.<br>
+                        • Express Submission: Priority ingestion available for strategic launch dates.<br>
+                        • Territory: Worldwide monetization across 45+ digital streaming platforms.
+                    </div>
+                </div>
+
                 <div class="nav-row"><a href="mailto:support@undersouthern.asia">Contact</a></div>
             </div>
         </div>
@@ -171,6 +231,7 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
 
     <div id="pitchModal" class="modal-overlay">
         <div class="modal-box">
+            <span class="modal-close-x" onclick="closePitchModal()">×</span>
             <p class="modal-text">
                 Please submit your pitches well in advance. We appreciate hearing about your priorities here 6-8 weeks in advance for each new release.
             </p>
@@ -179,21 +240,41 @@ h2 { font-size: clamp(28px, 4vw, 52px); font-weight: 500; margin-bottom: 25px; l
     </div>
 
 <script>
-function openPitchModal() {
-    document.getElementById('pitchModal').style.display = 'flex';
+// CURSOR LOGIC
+const cursor = document.getElementById('custom-cursor');
+let firstMove = true;
+
+document.addEventListener('mousemove', (e) => {
+  if (window.innerWidth > 768) {
+    if (firstMove) {
+      cursor.style.opacity = '1';
+      firstMove = false;
+    }
+    requestAnimationFrame(() => {
+      cursor.style.left = (e.clientX - 15) + 'px';
+      cursor.style.top = (e.clientY - 15) + 'px';
+    });
+  }
+});
+
+function toggleAccordion(contentId, triggerElement) {
+    const content = document.getElementById(contentId);
+    if (content.style.display === 'block') {
+        content.style.display = 'none';
+        triggerElement.classList.remove('active');
+    } else {
+        content.style.display = 'block';
+        triggerElement.classList.add('active');
+    }
 }
 
+function openPitchModal() { document.getElementById('pitchModal').style.display = 'flex'; }
+function closePitchModal() { document.getElementById('pitchModal').style.display = 'none'; }
 function confirmPitch() {
     document.getElementById('pitchModal').style.display = 'none';
     window.location.href = "mailto:support@undersouthern.asia?subject=Pitch Submission Request";
 }
-
-window.onclick = function(event) {
-    let modal = document.getElementById('pitchModal');
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
+window.onclick = function(e) { if (e.target.id === 'pitchModal') closePitchModal(); }
 </script>
 
 </body>
