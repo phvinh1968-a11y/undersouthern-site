@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>submit music</title>
+    <title>Undersouthern - Submit Music</title>
     
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         :root {
@@ -150,6 +152,7 @@
         
         .btn-submit { background: var(--accent); color: #fff; border: none; padding: 18px; font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-top: 40px; width: 100%; transition: opacity 0.2s; letter-spacing: 0.1em; }
         .btn-submit:hover { opacity: 0.8; }
+        .btn-submit:disabled { background: #999; cursor: not-allowed; }
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -196,7 +199,7 @@
         <div class="form-grid">
             <div class="form-group full-width">
                 <label>contact email</label>
-                <input type="email" placeholder="your@example.com" required style="text-transform: none;">
+                <input type="email" id="contact-email" placeholder="your@example.com" required style="text-transform: none;">
             </div>
 
             <div class="form-group">
@@ -234,19 +237,19 @@
             </div>
             <div class="form-group">
                 <label>title version</label>
-                <input type="text" placeholder="eg. Radio Edit, Remix">
+                <input type="text" id="title-version" placeholder="eg. Radio Edit, Remix">
             </div>
 
             <div class="form-group">
                 <label>primary artist</label>
-                <div class="tags-container" onclick="this.querySelector('input').focus()">
+                <div class="tags-container" id="main-primary-artist" onclick="this.querySelector('input').focus()">
                     <input type="text" class="tag-input" placeholder="add artist + press enter">
                 </div>
             </div>
 
             <div class="form-group">
                 <label>featured artist</label>
-                <div class="tags-container" onclick="this.querySelector('input').focus()">
+                <div class="tags-container" id="main-featured-artist" onclick="this.querySelector('input').focus()">
                     <input type="text" class="tag-input" placeholder="add artist + press enter">
                 </div>
             </div>
@@ -262,7 +265,7 @@
 
             <div class="form-group">
                 <label>producer</label>
-                <div class="tags-container" onclick="this.querySelector('input').focus()">
+                <div class="tags-container" id="main-producers" onclick="this.querySelector('input').focus()">
                     <input type="text" class="tag-input" placeholder="add producer + press enter">
                 </div>
             </div>
@@ -276,13 +279,13 @@
 
             <div class="form-group select-wrapper">
                 <label>explicit content</label>
-                <select required>
+                <select id="is-explicit" required>
                     <option value="no" selected>no</option><option value="yes">yes</option><option value="cleaned">cleaned</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>release date</label>
-                <input type="date" required style="color: var(--text-secondary);">
+                <input type="date" id="release-date" required style="color: var(--text-secondary);">
             </div>
 
             <div class="form-group full-width tracks-section">
@@ -292,7 +295,7 @@
             </div>
         </div>
 
-        <button type="submit" class="btn-submit">submit for distribution</button>
+        <button type="submit" class="btn-submit" id="btn-submit">submit for distribution</button>
     </form>
 
     <footer>
@@ -312,8 +315,12 @@
 </div>
 
 <script>
-    const genres = ["Alternative", "Alternative Rock", "Alternativo & Rock Latino", "Anime", "Baladas y Boleros", "Big Band", "Blues", "Brazilian", "C-Pop", "Cantopop/HK-Pop", "Children's", "Chinese", "Christian", "Classical", "Comedy", "Contemporary Latin", "Country", "Dance", "Easy Listening", "Educational", "Electronic", "Enka", "Experimental", "Fitness & Workout", "Folk", "French Pop", "German Folk", "German Pop", "Hip-Hop/Rap", "Holiday", "Indo Pop", "Inspirational", "Instrumental", "J-Pop", "Jazz", "K-Pop", "Karaoke", "Kayokyoku", "Latin", "Latin Jazz", "Metal", "New Age", "Opera", "Original Pilipino Music", "Pop", "Pop Latino", "Punk", "R&B", "Raices", "Reggae", "Reggaeton y Hip-Hop", "Regional Mexicano", "Rock", "Salsa y Tropical", "Singer/Songwriter", "Soul", "Soundtrack", "Spoken Word", "Tai-Pop", "Thai Pop", "Trot", "Vocal/Nostalgia", "World"];
+    // Bước 2: Khởi tạo kết nối Supabase
+    const SUPABASE_URL = 'https://rrbekwpxgfcptyzrrkgf.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_sTpdUkGB_HC3Im0a1hfoyg_INkr0hdA';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    const genres = ["Alternative", "Alternative Rock", "Alternativo & Rock Latino", "Anime", "Baladas y Boleros", "Big Band", "Blues", "Brazilian", "C-Pop", "Cantopop/HK-Pop", "Children's", "Chinese", "Christian", "Classical", "Comedy", "Contemporary Latin", "Country", "Dance", "Easy Listening", "Educational", "Electronic", "Enka", "Experimental", "Fitness & Workout", "Folk", "French Pop", "German Folk", "German Pop", "Hip-Hop/Rap", "Holiday", "Indo Pop", "Inspirational", "Instrumental", "J-Pop", "Jazz", "K-Pop", "Karaoke", "Kayokyoku", "Latin", "Latin Jazz", "Metal", "New Age", "Opera", "Original Pilipino Music", "Pop", "Pop Latino", "Punk", "R&B", "Raices", "Reggae", "Reggaeton y Hip-Hop", "Regional Mexicano", "Rock", "Salsa y Tropical", "Singer/Songwriter", "Soul", "Soundtrack", "Spoken Word", "Tai-Pop", "Thai Pop", "Trot", "Vocal/Nostalgia", "World"];
     const languages = ["Vietnamese (VI)", "English (EN)", "Korean (KO)", "Japanese (JA)", "Chinese (ZH)", "French (FR)", "Spanish (ES)", "German (DE)", "Italian (IT)", "Portuguese (PT)", "Russian (RU)", "Arabic (AR)", "Hindi (HI)", "Thai (TH)", "Indonesian (ID)", "Bengali (BN)", "Turkish (TR)", "Malay (MS)", "Urdu (UR)", "Persian (FA)", "Swahili (SW)", "Tamil (TA)", "Telugu (TE)", "Marathi (MR)", "Gujarati (GU)", "Kannada (KN)", "Punjabi (PA)", "Filipino (TL)", "Malayalam (ML)", "Sinhala (SI)", "Burmese (MY)", "Khmer (KM)", "Lao (LO)", "Nepali (NE)", "Pashto (PS)", "Hebrew (HE)", "Greek (EL)", "Dutch (NL)", "Swedish (SV)", "Norwegian (NO)", "Danish (DA)", "Finnish (FI)", "Polish (PL)", "Czech (CS)", "Hungarian (HU)", "Romanian (RO)", "Bulgarian (BG)", "Serbian (SR)", "Croatian (HR)", "Slovak (SK)"];
 
     function populateDropdowns() {
@@ -323,7 +330,6 @@
             pGenre.add(new Option(g, g));
             sGenre.add(new Option(g, g));
         });
-
         const langSelect = document.getElementById('language-select');
         languages.forEach(l => {
             langSelect.add(new Option(l, l));
@@ -332,14 +338,97 @@
 
     let trackCount = 0;
 
-    function handleFinalSubmit(e) {
-        e.preventDefault();
-        document.getElementById('success-modal').style.display = 'flex';
+    // Bước 3: Hàm lấy Tags từ container
+    function getTags(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return [];
+        return Array.from(container.querySelectorAll('.tag')).map(t => t.innerText.replace('✕', '').trim());
     }
 
-    function closeModal() {
-        document.getElementById('success-modal').style.display = 'none';
+    // Bước 4: Hàm xử lý gửi dữ liệu thật sự
+    async function handleFinalSubmit(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btn-submit');
+        btn.innerText = "uploading files...";
+        btn.disabled = true;
+
+        try {
+            // 1. Tải Artwork lên Storage
+            const artFile = document.getElementById('artwork-file').files[0];
+            let artworkUrl = "";
+            if (artFile) {
+                const fileName = `art_${Date.now()}.${artFile.name.split('.').pop()}`;
+                const { data: artData, error: artError } = await supabaseClient.storage
+                    .from('artworks')
+                    .upload(fileName, artFile);
+                if (artError) throw artError;
+                artworkUrl = supabaseClient.storage.from('artworks').getPublicUrl(fileName).data.publicUrl;
+            }
+
+            // 2. Lưu thông tin Release vào bảng 'releases'
+            const { data: relData, error: relError } = await supabaseClient
+                .from('releases')
+                .insert([{
+                    contact_email: document.getElementById('contact-email').value,
+                    artwork_url: artworkUrl,
+                    release_type: document.getElementById('release-type').value,
+                    title: document.getElementById('main-title-input').value,
+                    version: document.getElementById('title-version').value,
+                    primary_artists: getTags('main-primary-artist'),
+                    featured_artists: getTags('main-featured-artist'),
+                    genres: [document.getElementById('primary-genre').value, document.getElementById('secondary-genre').value].filter(g => g),
+                    producers: getTags('main-producers'),
+                    language: document.getElementById('language-select').value,
+                    is_explicit: document.getElementById('is-explicit').value,
+                    release_date: document.getElementById('release-date').value
+                }])
+                .select();
+
+            if (relError) throw relError;
+            const releaseId = relData[0].id;
+
+            // 3. Xử lý từng bài hát (Tracks)
+            const trackRows = document.querySelectorAll('.track-row');
+            for (let i = 0; i < trackRows.length; i++) {
+                const row = trackRows[i];
+                const trackIdNum = row.id.split('-').pop();
+                const audioFile = document.getElementById(`file-${trackIdNum}`).files[0];
+                let audioUrl = "";
+
+                if (audioFile) {
+                    const audioName = `${releaseId}/track_${i}_${Date.now()}.${audioFile.name.split('.').pop()}`;
+                    const { error: audioErr } = await supabaseClient.storage
+                        .from('audio_tracks')
+                        .upload(audioName, audioFile);
+                    if (audioErr) throw audioErr;
+                    audioUrl = supabaseClient.storage.from('audio_tracks').getPublicUrl(audioName).data.publicUrl;
+                }
+
+                // Lưu vào bảng 'tracks'
+                const { error: tErr } = await supabaseClient.from('tracks').insert([{
+                    release_id: releaseId,
+                    song_title: row.querySelector('input[placeholder="track name"]').value,
+                    track_primary_artists: Array.from(row.querySelectorAll('.tags-container')[0].querySelectorAll('.tag')).map(t => t.innerText.replace('✕', '').trim()),
+                    track_featured_artists: Array.from(row.querySelectorAll('.tags-container')[1].querySelectorAll('.tag')).map(t => t.innerText.replace('✕', '').trim()),
+                    track_producers: Array.from(row.querySelectorAll('.tags-container')[2].querySelectorAll('.tag')).map(t => t.innerText.replace('✕', '').trim()),
+                    audio_url: audioUrl,
+                    sort_order: i + 1
+                }]);
+                if (tErr) throw tErr;
+            }
+
+            document.getElementById('success-modal').style.display = 'flex';
+
+        } catch (error) {
+            console.error(error);
+            alert("Upload failed: " + error.message);
+        } finally {
+            btn.innerText = "submit for distribution";
+            btn.disabled = false;
+        }
     }
+
+    function closeModal() { document.getElementById('success-modal').style.display = 'none'; }
 
     function toggleTooltip(e) {
         e.stopPropagation();
