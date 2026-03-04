@@ -1,425 +1,292 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNDERSOUTHERN | Submit Release</title>
+    
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap');
 
-<title>UNDERSOUTHERN – Independent Record Label & Global Distribution</title>
-<meta name="description" content="UNDERSOUTHERN is an independent record label and global distribution partner based in Vietnam. We focus on long-term development and worldwide monetization for artists across 45+ platforms.">
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            background-color: #000000; 
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px 2% 20px 2%; 
+            box-sizing: border-box;
+            justify-content: space-between;
+            position: relative; 
+        }
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+        main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            flex-grow: 1;
+            padding: 40px 8%; 
+        }
 
-*{margin:0;padding:0;box-sizing:border-box;}
-html { scroll-behavior: smooth; height: 100%; font-size: 16px; }
+        .content-left {
+            max-width: 600px;
+        }
 
-:root {
-  --line-thin-white: 1.5px solid #ffffff; 
-  --transition: 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  --overlay-bg: #111111; 
-  --sidebar-width: 100px;
-}
+        .info-tag {
+            text-decoration: none;
+            color: #666;
+            font-size: 11px;
+            margin-bottom: 30px;
+            display: inline-block;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+            cursor: default;
+        }
 
-/* LOADING SCREEN */
-#loader {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: #000000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 20000;
-  transition: opacity 0.6s ease, visibility 0.6s;
-}
-.loader-logo {
-  width: 80px;
-  animation: pulse 1.5s infinite ease-in-out;
-}
-@keyframes pulse {
-  0% { transform: scale(0.9); opacity: 0.5; }
-  50% { transform: scale(1.1); opacity: 1; }
-  100% { transform: scale(0.9); opacity: 0.5; }
-}
-.loader-hidden { opacity: 0; visibility: hidden; }
+        h1 {
+            font-size: 48px;
+            margin: 0 0 20px 0;
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--overlay-bg); 
-  color: #ffffff; 
-  overflow: hidden;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  cursor: none !important; 
-}
+        .subtitle {
+            font-size: 16px;
+            color: #888;
+            margin-bottom: 45px;
+            line-height: 1.6;
+        }
 
-a, button, [onclick] {
-  cursor: none !important;
-}
+        .button-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
 
-#video-bg {
-  position: fixed; 
-  top: 0; left: 0; width: 100%; height: 100%;
-  object-fit: cover; 
-  z-index: -2; 
-  opacity: 0.15; 
-  filter: grayscale(1);
-}
+        .btn-classic {
+            background-color: transparent;
+            color: #ffffff;
+            padding: 8px 20px;
+            border-radius: 4px; 
+            border: 1px solid #ffffff;
+            font-family: 'Fira Code', monospace;
+            font-weight: 400;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: lowercase; 
+            text-decoration: none;
+            display: inline-block;
+        }
 
-#custom-cursor {
-  position: fixed;
-  width: 30px; height: 30px;
-  pointer-events: none;
-  z-index: 10000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0; 
-  transition: opacity 0.3s ease;
-}
-#custom-cursor::before, #custom-cursor::after {
-  content: ''; position: absolute; background-color: #ffffff;
-}
-#custom-cursor::before {
-  width: 100%; height: 6px; top: 12px; left: 0;
-  clip-path: polygon(0 0, 40% 0, 40% 100%, 0 100%, 0 0, 60% 0, 60% 100%, 100% 100%, 100% 0);
-}
-#custom-cursor::after {
-  width: 6px; height: 100%; left: 12px; top: 0;
-  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%, 0 60%, 100% 60%, 100% 100%, 0 100%);
-}
+        .btn-classic:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
 
-.right-sidebar {
-  position: fixed;
-  right: 0; top: 0;
-  height: 100vh;
-  width: var(--sidebar-width); 
-  border-left: var(--line-thin-white); 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4vh 0; 
-  background: transparent; 
-  z-index: 99;
-}
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 450px;
+            flex-shrink: 0;
+        }
 
-.side-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 5vh; 
-  align-items: center;
-}
+        .card-preview {
+            background-color: transparent; 
+            width: 100%; 
+            height: 152px; 
+            border-radius: 12px; 
+            overflow: hidden;
+            position: relative;
+        }
 
-.est-text {
-  writing-mode: vertical-rl;
-  text-transform: capitalize;
-  font-weight: 500;
-  font-size: clamp(1rem, 2vh, 1.5rem); 
-  color: #ffffff; 
-  letter-spacing: 1.5px;
-  white-space: nowrap;
-}
+        .spotify-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
 
-.side-nav a {
-  writing-mode: vertical-rl;
-  text-transform: capitalize;
-  font-weight: 500;
-  font-size: 1.5rem; 
-  color: #ffffff; 
-  letter-spacing: 1.5px;
-  white-space: nowrap;
-  text-decoration: none;
-  transition: var(--transition);
-}
-.side-nav a:hover { font-style: italic; }
+        .spotify-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; 
+            border: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out; 
+            pointer-events: none;
+        }
 
-main { 
-  margin-right: var(--sidebar-width); 
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
+        .spotify-container iframe.active {
+            opacity: 1;
+            z-index: 10;
+            pointer-events: auto;
+        }
 
-#content-container {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-}
+        .playlist-static {
+            width: 100%;
+            height: 152px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
 
-.page {
-  flex: 1;
-  display: none;
-  padding: 5% 8%;
-  overflow-y: auto;
-  align-items: center;
-  justify-content: flex-start;
-}
+        .bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 8%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
 
-#home { display: flex; }
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
 
-.info-card { width: 100%; max-width: 50rem; }
+        .social-icons a {
+            color: #444; 
+            font-size: 16px;
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
 
-.tagline {
-  background: #ffffff;
-  color: #000000; 
-  display: inline-block;
-  padding: 0.5rem 1.5rem;
-  font-size: clamp(1.5rem, 5vw, 2.625rem);
-  font-weight: 700;
-  font-style: italic;
-  margin-bottom: 2rem;
-}
+        .social-icons a:hover {
+            color: #ffffff; 
+        }
 
-.description {
-  font-size: clamp(1.125rem, 3vw, 1.5rem);
-  font-weight: 400;
-  line-height: 1.6;
-  color: #ffffff; 
-}
+        .copyright-text {
+            font-size: 10px;
+            color: #444;
+            letter-spacing: 0.5px;
+            white-space: nowrap; 
+        }
 
-.apply-link {
-  display: inline-block;
-  margin-top: 1.5rem;
-  font-size: clamp(1.125rem, 3vw, 1.5rem);
-  color: #ffffff;
-  text-decoration: underline;
-  font-weight: 500;
-  font-style: italic; 
-  transition: var(--transition);
-}
-.apply-link:hover {
-  text-decoration: none;
-}
-
-.content-list {
-  list-style: none;
-  margin-top: 2rem;
-  margin-bottom: 2.5rem;
-}
-.content-list li {
-  font-size: 1.125rem;
-  margin-bottom: 1rem;
-  padding-left: 1.5rem;
-  position: relative;
-  opacity: 0.9;
-}
-.content-list li::before {
-  content: "—";
-  position: absolute;
-  left: 0;
-}
-
-.demo-btn {
-  display: inline-block;
-  background: #ffffff;
-  color: #000000;
-  padding: 0.8rem 2rem;
-  font-size: 1.125rem;
-  font-weight: 700;
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: var(--transition);
-}
-.demo-btn:hover {
-  font-style: italic;
-  opacity: 0.9;
-}
-
-.hero-footer {
-  width: 100%;
-  padding: 3rem 5%;
-  display: flex;
-  justify-content: flex-start; 
-  border-top: var(--line-thin-white); 
-}
-.footer-nav { display: flex; gap: 3.5rem; align-items: center; flex-wrap: wrap; }
-.footer-nav a { text-decoration: none; color: #ffffff; font-size: 1.5rem; font-weight: 500; transition: var(--transition); }
-.footer-nav a:hover { font-style: italic; }
-
-.social-icons { display: flex; gap: 2rem; margin-left: 1.5rem; align-items: center; }
-.social-icons a { text-decoration: none; display: flex; align-items: center; }
-.social-icons i { font-size: 1.6rem; color: #ffffff; transition: var(--transition); }
-.social-icons i:hover { transform: scale(1.2); opacity: 0.8; }
-
-@media (max-width: 768px) {
-  #custom-cursor { display: none; }
-  body { overflow-y: auto; cursor: auto !important; }
-  
-  .right-sidebar { 
-    position: relative; 
-    height: auto; 
-    width: 100%; 
-    border-left: none; 
-    border-bottom: var(--line-thin-white); 
-    padding: 1.2rem 1rem; 
-    flex-direction: row; 
-    justify-content: center; 
-    gap: 1.2rem; 
-  }
-  
-  .side-nav { 
-    flex-direction: row; 
-    gap: 1.2rem; 
-  }
-  
-  .est-text, .side-nav a { 
-    writing-mode: horizontal-tb; 
-    font-size: clamp(0.85rem, 3.2vw, 1rem); 
-  }
-  
-  .est-text { margin-bottom: 0; }
-  
-  main { margin-right: 0; height: auto; }
-  .page { padding: 4rem 1.5rem; height: auto; min-height: 60vh; }
-  .hero-footer { padding: 2.5rem 1.5rem; flex-direction: column; gap: 2rem; }
-  .footer-nav { gap: 1rem; justify-content: center; }
-  .footer-nav a { font-size: 1.25rem; }
-  .social-icons { margin-left: 0; }
-}
-</style>
+        @media (max-width: 900px) {
+            body, html { overflow-y: auto; }
+            main { 
+                flex-direction: column; 
+                text-align: center; 
+                padding: 40px 5%; 
+                gap: 50px;
+            }
+            .content-left { max-width: 100%; }
+            .info-tag { font-size: 10px; }
+            .button-group {
+                justify-content: center;
+            }
+            h1 { font-size: 32px; }
+            .right-section { 
+                width: 100%; 
+                max-width: 450px; 
+                margin: 0 auto; 
+            }
+            .bottom-bar {
+                flex-direction: column-reverse; 
+                align-items: center;
+                gap: 20px;
+                text-align: center;
+                padding: 0 5%;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div id="loader">
-  <img src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png" alt="Logo" class="loader-logo">
-</div>
+    <div class="container">
+        <main>
+            <div class="content-left">
+                <div class="info-tag">→ 80% of independent music never reaches its audience.<br>UNDERSOUTHERN exists to change that.</div>
+                
+                <h1>Are you ready for the whole world to hear your music?</h1>
+                <p class="subtitle">You’re one step away from global distribution.
+                 UNDERSOUTHERN is ready to deliver your sound worldwide.</p>
+                
+                <div class="button-group">
+                    <a href="https://forms.gle/9bUqCK49xQ6HY2hK7" target="_blank" class="btn-classic">submit release</a>
+                    <a href="https://undersouthern.asia/support" target="_blank" class="btn-classic">work with us</a>
+                </div>
+            </div>
 
-<video autoplay muted loop playsinline id="video-bg">
-  <source src="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/video_background.mp4" type="video/mp4">
-</video>
+            <div class="right-section">
+                <div class="card-preview">
+                    <div class="spotify-container" id="spotify-player">
+                        <iframe class="active" src="https://open.spotify.com/embed/album/5aoqkXqDO3zPDsce0AEECo?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/6r6oFA4A3qBJvyUyqNb04A?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/57leJPLOOZLhhCTwC6CPQm?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/1SQEeAt8vlQFdyYosUtxQr?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/68vxgA5zO0y5G1Y0criXKi?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/1BUMI4NicwGRBBaTLwVSl7?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/2DlY2RwaWblnOe7B4I7DYq?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/2lBIGvt6FuOXIbuO2poqUa?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/4VhOJ5XrJ1s8qqfWNGeHkj?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/1PPQ7HfhdJ8RJcklxmltCm?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/5mcqHxt2VDyGogifueV7rG?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/18cBM2ge9GX7U2amjwWZFh?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/2lCY8I4oPRojAtopOo6TT6?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/1E9RvZu6Pfuw67pnDRaO30?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/4EaICMNUzihXYBXQ5akvDM?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/1vUk5uffdOfflFpeDcRA4Q?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/3WV298UDO93zRXaWVKqIbm?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/7D3LGdHrU5atiSeYZNkL6p?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/01PFPsR44uYy3VR0agz3m5?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/2GwEZDnDdZHB1gAqxIoG9l?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/0F4MhRod3pOBocPl4iNhZe?utm_source=generator" width="100%" height="152" frameBorder="0"></iframe>
+                    </div>
+                </div>
 
-<div id="custom-cursor"></div>
+                <div class="playlist-static">
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/2pAVboOJjNY2HKqCx0Ii9J?utm_source=generator" width="100%" height="152" frameBorder="0" loading="lazy"></iframe>
+                </div>
+            </div>
+        </main>
 
-<aside class="right-sidebar">
-  <span class="est-text">Est. 2024</span>
-  <nav class="side-nav">
-    <a onclick="showPage('distribution')">Distribution+</a>
-    <a onclick="showPage('promotion')">Promotion</a>
-    <a onclick="goHome()">Home</a>
-  </nav>
-</aside>
-
-<main id="main-content">
-  <div id="content-container">
-    <section id="home" class="page">
-      <div class="info-card">
-        <div class="tagline">Independent Label.</div>
-        <p class="description">
-          UNDERSOUTHERN is an independent record label and global distribution partner for artists and rights owners. We focus on long-term development, strategic distribution, and worldwide monetization across 45+ digital streaming platforms.
-        </p>
-        <a href="https://undersouthern.asia/support" class="apply-link">Apply</a>
-      </div>
-    </section>
-
-    <section id="distribution" class="page">
-        <div class="info-card">
-            <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-style: italic; margin-bottom: 2rem;">Distribution</h2>
-            <p class="description">Global Music Infrastructure. We provide direct delivery to all major Digital Service Providers (DSPs) worldwide, ensuring your music reaches every corner of the globe with precision and speed.</p>
-            <ul class="content-list">
-                <li>Direct delivery to Spotify, Apple Music, YouTube Music, and TikTok.</li>
-                <li>Comprehensive metadata management and ISRC/UPC assignment.</li>
-                <li>Transparent royalty reporting and monthly automated payouts.</li>
-                <li>Content ID and Rights Management for video platforms.</li>
-            </ul>
-            <a href="https://forms.gle/Ggyyiyfg5TJBwkR19" target="_blank" class="demo-btn">Submit Your Demo</a>
+        <div class="bottom-bar">
+            <div class="social-icons">
+                <a href="https://www.facebook.com/undersouthern" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/undersouthern" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@undersouthern" target="_blank" title="Tiktok"><i class="fab fa-tiktok"></i></a>
+                <a href="https://open.spotify.com/user/31753crdkex472fzpccj4ss2asj4" target="_blank" title="Spotify"><i class="fab fa-spotify"></i></a>
+            </div>
+            <div class="copyright-text">
+                © UNDERSOUTHERN. All Rights Reserverd
+            </div>
         </div>
-    </section>
+    </div>
 
-    <section id="promotion" class="page">
-        <div class="info-card">
-            <h2 style="font-size: clamp(2rem, 5vw, 3.5rem); font-style: italic; margin-bottom: 2rem;">Promotion</h2>
-            <p class="description">Elevating independent music through global reach. Our promotion strategies focus on genuine audience growth and building a sustainable presence in the digital ecosystem.</p>
-            <ul class="content-list">
-                <li>Editorial playlist pitching across all major streaming services.</li>
-                <li>Strategic digital marketing and social media positioning.</li>
-                <li>Data-driven audience analysis and engagement growth.</li>
-                <li>Representation for curators and platform partnership opportunities.</li>
-            </ul>
-        </div>
-    </section>
-  </div>
+    <script>
+        const iframes = document.querySelectorAll('#spotify-player iframe');
+        let currentIndex = 0;
 
-  <div class="hero-footer">
-    <nav class="footer-nav">
-      <a href="https://app.undersouthern.asia/login">Login</a>
-      <a href="https://undersouthern.asia/support">Support</a>
-      <div class="social-icons">
-        <a href="https://www.facebook.com/undersouthern" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="https://www.instagram.com/undersouthern" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://www.tiktok.com/@undersouthern" target="_blank" rel="noopener"><i class="fa-brands fa-tiktok"></i></a>
-        <a href="https://open.spotify.com/user/undersouthern" target="_blank" rel="noopener"><i class="fa-brands fa-spotify"></i></a>
-      </div>
-    </nav>
-  </div>
-</main>
-
-<script>
-const loader = document.getElementById('loader');
-const cursor = document.getElementById('custom-cursor');
-let firstMove = true;
-
-// XỬ LÝ KHI LOAD TRANG LẦN ĐẦU
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    loader.classList.add('loader-hidden');
-  }, 1200); 
-});
-
-// HÀM CHUYỂN TRANG CÓ LOADING CHỜ
-function switchContent(targetId) {
-  // Hiện loader lên trước
-  loader.classList.remove('loader-hidden');
-  
-  // Đợi một chút để người dùng thấy logo pulse
-  setTimeout(() => {
-    // Ẩn tất cả trang
-    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-    
-    // Hiện trang đích
-    const target = document.getElementById(targetId);
-    if(target) {
-      target.style.display = 'flex';
-    }
-    
-    // Cuộn lên đầu trang nếu nội dung dài
-    const container = target.closest('.page');
-    if(container) container.scrollTop = 0;
-
-    // Tắt loader đi
-    loader.classList.add('loader-hidden');
-  }, 800); // 800ms là thời gian lý tưởng để không gây khó chịu
-}
-
-function showPage(id) {
-  switchContent(id);
-}
-
-function goHome() {
-  switchContent('home');
-}
-
-// XỬ LÝ CURSOR
-document.addEventListener('mousemove', (e) => {
-  if (window.innerWidth > 768) {
-    if (firstMove) {
-      cursor.style.opacity = '1';
-      firstMove = false;
-    }
-    requestAnimationFrame(() => {
-      cursor.style.left = (e.clientX - 15) + 'px';
-      cursor.style.top = (e.clientY - 15) + 'px';
-    });
-  }
-});
-</script>
-
+        // THAY ĐỔI CÁCH CHUYỂN: CHUYỂN LẦN LƯỢT (SEQUENCE) THAY VÌ NGẪU NHIÊN
+        if (iframes.length > 0) {
+            setInterval(() => {
+                // Ẩn bài hiện tại
+                iframes[currentIndex].classList.remove('active');
+                
+                // Tính toán chỉ số bài tiếp theo theo thứ tự (0 -> 1 -> 2...)
+                currentIndex = (currentIndex + 1) % iframes.length;
+                
+                // Hiện bài tiếp theo
+                iframes[currentIndex].classList.add('active');
+            }, 3000); // Đã tăng thời gian lên 3 giây để người dùng dễ nhìn hơn
+        }
+    </script>
 </body>
 </html>
