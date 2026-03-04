@@ -11,6 +11,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap');
 
+        /* RESET & CƠ BẢN */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body, html {
@@ -20,34 +21,42 @@
             background-color: #000000; 
             color: #ffffff;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* LUÔN HIỆN BÀN TAY KHI TƯƠNG TÁC */
+        /*pointer-events: auto cho các vùng tương tác */
         a, button, [onclick], .accordion-trigger, .social-icons a {
             cursor: pointer !important;
         }
 
-        /* CONTAINER CHÍNH */
+        /* THIẾT LẬP FULL MÀN HÌNH CHO MÁY TÍNH */
+        @media (min-width: 1101px) {
+            body, html { overflow: hidden; }
+            .container { height: 100vh; padding: 40px 8%; }
+        }
+
         .container {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            width: 100%;
-            padding: 0 5%;
-            max-width: 1400px;
+            width: 100vw;
+            padding: 40px 6%;
             margin: 0 auto;
             justify-content: space-between;
+            box-sizing: border-box;
         }
 
+        /* NỘI DUNG CHÍNH - DÀN TRẢI TRÊN DESKTOP */
         main {
             flex-grow: 1;
             display: flex;
             align-items: center;
-            padding: 60px 0;
+            padding: 20px 0;
         }
 
         .content-support {
             width: 100%;
+            max-width: 1000px; /* Rộng hơn trên máy tính */
             animation: fadeIn 1s ease;
         }
 
@@ -55,28 +64,30 @@
 
         .info-tag {
             color: #666;
-            font-size: clamp(10px, 1.2vw, 14px);
-            margin-bottom: 20px;
+            font-size: clamp(12px, 1.2vw, 16px);
+            margin-bottom: 30px;
             letter-spacing: 1px;
             text-transform: lowercase;
         }
 
         h1 {
-            font-size: clamp(32px, 6vw, 72px);
+            /* Chữ tiêu đề cực đại trên Desktop giống trang chủ */
+            font-size: clamp(38px, 6vw, 88px); 
             font-weight: 500;
-            line-height: 1.1;
-            letter-spacing: -2px;
-            margin-bottom: 20px;
+            line-height: 1.05;
+            letter-spacing: -4px;
+            margin-bottom: 30px;
             text-transform: lowercase;
         }
 
         .subtitle {
-            font-size: clamp(14px, 1.5vw, 20px);
+            font-size: clamp(16px, 1.5vw, 22px);
             color: #888;
-            margin-bottom: 40px;
-            max-width: 700px;
+            margin-bottom: 60px;
+            max-width: 850px;
         }
 
+        /* HỆ THỐNG DANH SÁCH & ACCORDION */
         .support-list {
             border-top: 1px solid rgba(255,255,255,0.1);
             margin-top: 20px;
@@ -84,7 +95,7 @@
         
         .nav-row { 
             border-bottom: 1px solid rgba(255,255,255,0.1); 
-            padding: 20px 0;
+            padding: clamp(20px, 2.5vh, 35px) 0;
         }
 
         .accordion-trigger {
@@ -93,80 +104,85 @@
             align-items: center;
             text-decoration: none;
             color: #ffffff;
-            font-size: clamp(14px, 1.2vw, 16px);
+            font-size: clamp(15px, 1.3vw, 18px);
             text-transform: lowercase;
             transition: 0.3s;
         }
         .accordion-trigger:hover { color: #666; }
-        .accordion-trigger i { font-size: 10px; transition: 0.3s; }
+        .accordion-trigger i { font-size: 12px; transition: 0.3s; }
         .accordion-trigger.active i { transform: rotate(180deg); }
 
         .accordion-content {
             display: none;
-            padding: 15px 0;
-            font-size: clamp(12px, 1.1vw, 14px);
+            padding: 20px 0;
+            font-size: clamp(14px, 1.2vw, 16px);
             line-height: 2;
             color: #888;
         }
         .accordion-content a { color: #ffffff; text-decoration: underline; }
 
+        /* NÚT BẤM CỔ ĐIỂN - TO HƠN TRÊN DESKTOP */
         .btn-classic {
             background-color: transparent;
             color: #ffffff;
-            padding: 12px 30px;
+            padding: 14px 40px;
             border: 1px solid #ffffff;
             border-radius: 4px; 
             font-family: 'Fira Code', monospace;
-            font-size: clamp(12px, 1vw, 14px);
+            font-size: clamp(14px, 1.1vw, 16px);
             text-decoration: none;
             text-transform: lowercase;
             display: inline-block;
             transition: 0.3s;
             text-align: center;
         }
-        .btn-classic:hover { background-color: #ffffff; color: #000000; }
+        .btn-classic:hover { background-color: #ffffff; color: #000000; transform: translateY(-3px); }
 
-        /* FOOTER: ICON TRÁI - TEXT PHẢI */
+        /* FOOTER ĐỒNG BỘ TRANG CHỦ: ICON TRÁI - TEXT PHẢI */
         .bottom-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 30px 0;
+            padding: 30px 0 0 0;
             border-top: 1px solid rgba(255,255,255,0.05);
             flex-wrap: wrap;
             gap: 20px;
         }
 
-        .social-icons { display: flex; gap: 25px; order: 1; }
-        .social-icons a { color: #444; font-size: 20px; transition: 0.3s; }
-        .social-icons a:hover { color: #ffffff; transform: scale(1.1); }
+        .social-icons { display: flex; gap: clamp(25px, 3vw, 40px); order: 1; }
+        .social-icons a { color: #444; font-size: clamp(20px, 1.8vw, 26px); transition: 0.3s; }
+        .social-icons a:hover { color: #ffffff; transform: scale(1.2); }
 
         .copyright-text { 
-            font-size: 11px; 
+            font-size: clamp(11px, 1vw, 13px); 
             color: #444; 
             letter-spacing: 0.5px; 
             order: 2;
         }
 
+        /* MODAL */
         .modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.9); display: none; 
+            background: rgba(0, 0, 0, 0.95); display: none; 
             justify-content: center; align-items: center; z-index: 2000; 
-            backdrop-filter: blur(5px); 
+            backdrop-filter: blur(8px); 
             padding: 20px;
         }
         .modal-box { 
-            background: #000000; padding: 30px; max-width: 450px; width: 100%; 
+            background: #000000; padding: 40px; max-width: 500px; width: 100%; 
             border: 1px solid #ffffff; text-align: center; 
         }
-        .modal-text { font-size: 14px; color: #888; margin-bottom: 25px; }
+        .modal-text { font-size: 16px; color: #888; margin-bottom: 35px; line-height: 1.6; }
 
-        @media (max-width: 768px) {
-            main { padding: 40px 0; }
+        /* ĐIỀU CHỈNH MOBILE */
+        @media (max-width: 1100px) {
+            .container { padding: 40px 6%; }
+            main { padding: 60px 0; }
+            h1 { letter-spacing: -2px; }
             .btn-classic { width: 100%; }
-            .bottom-bar { flex-direction: column; text-align: center; }
-            .social-icons { justify-content: center; width: 100%; order: 1; }
-            .copyright-text { order: 2; width: 100%; }
+            .bottom-bar { flex-direction: column-reverse; text-align: center; padding-bottom: 20px; }
+            .social-icons { justify-content: center; width: 100%; }
+            .copyright-text { width: 100%; }
         }
     </style>
 </head>
@@ -175,9 +191,9 @@
     <div class="container">
         <main>
             <div class="content-support">
-                <div class="info-tag">→ undersouthern / support</div>
+                <div class="info-tag">→ undersouthern / support / contact</div>
                 <h1>let's help you get sorted.</h1>
-                <p class="subtitle">pitch your next release to our editors or browse the frequently asked questions below.</p>
+                <p class="subtitle">pitch your next release to our editorial team or explore our help center for technical assistance.</p>
                 
                 <a onclick="openPitchModal('pitch')" class="btn-classic">send your pitch</a>
 
@@ -237,7 +253,7 @@
     <div id="pitchModal" class="modal-overlay">
         <div class="modal-box">
             <div id="modalText" class="modal-text"></div>
-            <div style="display:flex; gap:10px; justify-content: center;">
+            <div style="display:flex; gap:15px; justify-content: center;">
                 <button class="btn-classic" onclick="closePitchModal()">cancel</button>
                 <button class="btn-classic" id="confirmBtn" onclick="confirmAction()"></button>
             </div>
@@ -272,10 +288,10 @@
             const modalText = document.getElementById('modalText');
             const confirmBtn = document.getElementById('confirmBtn');
             if (mode === 'youtube') {
-                modalText.innerHTML = `Submit your Primary Artist Channel URL and Topic Channel URL via email to request your OAC.`;
+                modalText.innerHTML = `Submit your Primary Artist Channel URL and Topic Channel URL via email to request your Official Artist Channel (OAC).`;
                 confirmBtn.innerText = "request";
             } else {
-                modalText.innerHTML = `Please submit your pitches well in advance. We appreciate hearing about your priorities 6-8 weeks before release date for best results.`;
+                modalText.innerHTML = `Please submit your priorities 6-8 weeks before release date. Our team will review and pitch to editorial curators.`;
                 confirmBtn.innerText = "i understand";
             }
             document.getElementById('pitchModal').style.display = 'flex';
