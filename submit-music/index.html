@@ -50,7 +50,6 @@
             margin-bottom: 12px; font-weight: 400; letter-spacing: 1px; text-transform: uppercase;
         }
 
-        /* Tooltip System - Trắng nền, Đen chữ */
         .help-icon {
             display: inline-flex; align-items: center; justify-content: center;
             width: 14px; height: 14px; background-color: #ffffff; color: #000000;
@@ -83,7 +82,6 @@
 
         .select-wrapper::after { content: '↓'; font-size: 10px; position: absolute; right: 0; bottom: 15px; color: var(--text-secondary); pointer-events: none; }
 
-        /* --- THANH TIẾN TRÌNH LUÔN HIỆN DƯỚI Ô UPLOAD --- */
         .upload-item { width: 100%; }
         .action-btn {
             width: 100%; border: 1px dashed var(--line); padding: 35px 20px; text-align: center;
@@ -92,13 +90,14 @@
         .action-btn:hover, .action-btn.filled { border-color: var(--accent); color: var(--accent); }
 
         .progress-track {
-            width: 100%; height: 2px; background: var(--track-bg); /* Rãnh xám luôn hiện */
+            width: 100%; height: 2px; background: var(--track-bg); 
             margin-top: 3px; position: relative; overflow: hidden;
         }
         .progress-fill {
             position: absolute; top: 0; left: 0; height: 100%; width: 0%;
-            background: #ffffff; /* Thanh trắng chạy qua */
+            background: #ffffff; 
             box-shadow: 0 0 5px #fff;
+            transition: width 0.3s ease;
         }
 
         .btn-submit { 
@@ -157,7 +156,7 @@
                         <span id="art-status">click to select artwork</span>
                     </div>
                     <div class="progress-track"><div class="progress-fill" id="art-fill"></div></div>
-                    <input type="file" id="artwork-file" hidden accept="image/*" onchange="updateSelected('artwork-file', 'art-status', 'art-btn')">
+                    <input type="file" id="artwork-file" hidden accept="image/*" required onchange="updateSelected('artwork-file', 'art-status', 'art-btn')">
                 </div>
             </div>
 
@@ -168,7 +167,7 @@
                         <span id="audio-status">click to select audio file</span>
                     </div>
                     <div class="progress-track"><div class="progress-fill" id="audio-fill"></div></div>
-                    <input type="file" id="audio-file" hidden accept="audio/*" onchange="updateSelected('audio-file', 'audio-status', 'audio-btn')">
+                    <input type="file" id="audio-file" hidden accept="audio/*" required onchange="updateSelected('audio-file', 'audio-status', 'audio-btn')">
                 </div>
             </div>
 
@@ -192,10 +191,18 @@
 </div>
 
 <script>
+    // Cấu hình Appwrite dựa trên thông tin dự án của bạn
     const { Client, Databases, Storage, ID } = Appwrite;
-    const client = new Client().setEndpoint('https://cloud.appwrite.io/v1').setProject('YOUR_PROJECT_ID');
+    const client = new Client()
+        .setEndpoint('https://sgp.cloud.appwrite.io/v1') // Endpoint Singapore
+        .setProject('69ace729002e0c67e9e3');           // Project ID thực tế của bạn
+
     const databases = new Databases(client);
     const storage = new Storage(client);
+
+    // Vui lòng đảm bảo các ID Bucket này khớp với ID bạn đã tạo trong Storage
+    const BUCKET_ARTWORK = 'artworks'; 
+    const BUCKET_AUDIO = 'music_files';
 
     function updateSelected(inputId, statusId, btnId) {
         const f = document.getElementById(inputId).files[0];
@@ -205,51 +212,78 @@
         }
     }
 
-    // HÀM CHẠY THANH TIẾN TRÌNH CỰC CHẬM
-    function runBar(fillId, statusId, text) {
-        return new Promise((resolve) => {
-            let width = 0;
-            const bar = document.getElementById(fillId);
-            const status = document.getElementById(statusId);
-            const interval = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    resolve();
-                } else {
-                    width++;
-                    let delay = width > 85 ? 400 : 150; // Càng về cuối càng chậm (400ms mỗi 1%)
-                    bar.style.width = width + '%';
-                    status.innerText = text + '... ' + width + '%';
-                }
-            }, 150); // Mặc định 150ms/1% -> Tối thiểu 15 giây cho mỗi tệp
-        });
-    }
-
     async function handleFinalSubmit(e) {
         e.preventDefault();
         const btn = document.getElementById('btn-submit');
+        const artStatus = document.getElementById('art-status');
+        const audioStatus = document.getElementById('audio-status');
+        const artFill = document.getElementById('art-fill');
+        const audioFill = document.getElementById('audio-fill');
+
         btn.innerText = "TRANSMITTING..."; btn.disabled = true;
 
         try {
-            // Chạy hiệu ứng cho Artwork
-            await runBar('art-fill', 'art-status', 'transmitting artwork');
-            await new Promise(r => setTimeout(r, 800));
+            // 1. Tải Artwork lên
+            artStatus.innerText = "uploading artwork...";
+            const artworkFile = document.getElementById('artwork-file').files[0];
+            const uploadedArt = await storage.createFile(
+                BUCKET_ARTWORK, 
+                ID.unique(), 
+                artworkFile,
+                (p) => { artFill.style.width = p.progress + '%'; }
+            );
+            artStatus.innerText = "artwork transmitted";
 
-            // Chạy hiệu ứng cho Audio (Siêu chậm)
-            await runBar('audio-fill', 'audio-status', 'transmitting audio');
+            // 2. Tải Audio lên
+            audioStatus.innerText = "uploading audio...";
+            const audioFile = document.getElementById('audio-file').files[0];
+            const uploadedAudio = await storage.createFile(
+                BUCKET_AUDIO, 
+                ID.unique(), 
+                audioFile,
+                (p) => { audioFill.style.width = p.progress + '%'; }
+            );
+            audioStatus.innerText = "audio transmitted";
 
-            // Gửi dữ liệu Appwrite (Giữ nguyên logic của bạn)
-            // ... (Phần code databases.createDocument của bạn ở đây)
+            // 3. Gửi dữ liệu tới Database 'release'
+            await databases.createDocument(
+                'Submissions', // Database ID
+                'release',     // Collection ID
+                ID.unique(), 
+                {
+                    contact_email: document.getElementById('contact-email').value,
+                    song_title: document.getElementById('main-title-input').value,
+                    primary_artist: document.getElementById('main-primary-artist').value,
+                    featured_artist: document.getElementById('main-featured-artist').value,
+                    composer_lyricist: document.getElementById('main-composers').value,
+                    producers: document.getElementById('main-producers').value,
+                    primary_genre: document.getElementById('primary-genre').value,
+                    language: document.getElementById('language-select').value,
+                    release_date: document.getElementById('release-date').value,
+                    artwork_id: uploadedArt.$id, // Lưu ID file ảnh
+                    audio_id: uploadedAudio.$id, // Lưu ID file nhạc
+                    lyrics: document.getElementById('lyric-input').value,
+                    notes: document.getElementById('note-input').value,
+                    status: 'pending'
+                }
+            );
 
             document.getElementById('success-modal').style.display = 'flex';
-        } catch (err) { alert(err.message); }
-        finally { btn.innerText = "submit to undersouthern"; btn.disabled = false; }
+        } catch (err) { 
+            console.error(err);
+            alert("transmission failed: " + err.message); 
+        } finally { 
+            btn.innerText = "submit to undersouthern"; btn.disabled = false; 
+        }
     }
 
     window.onload = () => {
         const pg = document.getElementById('primary-genre'), ls = document.getElementById('language-select');
-        ["Hip-Hop/Rap", "Indie", "Pop", "R&B", "Lo-fi"].forEach(g => pg.add(new Option(g.toLowerCase(), g)));
-        ["Vietnamese (VI)", "English (EN)", "Korean (KO)"].forEach(l => ls.add(new Option(l.toLowerCase(), l)));
+        const genres = ["Hip-Hop/Rap", "Indie", "Pop", "R&B", "Lo-fi", "Electronic", "Soul"];
+        const languages = ["Vietnamese (VI)", "English (EN)", "Korean (KO)", "Japanese (JP)"];
+        
+        genres.forEach(g => pg.add(new Option(g.toLowerCase(), g)));
+        languages.forEach(l => ls.add(new Option(l.toLowerCase(), l)));
     };
 </script>
 </body>
