@@ -95,10 +95,7 @@
             box-sizing: border-box;
         }
 
-        /* CSS ĐỂ HIỂN THỊ CHỮ MỜ CHO SELECT KHI CHƯA CHỌN */
-        select:invalid {
-            color: var(--text-dim);
-        }
+        select:invalid { color: var(--text-dim); }
 
         select option {
             background-color: #111;
@@ -163,6 +160,7 @@
             cursor: pointer;
             transition: 0.3s;
             font-size: 18px;
+            text-transform: lowercase;
         }
 
         .btn-submit:hover:not(:disabled) {
@@ -183,6 +181,7 @@
             font-size: 12px;
             color: var(--text-dim);
             text-align: center;
+            text-transform: none; /* Giữ nguyên chữ hoa cho footer */
         }
 
         @media (max-width: 900px) {
@@ -404,7 +403,7 @@
     </form>
 
     <footer>
-        © undersouthern. all rights reserved.
+        © UNDERSOUTHERN. All Rights Reserved.
     </footer>
 </div>
 
@@ -460,8 +459,8 @@
 
             alert("gửi thành công!");
             form.reset();
-            document.getElementById('audio-name').innerText = "stereo 16 bit 44.1 khz";
-            document.getElementById('artwork-name').innerText = "3000x3000px - jpg, png";
+            document.getElementById('audio-name').innerText = "wav 16 bit 44.1 khz";
+            document.getElementById('artwork-name').innerText = "3000x3000px jpg";
 
         } catch (err) {
             alert("lỗi: " + err.message);
