@@ -32,8 +32,8 @@
 
         /* THIẾT LẬP TO VÀ FULL MÀN HÌNH TRÊN MÁY TÍNH */
         .container {
-            width: 90%; /* Chiếm 90% chiều ngang màn hình */
-            max-width: 1400px; /* Giới hạn độ rộng tối đa để không bị quá loãng */
+            width: 90%; 
+            max-width: 1400px; 
             margin: 0 auto;
             padding: 40px 0;
         }
@@ -44,7 +44,7 @@
         }
 
         .header-logo {
-            width: 100px; /* Tăng kích thước logo một chút cho cân xứng màn hình lớn */
+            width: 100px; 
             margin-bottom: -10px;
             filter: brightness(0) invert(1);
             transition: transform 0.3s ease;
@@ -53,7 +53,7 @@
         .header-logo:hover { transform: scale(1.1); }
 
         h1 {
-            font-size: clamp(32px, 5vw, 64px); /* Chữ to hơn trên màn hình lớn */
+            font-size: clamp(32px, 5vw, 64px); 
             font-weight: 500;
             letter-spacing: -3px;
             margin: 0 0 10px 0;
@@ -61,10 +61,9 @@
 
         .desc { color: var(--text-dim); font-size: 16px; }
 
-        /* HỆ THỐNG LƯỚI CO GIÃN THÔNG MINH */
         form {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Mặc định 2 cột */
+            grid-template-columns: repeat(2, 1fr);
             gap: 25px;
         }
 
@@ -96,6 +95,16 @@
             box-sizing: border-box;
         }
 
+        /* CSS ĐỂ HIỂN THỊ CHỮ MỜ CHO SELECT KHI CHƯA CHỌN */
+        select:invalid {
+            color: var(--text-dim);
+        }
+
+        select option {
+            background-color: #111;
+            color: white;
+        }
+
         input:focus, textarea:focus, select:focus {
             border-color: var(--text-main);
             background: rgba(255,255,255,0.02);
@@ -111,7 +120,6 @@
             min-height: 50px;
         }
 
-        /* Ô UPLOAD THU NHỎ */
         .file-input-wrapper {
             position: relative;
             border: 1px dashed var(--border-color);
@@ -177,7 +185,6 @@
             text-align: center;
         }
 
-        /* MOBILE RESPONSIVE - CHUYỂN VỀ 1 CỘT KHI MÀN HÌNH NHỎ */
         @media (max-width: 900px) {
             .container { width: 95%; }
             form { grid-template-columns: 1fr; }
@@ -236,7 +243,7 @@
         <div class="field-group">
             <label>main genre *</label>
             <select name="genre" required>
-                <option value="" disabled selected hidden>select genre</option>
+                <option value="" selected disabled>select genre</option>
                 <option value="Alternative">Alternative</option>
                 <option value="Alternative Rock">Alternative Rock</option>
                 <option value="Alternativo & Rock Latino">Alternativo & Rock Latino</option>
@@ -306,7 +313,7 @@
         <div class="field-group">
             <label>language *</label>
             <select name="language" required>
-                <option value="" disabled selected hidden>select language</option>
+                <option value="" selected disabled>select language</option>
                 <option value="Vietnamese (VI)">Vietnamese (VI)</option>
                 <option value="English (EN)">English (EN)</option>
                 <option value="Korean (KO)">Korean (KO)</option>
