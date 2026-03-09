@@ -207,7 +207,7 @@
     <form id="submissionForm">
         <div class="field-group full-width">
             <label>email address *</label>
-            <input type="email" name="email" placeholder="artist@example.com" required>
+            <input type="email" name="email" placeholder="name@example.com" required>
         </div>
 
         <div class="field-group">
@@ -368,7 +368,7 @@
         </div>
 
         <div class="field-group">
-            <label>release date (expected) *</label>
+            <label>release date*</label>
             <input type="date" name="release_date" required>
         </div>
 
@@ -380,7 +380,7 @@
         <div class="field-group">
             <label id="audio-label">upload audio (wav/mp3) *</label>
             <div class="file-input-wrapper">
-                <span id="audio-name">stereo 16 bit 44.1 khz</span>
+                <span id="audio-name">wav 16 bit 44.1 khz</span>
                 <input type="file" name="audio" accept="audio/*" required onchange="updateFileName(this, 'audio-name')">
             </div>
         </div>
@@ -388,14 +388,14 @@
         <div class="field-group">
             <label id="artwork-label">upload artwork (jpg/png) *</label>
             <div class="file-input-wrapper">
-                <span id="artwork-name">3000x3000px - jpg, png</span>
+                <span id="artwork-name">3000x3000px jpg</span>
                 <input type="file" name="artwork" accept="image/*" required onchange="updateFileName(this, 'artwork-name')">
             </div>
         </div>
 
         <div class="field-group full-width">
             <label>notes to label</label>
-            <textarea name="notes" rows="3" placeholder="include important information about the song, artist spotify link, etc."></textarea>
+            <textarea name="notes" rows="3" placeholder="Include a music preview (15–60 seconds), any important information about the song, and a link to your artist's Spotify page (if available)."></textarea>
         </div>
 
         <div class="submit-area">
