@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUBMIT RELEASE – UNDERSOUTHERN</title>
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap');
 
@@ -31,10 +34,7 @@
             padding: 80px 20px;
         }
 
-        /* Header Section */
-        header {
-            margin-bottom: 60px;
-        }
+        header { margin-bottom: 60px; }
 
         .back-link {
             text-decoration: none;
@@ -56,7 +56,6 @@
 
         .desc { color: var(--text-dim); font-size: 14px; }
 
-        /* Form Styling */
         form {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -72,7 +71,7 @@
         }
 
         label {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-dim);
@@ -93,7 +92,6 @@
             border-color: var(--text-main);
         }
 
-        /* File Upload Styling */
         .file-input-wrapper {
             position: relative;
             border: 1px dashed var(--border-color);
@@ -115,7 +113,6 @@
             cursor: pointer;
         }
 
-        /* Button */
         .submit-area {
             margin-top: 40px;
             grid-column: span 2;
@@ -134,9 +131,15 @@
             transition: 0.3s;
         }
 
-        .btn-submit:hover {
+        .btn-submit:hover:not(:disabled) {
             background: #cccccc;
             letter-spacing: 2px;
+        }
+
+        .btn-submit:disabled {
+            background: #444;
+            cursor: not-allowed;
+            color: #888;
         }
 
         footer {
@@ -148,11 +151,9 @@
             text-align: center;
         }
 
-        /* Mobile Responsive */
         @media (max-width: 600px) {
             form { grid-template-columns: 1fr; }
-            .full-width { grid-column: span 1; }
-            .submit-area { grid-column: span 1; }
+            .full-width, .submit-area { grid-column: span 1; }
         }
     </style>
 </head>
@@ -165,8 +166,7 @@
         <p class="desc">Điền đầy đủ thông tin bên dưới để gửi bản thảo âm nhạc của bạn tới UNDERSOUTHERN.</p>
     </header>
 
-    <form action="#" method="POST" enctype="multipart/form-data">
-        
+    <form id="submissionForm">
         <div class="field-group full-width">
             <label>Email Address *</label>
             <input type="email" name="email" placeholder="artist@example.com" required>
@@ -179,7 +179,7 @@
 
         <div class="field-group">
             <label>Title Version</label>
-            <input type="text" name="version" placeholder="Original / Remix / Acoustic">
+            <input type="text" name="version" placeholder="Original / Remix">
         </div>
 
         <div class="field-group">
@@ -206,11 +206,11 @@
             <label>Main Genre *</label>
             <select name="genre" required>
                 <option value="">Select Genre</option>
-                <option value="pop">Pop</option>
-                <option value="hiphop">Hip-hop / Rap</option>
-                <option value="electronic">Electronic / Dance</option>
-                <option value="indie">Indie</option>
-                <option value="rnb">R&B</option>
+                <option value="Pop">Pop</option>
+                <option value="Hip-hop">Hip-hop / Rap</option>
+                <option value="Electronic">Electronic / Dance</option>
+                <option value="Indie">Indie</option>
+                <option value="R&B">R&B</option>
             </select>
         </div>
 
@@ -230,20 +230,20 @@
         </div>
 
         <div class="field-group">
-            <label>Upload Audio (WAV/MP3) *</label>
+            <label id="audio-label">Upload Audio (WAV/MP3) *</label>
             <div class="file-input-wrapper">
                 <i class="fa-solid fa-music"></i><br>
-                <span>Choose File</span>
-                <input type="file" name="audio" accept="audio/*" required>
+                <span id="audio-name">Choose File</span>
+                <input type="file" name="audio" accept="audio/*" required onchange="updateFileName(this, 'audio-name')">
             </div>
         </div>
 
         <div class="field-group">
-            <label>Upload Artwork (JPG/PNG) *</label>
+            <label id="artwork-label">Upload Artwork (JPG/PNG) *</label>
             <div class="file-input-wrapper">
                 <i class="fa-solid fa-image"></i><br>
-                <span>Choose Image</span>
-                <input type="file" name="artwork" accept="image/*" required>
+                <span id="artwork-name">Choose Image</span>
+                <input type="file" name="artwork" accept="image/*" required onchange="updateFileName(this, 'artwork-name')">
             </div>
         </div>
 
@@ -255,7 +255,6 @@
         <div class="submit-area">
             <button type="submit" class="btn-submit">Submit to Undersouthern</button>
         </div>
-
     </form>
 
     <footer>
@@ -263,5 +262,83 @@
     </footer>
 </div>
 
+<script>
+    // 1. Cấu hình Supabase (Dùng Project URL và Key bạn cung cấp)
+    const SUPABASE_URL = 'https://wbktbxfryhjesvewoots.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_Cap8ZDxhSSbgcglSbNHlzw_NY2XDLsl';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Cập nhật tên file khi chọn
+    function updateFileName(input, targetId) {
+        const fileName = input.files[0] ? input.files[0].name : "Choose File";
+        document.getElementById(targetId).innerText = fileName;
+    }
+
+    // 2. Xử lý Gửi Form
+    const form = document.getElementById('submissionForm');
+    const btnSubmit = document.querySelector('.btn-submit');
+
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+        
+        btnSubmit.disabled = true;
+        const originalText = btnSubmit.innerText;
+        btnSubmit.innerText = "UPLOADING DATA...";
+
+        try {
+            const formData = new FormData(form);
+            const audioFile = formData.get('audio');
+            const artworkFile = formData.get('artwork');
+
+            // A. Upload Audio vào bucket 'assets'
+            const audioPath = `audio/${Date.now()}_${audioFile.name}`;
+            const { error: audioErr } = await _supabase.storage
+                .from('assets')
+                .upload(audioPath, audioFile);
+            if (audioErr) throw audioErr;
+
+            // B. Upload Artwork vào bucket 'assets'
+            const artworkPath = `artwork/${Date.now()}_${artworkFile.name}`;
+            const { error: artworkErr } = await _supabase.storage
+                .from('assets')
+                .upload(artworkPath, artworkFile);
+            if (artworkErr) throw artworkErr;
+
+            // C. Lưu thông tin vào bảng 'submissions'
+            const { error: dbErr } = await _supabase
+                .from('submissions')
+                .insert([{
+                    email: formData.get('email'),
+                    song_name: formData.get('song_name'),
+                    version: formData.get('version'),
+                    main_artist: formData.get('main_artist'),
+                    feat_artist: formData.get('feat_artist'),
+                    composer: formData.get('composer'),
+                    producer: formData.get('producer'),
+                    genre: formData.get('genre'),
+                    language: formData.get('language'),
+                    release_date: formData.get('release_date'),
+                    lyrics: formData.get('lyrics'),
+                    audio_url: audioPath,
+                    artwork_url: artworkPath,
+                    notes: formData.get('notes')
+                }]);
+
+            if (dbErr) throw dbErr;
+
+            alert("Gửi thành công! Nhạc của bạn đã được chuyển đến hệ thống của UNDERSOUTHERN.");
+            form.reset();
+            document.getElementById('audio-name').innerText = "Choose File";
+            document.getElementById('artwork-name').innerText = "Choose Image";
+
+        } catch (err) {
+            console.error(err);
+            alert("Lỗi: " + err.message);
+        } finally {
+            btnSubmit.disabled = false;
+            btnSubmit.innerText = originalText;
+        }
+    };
+</script>
 </body>
 </html>
