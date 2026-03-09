@@ -1,1 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUBMIT RELEASE – UNDERSOUTHERN</title>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap');
 
+        :root {
+            --bg-color: #000000;
+            --text-main: #ffffff;
+            --text-dim: #666666;
+            --accent: #ffffff;
+            --border-color: #222222;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Fira Code', monospace;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        /* Header Section */
+        header {
+            margin-bottom: 60px;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-size: 13px;
+            transition: 0.3s;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover { color: var(--text-main); }
+
+        h1 {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 500;
+            letter-spacing: -2px;
+            margin: 0 0 10px 0;
+        }
+
+        .desc { color: var(--text-dim); font-size: 14px; }
+
+        /* Form Styling */
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .full-width { grid-column: span 2; }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+        }
+
+        input, select, textarea {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            color: var(--text-main);
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--text-main);
+        }
+
+        /* File Upload Styling */
+        .file-input-wrapper {
+            position: relative;
+            border: 1px dashed var(--border-color);
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .file-input-wrapper:hover {
+            border-color: var(--text-main);
+            background: #0a0a0a;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Button */
+        .submit-area {
+            margin-top: 40px;
+            grid-column: span 2;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--text-main);
+            color: var(--bg-color);
+            border: none;
+            padding: 18px;
+            font-family: 'Fira Code', monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #cccccc;
+            letter-spacing: 2px;
+        }
+
+        footer {
+            margin-top: 100px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            font-size: 11px;
+            color: var(--text-dim);
+            text-align: center;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            form { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+            .submit-area { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <a href="index.html" class="back-link">← back to home</a>
+        <h1>Submit Release</h1>
+        <p class="desc">Điền đầy đủ thông tin bên dưới để gửi bản thảo âm nhạc của bạn tới UNDERSOUTHERN.</p>
+    </header>
+
+    <form action="#" method="POST" enctype="multipart/form-data">
+        
+        <div class="field-group full-width">
+            <label>Email Address *</label>
+            <input type="email" name="email" placeholder="artist@example.com" required>
+        </div>
+
+        <div class="field-group">
+            <label>Song Name *</label>
+            <input type="text" name="song_name" required>
+        </div>
+
+        <div class="field-group">
+            <label>Title Version</label>
+            <input type="text" name="version" placeholder="Original / Remix / Acoustic">
+        </div>
+
+        <div class="field-group">
+            <label>Main Artist *</label>
+            <input type="text" name="main_artist" required>
+        </div>
+
+        <div class="field-group">
+            <label>Featured Artist</label>
+            <input type="text" name="feat_artist">
+        </div>
+
+        <div class="field-group">
+            <label>Composer *</label>
+            <input type="text" name="composer" required>
+        </div>
+
+        <div class="field-group">
+            <label>Producer *</label>
+            <input type="text" name="producer" required>
+        </div>
+
+        <div class="field-group">
+            <label>Main Genre *</label>
+            <select name="genre" required>
+                <option value="">Select Genre</option>
+                <option value="pop">Pop</option>
+                <option value="hiphop">Hip-hop / Rap</option>
+                <option value="electronic">Electronic / Dance</option>
+                <option value="indie">Indie</option>
+                <option value="rnb">R&B</option>
+            </select>
+        </div>
+
+        <div class="field-group">
+            <label>Language *</label>
+            <input type="text" name="language" placeholder="Vietnamese, English...">
+        </div>
+
+        <div class="field-group">
+            <label>Release Date (Expected)</label>
+            <input type="date" name="release_date">
+        </div>
+
+        <div class="field-group full-width">
+            <label>Lyrics</label>
+            <textarea name="lyrics" rows="6" placeholder="Paste your lyrics here..."></textarea>
+        </div>
+
+        <div class="field-group">
+            <label>Upload Audio (WAV/MP3) *</label>
+            <div class="file-input-wrapper">
+                <i class="fa-solid fa-music"></i><br>
+                <span>Choose File</span>
+                <input type="file" name="audio" accept="audio/*" required>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label>Upload Artwork (JPG/PNG) *</label>
+            <div class="file-input-wrapper">
+                <i class="fa-solid fa-image"></i><br>
+                <span>Choose Image</span>
+                <input type="file" name="artwork" accept="image/*" required>
+            </div>
+        </div>
+
+        <div class="field-group full-width">
+            <label>Notes to Label</label>
+            <textarea name="notes" rows="3" placeholder="Anything else we should know?"></textarea>
+        </div>
+
+        <div class="submit-area">
+            <button type="submit" class="btn-submit">Submit to Undersouthern</button>
+        </div>
+
+    </form>
+
+    <footer>
+        © UNDERSOUTHERN. Independent Music Distribution.
+    </footer>
+</div>
+
+</body>
+</html>
