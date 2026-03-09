@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUBMIT RELEASE – UNDERSOUTHERN</title>
-    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/my-images/main/logoblack.png">
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/phvinh1968-a11y/pixel-images/main/logoblack.png">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -263,18 +263,16 @@
 </div>
 
 <script>
-    // 1. Cấu hình Supabase (Dùng Project URL và Key bạn cung cấp)
+    // 1. Cấu hình Supabase
     const SUPABASE_URL = 'https://wbktbxfryhjesvewoots.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_Cap8ZDxhSSbgcglSbNHlzw_NY2XDLsl';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Cập nhật tên file khi chọn
     function updateFileName(input, targetId) {
         const fileName = input.files[0] ? input.files[0].name : "Choose File";
         document.getElementById(targetId).innerText = fileName;
     }
 
-    // 2. Xử lý Gửi Form
     const form = document.getElementById('submissionForm');
     const btnSubmit = document.querySelector('.btn-submit');
 
@@ -290,23 +288,25 @@
             const audioFile = formData.get('audio');
             const artworkFile = formData.get('artwork');
 
-            // A. Upload Audio vào bucket 'assets'
-            const audioPath = `audio/${Date.now()}_${audioFile.name}`;
+            // Tạo tên file duy nhất để tránh trùng lặp
+            const audioPath = `${Date.now()}_${audioFile.name}`;
+            const artworkPath = `${Date.now()}_${artworkFile.name}`;
+
+            // A. Upload Audio vào bucket 'audio'
             const { error: audioErr } = await _supabase.storage
-                .from('assets')
+                .from('audio') 
                 .upload(audioPath, audioFile);
             if (audioErr) throw audioErr;
 
-            // B. Upload Artwork vào bucket 'assets'
-            const artworkPath = `artwork/${Date.now()}_${artworkFile.name}`;
+            // B. Upload Artwork vào bucket 'artwork'
             const { error: artworkErr } = await _supabase.storage
-                .from('assets')
+                .from('artwork')
                 .upload(artworkPath, artworkFile);
             if (artworkErr) throw artworkErr;
 
-            // C. Lưu thông tin vào bảng 'submissions'
+            // C. Lưu thông tin vào bảng 'submit'
             const { error: dbErr } = await _supabase
-                .from('submissions')
+                .from('submit')
                 .insert([{
                     email: formData.get('email'),
                     song_name: formData.get('song_name'),
@@ -317,7 +317,7 @@
                     producer: formData.get('producer'),
                     genre: formData.get('genre'),
                     language: formData.get('language'),
-                    release_date: formData.get('release_date'),
+                    release_date: formData.get('release_date') || null, // Tránh lỗi ngày rỗng
                     lyrics: formData.get('lyrics'),
                     audio_url: audioPath,
                     artwork_url: artworkPath,
