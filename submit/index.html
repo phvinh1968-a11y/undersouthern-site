@@ -30,7 +30,6 @@
             text-transform: lowercase;
         }
 
-        /* THIẾT LẬP TO VÀ FULL MÀN HÌNH TRÊN MÁY TÍNH */
         .container {
             width: 90%; 
             max-width: 1400px; 
@@ -46,7 +45,6 @@
         .header-logo {
             width: 100px; 
             margin-bottom: -10px;
-            /* Đã bỏ filter invert để logo hiện màu đen gốc trên nền trắng */
             transition: transform 0.3s ease;
         }
 
@@ -108,7 +106,6 @@
         }
 
         input[type="date"]::-webkit-calendar-picker-indicator {
-            /* Đã bỏ filter invert để icon lịch hiện màu đen */
             cursor: pointer;
         }
 
@@ -211,7 +208,7 @@
 
         <div class="field-group">
             <label>song name *</label>
-            <input type="text" name="song_name" required>
+            <input type="text" name="song_name" id="songNameInput" required>
         </div>
 
         <div class="field-group">
@@ -379,16 +376,16 @@
         <div class="field-group">
             <label id="audio-label">upload audio*</label>
             <div class="file-input-wrapper">
-                <span id="audio-name">wav 16 bit 44.1 khz</span>
-                <input type="file" name="audio" accept="audio/*" required onchange="updateFileName(this, 'audio-name')">
+                <span id="audio-name">wav 16/24 bit 44.1 khz</span>
+                <input type="file" name="audio" id="audioInput" accept=".wav" required onchange="validateAudio(this)">
             </div>
         </div>
 
         <div class="field-group">
             <label id="artwork-label">upload artwork*</label>
             <div class="file-input-wrapper">
-                <span id="artwork-name">3000x3000px jpg</span>
-                <input type="file" name="artwork" accept="image/*" required onchange="updateFileName(this, 'artwork-name')">
+                <span id="artwork-name">3000x3000px jpg/png</span>
+                <input type="file" name="artwork" id="artworkInput" accept=".jpg,.jpeg,.png" required onchange="validateArtwork(this)">
             </div>
         </div>
 
@@ -416,9 +413,59 @@
         return name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').replace(/[^a-zA-Z0-9.\-_]/g, '_').substring(0, 50); 
     }
 
-    function updateFileName(input, targetId) {
-        const fileName = input.files[0] ? input.files[0].name : "chọn file";
-        document.getElementById(targetId).innerText = fileName.toLowerCase();
+    async function validateAudio(input) {
+        const targetId = 'audio-name';
+        const file = input.files[0];
+        if (!file) return;
+
+        if (!file.name.toLowerCase().endsWith('.wav')) {
+            alert("không được: định dạng âm thanh không hợp lệ. vui lòng sử dụng file .wav");
+            resetFileInput(input, targetId, "wav 16/24 bit 44.1 khz");
+            return;
+        }
+
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const arrayBuffer = await file.arrayBuffer();
+            const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+            if (audioBuffer.sampleRate !== 44100) {
+                alert(`không được: tần số âm thanh không đúng. yêu cầu 44.1khz (file của bạn là ${audioBuffer.sampleRate/1000}khz)`);
+                resetFileInput(input, targetId, "wav 16/24 bit 44.1 khz");
+            } else {
+                document.getElementById(targetId).innerText = file.name.toLowerCase();
+            }
+        } catch (e) {
+            alert("không được: không thể đọc dữ liệu file audio.");
+            resetFileInput(input, targetId, "wav 16/24 bit 44.1 khz");
+        }
+    }
+
+    function validateArtwork(input) {
+        const targetId = 'artwork-name';
+        const file = input.files[0];
+        if (!file) return;
+
+        const img = new Image();
+        img.src = URL.createObjectURL(file);
+        img.onload = function() {
+            URL.revokeObjectURL(img.src);
+            if (img.width === 3000 && img.height === 3000) {
+                document.getElementById(targetId).innerText = file.name.toLowerCase();
+            } else {
+                alert(`không được: kích thước ảnh không đúng. yêu cầu 3000x3000px (file của bạn là ${img.width}x${img.height}px)`);
+                resetFileInput(input, targetId, "3000x3000px jpg/png");
+            }
+        };
+        img.onerror = function() {
+            alert("không được: file ảnh không hợp lệ.");
+            resetFileInput(input, targetId, "3000x3000px jpg/png");
+        };
+    }
+
+    function resetFileInput(input, targetId, defaultText) {
+        input.value = ""; 
+        document.getElementById(targetId).innerText = defaultText;
     }
 
     const form = document.getElementById('submissionForm');
@@ -431,18 +478,26 @@
 
         try {
             const formData = new FormData(form);
+            const songNameRaw = formData.get('song_name');
+            const sanitizedSongName = sanitizeFileName(songNameRaw);
+            
             const audioFile = formData.get('audio');
             const artworkFile = formData.get('artwork');
 
-            const safeAudioName = `${Date.now()}_${sanitizeFileName(audioFile.name)}`;
-            const safeArtName = `${Date.now()}_${sanitizeFileName(artworkFile.name)}`;
+            // Lấy phần mở rộng của file gốc
+            const audioExt = audioFile.name.split('.').pop();
+            const artExt = artworkFile.name.split('.').pop();
+
+            // Đổi tên file dựa theo song_name
+            const safeAudioName = `${Date.now()}_${sanitizedSongName}.${audioExt}`;
+            const safeArtName = `${Date.now()}_${sanitizedSongName}.${artExt}`;
 
             await _supabase.storage.from('audio').upload(safeAudioName, audioFile);
             await _supabase.storage.from('artwork').upload(safeArtName, artworkFile);
 
             await _supabase.from('submit').insert([{
                 email: formData.get('email'),
-                song_name: formData.get('song_name'),
+                song_name: songNameRaw,
                 version: formData.get('version'),
                 main_artist: formData.get('main_artist'),
                 feat_artist: formData.get('feat_artist'),
@@ -459,8 +514,8 @@
 
             alert("sent successfully!");
             form.reset();
-            document.getElementById('audio-name').innerText = "wav 16 bit 44.1 khz";
-            document.getElementById('artwork-name').innerText = "3000x3000px jpg";
+            document.getElementById('audio-name').innerText = "wav 16/24 bit 44.1 khz";
+            document.getElementById('artwork-name').innerText = "3000x3000px jpg/png";
 
         } catch (err) {
             alert("lỗi: " + err.message);
