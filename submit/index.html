@@ -43,8 +43,8 @@
         }
 
         .header-logo {
-            width: 100px; 
-            margin-bottom: -10px;
+            width: 150px; 
+            margin-bottom: -50px;
             transition: transform 0.3s ease;
         }
 
@@ -376,8 +376,8 @@
         <div class="field-group">
             <label id="audio-label">upload audio*</label>
             <div class="file-input-wrapper">
-                <span id="audio-name">wav 16/24 bit 44.1 khz</span>
-                <input type="file" name="audio" id="audioInput" accept=".wav" required onchange="validateAudio(this)">
+                <span id="audio-name">wav or flac (44.1/48 khz)</span>
+                <input type="file" name="audio" id="audioInput" accept=".wav,.flac" required onchange="validateAudio(this)">
             </div>
         </div>
 
@@ -395,7 +395,7 @@
         </div>
 
         <div class="submit-area">
-            <button type="submit" class="btn-submit">submit to undersouthern</button>
+            <button type="submit" class="btn-submit">submit to distributed</button>
         </div>
     </form>
 
@@ -418,26 +418,35 @@
         const file = input.files[0];
         if (!file) return;
 
-        if (!file.name.toLowerCase().endsWith('.wav')) {
-            alert("không được: định dạng âm thanh không hợp lệ. vui lòng sử dụng file .wav");
-            resetFileInput(input, targetId, "wav 16/24 bit 44.1 khz");
+        const fileName = file.name.toLowerCase();
+        if (!fileName.endsWith('.wav') && !fileName.endsWith('.flac')) {
+            alert("không được: định dạng âm thanh không hợp lệ. vui lòng sử dụng file .wav hoặc .flac");
+            resetFileInput(input, targetId, "wav or flac (44.1/48 khz)");
             return;
         }
 
         try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const audioCtx = new AudioContext();
             const arrayBuffer = await file.arrayBuffer();
-            const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-
-            if (audioBuffer.sampleRate !== 44100) {
-                alert(`không được: tần số âm thanh không đúng. yêu cầu 44.1khz (file của bạn là ${audioBuffer.sampleRate/1000}khz)`);
-                resetFileInput(input, targetId, "wav 16/24 bit 44.1 khz");
-            } else {
-                document.getElementById(targetId).innerText = file.name.toLowerCase();
-            }
+            
+            audioCtx.decodeAudioData(arrayBuffer, (audioBuffer) => {
+                const sr = audioBuffer.sampleRate;
+                if (sr !== 44100 && sr !== 48000) {
+                    alert(`không được: tần số âm thanh là ${sr/1000}khz. yêu cầu đúng 44.1khz hoặc 48khz.`);
+                    resetFileInput(input, targetId, "wav or flac (44.1/48 khz)");
+                } else {
+                    document.getElementById(targetId).innerText = fileName;
+                }
+                audioCtx.close();
+            }, (err) => {
+                alert("không được: file âm thanh bị lỗi hoặc không thể giải mã.");
+                resetFileInput(input, targetId, "wav or flac (44.1/48 khz)");
+                audioCtx.close();
+            });
         } catch (e) {
-            alert("không được: không thể đọc dữ liệu file audio.");
-            resetFileInput(input, targetId, "wav 16/24 bit 44.1 khz");
+            alert("không được: lỗi khi kiểm tra file.");
+            resetFileInput(input, targetId, "wav or flac (44.1/48 khz)");
         }
     }
 
@@ -484,11 +493,9 @@
             const audioFile = formData.get('audio');
             const artworkFile = formData.get('artwork');
 
-            // Lấy phần mở rộng của file gốc
             const audioExt = audioFile.name.split('.').pop();
             const artExt = artworkFile.name.split('.').pop();
 
-            // Đổi tên file dựa theo song_name
             const safeAudioName = `${Date.now()}_${sanitizedSongName}.${audioExt}`;
             const safeArtName = `${Date.now()}_${sanitizedSongName}.${artExt}`;
 
@@ -514,7 +521,7 @@
 
             alert("sent successfully!");
             form.reset();
-            document.getElementById('audio-name').innerText = "wav 16/24 bit 44.1 khz";
+            document.getElementById('audio-name').innerText = "wav or flac (44.1/48 khz)";
             document.getElementById('artwork-name').innerText = "3000x3000px jpg/png";
 
         } catch (err) {
