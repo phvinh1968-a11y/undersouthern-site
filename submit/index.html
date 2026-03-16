@@ -53,8 +53,8 @@
         h1 {
             font-size: clamp(32px, 5vw, 64px); 
             font-weight: 500;
-            letter-spacing: -3px;
-            margin: 0 0 10px 0;
+            letter-spacing: -4px;
+            margin: 0 0 -30px 0;
         }
 
         .desc { color: var(--text-dim); font-size: 16px; }
@@ -369,8 +369,8 @@
         </div>
 
         <div class="field-group">
-            <label>lyrics*</label>
-            <textarea name="lyrics" rows="1" placeholder="paste lyrics here..."></textarea>
+            <label>lyrics *</label>
+            <textarea name="lyrics" rows="1" placeholder="Hãy dán toàn bộ lời bài hát của bạn vào đây." required></textarea>
         </div>
 
         <div class="field-group">
@@ -528,7 +528,7 @@
             alert("lỗi: " + err.message);
         } finally {
             btnSubmit.disabled = false;
-            btnSubmit.innerText = "submit to undersouthern";
+            btnSubmit.innerText = "submit to distributed";
         }
     };
 </script>
